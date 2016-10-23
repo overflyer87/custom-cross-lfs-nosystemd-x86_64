@@ -77,6 +77,8 @@ esac
 
 make install
 
+checkBuiltPackage
+
 cd $LFS/sources
 rm -r binutils
 
@@ -133,6 +135,8 @@ rm -r mpc
 rm -r mpfr
 rm -r gmp
 
+checkBuiltPackage
+
 cd $LFS/sources
 rm -r gcc
 
@@ -185,6 +189,8 @@ echo
 
 rm -v dummy.c a.out
 
+checkBuiltPackage
+
 cd $LFS/sources
 rm -r glibc
 
@@ -205,6 +211,8 @@ cd       build
     --with-gxx-include-dir=/tools/$LFS_TGT/include/c++/6.2.0
     
 make && make install
+
+checkBuiltPackage
 
 cd $LFS/sources
 rm -r gcc 
@@ -231,6 +239,8 @@ make && make install
 make -C ld clean
 make -C ld LIB_PATH=/usr/lib:/lib
 cp -v ld/ld-new /tools/bin
+
+checkBuiltPackage
 
 cd $LFS/sources
 rm -r binutils
@@ -305,6 +315,8 @@ rm -r gmp
 
 rm -v dummy.c a.out
 
+checkBuiltPackage
+
 cd $LFS/sources
 rm -r gcc
 
@@ -320,6 +332,8 @@ make install
 chmod -v u+w /tools/lib/libtcl8.6.so
 make install-private-headers
 ln -sv tclsh8.6 /tools/bin/tclsh
+
+checkBuiltPackage
 
 cd $LFS/sources
 rm -r tcl-core
@@ -337,6 +351,8 @@ sed 's:/usr/local/bin:/bin:' configure.orig > configure
 
 make && make test && make SCRIPTS="" install
 
+checkBuiltPackage
+
 cd $LFS/sources
 rm -r expect
 
@@ -346,6 +362,8 @@ cd ${LFS}/sources/dejagnu
 
 commonBuildRoutine
 
+checkBuiltPackage
+
 cd $LFS/sources
 rm -r dejagnu
 
@@ -354,6 +372,8 @@ cd ${LFS}/sources/check
 
 PKG_CONFIG= ./configure --prefix=/tools
 make && make check && make install
+
+checkBuiltPackage
 
 cd $LFS/sources
 rm -r check
@@ -373,8 +393,11 @@ sed -i s/mawk// configure
             
 make && make install
 
+checkBuiltPackage
+
 cd $LFS/sources
 rm -r ncurses
+
 
 mkdir bash && tar -xf bash-*.tar.* -C bash  --strip-components 1
 cd ${LFS}/sources/bash
@@ -382,6 +405,8 @@ cd ${LFS}/sources/bash
 ./configure --prefix=/tools --without-bash-malloc
 make && make tests && make install
 ln -sv bash /tools/bin/sh
+
+checkBuiltPackage
 
 cd $LFS/sources
 rm -r bash
@@ -391,6 +416,8 @@ mkdir bzip2 && tar -xf bzip2-*.tar.* -C bzip2  --strip-components 1
 cd ${LFS}/sources/bzip2
 
 make && make PREFIX=/tools install
+
+checkBuiltPackage
 
 cd $LFS/sources
 rm -r bzip2
@@ -411,6 +438,8 @@ cd ${LFS}/sources/diffutils
 
 commonBuildRoutine
 
+checkBuiltPackage
+
 cd $LFS/sources
 rm -r diffutils
 
@@ -419,6 +448,8 @@ mkdir file && tar -xf file-*.tar.* -C file  --strip-components 1
 cd ${LFS}/sources/file
 
 commonBuildRoutine
+
+checkBuiltPackage
 
 cd $LFS/sources
 rm -r file
@@ -430,6 +461,8 @@ cd ${LFS}/sources/findutils
 
 commonBuildRoutine
 
+checkBuiltPackage
+
 cd $LFS/sources
 rm -r findutils
 
@@ -439,6 +472,8 @@ mkdir gawk && tar -xf gawk-*.tar.* -C gawk  --strip-components 1
 cd ${LFS}/sources/gawk
 
 commonBuildRoutine
+
+checkBuiltPackage
 
 cd $LFS/sources
 rm -r gawk
@@ -458,6 +493,7 @@ make -C src xgettext
 
 cp -v src/{msgfmt,msgmerge,xgettext} /tools/bin
 
+checkBuiltPackage
 
 cd $LFS/sources
 rm -r gettext
@@ -468,6 +504,8 @@ cd ${LFS}/sources/grep
 
 commonBuildRoutine
 
+checkBuiltPackage
+
 cd $LFS/sources
 rm -r grep
 
@@ -477,6 +515,8 @@ cd ${LFS}/sources/gzip
 
 commonBuildRoutine
 
+checkBuiltPackage
+
 cd $LFS/sources
 rm -r gzip
 
@@ -485,6 +525,8 @@ mkdir m4 && tar -xf m4-*.tar.* -C m4  --strip-components 1
 cd ${LFS}/sources/m4
 
 commonBuildRoutine
+
+checkBuiltPackage
 
 cd $LFS/sources
 rm -r m4
@@ -496,6 +538,8 @@ cd ${LFS}/sources/make
 ./configure --prefix=/tools --without-guile
 make && make check && make install
 
+checkBuiltPackage
+
 cd $LFS/sources
 rm -r make
 
@@ -504,6 +548,8 @@ mkdir patch && tar -xf patch-*.tar.* -C patch  --strip-components 1
 cd ${LFS}/sources/patch
 
 commonBuildRoutine
+
+checkBuiltPackage
 
 cd $LFS/sources
 rm -r patch
@@ -528,6 +574,8 @@ cd ${LFS}/sources/sed
 
 commonBuildRoutine
 
+checkBuiltPackage
+
 cd $LFS/sources
 rm -r sed
 
@@ -537,6 +585,8 @@ cd ${LFS}/sources/tar
 
 commonBuildRoutine
 
+checkBuiltPackage
+
 cd $LFS/sources
 rm -r tar
 
@@ -545,6 +595,8 @@ mkdir texinfo && tar -xf texinfo-*.tar.* -C texinfo  --strip-components 1
 cd ${LFS}/sources/texinfo
 
 commonBuildRoutine
+
+checkBuiltPackage
 
 cd $LFS/sources
 rm -r texinfo
@@ -562,6 +614,8 @@ cd ${LFS}/sources/util-linux
 
 make && make install
 
+checkBuiltPackage
+
 cd $LFS/sources
 rm -r util-linux
 
@@ -570,6 +624,8 @@ mkdir xz && tar -xf xz-*.tar.* -C xz  --strip-components 1
 cd ${LFS}/sources/xz
 
 commonBuildRoutine
+
+checkBuiltPackage
 
 cd $LFS/sources
 rm -r xz
