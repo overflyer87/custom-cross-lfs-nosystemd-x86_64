@@ -189,7 +189,7 @@ cd $LFS/sources
 rm -r glibc
 
 
-mkdir gcc && tar -xf gcc -*.tar.* -C gcc --strip-components 1
+mkdir gcc && tar -xf gcc-*.tar.* -C gcc --strip-components 1
 cd ${LFS}/sources/gcc
 
 mkdir -v build
