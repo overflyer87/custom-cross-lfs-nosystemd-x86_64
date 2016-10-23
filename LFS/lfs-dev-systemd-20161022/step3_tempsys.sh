@@ -14,7 +14,7 @@ function checkBuiltPackage {
 
 function commonBuildRoutine {
 
-./configure --prefix=/tools && make && make install
+./configure --prefix=/tools && make && make check && make install
 
 }
 
@@ -328,10 +328,247 @@ cd $LFS/sources
 rm -r expect
 
 
-mkdir $package && tar -xf $package-*.tar.* -C $package  --strip-components 1
-cd ${LFS}/sources/$package 
+mkdir dejagnu && tar -xf dejagnu-*.tar.* -C dejagnu  --strip-components 1
+cd ${LFS}/sources/dejagnu 
 
 commonBuildRoutine
 
 cd $LFS/sources
-rm -r $package 
+rm -r dejagnu
+
+mkdir check && tar -xf check-*.tar.* -C check  --strip-components 1
+cd ${LFS}/sources/check 
+
+PKG_CONFIG= ./configure --prefix=/tools
+make && make check && make install
+
+cd $LFS/sources
+rm -r check
+
+
+mkdir ncurses && tar -xf ncurses-*.tar.* -C ncurses  --strip-components 1
+cd ${LFS}/sources/ncurses
+
+sed -i s/mawk// configure
+
+./configure --prefix=/tools \
+            --with-shared   \
+            --without-debug \
+            --without-ada   \
+            --enable-widec  \
+            --enable-overwrite
+            
+make && make install
+
+cd $LFS/sources
+rm -r ncurses
+
+mkdir bash && tar -xf bash-*.tar.* -C bash  --strip-components 1
+cd ${LFS}/sources/bash
+
+./configure --prefix=/tools --without-bash-malloc
+make && make tests && make install
+ln -sv bash /tools/bin/sh
+
+cd $LFS/sources
+rm -r bash
+
+
+mkdir bzip2 && tar -xf bzip2-*.tar.* -C bzip2  --strip-components 1
+cd ${LFS}/sources/bzip2
+
+make && make PREFIX=/tools install
+
+cd $LFS/sources
+rm -r bzip2
+
+
+mkdir coreutils && tar -xf coreutils-*.tar.* -C coreutils  --strip-components 1
+cd ${LFS}/sources/coreutils
+
+./configure --prefix=/tools --enable-install-program=hostname
+make && make RUN_EXPENSIVE_TESTS=yes check && make install
+
+cd $LFS/sources
+rm -r coreutils
+
+
+mkdir diffutils && tar -xf diffutils-*.tar.* -C diffutils  --strip-components 1
+cd ${LFS}/sources/diffutils
+
+commonBuildRoutine
+
+cd $LFS/sources
+rm -r diffutils
+
+
+mkdir file && tar -xf file-*.tar.* -C file  --strip-components 1
+cd ${LFS}/sources/file
+
+commonBuildRoutine
+
+cd $LFS/sources
+rm -r file
+
+
+
+mkdir findutils && tar -xf findutils-*.tar.* -C findutils  --strip-components 1
+cd ${LFS}/sources/findutils
+
+commonBuildRoutine
+
+cd $LFS/sources
+rm -r findutils
+
+
+
+mkdir gawk && tar -xf gawk-*.tar.* -C gawk  --strip-components 1
+cd ${LFS}/sources/gawk
+
+commonBuildRoutine
+
+cd $LFS/sources
+rm -r gawk
+
+
+mkdir gettext && tar -xf gettext-*.tar.* -C gettext  --strip-components 1
+cd ${LFS}/sources/gettext
+
+cd gettext-tools
+EMACS="no" ./configure --prefix=/tools --disable-shared
+
+make -C gnulib-lib
+make -C intl pluralx.c
+make -C src msgfmt
+make -C src msgmerge
+make -C src xgettext
+
+cp -v src/{msgfmt,msgmerge,xgettext} /tools/bin
+
+
+cd $LFS/sources
+rm -r gettext
+
+
+mkdir grep && tar -xf grep-*.tar.* -C grep  --strip-components 1
+cd ${LFS}/sources/grep
+
+commonBuildRoutine
+
+cd $LFS/sources
+rm -r grep
+
+
+mkdir gzip && tar -xf gzip-*.tar.* -C gzip  --strip-components 1
+cd ${LFS}/sources/gzip
+
+commonBuildRoutine
+
+cd $LFS/sources
+rm -r gzip
+
+
+mkdir m4 && tar -xf m4-*.tar.* -C m4  --strip-components 1
+cd ${LFS}/sources/m4
+
+commonBuildRoutine
+
+cd $LFS/sources
+rm -r m4
+
+
+mkdir make && tar -xf make-*.tar.* -C make  --strip-components 1
+cd ${LFS}/sources/make
+
+./configure --prefix=/tools --without-guile
+make && make check && make install
+
+cd $LFS/sources
+rm -r make
+
+
+mkdir patch && tar -xf patch-*.tar.* -C patch  --strip-components 1
+cd ${LFS}/sources/patch
+
+commonBuildRoutine
+
+cd $LFS/sources
+rm -r patch
+
+
+mkdir perl && tar -xf perl-*.tar.* -C perl  --strip-components 1
+cd ${LFS}/sources/perl
+sh Configure -des -Dprefix=/tools -Dlibs=-lm
+
+make
+
+cp -v perl cpan/podlators/scripts/pod2man /tools/bin
+mkdir -pv /tools/lib/perl5/5.24.0
+cp -Rv lib/* /tools/lib/perl5/5.24.0
+
+cd $LFS/sources
+rm -r perl
+
+
+mkdir sed && tar -xf sed-*.tar.* -C sed  --strip-components 1
+cd ${LFS}/sources/sed
+
+commonBuildRoutine
+
+cd $LFS/sources
+rm -r sed
+
+
+mkdir tar && tar -xf tar-*.tar.* -C tar  --strip-components 1
+cd ${LFS}/sources/tar
+
+commonBuildRoutine
+
+cd $LFS/sources
+rm -r tar
+
+
+mkdir texinfo && tar -xf texinfo-*.tar.* -C texinfo  --strip-components 1
+cd ${LFS}/sources/texinfo
+
+commonBuildRoutine
+
+cd $LFS/sources
+rm -r texinfo
+
+
+mkdir util-linux && tar -xf util-linux-*.tar.* -C util-linux  --strip-components 1
+cd ${LFS}/sources/util-linux
+
+./configure --prefix=/tools                   \
+            --without-python                  \
+            --disable-makeinstall-chown       \
+            --without-systemdsystemunitdir    \
+            --enable-libmount-force-mountinfo \
+            PKG_CONFIG=""
+
+make && make install
+
+cd $LFS/sources
+rm -r util-linux
+
+
+mkdir xz && tar -xf xz-*.tar.* -C xz  --strip-components 1
+cd ${LFS}/sources/xz
+
+commonBuildRoutine
+
+cd $LFS/sources
+rm -r xz
+
+#Stripping ch5.35
+strip --strip-debug /tools/lib/*
+/usr/bin/strip --strip-unneeded /tools/{,s}bin/*
+rm -rf /tools/{,share}/{info,man,doc}
+
+
+
+
+
+
+
