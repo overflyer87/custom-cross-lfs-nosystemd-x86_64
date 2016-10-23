@@ -59,6 +59,9 @@ cd $LFS/sources
 mkdir binutils && tar -xf binutils-*.tar.* -C binutils --strip-components 1
 cd ${LFS}/sources/binutils
 
+mkdir -v build
+cd       build
+
 ../configure --prefix=/tools            \
              --with-sysroot=$LFS        \
              --with-lib-path=/tools/lib \
@@ -567,6 +570,14 @@ rm -r xz
 strip --strip-debug /tools/lib/*
 /usr/bin/strip --strip-unneeded /tools/{,s}bin/*
 rm -rf /tools/{,share}/{info,man,doc}
+
+
+
+
+
+
+
+
 
 
 
