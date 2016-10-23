@@ -18,6 +18,8 @@ function commonBuildRoutine {
 
 }
 
+env
+
 echo
 echo "Does your environment look as expected (see book)?: [Y/N]"
 while read -n1 -r -p "[Y/N]   " && [[ $REPLY != q ]]; do
@@ -73,14 +75,14 @@ esac
 make install
 
 cd $LFS/sources
-rm -r bintuils
+rm -r binutils
 
-mkdir gcc && tar -xf gcc -*.tar.* -C gcc  --strip-components 1
+mkdir gcc && tar -xf gcc-*.tar.* -C gcc  --strip-components 1
 cd ${LFS}/sources/gcc
 
-mkdir mpfr && tar -xf ../mpfr -*.tar.* -C mpfr --strip-components 1
-mkdir gmp && tar -xf ../gmp -*.tar.* -C gmp --strip-components 1
-mkdir mpc && tar -xf ../mpc -*.tar.* -C mpc --strip-components 1
+mkdir mpfr && tar -xf ../mpfr-*.tar.* -C mpfr --strip-components 1
+mkdir gmp && tar -xf ../gmp-*.tar.* -C gmp --strip-components 1
+mkdir mpc && tar -xf ../mpc-*.tar.* -C mpc --strip-components 1
 
 for file in \
  $(find gcc/config -name linux64.h -o -name linux.h -o -name sysv4.h)
