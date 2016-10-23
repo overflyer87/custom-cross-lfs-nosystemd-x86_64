@@ -129,6 +129,10 @@ cd       build
 
 make && make install
 
+rm -r mpc
+rm -r mpfr
+rm -r gmp
+
 cd $LFS/sources
 rm -r gcc
 
@@ -294,6 +298,10 @@ while read -n1 -r -p "[Y/N]   " && [[ $REPLY != q ]]; do
   esac
 done
 echo
+
+rm -r mpc
+rm -r mpfr
+rm -r gmp
 
 rm -v dummy.c a.out
 
