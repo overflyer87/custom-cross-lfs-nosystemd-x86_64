@@ -36,7 +36,7 @@ echo
 echo
 echo -e "With what speed do you want to build? make supports parallel compiling. Enter the maximum number of cores or threads you have. Usually 1-8: \c"
 read numberofthreads
-export MAKEFLAGS="j${numberofthreads}"
+export MAKEFLAGS="-j${numberofthreads}"
 
 echo
 echo $MAKEFLAGS
