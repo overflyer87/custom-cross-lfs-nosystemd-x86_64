@@ -112,8 +112,14 @@ while read -n1 -r -p "[1-4]" && [[ $REPLY != q ]]; do
        PATHLINKLIST=$pathlinklist
        wget $PATHLINKLIST
        echo
-       echo "Downloading the packages from your local list to ${CLFS}/sources"
-       wget --input-file=$PATHLINKLIST/wget-list --continue --directory-prefix=${CLFS}/sources
+       echo "Downloading the packages from your local list to $LFS/sources"
+       echo "https://www.nano-editor.org/dist/v2.6/nano-2.6.3.tar.xz" >> wget-list
+       echo "http://linux-pam.org/library/Linux-PAM-1.3.0.tar.bz2" >> wget-list
+       echo "hhttp://linux-pam.org/documentation/Linux-PAM-1.2.0-docs.tar.bz2" >> wget-list
+       echo "https://github.com/cracklib/cracklib/releases/download/cracklib-2.9.6/cracklib-2.9.6.tar.gz" >> wget-list
+       echo "https://github.com/cracklib/cracklib/releases/download/cracklib-2.9.6/cracklib-words-2.9.6.gz" >> wget-list
+       echo "ftp://ftp.sudo.ws/pub/sudo/sudo-1.8.18p1.tar.gz" >> wget-list
+       wget --input-file=$PATHLINKLIST/wget-list --continue --directory-prefix=$LFS/sources
        echo "$EXIT"
        echo "Fix it!"
        break 1;;   
@@ -126,8 +132,8 @@ while read -n1 -r -p "[1-4]" && [[ $REPLY != q ]]; do
        echo "https://github.com/cracklib/cracklib/releases/download/cracklib-2.9.6/cracklib-2.9.6.tar.gz" >> wget-list
        echo "https://github.com/cracklib/cracklib/releases/download/cracklib-2.9.6/cracklib-words-2.9.6.gz" >> wget-list
        echo "ftp://ftp.sudo.ws/pub/sudo/sudo-1.8.18p1.tar.gz" >> wget-list
-       wget --input-file=wget-list --continue --directory-prefix=${CLFS}/sources
-       pushd ${CLFS}/sources
+       wget --input-file=wget-list --continue --directory-prefix=$LFS/sources
+       pushd $LFS/sources
        md5sum -c md5sums
        popd
        break 1;;
@@ -135,9 +141,9 @@ while read -n1 -r -p "[1-4]" && [[ $REPLY != q ]]; do
        echo -e "Specify path to sources: \c"
        read srcpath
        SRCPATH=$srcpath
-       sudo cp -v $SRCPATH/*.tar* ${CLFS}/sources/
-       sudo cp -v $SRCPATH/*.patch ${CLFS}/sources/
-       sudo cp -v $SRCPATH/*.xz ${CLFS}/sources/
+       sudo cp -v $SRCPATH/*.tar* $LFS/sources/
+       sudo cp -v $SRCPATH/*.patch $LFS/sources/
+       sudo cp -v $SRCPATH/*.xz $LFS/sources/
        break 1;;
     *) echo " Try again. Type y or n";;
   esac
