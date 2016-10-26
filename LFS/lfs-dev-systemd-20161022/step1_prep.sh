@@ -118,8 +118,14 @@ while read -n1 -r -p "[1-4]" && [[ $REPLY != q ]]; do
        echo "Fix it!"
        break 1;;   
    3)  echo
-       wget http://www.linuxfromscratch.org/lfs/view/20161022-systemd/wget-list
-       wget http://www.linuxfromscratch.org/lfs/view/20161022-systemd/md5sums
+       wget http://www.linuxfromscratch.org/lfs/view/systemd/wget-list
+       wget http://www.linuxfromscratch.org/lfs/view/systemd/md5sums
+       echo "https://www.nano-editor.org/dist/v2.6/nano-2.6.3.tar.xz" >> wget-list
+       echo "http://linux-pam.org/library/Linux-PAM-1.3.0.tar.bz2" >> wget-list
+       echo "hhttp://linux-pam.org/documentation/Linux-PAM-1.2.0-docs.tar.bz2" >> wget-list
+       echo "https://github.com/cracklib/cracklib/releases/download/cracklib-2.9.6/cracklib-2.9.6.tar.gz" >> wget-list
+       echo "https://github.com/cracklib/cracklib/releases/download/cracklib-2.9.6/cracklib-words-2.9.6.gz" >> wget-list
+       echo "ftp://ftp.sudo.ws/pub/sudo/sudo-1.8.18p1.tar.gz" >> wget-list
        wget --input-file=wget-list --continue --directory-prefix=${CLFS}/sources
        pushd ${CLFS}/sources
        md5sum -c md5sums
