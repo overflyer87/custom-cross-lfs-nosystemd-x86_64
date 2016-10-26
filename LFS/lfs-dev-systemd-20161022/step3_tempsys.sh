@@ -321,7 +321,7 @@ cd $LFS/sources
 rm -r gcc
 
 
-mkdir tcl-core && tar -xf tcl-core-*.tar.* -C tcl-core  --strip-components 1
+mkdir tcl-core && tar -xf tcl-core*.tar.* -C tcl-core  --strip-components 1
 cd ${LFS}/sources/tcl-core 
 
 cd unix
@@ -339,7 +339,7 @@ cd $LFS/sources
 rm -r tcl-core
 
 
-mkdir expect && tar -xf expect-*.tar.* -C expect --strip-components 1
+mkdir expect && tar -xf expect*.tar.* -C expect --strip-components 1
 cd ${LFS}/sources/expect
 
 cp -v configure{,.orig}
