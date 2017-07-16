@@ -47,6 +47,8 @@ export CLFS_TARGET32="i686-pc-linux-gnu"
 #Final system is seperated into several parts 
 #to make bugfixing and maintenance easier
 
+cd ${CLFSSOURCES}
+
 #M4
 mkdir m4 && tar xf m4-*.tar.* -C m4 --strip-components 1
 cd m4
