@@ -17,8 +17,7 @@ done
 
 #EXPERIMENTAL Script for using openRC with CLFS
 
-
-Sysvinit
+#Sysvinit
 mkdir sysvinit && tar xf sysvinit*.tar.* -C sysvinit --strip-components 1
 cd sysvinit
 
@@ -38,11 +37,10 @@ rm -rf sysvinit
 mkdir openrc-sysvinit && tar xf sysvinit*.tar.* -C openrc-sysvinit --strip-components 1
 cd openrc-sysvinit/src
 
-FS30005
 patch -Np1 -i ${CLFSSOURCES}/0001-simplify-writelog-openrc.patch
 patch -Np1 -i ${CLFSSOURCES}/0002-remove-ansi-escape-codes-from-log-file-openrc.patch
 
- use /etc/openrc/inittab instead of /etc/inittab
+#use /etc/openrc/inittab instead of /etc/inittab
 patch -Np1 -i ${CLFSSOURCES}/openrc-init.patch
 
 cd ${CLFSSOURCES}/openrc-sysvinit
