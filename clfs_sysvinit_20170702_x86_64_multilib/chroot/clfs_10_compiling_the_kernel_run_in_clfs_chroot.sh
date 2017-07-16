@@ -9,6 +9,8 @@
 
 #=====================
 
+cd ${CLFSSOURCES}
+
 mkdir /etc/modprobe.d
 
 #LINUX KERNEL
