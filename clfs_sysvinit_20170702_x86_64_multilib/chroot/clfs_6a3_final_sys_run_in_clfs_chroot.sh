@@ -47,6 +47,8 @@ export CLFS_TARGET32="i686-pc-linux-gnu"
 #Final system is seperated into several parts 
 #to make bugfixing and maintenance easier
 
+cd ${CLFSSOURCES}
+
 #Attr 32-bit
 mkdir attr && tar xf attr-*.tar.* -C attr --strip-components 1
 cd attr
