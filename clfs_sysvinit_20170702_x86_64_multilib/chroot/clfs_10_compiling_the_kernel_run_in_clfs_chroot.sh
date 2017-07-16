@@ -1,3 +1,5 @@
+#!/bin/bash
+
 #=================
 #LET'S BUILD THE KERNEL
 #
