@@ -199,7 +199,7 @@ install -v -m755 -d /usr/share/doc/openssh-7.5p1     &&
 install -v -m644    INSTALL LICENCE OVERVIEW README* \
                     /usr/share/doc/openssh-7.5p1
                     
-cd cd ${CLFSSOURCES}/bootscripts
+cd ${CLFSSOURCES}/bootscripts
 
 echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 sudo make install-sshd
