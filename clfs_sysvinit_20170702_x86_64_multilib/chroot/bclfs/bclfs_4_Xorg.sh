@@ -156,9 +156,10 @@ do
   packagedir=${package%.tar.bz2}
   tar -xf $package
   pushd $packagedir
+  USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" \
   ./configure $XORG_CONFIG32
   PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}"
-  as_root PREFIX=/usr LIBDIR=/usr/lib32 make install
+  as_root PREFIX=/usr LIBDIR=/usr/lib make install
   popd
   rm -rf $packagedir
 done
@@ -175,6 +176,7 @@ do
   packagedir=${package%.tar.bz2}
   tar -xf $package
   pushd $packagedir
+  USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
   ./configure $XORG_CONFIG64
   PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"
   as_root PREFIX=/usr LIBDIR=/usr/lib64 make install
