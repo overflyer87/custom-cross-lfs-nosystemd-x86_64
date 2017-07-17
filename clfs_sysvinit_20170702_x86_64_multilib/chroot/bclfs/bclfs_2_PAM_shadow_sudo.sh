@@ -28,6 +28,8 @@ MAKEFLAGS=j8
 BUILD32="-m32"
 BUILD64="-m64"
 CLFS_TARGET32="i686-pc-linux-gnu"
+PKG_CONFIG_PATH32=/usr/lib/pkgconfig
+PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 
 export CLFS=/
 export CLFSUSER=clfs
@@ -42,12 +44,12 @@ export MAKEFLAGS=j8
 export BUILD32="-m32"
 export BUILD64="-m64"
 export CLFS_TARGET32="i686-pc-linux-gnu"
+export PKG_CONFIG_PATH32=/usr/lib/pkgconfig
+export PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 
-#=================
-#YOUR SYSTEM STANDS AND BOOTS UP?
-#NOW THEN, let's install some useful packages
-#to make further progress easier
-#=================
+#=============
+#TOTALLY OPTIONAL SCRIPT
+#=============
 
 cd ${CLFSSOURCES}
 
