@@ -227,3 +227,11 @@ make DEST_HOME=/usr \
 cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf p7zip
+
+cd ~
+cd automatexlfs/clfs_sysvinit_20170702_x86_64_multilib/chroot
+
+7z e y sources/sources.tar.7z.001 
+tar xf sources/sources.tar.gz -C sources/
+rm -rf sources/*.tar.gz
+rm -rf sources/
