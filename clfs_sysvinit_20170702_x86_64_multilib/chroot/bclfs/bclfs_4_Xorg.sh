@@ -151,35 +151,35 @@ grep -v '^#' ../proto-7.md5 | awk '{print $2}' | wget -i- -c \
     -B https://www.x.org/pub/individual/proto/ &&
 md5sum -c ../proto-7.md5
 
+
+USR_ARCH="" CC="" CXX="" PKG_CONFIG_PATH=""
+
+USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" 
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}"
+
 for package in $(grep -v '^#' ../proto-7.md5 | awk '{print $2}')
 do
   packagedir=${package%.tar.bz2}
   tar -xf $package
-  pushd $packagedir
-  USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" \
-  ./configure $XORG_CONFIG32
-  PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}"
+  pushd $packagedir  
+  ./configure $XORG_CONFIG32  
   as_root PREFIX=/usr LIBDIR=/usr/lib make install
   popd
   rm -rf $packagedir
 done
 
-cd ..
-cd proto
+USR_ARCH="" CC="" CXX="" PKG_CONFIG_PATH=""
 
-grep -v '^#' ../proto-7.md5 | awk '{print $2}' | wget -i- -c \
-    -B https://www.x.org/pub/individual/proto/ &&
-md5sum -c ../proto-7.md5
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"
+USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}"
 
 for package in $(grep -v '^#' ../proto-7.md5 | awk '{print $2}')
 do
   packagedir=${package%.tar.bz2}
   tar -xf $package
-  pushd $packagedir
-  USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+  pushd $packagedir  
   ./configure $XORG_CONFIG64
-  PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"
-  as_root PREFIX=/usr LIBDIR=/usr/lib64 make install
+  as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
   popd
   rm -rf $packagedir
 done
