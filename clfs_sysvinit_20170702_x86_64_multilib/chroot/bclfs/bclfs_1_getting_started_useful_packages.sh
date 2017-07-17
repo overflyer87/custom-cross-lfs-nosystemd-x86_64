@@ -116,7 +116,9 @@ checkBuiltPackage
 rm -rf wget
 
 #Curl
-wget https://curl.haxx.se/download/curl-7.54.1.tar.lzma
+wget https://curl.haxx.se/download/curl-7.54.1.tar.lzma -O \
+  curl-7.54.1.tar.lzma
+  
 mkdir curl && tar xf curl-*.tar.* -C curl --strip-components 1
 cd curl
 
@@ -143,7 +145,9 @@ checkBuiltPackage
 rm -rf curl
 
 #Git
-wget https://www.kernel.org/pub/software/scm/git/git-2.13.3.tar.xz
+wget https://www.kernel.org/pub/software/scm/git/git-2.13.3.tar.xz -O \
+  git-2.13.3.tar.xz
+  
 mkdir git && tar xf git-*.tar.* -C git --strip-components 1
 cd git
 
@@ -204,3 +208,22 @@ sudo /etc/rc.d/init.d/sshd start
 cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf openssh
+
+#p7zip
+#So you can extract the sources you download from my github
+wget http://downloads.sourceforge.net/p7zip/p7zip_16.02_src_all.tar.bz2 -O \
+  p7zip_16.02_src_all.tar.bz2
+  
+mkdir p7zip && tar xf p7zip_*.tar.* -C p7zip --strip-components 1
+cd p7zip
+
+make all3
+
+make DEST_HOME=/usr \
+     DEST_MAN=/usr/share/man \
+     DEST_SHARE_DOC=/usr/share/doc/p7zip-16.02 install \
+     DEST_LIB=/usr/lib64
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf p7zip
