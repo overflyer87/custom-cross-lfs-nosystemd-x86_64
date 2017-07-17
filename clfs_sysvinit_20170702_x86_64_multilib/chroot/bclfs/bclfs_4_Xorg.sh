@@ -88,7 +88,7 @@ chmod 644 /etc/profile.d/xorg.sh
 wget https://www.x.org/pub/individual/util/util-macros-1.19.1.tar.bz2 -O \
   util-macros-1.19.1.tar.bz2
   
-mkdir util-macros && tar xf util-macros-*.tar.* -C util-macros --strip-components
+mkdir util-macros && tar xf util-macros-*.tar.* -C util-macros --strip-components 1
 cd util-macros
 
 
@@ -104,7 +104,7 @@ rm -rf util-macros
 wget https://www.x.org/pub/individual/util/util-macros-1.19.1.tar.bz2 -O \
   util-macros-1.19.1.tar.bz2
   
-mkdir util-macros && tar xf util-macros-*.tar.* -C util-macros --strip-components
+mkdir util-macros && tar xf util-macros-*.tar.* -C util-macros --strip-components 1
 cd util-macros
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
