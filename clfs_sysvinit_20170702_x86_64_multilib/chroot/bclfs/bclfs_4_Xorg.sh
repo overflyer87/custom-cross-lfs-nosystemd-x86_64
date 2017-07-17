@@ -221,7 +221,6 @@ checkBuiltPackage
 rm -rf libxau
 
 #libXau 64-bit
-  
 mkdir libxau && tar xf libXau-*.tar.* -C libxau --strip-components 1
 cd libxau
 
@@ -230,3 +229,29 @@ buildSingleXLib64
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf libxau
+
+#libXdmcp 32-bit
+wget https://www.x.org/pub/individual/lib/libXdmcp-1.1.2.tar.bz2 -O \
+  libXdcmp-1.1.2.tar.bz2
+
+mkdir libxdcmp && tar xf libXdcmp-*.tar.* -C libxdcmp --strip-components 1
+cd libxdcmp
+
+buildSingleXLib32
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf libxdcmp
+
+#libXdmcp 64-bit
+wget https://www.x.org/pub/individual/lib/libXdmcp-1.1.2.tar.bz2 -O \
+  libXdcmp-1.1.2.tar.bz2
+
+mkdir libxdcmp && tar xf libXdcmp-*.tar.* -C libxdcmp --strip-components 1
+cd libxdcmp
+
+buildSingleXLib64
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf libxdcmp
