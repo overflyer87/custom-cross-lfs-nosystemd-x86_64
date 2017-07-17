@@ -187,7 +187,7 @@ cd ${CLFSSOURCES}/xc
 USR_ARCH="" CC="" CXX="" PKG_CONFIG_PATH=""
 
 #libXau 32-bit
-wget hhttps://www.x.org/pub/individual/lib/libXau-1.0.8.tar.bz2 -O \
+wget https://www.x.org/pub/individual/lib/libXau-1.0.8.tar.bz2 -O \
   libXau-1.0.8.tar.bz2
   
 mkdir libxau && tar xf libXau-*.tar.* -C libxau --strip-components 1
