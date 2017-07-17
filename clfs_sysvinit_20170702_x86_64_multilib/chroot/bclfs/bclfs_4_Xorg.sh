@@ -92,7 +92,7 @@ cd util-macros
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
 USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" ./configure $XORG_CONFIG32
-as_root PREFIX=/usr LIBDIR=/usr/lib make install
+as_root make PREFIX=/usr LIBDIR=/usr/lib install
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -105,7 +105,7 @@ cd util-macros
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
 USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64
-as_root PREFIX=/usr LIBDIR=/usr/lib64 make install
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -164,6 +164,8 @@ do
   rm -rf $packagedir
 done
 
+checkBuiltPackage
+
 USE_ARCH="" CC="" CXX="" PKG_CONFIG_PATH=""
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"
@@ -181,6 +183,8 @@ do
 done
 
 cd ${CLFSSOURCES}/xc
+
+checkBuiltPackage
 
 USE_ARCH="" CC="" CXX="" PKG_CONFIG_PATH="" LIBDIR=""
 
