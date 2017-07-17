@@ -25,6 +25,22 @@ function as_root()
 
 export -f as_root
 
+function buildSingleXLib32() {
+  PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
+  USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" ./configure $XORG_CONFIG32
+  make PREFIX=/usr LIBDIR=/usr/lib
+  as_root make PREFIX=/usr LIBDIR=/usr/lib install
+}
+
+
+function buildSingleXLib64() {
+  PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+  USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64
+  make PREFIX=/usr LIBDIR=/usr/lib64
+  as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+}
+
+
 #Building the final CLFS System
 CLFS=/
 CLFSHOME=/home
@@ -195,10 +211,7 @@ wget https://www.x.org/pub/individual/lib/libXau-1.0.8.tar.bz2 -O \
 mkdir libxau && tar xf libXau-*.tar.* -C libxau --strip-components 1
 cd libxau
 
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" ./configure $XORG_CONFIG32
-make PREFIX=/usr LIBDIR=/usr/lib
-as_root make PREFIX=/usr LIBDIR=/usr/lib install
+buildSingleXLib32
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -209,10 +222,7 @@ rm -rf libxau
 mkdir libxau && tar xf libXau-*.tar.* -C libxau --strip-components 1
 cd libxau
 
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
-USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64
-make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+buildSingleXLib64
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
