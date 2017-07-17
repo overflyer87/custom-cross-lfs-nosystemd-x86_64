@@ -32,6 +32,7 @@ function buildSingleXLib32() {
   as_root make PREFIX=/usr LIBDIR=/usr/lib install
 }
 
+export -f buildSingleXLib32
 
 function buildSingleXLib64() {
   PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
@@ -40,6 +41,8 @@ function buildSingleXLib64() {
   as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
 }
 
+
+export -f buildSingleXLib64
 
 #Building the final CLFS System
 CLFS=/
