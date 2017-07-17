@@ -150,7 +150,7 @@ grep -v '^#' ../proto-7.md5 | awk '{print $2}' | wget -i- -c \
 md5sum -c ../proto-7.md5
 
 
-USR_ARCH="" CC="" CXX="" PKG_CONFIG_PATH=""
+USE_ARCH="" CC="" CXX="" PKG_CONFIG_PATH=""
 
 USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}"
@@ -166,7 +166,7 @@ do
   rm -rf $packagedir
 done
 
-USR_ARCH="" CC="" CXX="" PKG_CONFIG_PATH=""
+USE_ARCH="" CC="" CXX="" PKG_CONFIG_PATH=""
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"
 USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}"
@@ -184,7 +184,7 @@ done
 
 cd ${CLFSSOURCES}/xc
 
-USR_ARCH="" CC="" CXX="" PKG_CONFIG_PATH=""
+USE_ARCH="" CC="" CXX="" PKG_CONFIG_PATH="" LIBDIR=""
 
 #libXau 32-bit
 wget https://www.x.org/pub/individual/lib/libXau-1.0.8.tar.bz2 -O \
@@ -195,8 +195,8 @@ cd libxau
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
 USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" ./configure $XORG_CONFIG32
-make PREFIX=/usr LIBDIR=/usr/lib
-sudo make PREFIX=/usr LIBDIR=/usr/lib install
+make 
+as_root make install
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -209,8 +209,8 @@ cd libxau
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
 USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64
-make PREFIX=/usr LIBDIR=/usr/lib64
-sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+make
+as_root make install
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
