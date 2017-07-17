@@ -92,7 +92,7 @@ cd util-macros
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
 USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" ./configure $XORG_CONFIG32
-sudo PREFIX=/usr LIBDIR=/usr/lib make install
+as_root PREFIX=/usr LIBDIR=/usr/lib make install
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -105,7 +105,7 @@ cd util-macros
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
 USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64
-sudo PREFIX=/usr LIBDIR=/usr/lib64 make install
+as_root PREFIX=/usr LIBDIR=/usr/lib64 make install
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -148,7 +148,7 @@ grep -v '^#' ../proto-7.md5 | awk '{print $2}' | wget -i- -c \
 md5sum -c ../proto-7.md5
 
 
-USE_ARCH="" CC="" CXX="" PKG_CONFIG_PATH=""
+USE_ARCH="" CC="" CXX="" PKG_CONFIG_PATH="" LIBDIR=""
 
 USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}"
@@ -193,8 +193,8 @@ cd libxau
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
 USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" ./configure $XORG_CONFIG32
-make 
-as_root make install
+make PREFIX=/usr LIBDIR=/usr/lib
+as_root make PREFIX=/usr LIBDIR=/usr/lib install
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -207,8 +207,8 @@ cd libxau
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
 USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64
-make
-as_root make install
+make PREFIX=/usr LIBDIR=/usr/lib64
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
