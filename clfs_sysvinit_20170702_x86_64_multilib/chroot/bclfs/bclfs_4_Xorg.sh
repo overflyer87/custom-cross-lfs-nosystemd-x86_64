@@ -101,8 +101,6 @@ checkBuiltPackage
 rm -rf util-macros
 
 #util-macros 64-bit
-wget https://www.x.org/pub/individual/util/util-macros-1.19.1.tar.bz2 -O \
-  util-macros-1.19.1.tar.bz2
   
 mkdir util-macros && tar xf util-macros-*.tar.* -C util-macros --strip-components 1
 cd util-macros
@@ -183,3 +181,37 @@ do
   popd
   rm -rf $packagedir
 done
+
+cd ${CLFSSOURCES}/xc
+
+USR_ARCH="" CC="" CXX="" PKG_CONFIG_PATH=""
+
+#libXau 32-bit
+wget hhttps://www.x.org/pub/individual/lib/libXau-1.0.8.tar.bz2 -O \
+  libXau-1.0.8.tar.bz2
+  
+mkdir libxau && tar xf libXau-*.tar.* -C libxau --strip-components 1
+cd libxau
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
+USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" ./configure $XORG_CONFIG32
+make PREFIX=/usr LIBDIR=/usr/lib
+sudo make PREFIX=/usr LIBDIR=/usr/lib install
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf libxau
+
+#libXau 64-bit
+  
+mkdir libxau && tar xf libXau-*.tar.* -C libxau --strip-components 1
+cd libxau
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64
+make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf libxau
