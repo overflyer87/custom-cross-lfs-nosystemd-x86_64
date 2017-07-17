@@ -275,3 +275,75 @@ buildSingleXLib64
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf libffi
+
+cd ${CLFSSOURCES}
+
+#Python2.7.6 64-bit
+wget https://www.python.org/ftp/python/2.7.6/Python-2.7.6.tar.xz -O \
+  Python-2.7.6.tar.xz
+  
+wget https://www.williamfeely.info/download/lfs-multilib/Python-2.7.6-multilib-1.patch -O \
+  Python-2.7.6-multilib-1.patch
+  
+mkdir Python-2 && tar xf Python-2.*.tar.* -C Python-2 --strip-components 1
+cd Python-2
+
+patch -Np1 -i ../Python-2.7.6-multilib-1.patch
+
+sed -i -e "s|@@MULTILIB_DIR@@|/lib64|g" Lib/distutils/command/install.py \
+       Lib/distutils/sysconfig.py \
+       Lib/pydoc.py \
+       Lib/site.py \
+       Lib/sysconfig.py \
+       Lib/test/test_dl.py \
+       Lib/test/test_site.py \
+       Lib/trace.py \
+       Makefile.pre.in \
+       Modules/getpath.c \
+       setup.py
+       
+sed -i "s@/usr/X11R6@${XORG_PREFIX}@g" setup.py
+
+sed -i 's@lib/python@lib64/python@g' Modules/getpath.c
+
+USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" LDFLAGS="-L/usr/lib64"\
+./configure --prefix=/usr       \
+            --enable-shared     \
+            --with-system-expat \
+            --with-system-ffi   \
+            --with-ensurepip=yes \
+            --enable-unicode=ucs4 \
+            --libdir=/usr/lib64
+
+make EXTRA_CFLAGS="-fwrapv" LIBDIR=/usr/lib64 PREFIX=/usr 
+as_root make EXTRA_CFLAGS="-fwrapv" LIBDIR=/usr/lib64 PREFIX=/usr install
+
+chmod -v 755 /usr/lib/libpython2.7.so.1.0
+
+mv -v /usr/bin/python{,-64} &&
+mv -v /usr/bin/python2{,-64} &&
+mv -v /usr/bin/python2.7{,-64} &&
+ln -sfv python2.7-64 /usr/bin/python2-64 &&
+ln -sfv python2-64 /usr/bin/python-64 &&
+ln -sfv multiarch_wrapper /usr/bin/python &&
+ln -sfv multiarch_wrapper /usr/bin/python2 &&
+ln -sfv multiarch_wrapper /usr/bin/python2.7 &&
+mv -v /usr/include/python2.7/pyconfig{,-64}.h
+
+install -v -dm755 /usr/share/doc/python-2.7.6 &&
+
+tar --strip-components=1                     \
+    --no-same-owner                          \
+    --directory /usr/share/doc/python-2.7.6 \
+    -xvf ../python-2.7.6-docs-html.tar.bz2 &&
+
+find /usr/share/doc/python-2.7.6 -type d -exec chmod 0755 {} \; &&
+find /usr/share/doc/python-2.7.6 -type f -exec chmod 0644 {} \;
+
+            
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf Python-2
+
+cd ${CLFSSOURCES}
