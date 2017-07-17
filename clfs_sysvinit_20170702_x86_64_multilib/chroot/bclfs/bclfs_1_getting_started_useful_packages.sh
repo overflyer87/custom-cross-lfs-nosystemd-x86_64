@@ -29,6 +29,8 @@ MAKEFLAGS=j8
 BUILD32="-m32"
 BUILD64="-m64"
 CLFS_TARGET32="i686-pc-linux-gnu"
+PKG_CONFIG_PATH32=/usr/lib/pkgconfig
+PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 
 export CLFS=/
 export CLFSUSER=clfs
@@ -43,6 +45,8 @@ export MAKEFLAGS=j8
 export BUILD32="-m32"
 export BUILD64="-m64"
 export CLFS_TARGET32="i686-pc-linux-gnu"
+export PKG_CONFIG_PATH32=/usr/lib/pkgconfig
+export PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 
 #=================
 #YOUR SYSTEM STANDS AND BOOTS UP?
@@ -190,7 +194,12 @@ install -v -m644    contrib/ssh-copy-id.1 \
 install -v -m755 -d /usr/share/doc/openssh-7.5p1     &&
 install -v -m644    INSTALL LICENCE OVERVIEW README* \
                     /usr/share/doc/openssh-7.5p1
+                    
+cd cd ${CLFSSOURCES}/bootscripts
 
+echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
+sudo make install-sshd
+sudo /etc/rc.d/init.d/sshd start
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
