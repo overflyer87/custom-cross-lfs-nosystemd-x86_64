@@ -163,7 +163,7 @@ do
   tar -xf $package
   pushd $packagedir  
   ./configure $XORG_CONFIG32  
-  as_root PREFIX=/usr LIBDIR=/usr/lib make install
+  as_root make PREFIX=/usr LIBDIR=/usr/lib install
   popd
   rm -rf $packagedir
 done
