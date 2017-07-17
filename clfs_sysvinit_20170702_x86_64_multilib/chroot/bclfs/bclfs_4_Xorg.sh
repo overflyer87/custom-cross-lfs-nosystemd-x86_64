@@ -244,9 +244,6 @@ checkBuiltPackage
 rm -rf libxdcmp
 
 #libXdmcp 64-bit
-wget https://www.x.org/pub/individual/lib/libXdmcp-1.1.2.tar.bz2 -O \
-  libXdcmp-1.1.2.tar.bz2
-
 mkdir libxdcmp && tar xf libXdcmp-*.tar.* -C libxdcmp --strip-components 1
 cd libxdcmp
 
@@ -255,3 +252,26 @@ buildSingleXLib64
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf libxdcmp
+
+#libffi 32-bit
+wget ftp://sourceware.org/pub/libffi/libffi-3.2.1.tar.gz -O \
+  libffi-3.2.1.tar.gz
+
+mkdir libffi && tar xf libffi-*.tar.* -C libffi --strip-components 1
+cd libffi
+
+buildSingleXLib32
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf libffi
+
+#libffi 32-bit
+mkdir libffi && tar xf libffi-*.tar.* -C libffi --strip-components 1
+cd libffi
+
+buildSingleXLib64
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf libffi
