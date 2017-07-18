@@ -302,7 +302,6 @@ cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf expat
 
-
 #Expat (Needed by Python) 64-bit
 mkdir expat && tar xf expat-*.tar.* -C expat --strip-components 1
 cd expat
@@ -441,3 +440,124 @@ ln -svfn python-3.6.0 /usr/share/doc/python-3
 cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf Python-3
+
+cd ${CLFSSOURCES}/xc
+
+#xcb-proto 32-bit
+wget http://xcb.freedesktop.org/dist/xcb-proto-1.12.tar.bz2 -O \
+  xcb-proto-1.12.tar.bz2
+wget http://www.linuxfromscratch.org/patches/blfs/svn/xcb-proto-1.12-python3-1.patch -O \
+  xcb-proto-1.12-python3-1.patch
+wget http://www.linuxfromscratch.org/patches/blfs/svn/xcb-proto-1.12-schema-1.patch -O \
+  xcb-proto-1.12-schema-1.patch
+
+mkdir xcb-proto && tar xf xcb-proto-1.12.tar.* -C xcb-proto --strip-components 1
+cd xcb-proto
+
+patch -Np1 -i ../xcb-proto-1.12-schema-1.patch
+
+patch -Np1 -i ../xcb-proto-1.12-python3-1.patch
+
+PYTHONHOME="/usr/lib64/python3.6/"
+PYTHONPATH="/usr/lib64/python3.6/"
+USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}"
+CXX="/usr/bin/g++ ${BUILD32}" CC="/usr/bin/gcc ${BUILD32}
+
+./configure $XORG_CONFIG32
+
+make check
+
+make PREFIX=/usr LIBDIR=/usr/lib
+make PREFIX=/usr LIBDIR=/usr/lib install
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf xcb-proto
+
+#xcb-proto 64-bit
+wget http://xcb.freedesktop.org/dist/xcb-proto-1.12.tar.bz2 -O \
+  xcb-proto-1.12.tar.bz2
+wget http://www.linuxfromscratch.org/patches/blfs/svn/xcb-proto-1.12-python3-1.patch -O \
+  xcb-proto-1.12-python3-1.patch
+wget http://www.linuxfromscratch.org/patches/blfs/svn/xcb-proto-1.12-schema-1.patch -O \
+  xcb-proto-1.12-schema-1.patch
+
+mkdir xcb-proto && tar xf xcb-proto-1.12.tar.* -C xcb-proto --strip-components 1
+cd xcb-proto
+
+patch -Np1 -i ../xcb-proto-1.12-schema-1.patch
+
+patch -Np1 -i ../xcb-proto-1.12-python3-1.patch
+
+PYTHONHOME="/usr/lib64/python3.6/"
+PYTHONPATH="/usr/lib64/python3.6/"
+USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"
+CXX="/usr/bin/g++ ${BUILD64}" CC="/usr/bin/gcc ${BUILD64}
+
+./configure $XORG_CONFIG64
+
+make check
+
+make PREFIX=/usr LIBDIR=/usr/lib64
+make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf xcb-proto
+
+#libxcb 32-bit
+wget http://xcb.freedesktop.org/dist/libxcb-1.12.tar.bz2 -O \
+  libxcb-1.12.tar.bz2
+
+wget http://www.linuxfromscratch.org/patches/blfs/svn/libxcb-1.12-python3-1.patch -O \
+  libxcb-1.12-python3-1.patch
+
+mkdir libxcb && tar xf libxcb-*.tar.* -C libxcb --strip-components 1
+cd libxcb
+
+patch -Np1 -i ../libxcb-1.12-python3-1.patch
+
+sed -i "s/pthread-stubs//" configure
+
+PYTHONHOME="/usr/lib64/python3.6/"
+PYTHONPATH="/usr/lib64/python3.6/"
+USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}"
+CXX="g++ ${BUILD32}" CC="gcc ${BUILD32}
+
+./configure $XORG_CONFIG32    \
+            --enable-xinput   \
+            --without-doxygen \
+            --libdir=/usr/lib \
+            --docdir='${datadir}'/doc/libxcb-1.12 &&
+            
+make PREFIX=/usr LIBDIR=/usr/lib
+make PREFIX=/usr LIBDIR=/usr/lib install
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf libxdcmp
+
+#libxcb 64-bit
+mkdir libxcb && tar xf libxcb-*.tar.* -C libxcb --strip-components 1
+cd libxcb
+
+patch -Np1 -i ../libxcb-1.12-python3-1.patch
+sed -i "s/pthread-stubs//" configure
+
+PYTHONHOME="/usr/lib64/python3.6/"
+PYTHONPATH="/usr/lib64/python3.6/"
+USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"
+CXX="g++ ${BUILD64}" CC="gcc ${BUILD64}
+
+./configure $XORG_CONFIG64     \
+            --enable-xinput   \
+            --without-doxygen \
+            --libdir=/usr/lib64 \
+            --docdir='${datadir}'/doc/libxcb-1.12 &&
+            
+make PREFIX=/usr LIBDIR=/usr/lib64
+make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf libxdcmp
