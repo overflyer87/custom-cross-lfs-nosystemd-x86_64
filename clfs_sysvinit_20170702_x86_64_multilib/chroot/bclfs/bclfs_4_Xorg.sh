@@ -1309,6 +1309,8 @@ install -v -d -m755 /usr/share/fonts
 ln -svfn $XORG_PREFIX/share/fonts/X11/OTF /usr/share/fonts/X11-OTF
 ln -svfn $XORG_PREFIX/share/fonts/X11/TTF /usr/share/fonts/X11-TTF
 
+cd ${CLFSSOURCES}/xc
+
 #XKeyboardConfig 32-bit
 wget http://xorg.freedesktop.org/archive/individual/data/xkeyboard-config/xkeyboard-config-2.21.tar.bz2 -O \
   xkeyboard-config-2.21.tar.bz2
@@ -1320,7 +1322,7 @@ cd xkeyboard-config
 make PREFIX=/usr LIBDIR=/usr/lib
 make PREFIX=/usr LIBDIR=/usr/lib install
 
-cd ${CLFSSOURCES}
+cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf xkeyboard-config
 
@@ -1335,6 +1337,45 @@ cd xkeyboard-config
 make PREFIX=/usr LIBDIR=/usr/lib64
 make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}
+cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf xkeyboard-config
+
+#libepoxy 32-bit
+wget https://github.com/anholt/libepoxy/releases/download/1.4.3/libepoxy-1.4.3.tar.xz -O \
+  libepoxy-1.4.3.tar.xz
+
+mkdir libepoxy && tar xf libepoxy-*.tar.* -C libepoxy --strip-components 1
+cd libepoxy
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
+USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}"
+
+./configure --prefix=/usr --libdir=/usr/lib
+make PREFIX=/usr LIBDIR=/usr/lib
+make PREFIX=/usr LIBDIR=/usr/lib install
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf libepoxy
+
+
+#libepoxy 64-bit
+wget https://github.com/anholt/libepoxy/releases/download/1.4.3/libepoxy-1.4.3.tar.xz -O \
+  libepoxy-1.4.3.tar.xz
+
+mkdir libepoxy && tar xf libepoxy-*.tar.* -C libepoxy --strip-components 1
+cd libepoxy
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}"
+
+./configure --prefix=/usr --libdir=/usr/lib64
+make PREFIX=/usr LIBDIR=/usr/lib64
+make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf libepoxy
+
+#Pixman 32-bit
