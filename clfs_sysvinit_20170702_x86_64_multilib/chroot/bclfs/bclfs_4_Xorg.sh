@@ -827,3 +827,36 @@ buildSingleXLib64
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf xcb-util-cursor
+
+#libdrm 32-bit
+wget http://dri.freedesktop.org/libdrm/libdrm-2.4.81.tar.bz2 -O \
+  libdrm-2.4.81.tar.bz2
+
+mkdir libdrm && tar xf libdrm-*.tar.* -C libdrm --strip-components 1
+cd libdrm
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
+  USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}"
+
+./configure --prefix=/usr --enable-udev --libdir=/usr/lib
+make PREFIX=/usr LIBDIR=/usr/lib
+make PREFIX=/usr LIBDIR=/usr/lib install
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf libdrm
+
+#libdrm 64-bit
+mkdir libdrm && tar xf libdrm-*.tar.* -C libdrm --strip-components 1
+cd libdrm
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+  USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}"
+
+./configure --prefix=/usr --enable-udev --libdir=/usr/lib64
+make PREFIX=/usr LIBDIR=/usr/lib64
+make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf libdrm
