@@ -302,6 +302,28 @@ cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf expat
 
+
+#Expat (Needed by Python) 64-bit
+mkdir expat && tar xf expat-*.tar.* -C expat --strip-components 1
+cd expat
+
+USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" 
+./configure --prefix=/usr \
+  --libdir=/usr/lib64 \
+  --disable-static \
+  --enable-shared
+  
+make LIBDIR=/usr/lib64 PREFIX=/usr 
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+  
+install -v -m755 -d /usr/share/doc/expat-2.1.0 &&
+install -v -m644 doc/*.{html,png,css} /usr/share/doc/expat-2.1.0
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf expat
+
 #Python2.7.6 64-bit
 wget https://www.python.org/ftp/python/2.7.6/Python-2.7.6.tar.xz -O \
   Python-2.7.6.tar.xz
