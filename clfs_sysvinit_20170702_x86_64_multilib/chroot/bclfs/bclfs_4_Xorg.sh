@@ -278,6 +278,30 @@ rm -rf libffi
 
 cd ${CLFSSOURCES}
 
+#Expat (Needed by Python) 32-bit
+wget http://downloads.sourceforge.net/expat/expat-2.1.0.tar.gz -O \
+  expat-2.1.0.tar.gz
+
+mkdir expat && tar xf expat-*.tar.* -C expat --strip-components 1
+cd expat
+
+USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}"
+CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" 
+./configure --prefix=/usr \
+  --libdir=/usr/lib \
+  --disable-static \
+  --enable-shared
+  
+make LIBDIR=/usr/lib PREFIX=/usr 
+as_root make LIBDIR=/usr/lib PREFIX=/usr install
+  
+install -v -m755 -d /usr/share/doc/expat-2.1.0 &&
+install -v -m644 doc/*.{html,png,css} /usr/share/doc/expat-2.1.0
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf expat
+
 #Python2.7.6 64-bit
 wget https://www.python.org/ftp/python/2.7.6/Python-2.7.6.tar.xz -O \
   Python-2.7.6.tar.xz
@@ -309,8 +333,8 @@ sed -i "s@/usr/X11R6@${XORG_PREFIX}@g" setup.py
 
 sed -i 's@lib/python@lib64/python@g' Modules/getpath.c
 
-USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
-CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" LDFLAGS="-L/usr/lib64"\
+USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" 
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" LDFLAGS="-L/usr/lib64"
 ./configure --prefix=/usr       \
             --enable-shared     \
             --with-system-expat \
