@@ -966,5 +966,37 @@ rm -rf pymako
 #I will go with vdpau for now
 #Later I will install the proprietary NVIDIA drivers
 
+#libvdpau 32-bit
+wget http://people.freedesktop.org/~aplattner/vdpau/libvdpau-1.1.1.tar.bz2 -O \
+  libvdpau-1.1.1.tar.bz2
 
+mkdir libvdpau && tar xf libvdpau-*.tar.* -C libvdpau --strip-components 1
+cd libvdpau
+
+./configure $XORG_CONFIG32 \
+            --docdir=/usr/share/doc/libvdpau-1.1.1 &&
+
+make PREFIX=/usr LIBDIR=/usr/lib
+make PREFIX=/usr LIBDIR=/usr/lib install
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf libvdpau
+
+
+#libvdpau 32-bit
+mkdir libvdpau && tar xf libvdpau-*.tar.* -C libvdpau --strip-components 1
+cd libvdpau
+
+./configure $XORG_CONFIG64 \
+            --docdir=/usr/share/doc/libvdpau-1.1.1 &&
+
+make PREFIX=/usr LIBDIR=/usr/lib64
+make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf libvdpau
+
+#Mesa 32-bit
 
