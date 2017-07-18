@@ -744,7 +744,6 @@ mkdir xcb-util-keysyms && tar xf xcb-util-keysyms-*.tar.* -C xcb-util-keysyms --
 cd xcb-util-keysyms
 
 buildSingleXLib32
-#LD_LIBRARY_PATH=$XORG_PREFIX/lib make check
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -755,7 +754,6 @@ mkdir xcb-util-keysyms && tar xf xcb-util-keysyms-*.tar.* -C xcb-util-keysyms --
 cd xcb-util-keysyms
 
 buildSingleXLib64
-#LD_LIBRARY_PATH=$XORG_PREFIX/lib make check
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -769,7 +767,6 @@ mkdir xcb-util-renderutil && tar xf xcb-util-renderutil-*.tar.* -C xcb-util-rend
 cd xcb-util-renderutil
 
 buildSingleXLib32
-#LD_LIBRARY_PATH=$XORG_PREFIX/lib make check
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -780,8 +777,53 @@ mkdir xcb-util-renderutil && tar xf xcb-util-renderutil-*.tar.* -C xcb-util-rend
 cd xcb-util-renderutil
 
 buildSingleXLib64
-#LD_LIBRARY_PATH=$XORG_PREFIX/lib make check
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf xcb-util-renderutil
+
+#xcb-util-wm 32-bit
+wget http://xcb.freedesktop.org/dist/xcb-util-wm-0.4.1.tar.bz2 -O \
+  xcb-util-wm-0.4.1.tar.bz2
+
+mkdir xcb-util-wm && tar xf xcb-util-wm-*.tar.* -C xcb-util-wm --strip-components 1
+cd xcb-util-wm
+
+buildSingleXLib32
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf xcb-util-wm
+
+#xcb-util-wm 64-bit
+mkdir xcb-util-wm && tar xf xcb-util-wm-*.tar.* -C xcb-util-wm --strip-components 1
+cd xcb-util-wm
+
+buildSingleXLib64
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf xcb-util-wm
+
+#xcb-util-cursor 32-bit
+wget http://xcb.freedesktop.org/dist/xcb-util-cursor-0.1.3.tar.bz2 -O \
+  xcb-util-cursor-0.1.3.tar.bz2
+
+mkdir xcb-util-cursor && tar xf xcb-util-cursor-*.tar.* -C xcb-util-cursor --strip-components 1
+cd xcb-util-cursor
+
+buildSingleXLib32
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf xcb-util-cursor
+
+#xcb-util-cursor 64-bit
+mkdir xcb-util-cursor && tar xf xcb-util-cursor-*.tar.* -C xcb-util-cursor --strip-components 1
+cd xcb-util-cursor
+
+buildSingleXLib64
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf xcb-util-cursor
