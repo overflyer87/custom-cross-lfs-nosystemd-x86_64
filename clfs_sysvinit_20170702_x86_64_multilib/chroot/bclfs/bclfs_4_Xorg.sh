@@ -337,7 +337,7 @@ wget https://www.python.org/ftp/python/doc/2.7.13/python-2.7.13-docs-html.tar.bz
 mkdir Python-2 && tar xf Python-2.7.13.tar.* -C Python-2 --strip-components 1
 cd Python-2
 
-patch -Np1 -i ../python-2713-multilib-1.patch
+patch -Np1 -i ../python-2.7.12-lib64.patch
 
 sed -i -e "s|@@MULTILIB_DIR@@|/lib64|g" Lib/distutils/command/install.py \
        Lib/distutils/sysconfig.py \
@@ -362,9 +362,10 @@ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" LDFLAGS="-L/usr/lib64"
             --with-system-expat \
             --with-system-ffi   \
             --enable-unicode=ucs4 \
-            --libdir=/usr/lib64
+            --libdir=/usr/lib64 \
+            --platlib=/usr/lib64
 
-make EXTRA_CFLAGS="-fwrapv" LIBDIR=/usr/lib64 PREFIX=/usr 
+make EXTRA_CFLAGS="-fwrapv" PLATLIB=/usr/lib64 LIBDIR=/usr/lib64 PREFIX=/usr 
 as_root make EXTRA_CFLAGS="-fwrapv" LIBDIR=/usr/lib64 PREFIX=/usr install
 
 chmod -v 755 /usr/lib/libpython2.7.so.1.0
