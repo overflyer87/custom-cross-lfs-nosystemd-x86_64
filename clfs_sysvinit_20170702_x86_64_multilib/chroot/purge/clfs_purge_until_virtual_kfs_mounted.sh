@@ -7,7 +7,7 @@ CLFS=/mnt/clfs
 CLFSHOME=/mnt/clfs/home
 CLFSUSER="clfs"
 
-sudo -f umount ${CLFS}/home
+sudo umount -f ${CLFS}/home
 sudo rm -r /home/${CLFSUSER}
 sudo userdel ${CLFSUSER}
 sudo groupdel ${CLFSUSER}
