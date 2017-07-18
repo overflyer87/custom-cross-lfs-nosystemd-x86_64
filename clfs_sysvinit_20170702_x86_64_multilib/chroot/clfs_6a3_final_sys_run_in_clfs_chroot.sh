@@ -62,10 +62,10 @@ CC="gcc ${BUILD32}" \
     --libdir=/lib \
     --libexecdir=/usr/lib
 
-make
-#make -j1 tests root-tests
+make PREFIX=/usr LIBDIR=/lib
+make -j1 tests root-tests
 #checkBuiltPackage
-make install install-dev install-lib
+make PREFIX=/usr LIBDIR=/lib install install-dev install-lib
 
 ln -sfv ../../lib/$(readlink /lib/libattr.so) /usr/lib/libattr.so
 rm -v /lib/libattr.so
@@ -88,17 +88,17 @@ CC="gcc ${BUILD64}" \
     --libdir=/lib64 \
     --libexecdir=/usr/lib64
 
-make
+make PREFIX=/usr LIBDIR=/lib64
 #make -j1 tests root-tests
 #checkBuiltPackage
-make install install-dev install-lib
+make  PREFIX=/usr LIBDIR=/lib64 install install-dev install-lib
 
 ln -sfv ../../lib64/$(readlink /lib64/libattr.so) /usr/lib64/libattr.so
 rm -v /lib64/libattr.so
 chmod 755 -v /lib64/libattr.so.1.1.0
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf attr
 
 #Acl 32-bit
@@ -114,17 +114,17 @@ CC="gcc ${BUILD32}" \
     --libdir=/lib \
     --libexecdir=/usr/lib
 
-make 
+make PREFIX=/usr LIBDIR=/lib
 #make tests
-#checkBuiltPackage
-make install install-dev install-lib
+checkBuiltPackage
+make PREFIX=/usr LIBDIR=/lib install install-dev install-lib
 
 ln -sfv ../../lib/$(readlink /lib/libacl.so) /usr/lib/libacl.so
 rm -v /lib/libacl.so
 chmod 755 -v /lib/libacl.so.1.1.0
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf acl
 
 #Acl 64-bit
@@ -140,17 +140,17 @@ CC="gcc ${BUILD64}" \
     --libdir=/lib64 \
     --libexecdir=/usr/lib64
 
-make
+make PREFIX=/usr LIBDIR=/lib64
 #make tests
-#checkBuiltPackage
-make install install-dev install-lib
+checkBuiltPackage
+make PREFIX=/usr LIBDIR=/lib64 install install-dev install-lib
 
 ln -sfv ../../lib64/$(readlink /lib64/libacl.so) /usr/lib64/libacl.so
 rm -v /lib64/libacl.so
 chmod 755 -v /lib64/libacl.so.1.1.0
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf acl
 
 #Libcap 32-bit
