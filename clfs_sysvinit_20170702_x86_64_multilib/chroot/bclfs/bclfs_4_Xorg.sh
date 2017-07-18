@@ -1185,27 +1185,27 @@ grep -v '^#' ../app-7.md5 | awk '{print $2}' | wget -i- -c \
     -B https://www.x.org/pub/individual/app/ &&
 md5sum -c ../app-7.md5
 
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}"
-
-for package in $(grep -v '^#' ../app-7.md5 | awk '{print $2}')
-do
-  packagedir=${package%.tar.bz2}
-  tar -xf $package
-  pushd $packagedir
-     case $packagedir in
-       luit-[0-9]* )
-         sed -i -e "/D_XOPEN/s/5/6/" configure
-       ;;
-     esac
-
-     ./configure $XORG_CONFIG32
-     make PREFIX=/usr LIBDIR=/usr/lib
-     as_root make PREFIX=/usr LIBDIR=/usr/lib install
-  popd
-  rm -rf $packagedir
-done
-as_root rm -f $XORG_PREFIX/bin/xkeystone
+#PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
+#USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}"
+#
+#for package in $(grep -v '^#' ../app-7.md5 | awk '{print $2}')
+#do
+#  packagedir=${package%.tar.bz2}
+#  tar -xf $package
+#  pushd $packagedir
+#     case $packagedir in
+#       luit-[0-9]* )
+#         sed -i -e "/D_XOPEN/s/5/6/" configure
+#       ;;
+#     esac
+#
+#     ./configure $XORG_CONFIG32
+#     make PREFIX=/usr LIBDIR=/usr/lib
+#     as_root make PREFIX=/usr LIBDIR=/usr/lib install
+#  popd
+#  rm -rf $packagedir
+#done
+#as_root rm -f $XORG_PREFIX/bin/xkeystone
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
 USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}"
@@ -1411,7 +1411,44 @@ cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf pixman
 
-#Xorg Server
+##Xorg Server 32-bit
+#wget https://www.x.org/pub/individual/xserver/xorg-server-1.19.3.tar.bz2 -O \
+#  xorg-server-1.19.3.tar.bz2 
+#
+#wget http://www.linuxfromscratch.org/patches/blfs/svn/xorg-server-1.19.3-add_prime_support-1.patch -O \
+#  Xorg-server-1.19.3-add_prime_support-1.patch
+#  
+#mkdir xorg-server && tar xf xorg-server-*.tar.* -C xorg-server --strip-components 1
+#cd xorg-server
+#
+#patch -Np1 -i ../xorg-server-1.19.3-add_prime_support-1.patch
+#
+#PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
+#USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}"
+#
+#./configure $XORG_CONFIG32            \
+#           --enable-glamor          \
+#           --enable-install-setuid  \
+#           --enable-suid-wrapper    \
+#           --disable-systemd-logind \
+#           --with-xkb-output=/var/lib/xkb
+#           
+#make PREFIX=/usr LIBDIR=/usr/lib
+#ldconfig
+#make check
+#make PREFIX=/usr LIBDIR=/usr/lib install
+#mkdir -pv /etc/X11/xorg.conf.d
+#
+#cat >> /etc/sysconfig/createfiles << "EOF"
+#/tmp/.ICE-unix dir 1777 root root
+#/tmp/.X11-unix dir 1777 root root
+#EOF
+#
+#cd ${CLFSSOURCES}/xc
+#checkBuiltPackage
+#rm -rf xorg-server
+
+#Xorg Server 64-bit
 wget https://www.x.org/pub/individual/xserver/xorg-server-1.19.3.tar.bz2 -O \
   xorg-server-1.19.3.tar.bz2 
 
@@ -1423,20 +1460,21 @@ cd xorg-server
 
 patch -Np1 -i ../xorg-server-1.19.3-add_prime_support-1.patch
 
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}"
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+USE_ARCH=32 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}"
 
-./configure $XORG_CONFIG32            \
+./configure $XORG_CONFIG64            \
            --enable-glamor          \
            --enable-install-setuid  \
            --enable-suid-wrapper    \
            --disable-systemd-logind \
            --with-xkb-output=/var/lib/xkb
            
-make PREFIX=/usr LIBDIR=/usr/lib
+make PREFIX=/usr LIBDIR=/usr/lib64
 ldconfig
 make check
-make PREFIX=/usr LIBDIR=/usr/lib install
+checkBuiltPackage
+make PREFIX=/usr LIBDIR=/usr/lib64 install
 mkdir -pv /etc/X11/xorg.conf.d
 
 cat >> /etc/sysconfig/createfiles << "EOF"
@@ -1447,3 +1485,45 @@ EOF
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf xorg-server
+
+#Xorg Drivers
+
+cd ${CLFSSOURCES}
+
+#pcituils
+wget https://www.kernel.org/pub/software/utils/pciutils/pciutils-3.5.5.tar.xz -O \
+  pciutils-3.5.5.tar.xz
+
+mkdir pciutils && tar xf pciutils-*.tar.* -C pciutils --strip-components 1
+cd pciutils
+
+make PREFIX=/usr                \
+     SHAREDIR=/usr/share/hwdata \
+     LIBDIR=/usr/lib64          \
+     SHARED=yes
+
+make PREFIX=/usr                \
+     SHAREDIR=/usr/share/hwdata \
+     LIBDIR=/usr/lib64          \
+     SHARED=yes                 \
+     install install-lib        &&
+
+chmod -v 755 /usr/lib/libpci.so
+
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf xorg-server
+
+cd ${CLFSSOURCES}
+
+
+
+
+
+
+
+
+
+
+
