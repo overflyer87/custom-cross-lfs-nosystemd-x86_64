@@ -325,16 +325,16 @@ checkBuiltPackage
 rm -rf expat
 
 #Python2.7.6 64-bit
-wget https://www.python.org/ftp/python/2.7.6/Python-2.7.6.tar.xz -O \
-  Python-2.7.6.tar.xz
+wget https://www.python.org/ftp/python/2.7.13/Python-2.7.13.tar.xz -O \
+  Python-2.7.13.tar.xz
   
-wget https://www.williamfeely.info/download/lfs-multilib/Python-2.7.6-multilib-1.patch -O \
-  python-276-multilib-1.patch
+wget https://www.williamfeely.info/download/lfs-multilib/Python-2.7.13-multilib-1.patch -O \
+  python-2713-multilib-1.patch
 
-wget https://www.python.org/ftp/python/doc/2.7.6/python-2.7.6-docs-html.tar.bz2 -O \
-  python-2.7.6-docs-html.tar.bz2
+wget https://www.python.org/ftp/python/doc/2.7.13/python-2.7.13-docs-html.tar.bz2 -O \
+  python-2.7.13-docs-html.tar.bz2
   
-mkdir Python-2 && tar xf Python-2.7.6.tar.* -C Python-2 --strip-components 1
+mkdir Python-2 && tar xf Python-2.7.13.tar.* -C Python-2 --strip-components 1
 cd Python-2
 
 patch -Np1 -i ../python-276-multilib-1.patch
@@ -361,7 +361,6 @@ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" LDFLAGS="-L/usr/lib64"
             --enable-shared     \
             --with-system-expat \
             --with-system-ffi   \
-            --with-ensurepip=yes \
             --enable-unicode=ucs4 \
             --libdir=/usr/lib64
 
@@ -391,7 +390,7 @@ find /usr/share/doc/python-2.7.6 -type d -exec chmod 0755 {} \; &&
 find /usr/share/doc/python-2.7.6 -type f -exec chmod 0644 {} \;
 
             
-cd ${CLFSSOURCES}/xc
+cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf Python-2
 
