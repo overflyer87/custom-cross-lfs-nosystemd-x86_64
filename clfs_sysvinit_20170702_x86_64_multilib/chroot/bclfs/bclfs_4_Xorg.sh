@@ -1080,3 +1080,29 @@ cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf Mesa
 
+cd ${CLFSSOURCES}/xc
+
+#xbitmaps 32-bit
+wget https://www.x.org/pub/individual/data/xbitmaps-1.1.1.tar.bz2 -O \
+  xbitmaps-1.1.1.tar.bz2
+  
+mkdir xbitmaps && tar xf xbitmaps-*.tar.* -C xbitmaps --strip-components 1
+cd xbitmaps
+
+buildSingleXLib32
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf xbitmaps
+
+#xbitmaps 64-bit
+mkdir xbitmaps && tar xf xbitmaps-*.tar.* -C xbitmaps --strip-components 1
+cd xbitmaps
+
+buildSingleXLib64
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf xbitmaps
+
+
