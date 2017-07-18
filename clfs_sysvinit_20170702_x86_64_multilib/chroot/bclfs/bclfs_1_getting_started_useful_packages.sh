@@ -221,8 +221,9 @@ make all3
 
 make DEST_HOME=/usr \
      DEST_MAN=/usr/share/man \
-     DEST_SHARE_DOC=/usr/share/doc/p7zip-16.02 install \
-     DEST_LIB=/usr/lib64
+     DEST_SHARE_DOC=/usr/share/doc/p7zip-16.02 \
+     DEST_LIB=/usr/lib64 \
+     install
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
@@ -235,3 +236,22 @@ cd automatexlfs/clfs_sysvinit_20170702_x86_64_multilib/chroot
 tar xf sources/sources.tar.gz -C sources/
 rm -rf sources/*.tar.gz
 rm -rf sources/
+
+#gptfdisk
+wget http://downloads.sourceforge.net/project/gptfdisk/gptfdisk/1.0.1/gptfdisk-1.0.1.tar.gz -O \
+  gptfdisk-1.0.1.tar.gz
+
+wget http://www.linuxfromscratch.org/patches/blfs/svn/gptfdisk-1.0.1-convenience-1.patch -O \
+  GPTfdisk-1.0.1-convenience-1.patch 
+
+mkdir gptfdisk && tar xf gptfdisk-*.tar.* -C gptfdisk --strip-components 1
+cd gptfdisk
+
+patch -Np1 -i ../GPTfdisk-1.0.1-convenience-1.patch
+make PREFIX=/usr LIBDIR=/usr/lib64 POPT=1
+make PREFIX=/usr LIBDIR=/usr/lib64 POPT=1 install
+
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf gptfdisk
