@@ -341,13 +341,21 @@ CC="gcc ${BUILD64}" ./configure \
 make PREFIX=/usr LIBDIR=/usr/lib64
 make PREFIX=/usr LIBDIR=/usr/lib64 install   
 
-mv -v /usr/bin/passwd /bin
+sed -i /etc/login.defs \
+    -e 's@#\(ENCRYPT_METHOD \).*@\1SHA512@' \
+    -e 's@/var/spool/mail@/var/mail@'
 
-sed -i 's/yes/no/' /etc/default/useradd
+mv -v /usr/bin/passwd /bin
 
 touch /var/log/{fail,last}log
 chgrp -v utmp /var/log/{fail,last}log
 chmod -v 664 /var/log/{fail,last}log
+
+pwconv
+
+grpconv
+
+passwd root
 
 #Conf to work properly with PAM
 install -v -m644 /etc/login.defs /etc/login.defs.orig &&
