@@ -860,3 +860,24 @@ make PREFIX=/usr LIBDIR=/usr/lib64 install
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf libdrm
+
+#Build Python Mako modules for Mesa
+#Both for Python 2.7 and 3.6
+#32-bit and 64-bit each
+
+wget https://pypi.python.org/packages/source/M/Mako/Mako-1.0.4.tar.gz -O \
+  Mako-1.0.4.tar.gz
+
+mkdir pymako && tar xf Mako-*.tar.* -C pymako --strip-components 1
+
+
+
+#Let's start with Python 2.7 Mako modules
+#32-bit
+
+python setup.py install --optimize=1
+
+sed -i "s:mako-render:&3:g" setup.py &&
+python3 setup.py install --optimize=1
+
+
