@@ -871,10 +871,18 @@ wget https://pypi.python.org/packages/93/b2/12de6937b06e9615dbb3cb3a1c9af17f133f
 mkdir pybeaker && tar xf Beaker-*.tar.* -C pybeaker --strip-components 1
 cd pybeaker
 
-python2-32 setup.py install --optimize=1
+PYTHONHOME="/usr/lib64/python3.6/"
+PYTHONPATH="/usr/lib64/python3.6/"
+
 python3-32 setup.py install --optimize=1
-python2-64 setup.py install --optimize=1
 python3-64 setup.py install --optimize=1
+
+PYTHONHOME="/usr/lib64/python2.7/"
+PYTHONPATH="/usr/lib64/python2.7/"
+
+python2-32 setup.py install --optimize=1
+python2-64 setup.py install --optimize=1
+
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
@@ -890,14 +898,21 @@ wget https://files.pythonhosted.org/packages/4d/de/32d741db316d8fdb7680822dd3700
 mkdir pyMarkupSafe && tar xf MarkupSafe-*.tar.* -C pyMarkupSafe --strip-components 1
 cd pyMarkupSafe
 
-python2-32 setup.py build
-python2-32 setup.py install --optimize=1
+PYTHONHOME="/usr/lib64/python3.6/"
+PYTHONPATH="/usr/lib64/python3.6/"
 python3-32 setup.py build
 python3-32 setup.py install --optimize=1
-python2-64 setup.py build
-python2-64 setup.py install --optimize=1
 python3-64 setup.py build
 python3-64 setup.py install --optimize=1
+
+
+PYTHONHOME="/usr/lib64/python2.7/"
+PYTHONPATH="/usr/lib64/python2.7/"
+python2-32 setup.py build
+python2-32 setup.py install --optimize=1
+python2-64 setup.py build
+python2-64 setup.py install --optimize=1
+
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
@@ -917,6 +932,8 @@ wget https://pypi.python.org/packages/source/M/Mako/Mako-1.0.4.tar.gz -O \
 mkdir pymako && tar xf Mako-*.tar.* -C pymako --strip-components 1
 cd pymako
 
+PYTHONHOME="/usr/lib64/python2.7/"
+PYTHONPATH="/usr/lib64/python2.7/"
 python2-32 setup.py install --optimize=1
 
 cd ${CLFSSOURCES}
@@ -927,6 +944,8 @@ rm -rf pymako
 mkdir pymako && tar xf Mako-*.tar.* -C pymako --strip-components 1
 cd pymako
 
+PYTHONHOME="/usr/lib64/python2.7/"
+PYTHONPATH="/usr/lib64/python2.7/"
 python2-64 setup.py install --optimize=1
 
 cd ${CLFSSOURCES}
@@ -938,6 +957,8 @@ rm -rf pymako
 mkdir pymako && tar xf Mako-*.tar.* -C pymako --strip-components 1
 cd pymako
 
+PYTHONHOME="/usr/lib64/python3.6/"
+PYTHONPATH="/usr/lib64/python3.6/"
 sed -i "s:mako-render:&3:g" setup.py &&
 python3-32 setup.py install --optimize=1
 
@@ -949,6 +970,8 @@ rm -rf pymako
 mkdir pymako && tar xf Mako-*.tar.* -C pymako --strip-components 1
 cd pymako
 
+PYTHONHOME="/usr/lib64/python3.6/"
+PYTHONPATH="/usr/lib64/python3.6/"
 sed -i "s:mako-render:&3:g" setup.py &&
 python3-64 setup.py install --optimize=1
 
@@ -1014,9 +1037,8 @@ cd Mesa
 patch -Np1 -i ../mesa-17.1.4-add_xdemos-1.patch
 GLL_DRV="i915,nouveau,svga,swrast"
 
-
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" .
+USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}"
 
 ./autogen.sh CFLAGS='-O2' CXXFLAGS='-O2' \
             --prefix=$XORG_PREFIX        \
@@ -1052,7 +1074,7 @@ patch -Np1 -i ../mesa-17.1.4-add_xdemos-1.patch
 GLL_DRV="i915,nouveau,svga,swrast"
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
-USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" .
+USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}"
 
 ./autogen.sh CFLAGS='-O2' CXXFLAGS='-O2' \
             --prefix=$XORG_PREFIX        \
@@ -1164,7 +1186,7 @@ grep -v '^#' ../app-7.md5 | awk '{print $2}' | wget -i- -c \
 md5sum -c ../app-7.md5
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" .
+USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}"
 
 for package in $(grep -v '^#' ../app-7.md5 | awk '{print $2}')
 do
@@ -1186,7 +1208,7 @@ done
 as_root rm -f $XORG_PREFIX/bin/xkeystone
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
-USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" .
+USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}"
 
 for package in $(grep -v '^#' ../app-7.md5 | awk '{print $2}')
 do
@@ -1208,3 +1230,81 @@ done
 
 as_root rm -f $XORG_PREFIX/bin/xkeystone
 
+cd ${CLFSSOURCES}/xc
+
+#xcursor-themes 32-bit
+wget https://www.x.org/pub/individual/data/xcursor-themes-1.0.4.tar.bz2 -O \
+  xcursor-themes-1.0.4.tar.bz2 
+  
+mkdir xcursor-themes && tar xf xcursor-themes-*.tar.* -C xcursor-themes --strip-components 1
+cd xcursor-themes
+
+buildSingleXLib32
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf xcursor-themes
+
+#xcursor-themes 64-bit
+mkdir xcursor-themes && tar xf xcursor-themes-*.tar.* -C xcursor-themes --strip-components 1
+cd xcursor-themes
+
+buildSingleXLib64
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf xcursor-themes
+
+#Xorg Fonts
+cat > font-7.md5 << "EOF"
+23756dab809f9ec5011bb27fb2c3c7d6  font-util-1.3.1.tar.bz2
+0f2d6546d514c5cc4ecf78a60657a5c1  encodings-1.0.4.tar.bz2
+6d25f64796fef34b53b439c2e9efa562  font-alias-1.0.3.tar.bz2
+fcf24554c348df3c689b91596d7f9971  font-adobe-utopia-type1-1.0.4.tar.bz2
+e8ca58ea0d3726b94fe9f2c17344be60  font-bh-ttf-1.0.3.tar.bz2
+53ed9a42388b7ebb689bdfc374f96a22  font-bh-type1-1.0.3.tar.bz2
+bfb2593d2102585f45daa960f43cb3c4  font-ibm-type1-1.0.3.tar.bz2
+6306c808f7d7e7d660dfb3859f9091d2  font-misc-ethiopic-1.0.3.tar.bz2
+3eeb3fb44690b477d510bbd8f86cf5aa  font-xfree86-type1-1.0.4.tar.bz2
+EOF
+
+mkdir font
+cd font
+
+grep -v '^#' ../font-7.md5 | awk '{print $2}' | wget -i- -c \
+    -B https://www.x.org/pub/individual/font/ &&
+md5sum -c ../font-7.md5
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
+USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}"
+
+for package in $(grep -v '^#' ../font-7.md5 | awk '{print $2}')
+do
+  packagedir=${package%.tar.bz2}
+  tar -xf $package
+  pushd $packagedir
+    ./configure $XORG_CONFIG32
+    make PREFIX=/usr LIBDIR=/usr/lib
+    as_root make PREFIX=/usr LIBDIR=/usr/lib install
+  popd
+  as_root rm -rf $packagedir
+done
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}"
+
+for package in $(grep -v '^#' ../font-7.md5 | awk '{print $2}')
+do
+  packagedir=${package%.tar.bz2}
+  tar -xf $package
+  pushd $packagedir
+    ./configure $XORG_CONFIG64
+    make PREFIX=/usr LIBDIR=/usr/lib64
+    as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+  popd
+  as_root rm -rf $packagedir
+done
+
+install -v -d -m755 /usr/share/fonts
+ln -svfn $XORG_PREFIX/share/fonts/X11/OTF /usr/share/fonts/X11-OTF
+ln -svfn $XORG_PREFIX/share/fonts/X11/TTF /usr/share/fonts/X11-TTF
