@@ -861,6 +861,48 @@ cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf libdrm
 
+#Build Python Module Beaker
+#required by Python Module Mako
+cd ${CLFSSOURCES}
+
+wget https://pypi.python.org/packages/93/b2/12de6937b06e9615dbb3cb3a1c9af17f133f435bdef59f4ad42032b6eb49/Beaker-1.9.0.tar.gz -O \
+  Beaker-1.9.0.tar.gz
+
+mkdir pybeaker && tar xf Beaker-*.tar.* -C pybeaker --strip-components 1
+cd pybeaker
+
+python2-32 setup.py install --optimize=1
+python3-32 setup.py install --optimize=1
+python2-64 setup.py install --optimize=1
+python3-64 setup.py install --optimize=1
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf pybeaker
+
+#Build Python Module MarkupSafe
+#required by Python Module Mako
+cd ${CLFSSOURCES}
+
+wget https://files.pythonhosted.org/packages/4d/de/32d741db316d8fdb7680822dd37001ef7a448255de9699ab4bfcbdf4172b/MarkupSafe-1.0.tar.gz -O \
+  MarkupSafe-1.0.tar.gz
+
+mkdir pyMarkupSafe && tar xf MarkupSafe-*.tar.* -C pyMarkupSafe --strip-components 1
+cd pyMarkupSafe
+
+python2-32 setup.py build
+python2-32 setup.py install --optimize=1
+python3-32 setup.py build
+python3-32 setup.py install --optimize=1
+python2-64 setup.py build
+python2-64 setup.py install --optimize=1
+python3-64 setup.py build
+python3-64 setup.py install --optimize=1
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf pyMarkupSafe
+
 #Build Python Mako modules for Mesa
 #Both for Python 2.7 and 3.6
 #32-bit and 64-bit each
@@ -873,6 +915,7 @@ wget https://pypi.python.org/packages/source/M/Mako/Mako-1.0.4.tar.gz -O \
 #Let's start with Python 2.7 Mako modules
 #32-bit
 mkdir pymako && tar xf Mako-*.tar.* -C pymako --strip-components 1
+cd pymako
 
 python2-32 setup.py install --optimize=1
 
@@ -882,6 +925,7 @@ rm -rf pymako
 
 #64-bit
 mkdir pymako && tar xf Mako-*.tar.* -C pymako --strip-components 1
+cd pymako
 
 python2-64 setup.py install --optimize=1
 
@@ -892,6 +936,7 @@ rm -rf pymako
 #Python 3.6 Mako modules
 #32-bit
 mkdir pymako && tar xf Mako-*.tar.* -C pymako --strip-components 1
+cd pymako
 
 sed -i "s:mako-render:&3:g" setup.py &&
 python3-32 setup.py install --optimize=1
@@ -902,6 +947,7 @@ rm -rf pymako
 
 #64-bit
 mkdir pymako && tar xf Mako-*.tar.* -C pymako --strip-components 1
+cd pymako
 
 sed -i "s:mako-render:&3:g" setup.py &&
 python3-64 setup.py install --optimize=1
@@ -909,6 +955,16 @@ python3-64 setup.py install --optimize=1
 cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf pymako
+
+#So before we can build Mesa
+#There are some reccomended deps
+#elfutils-0.169 (required for the radeonsi driver)
+#libvdpau-1.1.1 (to build VDPAU drivers)
+#LLVM-4.0.1 (required for Gallium3D, r300, and radeonsi drivers and for the llvmpipe software rasterizer)
+#See http://www.mesa3d.org/systems.html for more information)
+#I have an NVIDIA GTX 1080
+#I will go with vdpau for now
+#Later I will install the proprietary NVIDIA drivers
 
 
 
