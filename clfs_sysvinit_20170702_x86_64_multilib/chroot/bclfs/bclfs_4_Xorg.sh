@@ -337,7 +337,7 @@ wget https://www.python.org/ftp/python/doc/2.7.13/python-2.7.13-docs-html.tar.bz
 mkdir Python-2 && tar xf Python-2.7.13.tar.* -C Python-2 --strip-components 1
 cd Python-2
 
-patch -Np1 -i ../python-276-multilib-1.patch
+patch -Np1 -i ../python-2713-multilib-1.patch
 
 sed -i -e "s|@@MULTILIB_DIR@@|/lib64|g" Lib/distutils/command/install.py \
        Lib/distutils/sysconfig.py \
