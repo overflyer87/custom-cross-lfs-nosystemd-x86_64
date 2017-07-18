@@ -52,7 +52,8 @@ mkdir linux && tar xf linux-*.tar.* -C linux --strip-components 1
 cd linux
 
 make mrproper
-cp ../mykernel.conf .
+cp ${CLFSSOURCES}/mykernel.conf ${CLFSSOURCES}/linux/.config
+
 #make defaultconfig
 #make menuconfig
 make
