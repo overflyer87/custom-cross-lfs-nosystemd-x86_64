@@ -711,3 +711,29 @@ buildSingleXLib64
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf xcb-util
+
+#xcb-util-image 32-bit
+http://xcb.freedesktop.org/dist/xcb-util-image-0.4.0.tar.bz2 -O \
+  xcb-util-image-0.4.0.tar.bz2
+
+mkdir xcb-util-image && tar xf xcb-util-image-*.tar.* -C xcb-util-image --strip-components 1
+cd xcb-util-image
+
+buildSingleXLib32
+#LD_LIBRARY_PATH=$XORG_PREFIX/lib make check
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf xcb-util-image
+
+#xcb-util-image 64-bit
+
+mkdir xcb-util-image && tar xf xcb-util-image-*.tar.* -C xcb-util-image --strip-components 1
+cd xcb-util-image
+
+buildSingleXLib64
+#LD_LIBRARY_PATH=$XORG_PREFIX/lib make check
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf xcb-util-image
