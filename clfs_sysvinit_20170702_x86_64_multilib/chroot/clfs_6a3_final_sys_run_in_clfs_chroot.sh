@@ -299,7 +299,7 @@ ln -sfv ncursesw6-config-64 /usr/bin/ncurses6-config-64
 ln -sfv ncursesw6-config /usr/bin/ncurses6-config
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf ncurses
 
 #Shadow
@@ -340,78 +340,8 @@ grpconv
 passwd root
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf shadow
-
-#Coreutils
-mkdir coreutils && tar xf coreutils-*.tar.* -C coreutils --strip-components 1
-cd coreutils
-
-patch -Np1 -i ../coreutils-8.27-uname-1.patch
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
-FORCE_UNSAFE_CONFIGURE=1 \
-CC="gcc ${BUILD64}" \
-./configure \
-    --prefix=/usr \
-    --enable-no-install-program=kill,uptime \
-    --enable-install-program=hostname
-
-make
-#make NON_ROOT_USERNAME=nobody check-root
-#echo "dummy:x:1000:nobody" >> /etc/group
-#chown -Rv nobody .
-
-su nobody -s /bin/bash \
-    -c "PATH=$PATH make RUN_EXPENSIVE_TESTS=yes -k check || true"
-
-sed -i '/dummy/d' /etc/group
-
-#checkBuiltPackage
-make install
-
-mv -v /usr/bin/{cat,chgrp,chmod,chown,cp,date} /bin
-mv -v /usr/bin/{dd,df,echo,false,hostname,ln,ls,mkdir,mknod} /bin
-mv -v /usr/bin/{mv,pwd,rm,rmdir,stty,true,uname} /bin
-mv -v /usr/bin/chroot /usr/sbin
-
-cd ${CLFSSOURCES} 
-checkBuiltPackage
-rm -rf coreutils
-
-#COREUTILS MUST BE INSTALLED BEFORE SUDO!!!
-#Sudo make will fail otherwise
-#Because it needs to define _PATH_MV=/bin/mv
-
-#Sudo
-mkdir sudo && tar xf sudo-*.tar.* -C sudo --strip-components 1
-cd sudo 
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
-CC="gcc ${BUILD64}" ./configure --prefix=/usr  \
-            --libexecdir=/usr/lib64    \
-            --libdir=/usr/lib64   \
-            --with-secure-path         \
-            --with-all-insults         \
-            --with-env-editor          \
-            --docdir=/usr/share/doc/sudo-1.8.20p2 \
-            --enable-noargs-shell      \
-            --enable-shell-sets-home   \
-            --with-passprompt="[sudo] password for %p: " \
-            --without-pam
-            
-make PREFIX=/usr LIBDIR=/usr/lib64 
-#env LC_ALL=C make check 2>&1 | tee ../make-check.log
-#grep failed ../make-check.log
-
-#checkBuiltPackage
-
-make PREFIX=/usr LIBDIR=/usr/lib64 install
-ln -sfv libsudo_util.so.0.0.0 /usr/lib64/sudo/libsudo_util.so.0
-
-cd ${CLFSSOURCES} 
-checkBuiltPackage
-rm -rf sudo 
 
 #Util-linux 32-bit
 mkdir util-linux && tar xf util-linux-*.tar.* -C util-linux --strip-components 1
@@ -438,7 +368,7 @@ make
 make install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf util-linux
 
 #Util-linux 64-bit Pass 1
@@ -461,7 +391,7 @@ make
 make install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf util-linux
 
 #Procps-ng 32-bit
@@ -479,7 +409,7 @@ CC="gcc ${BUILD32}" ./configure \
 make
 sed -i -r 's|(pmap_initname)\\\$|\1|' testsuite/pmap.test/pmap.exp
 #make check
-#checkBuiltPackage
+checkBuiltPackage
 make install
 
 mv -v /usr/lib/libprocps.so.* /lib
@@ -504,7 +434,7 @@ CC="gcc ${BUILD64}" ./configure \
 make
 sed -i -r 's|(pmap_initname)\\\$|\1|' testsuite/pmap.test/pmap.exp
 #make check
-#checkBuiltPackage
+checkBuiltPackage
 make install
 
 mv -v /usr/lib64/libprocps.so.* /lib64
@@ -537,7 +467,7 @@ make libs
 make install-libs
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf e2fsprogs
 
 #E2fsprogs 64-bit
@@ -563,7 +493,7 @@ CC="gcc ${BUILD64}" \
 
 make
 #make check
-#checkBuiltPackage
+checkBuiltPackage
 
 make install
 make install-libs
@@ -596,7 +526,7 @@ su nobody -s /bin/bash \
 
 sed -i '/dummy/d' /etc/group
 
-#checkBuiltPackage
+checkBuiltPackage
 make install
 
 mv -v /usr/bin/{cat,chgrp,chmod,chown,cp,date} /bin
@@ -605,7 +535,7 @@ mv -v /usr/bin/{mv,pwd,rm,rmdir,stty,true,uname} /bin
 mv -v /usr/bin/chroot /usr/sbin
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf coreutils
 
 #Iana-etc
@@ -613,11 +543,12 @@ mkdir iana-etc && tar xf iana-etc-*.tar.* -C iana-etc --strip-components 1
 cd iana-etc
 
 xzcat ../iana-etc-2.30-numbers_update-20140202-2.patch.xz | patch -Np1 -i -
-make
-make install
+
+make PREFIX=/usr LIBDIR=/usr/lib64
+make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf iana-etc
 
 #Libtool 32-bit
@@ -638,7 +569,7 @@ make install
 mv -v /usr/bin/libtool{,-32}
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf libtool
 
 #Libtool 64-bit
@@ -682,7 +613,7 @@ make LIBDIR=/usr/lib64 \
     DOCDIR=/usr/share/doc/iproute2-4.9.0 install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf iproute
 
 #Bzip2 32-bit
