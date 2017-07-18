@@ -865,19 +865,50 @@ rm -rf libdrm
 #Both for Python 2.7 and 3.6
 #32-bit and 64-bit each
 
+cd ${CLFSSOURCES}
+
 wget https://pypi.python.org/packages/source/M/Mako/Mako-1.0.4.tar.gz -O \
   Mako-1.0.4.tar.gz
 
-mkdir pymako && tar xf Mako-*.tar.* -C pymako --strip-components 1
-
-
-
 #Let's start with Python 2.7 Mako modules
 #32-bit
+mkdir pymako && tar xf Mako-*.tar.* -C pymako --strip-components 1
 
-python setup.py install --optimize=1
+python2-32 setup.py install --optimize=1
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf pymako
+
+#64-bit
+mkdir pymako && tar xf Mako-*.tar.* -C pymako --strip-components 1
+
+python2-64 setup.py install --optimize=1
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf pymako
+
+#Python 3.6 Mako modules
+#32-bit
+mkdir pymako && tar xf Mako-*.tar.* -C pymako --strip-components 1
 
 sed -i "s:mako-render:&3:g" setup.py &&
-python3 setup.py install --optimize=1
+python3-32 setup.py install --optimize=1
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf pymako
+
+#64-bit
+mkdir pymako && tar xf Mako-*.tar.* -C pymako --strip-components 1
+
+sed -i "s:mako-render:&3:g" setup.py &&
+python3-64 setup.py install --optimize=1
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf pymako
+
 
 
