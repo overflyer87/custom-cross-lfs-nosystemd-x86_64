@@ -52,9 +52,9 @@ mkdir linux && tar xf linux-*.tar.* -C linux --strip-components 1
 cd linux
 
 make mrproper
-cp ../manjaro_4.12_my_kernel_config .
+cp ../mykernel.conf .
 #make defaultconfig
-make menuconfig
+#make menuconfig
 make
 make modules_install
 make firmware_install
