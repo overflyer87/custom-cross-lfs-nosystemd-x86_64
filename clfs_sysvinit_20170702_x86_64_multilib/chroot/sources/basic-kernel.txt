@@ -1,0 +1,131 @@
+# All options are required unless noted as "Optional" or under a # Begin and # End block, which is also noted as "Optional" or "Hardware Specific"
+# It is important that they are selected as built-in or the kernel might fail to correctly detect the partitions and/or filesystems.
+# It is a good idea to run "make defconfig" first
+
+Device Drivers  --->
+   Generic Driver Options  --->
+      ()  path to uevent helper
+      [*] Maintain a devtmpfs filesystem to mount at /dev
+      [*]   Automount devtmpfs at /dev, after the kernel mounted the rootfs (optional)
+
+   # Optional, required for VMware virtual machines
+   # Begin here
+   Misc devices  --->
+      <*> VMware VMCI Driver
+   # End here
+
+   SCSI device support  --->
+      <*> SCSI device support
+      <*> SCSI disk support
+      <*> SCSI generic support
+
+      [*] Probe all LUNs on each SCSI device (optional, required for some memory cards and other usb storage)
+
+   # Optional, required for VMware virtual machines
+   # Begin here
+      [*] SCSI low-level drivers  --->
+         <*>   BusLogic SCSI support (used by older VMware virtual solutions, can be optionally selected)
+         <*>   VMware PVSCSI driver support (used by vSphere I think, but not by default, can be used by Player and Workstation too)
+   # End here
+
+   <*> Serial ATA and Parallel ATA drivers  --->
+      [*]   ATA ACPI Support
+
+   # Use lspci -k and look for "SATA or ATA controller" and its driver. Then select apropriate
+   # device down below.
+   #
+   # On my machine I have:
+   #
+   # 00:1f.2 SATA controller: Intel Corporation 6 Series/C200 Series Chipset Family 6 port SATA AHCI Controller (rev 05)
+   #    Subsystem: Hewlett-Packard Company Device 1670
+   #    Kernel driver in use: ahci
+   #
+   # So I select the first two drivers below.
+
+   # Begin hardware dependent (S)ATA controller configuration
+
+      <*>   AHCI SATA support
+      <*>   Platform AHCI SATA support (both for the "ahci" driver)
+
+      [*]   ATA SFF support (for legacy IDE and PATA)
+      [*]     ATA BMDMA support (both required for drivers below)
+
+      <*>       Intel ESB, ICH, PIIX3, PIIX4 PATA/SATA support ("ata_piix" driver, also used in VMware virtual machines)
+      <*>       Marvell SATA support ("sata_marvel" driver)
+      <*>       NVIDIA SATA support ("sata_nvidia" driver)
+      <*>       SiS 964/965/966/180 SATA support ("sata_sis" driver)
+      <*>       VIA SATA support ("sata_via" driver)
+      <*>     Generic ATA support ("ata_generic" driver, select it anyways if the machine has non-AHCI (S)ATA controller)
+
+      # Additionally, select any driver that's apropriate for your hardware and not on this list. The list contains the
+      # most commonly used desktop hardware nowadays.
+
+   # End hardware dependent (S)ATA controller configuration
+
+   # Optional, required for VMware virtual machines
+   # Begin here
+   [*] Fusion MPT device support  --->
+      <*>   Fusion MPT ScsiHost drivers for SPI (used by VMware Player and Workstation by default)
+   # End here
+
+   # Optional, required for booting from USB devices
+   # Begin USB configuration
+
+   [*] USB support  --->
+      <*>   Support for Host-side USB
+      <*>     USB Monitor
+
+      # One or more of the USB controller drivers, hardware dependent. You can look in the "lsmod"
+      # output of your distro to figure out which one is loaded.
+
+      # Begin hardware specific part
+
+      <*>     xHCI HCD (USB 3.0) support ("xhci_hcd" driver)
+      <*>     EHCI HCD (USB 2.0) support ("ehci_hcd" driver)
+      <*>     OHCI HCD (USB 1.1) support ("ohci_hcd" driver)
+      <*>     UHCI HCD (most Intel and VIA) support ("uhci_hcd" driver)
+
+      # End hardware specific part
+
+      <*>     USB Mass Storage support
+
+   # End USB configuration
+
+File systems  --->
+
+   # WARNING: It is important that you select the filesystem for your root and (optionally) /boot partition as "builtin",
+   # while the others can also be selected as "module"
+
+   <*> Second extended fs support (ext2)
+      [*]   Ext2 extended attributes
+      [*]     Ext2 POSIX Access Control Lists
+      [*]     Ext2 Security Labels
+      [*]   Ext2 execute in place support
+
+   <*> Ext3 journalling file system support (ext3)
+      [*]   Default to 'data=ordered' in ext3
+      [*]   Ext3 extended attributes
+      [*]     Ext3 POSIX Access Control Lists
+      [*]     Ext3 Security Labels
+
+   <*> The Extended 4 (ext4) filesystem (ext4)
+      [*]   Ext4 POSIX Access Control Lists
+      [*]   Ext4 Security Labels
+
+   <*> JFS filesystem support (jfs)
+      [*]   JFS POSIX Access Control Lists
+      [*]   JFS Security Labels
+
+   <*> XFS filesystem support (xfs)
+      [*]   XFS Quota support
+      [*]   XFS POSIX ACL support
+      [*]   XFS Realtime subvolume support
+
+   <*> Btrfs filesystem support (btrfs)
+      [*]   Btrfs POSIX Access Control Lists
+
+   # Additionally, any other filesystem not listed here.
+
+   # NOTE: Basic LFS install only contains filesystem check tools for ext{2,3,4} filesystems.
+   # It is a good idea to install the tools specific to other filesystems before first boot
+   # to avoid warnings and/or failures at boot.

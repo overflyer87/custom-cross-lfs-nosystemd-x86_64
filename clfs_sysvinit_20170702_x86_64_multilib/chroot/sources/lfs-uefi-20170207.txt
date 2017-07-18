@@ -1,0 +1,606 @@
+USING GRUB ON UEFI
+
+AUTHORS: Dan McGhee, Kevin M. Buckley
+
+DATE: 2017-02-07
+
+LICENSE: GNU Free Documentation License Version 1.2
+
+SYNOPSIS: Boot LFS by default in a UEFI Environment using GRUB
+
+DESCRIPTION:
+This hint contains the information to direct the OS Boot Manager to default
+to the GRUB in a UEFI environment employing EFI Mode.  This hint applies to
+only x86_64 machines.
+
+This version, hereafter referred to as "the 2017-10-22 hint", updates Dan 
+McGhee's original, dated 2014-10-16.
+
+The 2017-10-22 hint saw the UEFI packages built against an LFS 7.10 SysV
+installation that was already being booted using the existing host system's 
+bootloaders.
+
+Where possible, changes to the 2017-01-22 hint have been made so that it
+should be obvious where the the 2017-01-22 and 2014-10-16 hint's differ.
+
+ATTACHMENTS:
+*  None
+
+PREREQUISITES:
+Base LFS system before or after Ch. 8
+Basic understanding of obtaining and building packages
+
+HINT:
+
+DISCLAIMER:  The recipes in this hint neither supplant nor supersede the
+build instructions in a stable version of either the LFS or BLFS books.
+They merely augment them for newer firmware.  If conflicts arise between
+this hint and the instructions in the book, take the issue to the mailing
+lists.  Additionally, this hint applies to only x86_64 machines packaged
+with Windows 7 or Windows 8.  The recipes here can be used on Mac OS, but
+have not been investigated at the initial writing of this hint.
+
+The 2017-01-22 hint refers to an LFS 7.10 system, built onto an x86_64 
+machine from within a CentOS 6 host, that had had never had a version of
+windows installed on it, indeed the host contained three EFI directories
+below "/boot/efi/EFI/", namely centos, redhat, and ubuntu, these having
+been installed from CentOS 6.8, Fedora Core 20 and Ubuntu 12.04 OSes
+respectively.
+
+USE OF TERMS:  The following is a use of terms in this hint.  Further
+information for and amplification of them can be found in References 1-3.
+
+BIOS Settings:  A firmware interface accessed by the keyboard after power
+is applied.  In it a user can change the order and way of how the computer
+boots.
+
+BIOS System:  Firmware with an MBR
+
+EFI Mode:  A condition of the booted system in which the EFI partition is
+mounted and the uefi (efi) variable support in the kernel is working
+properly.  It results from enabling UEFI Mode in BIOS Settings.
+
+EFI Mount Point:  A user defined mount point for the EFI Partition.  In
+this hint, and in most distros, it is /boot/efi.
+
+EFI Partition:  A small partition, usually before any other partitions;
+i.e., /dev/sda1 of  200-250 Mb, formatted in FAT32 with the /boot flag, in
+parted, or ef00 (EF00) partition type in gdisk.  (NOTE: The boot flag has a
+different function and meaning in MBR partitioned disks.)
+
+efi variables (synonymous: uefi variables):  variables through which the
+operating system can interact with the firmware.
+
+Legacy Boot Option (Legacy Boot):  A boot process in BIOS Settings that
+disables UEFI booting and uses CIM.
+
+GUID Partition Table (GPT): A partitioning scheme that uses UUID's instead
+of cylinders to identify partitions.
+
+
+PRELIMINARY DISCUSSION:  Additional information and more in depth
+discussion of the following concepts can be found using References 1-3.
+
+Booting LFS is no longer as simple as "grub-install  /dev/sda."  There are
+more options and more considerations.  With the advent and proliferation of
+UEFI firmware, a user's knowledge and philosophy of the boot
+process requires expansion:
+    a) GPT partitioning is different from MBR partitioning.  The tool fdisk
+       is not able to manipulate GPT partitions.  Parted and gdisk (from
+       gptfdisk) are the tools to use.  Each has their pros and cons,
+       supporters and detractors.  Either one or both can be used.
+    b) UEFI firmware uses Boot Managers to select Boot Loaders like GRUB or
+       LILO.  They, themselves do not boot the machine.
+    c) The Boot Loaders are placed on the EFI partition rather than the
+       MBR.  This concept is similar and parallel to the LFS procedures of
+       using a separate /boot partition.
+    d) There are additional tools that LFS needs in order to accomplish
+       this mode of booting.
+    e) LFS can be built and booted as the instructions are written up to
+       and including LFS-7.10.  To do this on UEFI firmware, the BIOS
+       Settings must be changed to Legacy Options from UEFI Options.
+
+One of the hugely discussed issues surrounding UEFI is Secure Boot.  It is
+necessary to understand that the terms "UEFI" and "Secure Boot" are NOT
+synonymous.  UEFI is firmware.  Secure Boot is a process of using "keys" to
+"guarantee" the safety and authenticity of a Boot Loader.  NOTE:  To use
+the recipes in this hint, Secure Boot must be disabled in the BIOS Boot
+Settings.
+
+Please note that the recommended order for implementing these recipes is a
+departure from the build order in LFS.  The most convenient, and arguably
+the most practical way, to implement the recipes here is to use them in the
+of build of an LFS System at the end of Ch. 6. Building the BLFS and
+non-BLFS packages has been tested both inside and outside of the chroot
+environment.  Then, following the book, proceed through Ch. 7, returning to
+the recipes in Ch. 8.   The recipes are presented in that order.
+
+The most inconvenient way to implement these recipes is in a completely
+functional LFS-7.10, or earlier, system.  This involves uninstalling
+grub-2.02, removing it from its location as a result of grub-install and
+implementing the recipes.  Migrating from Legacy Boot to UEFI boot is
+possible.  At the initial writing of this hint, however, it is not
+included.  References 1-3 contain more information on this subject.
+
+The last consideration in implementing the recipes here is GRUB's graphical
+terminal.  In UEFI systems, if the GRUB video mode is not initialized, no
+kernel boot messages will appear until the kernel video takes over.  The
+GRUB package does not supply fonts, and GRUB defaults to unicode.pf2.
+There are two ways to supply this font.  The first is to copy unicode.pf2
+from the host system to /boot/grub on the LFS system.  The second method
+involves configuring grub to build grub-mkfont, and this creates a build
+dependency of Freetype2 for GRUB.  This hint addresses both situations.   
+
+Finally, as of the initial writing of this hint, there is no standard for
+the use of UEFI and the implementation of Secure Boot.  These are hugely
+manufacturer dependent.  This hint uses terms used in the original author's
+hardware.  They may be different in other manufacturers' implementations.
+However, the capabilities to do the boot setup operations contained in this
+hint will exist on each machine.  The terms may differ, and more than one
+operation might be needed to achieve a desired goal.  For example, someone
+may need to disable Secure Boot and remove Secure Keys.
+
+
+RECIPES:
+[NOTE] The recipes are written with the assumption that the packages are
+being built in the chroot environment before the end of Ch. 8.  They can be
+modified, with little difficulty, to be used in a functional system.
+
+CHECKING EFI-MODE
+    Before entering the chroot environment, check that the host booted in
+    EFI Mode.
+
+    ls /sys/firmware/efi
+
+    If this directory exists and is populated, the host booted in EFI Mode.
+
+
+MOUNT EFI PARTITION
+	Determine which device is the EFI partition using gdisk or parted,
+        enter the chroot environment, create /boot/efi if needed, and
+
+	mount -vt vfat /dev/sda(x) /boot/efi
+
+        where sda(x) is the device containing the EFI partition.
+
+BUILD DEPENDENCIES:
+
+Install the following BLFS packages, using the instructions in the book:
+popt and pciutils.   Build and install Freetype2 if building grub with
+grub-mkfont enabled.
+
+
+The BLFS 7.10 Freetype2 instructions recommend that it be built after 
+"which" and "libpng" have been installed, so it was, however, as the 
+recommendation for "HarfBuzz" notes that one builds Freetype2 without 
+it first, and then do a re-install, it wasn't thought necessary to do 
+the re-install.
+
+The "libpng" install did include the "apng" patch.
+
+
+The BLFS 7.10 instructions for popt explicitly
+
+  "prevents installtion of  the static versions of the libraries"
+
+however the build of efivars appears to require those.
+
+In order to follow the BLFS book and then explicity alter things for 
+an installtion of UEFI-related packages, following the BLFS books
+instructions, and then doing 
+
+tar xf /path/to/BLFS-SRCS-7.10/popt-1.16.tar.gz
+cd popt-1.16/
+./configure --prefix=/usr --enable-static
+make
+make install  
+
+appears to do the right thing.
+
+
+
+      DOSFSTOOLS 3.0.28 (runtime dependency of efibootmgr)
+      Note: As of October 3, 2014, dosfstools was tagged "orphaned.
+      It is still functional.]
+
+      Download:
+        https://github.com/dosfstools/dosfstools/releases/download/v3.0.28/dosfstools-3.0.28.tar.xz
+
+      Build and Installation:
+
+        tar xf /path/to/EXTRA-SRCS-7.10/dosfstools-3.0.28.tar.xz
+        cd dosfstools-3.0.28/
+        make PREFIX=/usr SBINDIR=/usr/bin MANDIR=/usr/share/man \
+         DOCDIR=/usr/share/doc
+        make LANGUAGES="" PREFIX=/usr SBINDIR=/usr/bin MANDIR=/usr/share/man \
+         DOCDIR=/usr/share/doc install
+
+Note that the LANGUAGES="" prevents the install from creating all manner
+of directories below /use/share/man, but if you want those, leave it out.
+
+
+      EFIVAR-30 (depends on popt)
+
+The 2014-10-16 hint pointed to a user's GitHub branch of the main code
+ that is now available as part of Fedora's GitHub repository.
+Note also that the numbering scheme has changed slightly.
+Furthermore, the EFIVAR-30's Makefiles have altered the way in which
+ the codebase is built
+ 
+      Download:
+        https://github.com/rhinstaller/efivar/releases/download/30/efivar-30.tar.bz2
+
+      Compile the package:
+
+        tar xf /path/to/EXTRA-SRCS-7.10/efivar-30.tar.bz2
+        cd efivar-devel-30/
+        cp -p Make.defaults Make.defaults.dist
+        sed 's|-O2|-Os|g' -i Make.defaults
+        cp -p src/test/Makefile src/test/Makefile.dist
+        sed 's|-rpath=$(TOPDIR)/src/|-rpath=$(libdir)|g' \
+         -i src/test/Makefile
+        make libdir="/usr/lib/" bindir="/usr/bin/" \
+         mandir="/usr/share/man/"     \
+         includedir=/usr/include/" V=1 -j1
+
+      Install the package:
+
+        make -j1 V=1 DESTDIR="${pkgdir}/" libdir="/usr/lib/" \
+         bindir="/usr/bin/" mandir="/usr/share/man"   \
+         includedir="/usr/include/" install
+  
+        install -v -D -m0755 src/test/tester /usr/bin/efivar-tester
+
+Despite pathcing the src/test/Makefile, and that Makefile having a
+"test", target, albeit one which isn't run by default, you SHOULD NOT
+run that "make test", as it has been found to cause firmware bugs.
+
+Here are the thoughts on, and the exhortation not to do, this from 
+the EFIVAR community, 
+
+   https://github.com/rhinstaller/efivar/issues/78
+
+Note that, rather than remove the test from the Makefile, or alter it
+to tell the use not to run it, they've merely hidden it from normal
+invocation.
+
+
+      EFIBOOTMGR-14
+      (depends on pciutils, efivars,zlib to build and dosfstools to run.)
+
+See notes to EFIVAR package as regards changes to download URI
+
+Note also that compared to the 2014-10-16 hint, efibootmgr's source 
+ directory layout has changed,
+
+      Download:  https://github.com/rhinstaller/efibootmgr/releases/download/14/efibootmgr-14.tar.bz2
+
+
+      Compile the package:
+        tar xf /path/to/EXTRA-SRCS-7.10/efibootmgr-14.tar.bz2
+        cd efibootmgr-14/
+        make
+
+      Install the package:
+        install -v -D -m0755 src/efibootmgr /usr/sbin/efibootmgr
+        install -v -D -m0644 src/efibootmgr.8 \
+                /usr/share/man/man8/efibootmgr.8
+        install -v -D -m0644 src/efibootdump.8 \
+                /usr/share/man/man8/efibootdump.8
+
+
+      GRUB-2.02~beta3 (depends on freetype2 if grub-mkfont is desired
+               and on efibootmgr, efivars and efivarfs at run time.) 
+
+         Download: http://alpha.gnu.org/gnu/grub/grub-2.02~beta3.tar.xz
+
+      Prepare for compilation:
+         tar xf /path/to/LFS-SRCS-7.10/grub-2.02~beta3.tar.xz
+         cd grub-2.02~beta3/
+        ./configure --prefix=/usr  \
+            --sbindir=/sbin        \
+            --sysconfdir=/etc      \
+            --disable-efiemu       \
+            --enable-grub-mkfont   \
+            --with-platform=efi    \
+            --target=x86_64        \
+            --program-prefix=""    \
+            --with-bootdir="/boot" \
+            --with-grubdir="grub" \
+            --disable-werror       
+ 
+         Command explanation:
+
+          --enable-grub-mkfont  This creates the build dependency on
+             Freetype2. To remove this dependency do not use this switch
+             and copy unicode.pf2 from the host system to /boot/grub of the
+             LFS partition.  Alternatively, it can be downloaded from the
+             internet.
+
+          --program-prefix="" is a matter of convenience.  If not used,
+             "x86_64" is inserted in all the grub executables.  For
+             example, "grub-install" and "grub-mkconfig" become
+             x86_64-grub-install and x86_64-grub-mkconfig.
+
+          --with-platform=efi and --target=x86_64 are mandatory for the efi
+             and x86_64 build
+
+         The other configure options added to the ones in LFS-7.10 and
+         LFS-SVN were employed to insure that grub is built and installed
+         in the directories used in this hint.  They may be used or
+         eliminated based on individual use and preference.
+
+
+      Compile the package:
+    
+        make
+
+      Install the package:
+
+        make install
+
+      Post installation of the Unifont files, do a
+
+        grub-mkfont -o /usr/share/grub/unicode.pf2 > \
+         /usr/share/fonts/unifont/unifont.pcf
+      
+
+      UNIFONT 9.0.06
+
+In the 2014-01-16 hint, the Unifont installtion got a mention further
+down but as the 2017-01-22 hint's build made use of those fonts, they're
+here
+
+      Download: http://unifoundry.com/pub/unifont-9.0.06/font-builds/unifont-9.0.06.pcf.gz
+      
+      Install the font files
+
+        mkdir -pv /usr/share/fonts/unifont
+        gunzip -c /path/to/EXTRA-SRCS-7.10/unifont-9.0.06.pcf.gz > \
+         /usr/share/fonts/unifont/unifont.pcf
+
+
+LFS CHAPTER 7:
+
+     When constructing the file /etc/fstab, add the following lines:
+
+      /dev/sda(x)     /boot/efi    vfat     defaults            0     1
+
+      efivarfs       /sys/firmware/efi/efivars  efivarfs  defaults  0      1
+
+     where /dev/sda(x) is the EFI partion
+
+Notes:
+
+1) If you are going to be booting your UEFI-aware LFS system using a 
+   non-LFS Grub from your host AND if that Grub is one (eg Fedora) 
+   that allows for the kernel to be specified using that Grub's  
+   "linuxefi" attribute, so
+
+     linuxefi  /path/to/kernel root=/path/to/root ro
+
+   then you don't appear to need the /etc/fstab line, and indeed, 
+   you'll get told during the boot that the mounter knows nothing
+   about the efivars filesystem type.
+
+   However, LFS's efibootmgr will still be capable of interrogating
+   your UEFI environment.
+
+2) If the LFS system is booted from the LFS+Hint's grub, which doesn't
+   appear to know about the "linuxefi" attribute so using
+
+    linux  /path/to/kernel root=/path/to/root ro
+
+   then, unless you have the efivars filesystem mounted, and you are
+   able to, then LFS's efibootmgr will be NOT capable of interrogating
+   your UEFI environment, and you'll be told that there is no efivars
+   filesystem
+
+
+
+LFS CHAPTER 8:
+
+   KERNEL CONFIGURATION OPTIONS FOR EFI
+
+The LFS 7.10 kernel build's "make defconfig" populated a good number of
+the EFI-related options on my UEFI-enabled hardware, however, so as to
+make the 2014-10-16 hint's list of settings easier to find when coming 
+to alter/set things, here is the list of the options along with the 
+location of the various checkboxes and the settings they should have, 
+as seen when starting from a "make menuconfig"
+
+     ## CONFIG_EFI_PARTITION=y
+
+       Location:
+         -> Enable the block layer
+           -> Partition Types
+             [*] Advanced partition selection
+             ...
+             [*] EFI GUID Partition support
+
+     ## CONFIG_EFI=y
+     ## CONFIG_EFI_STUB=y
+
+       Location:
+         -> Processor type and features
+           [*] EFI runtime service support
+           [*]   EFI stub support
+
+     ## CONFIG_FB_EFI=y
+
+       Location:
+         -> Device Drivers
+           -> Graphics support
+             -> Frame buffer Devices
+               [*] EFI-based Framebuffer Support
+
+     ## CONFIG_FRAMEBUFFER_CONSOLE=y
+
+       Location:
+         -> Device Drivers
+           -> Graphics support
+             -> Console display driver support
+               Framebuffer Console support      (Not available on mine)
+
+     ## CONFIG_EFI_VARS is not set
+     ## CONFIG_EFI_RUNTIME_MAP=y
+
+       Location:
+         -> Firmware Drivers
+           -> EFI (Extensible Firmware Interface) Support
+             < > EFI Variable Support via sysfs
+             [*] Export efi runtime maps to sysfs
+
+
+     ## CONFIG_EFIVAR_FS=y
+
+        Location:
+          -> File systems
+            -> Pseudo filesystems
+              [*] EFI Variable filesystem
+
+
+Note: 
+
+The only Kernel Config setting that a 'make defconfig' didn't set on
+the UEFI-enabled host was this one:
+
+     ## CONFIG_EFI_STUB=y
+
+and without that setting in the kernel, attempts to boot the LFS system
+tell you that:
+
+  Kernel doesn't support EFI handover
+
+however, adding just that one Kernel Config setting sees you able to
+boot into the LFS system using the host system's Grub.
+
+
+
+USING GRUB TO SET UP THE BOOT PROCESS
+
+INSTALLING GRUB TO THE EFI PARTITION
+
+  Installing GRUB to the EFI partition and creating an OS Boot Manager
+  entry is the major difference between the recipes in this hint and the
+  procedures in the LFS book.  In concept, it is not actually a divergence
+  from the concepts of the book.  The instructions there install GRUB to
+  the MBR, the MBR protected layer of a GPT disk or to a dedicated /boot
+  partition.  The recipes here install GRUB to the EFI partition and
+  generate an entry in the system's Boot Manager.  It is for the single
+  command here that this hint was written and for which all the non-LFS
+  packages were installed.
+
+    grub-install --target=x86_64-efi --efi-directory=/boot/efi  \
+       --bootloader-id=LFS --recheck --debug
+
+    --efi-directory=<EFI Mount Point> not the actual EFI partition
+    --bootloader-id=<some name> is the directory on the EFI partition to
+      which the GRUB image is written.
+
+  Running this command generates lots of output.  But at the end it will
+  indicate that it was successful.  This command installs the GRUB image to
+  /boot/efi/EFI/LFS/grubx64.efi and creates the entry "LFS" in the system's
+  Boot Manager.
+
+  To check it, inspect the contents of /boot/efi/EFI/LFS and, as root, run
+  <efibootmgr>.  The results of this command will list the Boot Order and
+  all the Boot Entries.  If the entry "LFS" does not appear, read the
+  efibootmgr man page, create an entry and change the Boot Order to what is
+  desired.
+
+CONFIGURING GRUB
+
+  Generate grub.cfg:
+
+  cat > /boot/grub/grub.cfg << "EOF"
+  # Begin /boot/grub/grub.cfg
+  set default=0
+  set timeout=5
+
+  insmod gzio
+  insmod part_gpt
+  insmod ext2
+  set root=(hd[x], gpt[y])
+  # hd[x] is the drive of the LFS partion and gpt[y] is the partition
+
+  insmod efi_gop
+  insmod efi_uga
+  insmod font
+  if loadfont /grub/unicode.pf2; then
+    loadfont /grub/unicode.pf2
+    set gfxmode=auto
+    insmod gfxterm
+    set gfxpayload=keep
+    terminal_output gfxterm
+  fi
+
+  menuentry "GNU/Linux, Linux <kernel name>"  {
+    linux   /boot/vmlinuz-<kernel name>; root=/dev/sda[x] ro
+  }  
+  EOF
+
+  Note that in "menuentry" /dev/sda[x] is the device of the LFS partition.
+
+FINAL DISCUSSION:
+
+As stated before, the implementation of UEFI firmware and its manipulation
+depends hugely on the manufacturer.  As of the initial writing of this
+hint, there is no standard approach.  Therefore, while the recipes here all
+do what is advertised, regrettably the system may not default to the grub
+boot loader "out of the box."  In that case, reviewing References 1-3, will
+provide information that will lead users to a solution to the situation.
+As always, one of the best resources is the {,B}LFS mailing lists.
+
+At this point, it is worth stating that there are other helpfultools:
+gummiboot and rEFInd are two of them.  They are described as Boot Managers,
+but in fact are a user space layer between the OS Boot Manager and the Boot
+Loader.  Information about both is in the references.
+
+REFERENCES:
+
+1.  Rod's Books  A collection of web page articles that goes into great
+    detail about the concepts of  UEFI booting, partitioning and tools.
+    The below URL goes right to the efi information.  www.rodsbooks.com is
+    the main page and has many, many good articles.
+  URL:  http://www.rodsbooks.com/efi-bootloaders/index.html
+
+2.   "Unified Extensible Firmware Interface-ArchWiki"
+  URL:  https://wiki.archlinux.org/index.php/
+          Unified_Extensible_Firmware_Interface
+
+3.  "GRUB-ArchWiki"
+  URL:  https://wiki.archlinux.org/index.php/GRUB
+
+4.  Google
+
+
+ACKNOWLEDGEMENTS:
+  * Craig Magee <lfs-support at lists.linuxfromscratch.org> for comments and testing
+  * Pierre Labastie <http://lists.linuxfromscratch.org/listinfo/lfs-dev> for testing,
+    font manipulation and comments.
+
+TODO:
+  *  Add paragraph and section numbers and TOC to make searchable
+  *  Add appendix for migration from Legacy Boot to UEFI boot
+  *  Add appendix for more options to default to GRUB
+  *  Add appendix for LVM
+  *  Add appendix for "standalone" GRUB on EFI partition independent
+     from distro
+
+CHANGELOG:
+[TBD]
+  * 2017-01-22 
+    Updated for LFS 7.10 and "extra package" updates
+    dosfstools-3.0.26 -> dosfstools-3.0.28
+    efivar-0.12       -> efivar-30
+    efibootmgr-0.9.0  -> efibootmgr-14
+    unifont-7.0.05    -> unifont-9.0.06
+
+[TBD]
+  * 2014-10-16
+    Initial hint.
+
+
+
+ 
