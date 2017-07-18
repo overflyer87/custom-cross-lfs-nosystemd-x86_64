@@ -973,6 +973,8 @@ wget http://people.freedesktop.org/~aplattner/vdpau/libvdpau-1.1.1.tar.bz2 -O \
 mkdir libvdpau && tar xf libvdpau-*.tar.* -C libvdpau --strip-components 1
 cd libvdpau
 
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
+USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}"
 ./configure $XORG_CONFIG32 \
             --docdir=/usr/share/doc/libvdpau-1.1.1 &&
 
@@ -983,11 +985,12 @@ cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf libvdpau
 
-
-#libvdpau 32-bit
+#libvdpau 64-bit
 mkdir libvdpau && tar xf libvdpau-*.tar.* -C libvdpau --strip-components 1
 cd libvdpau
 
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}"
 ./configure $XORG_CONFIG64 \
             --docdir=/usr/share/doc/libvdpau-1.1.1 &&
 
@@ -999,4 +1002,44 @@ checkBuiltPackage
 rm -rf libvdpau
 
 #Mesa 32-bit
+wget https://mesa.freedesktop.org/archive/mesa-17.1.4.tar.xz -O \
+  Mesa-17.1.4.tar.xz
 
+wget http://www.linuxfromscratch.org/patches/blfs/svn/mesa-17.1.4-add_xdemos-1.patch -O \
+mesa-17.1.4-add_xdemos-1.patch
+  
+mkdir Mesa && tar xf Mesa-*.tar.* -C Mesa --strip-components 1
+cd Mesa
+
+patch -Np1 -i ../mesa-17.1.4-add_xdemos-1.patch
+GLL_DRV="i915,nouveau,svga,swrast"
+
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
+USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" .
+
+./autogen.sh CFLAGS='-O2' CXXFLAGS='-O2' \
+            --prefix=$XORG_PREFIX        \
+            --sysconfdir=/etc            \
+            --enable-texture-float       \
+            --libdir=/usr/lib            \
+            --enable-osmesa              \
+            --enable-xa                  \
+            --enable-glx-tls             \
+            --with-platforms="drm,x11"   \
+            --with-gallium-drivers=$GLL_DRV \
+            --with-egl-platforms
+
+unset GLL_DRV
+
+make PREFIX=/usr LIBDIR=/usr/lib
+make -C xdemos DEMOS_PREFIX=$XORG_PREFIX LIBDIR=/usr/lib
+make PREFIX=/usr LIBDIR=/usr/lib install
+make -C xdemos DEMOS_PREFIX=$XORG_PREFIX LIBDIR=/usr/lib install
+
+install -v -dm755 /usr/share/doc/mesa-17.1.4 &&
+cp -rfv docs/* /usr/share/doc/mesa-17.1.4
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf Mesa
