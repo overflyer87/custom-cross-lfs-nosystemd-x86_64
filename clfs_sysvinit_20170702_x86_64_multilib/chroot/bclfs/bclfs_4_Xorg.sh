@@ -688,5 +688,26 @@ done
 
 cd ${CLFSSOURCES}/xc
 
+#xcb-util 32-bit
+wget http://xcb.freedesktop.org/dist/xcb-util-0.4.0.tar.bz2 -O \
+  xcb-util-0.4.0.tar.bz2
 
+mkdir xcb-util && tar xf xcb-util-*.tar.* -C xcb-util --strip-components 1
+cd xcb-util
 
+buildSingleXLib32
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf xcb-util
+
+#xcb-util 64-bit
+
+mkdir xcb-util && tar xf xcb-util-*.tar.* -C xcb-util --strip-components 1
+cd xcb-util
+
+buildSingleXLib64
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf xcb-util
