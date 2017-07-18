@@ -316,12 +316,14 @@ find man -name Makefile.in -exec sed -i \
   -e 's/man5\/passwd\.5 //' '{}' \;
 
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} \
-CC="gcc ${BUILD64}" ./configure \
+CC="gcc ${BUILD64}" CXX="${BUILD64}" ./configure \
     --sysconfdir=/etc \
     --with-group-name-max-length=32 \
-    --with-libcrack 
+    --with-libcrack \
+    --without-libpam
 
-make && make install
+make PREFIX=/usr LIBDIR=/usr/lib64
+make  PREFIX=/usr LIBDIR=/usr/lib64 install
 
 sed -i /etc/login.defs \
     -e 's@#\(ENCRYPT_METHOD \).*@\1SHA512@' \
@@ -335,7 +337,6 @@ chmod -v 664 /var/log/{fail,last}log
 
 pwconv
 grpconv
-
 passwd root
 
 cd ${CLFSSOURCES} 
@@ -395,16 +396,17 @@ CC="gcc ${BUILD64}" ./configure --prefix=/usr  \
             --with-env-editor          \
             --docdir=/usr/share/doc/sudo-1.8.20p2 \
             --enable-noargs-shell      \
-              --enable-shell-sets-home   \
-            --with-passprompt="[sudo] password for %p: "
-
-PREFIX=/usr LIBDIR=/usr/lib64 make
+            --enable-shell-sets-home   \
+            --with-passprompt="[sudo] password for %p: " \
+            --without-pam
+            
+make PREFIX=/usr LIBDIR=/usr/lib64 
 #env LC_ALL=C make check 2>&1 | tee ../make-check.log
 #grep failed ../make-check.log
 
 #checkBuiltPackage
 
-PREFIX=/usr LIBDIR=/usr/lib64 make install
+make PREFIX=/usr LIBDIR=/usr/lib64 install
 ln -sfv libsudo_util.so.0.0.0 /usr/lib64/sudo/libsudo_util.so.0
 
 cd ${CLFSSOURCES} 
