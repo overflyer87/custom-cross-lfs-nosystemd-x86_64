@@ -396,3 +396,48 @@ checkBuiltPackage
 rm -rf Python-2
 
 cd ${CLFSSOURCES}
+
+#Python 3 64-bit
+wget https://www.python.org/ftp/python/3.6.0/Python-3.6.0.tar.xz -O \
+  Python-3.6.0.tar.xz
+
+wget http://pkgs.fedoraproject.org/cgit/rpms/python3.git/plain/00102-lib64.patch -O \
+  python360-multilib.patch
+  
+wget https://docs.python.org/3.6/archives/python-3.6.0-docs-html.tar.bz2 -O \
+  python-360-docs.tar.bz2
+  
+mkdir Python-3 && tar xf Python-3.6*.tar.xz -C Python-3 --strip-components 1
+cd Python-3
+
+patch -Np1 -i ../python360-multilib.patch
+
+USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"
+CXX="/usr/bin/g++ ${BUILD64}" CC="/usr/bin/gcc ${BUILD64}"
+./configure --prefix=/usr       \
+            --enable-shared     \
+            --with-system-expat \
+            --with-system-ffi   \
+            --libdir=/usr/lib64 \
+            --with-custom-platlibdir=/usr/lib64 \
+            --with-ensurepip=yes &&
+
+make PREFIX=/usr LIBDIR=/usr/lib64 PLATLIBDIR=/usr/lib64 platlibdir=/usr/lib64
+as_root make install PREFIX=/usr LIBDIR=/usr/lib64 PLATLIBDIR=/usr/lib64 \
+  platlibdir=/usr/lib64
+
+chmod -v 755 /usr/lib/libpython3.6m.so &&
+chmod -v 755 /usr/lib/libpython3.so
+
+install -v -dm755 /usr/share/doc/python-3.6.0/html &&
+tar --strip-components=1 \
+    --no-same-owner \
+    --no-same-permissions \
+    -C /usr/share/doc/python-3.6.0/html \
+    -xvf ../python-3.6.0-docs-html.tar.bz2
+
+ln -svfn python-3.6.0 /usr/share/doc/python-3
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf Python-3
