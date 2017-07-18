@@ -165,7 +165,7 @@ checkBuiltPackage
 rm -rf git
 
 #openSSH
-mkdir openssh && tar xf openssh-*.tar.* -C openssh --strip-components 1
+mkdir openssh && tar xf openssh-7.5p1.tar.gz -C openssh --strip-components 1
 cd openssh
 
 install  -v -m700 -d /var/lib/sshd &&
