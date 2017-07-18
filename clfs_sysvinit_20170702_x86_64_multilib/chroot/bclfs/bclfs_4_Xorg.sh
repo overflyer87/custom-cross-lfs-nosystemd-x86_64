@@ -1327,9 +1327,6 @@ checkBuiltPackage
 rm -rf xkeyboard-config
 
 #XKeyboardConfig 64-bit
-wget http://xorg.freedesktop.org/archive/individual/data/xkeyboard-config/xkeyboard-config-2.21.tar.bz2 -O \
-  xkeyboard-config-2.21.tar.bz2
-
 mkdir xkeyboard-config && tar xf xkeyboard-config-*.tar.* -C xkeyboard-config --strip-components 1
 cd xkeyboard-config
 
@@ -1361,9 +1358,6 @@ rm -rf libepoxy
 
 
 #libepoxy 64-bit
-wget https://github.com/anholt/libepoxy/releases/download/1.4.3/libepoxy-1.4.3.tar.xz -O \
-  libepoxy-1.4.3.tar.xz
-
 mkdir libepoxy && tar xf libepoxy-*.tar.* -C libepoxy --strip-components 1
 cd libepoxy
 
@@ -1379,3 +1373,77 @@ checkBuiltPackage
 rm -rf libepoxy
 
 #Pixman 32-bit
+wget http://cairographics.org/releases/pixman-0.34.0.tar.gz -O \
+  pixman-0.34.0.tar.gz
+
+mkdir pixman && tar xf pixman-*.tar.* -C pixman --strip-components 1
+cd pixman
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
+USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}"
+
+./configure --prefix=/usr \
+  --disable-static \
+  --libdir=/usr/lib
+  
+make PREFIX=/usr LIBDIR=/usr/lib
+make PREFIX=/usr LIBDIR=/usr/lib install
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf pixman
+
+#Pixman 64-bit
+mkdir pixman && tar xf pixman-*.tar.* -C pixman --strip-components 1
+cd pixman
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}"
+
+./configure --prefix=/usr \
+  --disable-static \
+  --libdir=/usr/lib64
+  
+make PREFIX=/usr LIBDIR=/usr/lib64
+make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf pixman
+
+#Xorg Server
+wget https://www.x.org/pub/individual/xserver/xorg-server-1.19.3.tar.bz2 -O \
+  xorg-server-1.19.3.tar.bz2 
+
+wget http://www.linuxfromscratch.org/patches/blfs/svn/xorg-server-1.19.3-add_prime_support-1.patch -O \
+  Xorg-server-1.19.3-add_prime_support-1.patch
+  
+mkdir xorg-server && tar xf xorg-server-*.tar.* -C xorg-server --strip-components 1
+cd xorg-server
+
+patch -Np1 -i ../xorg-server-1.19.3-add_prime_support-1.patch
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
+USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}"
+
+./configure $XORG_CONFIG32            \
+           --enable-glamor          \
+           --enable-install-setuid  \
+           --enable-suid-wrapper    \
+           --disable-systemd-logind \
+           --with-xkb-output=/var/lib/xkb
+           
+make PREFIX=/usr LIBDIR=/usr/lib
+ldconfig
+make check
+make PREFIX=/usr LIBDIR=/usr/lib install
+mkdir -pv /etc/X11/xorg.conf.d
+
+cat >> /etc/sysconfig/createfiles << "EOF"
+/tmp/.ICE-unix dir 1777 root root
+/tmp/.X11-unix dir 1777 root root
+EOF
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf xorg-server
