@@ -111,7 +111,7 @@ chmod -v a+wt ${CLFSSOURCES}
 
 echo " "
 #wget -i ../dl.list -P ${CLFSSOURCES}
-cp /mnt/hdd_data/data_archive/projects/linux/clfs_20170702_x86_64_multilib/sysvinit/sources/* ${CLFSSOURCES}
+cp sources/* ${CLFSSOURCES}
 
 echo " "
 echo "source packages have been copied"
