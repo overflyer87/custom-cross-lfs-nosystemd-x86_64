@@ -702,7 +702,6 @@ checkBuiltPackage
 rm -rf xcb-util
 
 #xcb-util 64-bit
-
 mkdir xcb-util && tar xf xcb-util-*.tar.* -C xcb-util --strip-components 1
 cd xcb-util
 
@@ -713,7 +712,7 @@ checkBuiltPackage
 rm -rf xcb-util
 
 #xcb-util-image 32-bit
-http://xcb.freedesktop.org/dist/xcb-util-image-0.4.0.tar.bz2 -O \
+wget http://xcb.freedesktop.org/dist/xcb-util-image-0.4.0.tar.bz2 -O \
   xcb-util-image-0.4.0.tar.bz2
 
 mkdir xcb-util-image && tar xf xcb-util-image-*.tar.* -C xcb-util-image --strip-components 1
@@ -727,7 +726,6 @@ checkBuiltPackage
 rm -rf xcb-util-image
 
 #xcb-util-image 64-bit
-
 mkdir xcb-util-image && tar xf xcb-util-image-*.tar.* -C xcb-util-image --strip-components 1
 cd xcb-util-image
 
@@ -737,3 +735,53 @@ buildSingleXLib64
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf xcb-util-image
+
+#xcb-util-keysyms 32-bit
+wget http://xcb.freedesktop.org/dist/xcb-util-keysyms-0.4.0.tar.bz2 -O \
+  xcb-util-keysyms-0.4.0.tar.bz2
+
+mkdir xcb-util-keysyms && tar xf xcb-util-keysyms-*.tar.* -C xcb-util-keysyms --strip-components 1
+cd xcb-util-keysyms
+
+buildSingleXLib32
+#LD_LIBRARY_PATH=$XORG_PREFIX/lib make check
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf xcb-util-keysyms
+
+#xcb-util-keysyms 64-bit
+mkdir xcb-util-keysyms && tar xf xcb-util-keysyms-*.tar.* -C xcb-util-keysyms --strip-components 1
+cd xcb-util-keysyms
+
+buildSingleXLib64
+#LD_LIBRARY_PATH=$XORG_PREFIX/lib make check
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf xcb-util-keysyms
+
+#xcb-util-renderutil 32-bit
+wget http://xcb.freedesktop.org/dist/xcb-util-renderutil-0.3.9.tar.bz2 -O \
+  xcb-util-renderutil-0.3.9.tar.bz2
+
+mkdir xcb-util-renderutil && tar xf xcb-util-renderutil-*.tar.* -C xcb-util-renderutil --strip-components 1
+cd xcb-util-renderutil
+
+buildSingleXLib32
+#LD_LIBRARY_PATH=$XORG_PREFIX/lib make check
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf xcb-util-renderutil
+
+#xcb-util-keysyms 64-bit
+mkdir xcb-util-renderutil && tar xf xcb-util-renderutil-*.tar.* -C xcb-util-renderutil --strip-components 1
+cd xcb-util-renderutil
+
+buildSingleXLib64
+#LD_LIBRARY_PATH=$XORG_PREFIX/lib make check
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf xcb-util-renderutil
