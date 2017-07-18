@@ -1515,7 +1515,10 @@ cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf xorg-server
 
-cd ${CLFSSOURCES}
+cd ${CLFSSOURCES}/xc
+
+#libevdev
+
 
 
 
