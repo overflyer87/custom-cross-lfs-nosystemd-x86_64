@@ -528,6 +528,7 @@ CXX="g++ ${BUILD32}" CC="gcc ${BUILD32}
             --enable-xinput   \
             --without-doxygen \
             --libdir=/usr/lib \
+            --without-doxygen \
             --docdir='${datadir}'/doc/libxcb-1.12 &&
             
 make PREFIX=/usr LIBDIR=/usr/lib
@@ -553,6 +554,7 @@ CXX="g++ ${BUILD64}" CC="gcc ${BUILD64}
             --enable-xinput   \
             --without-doxygen \
             --libdir=/usr/lib64 \
+            --without-doxygen \
             --docdir='${datadir}'/doc/libxcb-1.12 &&
             
 make PREFIX=/usr LIBDIR=/usr/lib64
