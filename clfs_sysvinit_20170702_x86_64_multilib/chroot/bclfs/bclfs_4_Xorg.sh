@@ -1308,3 +1308,33 @@ done
 install -v -d -m755 /usr/share/fonts
 ln -svfn $XORG_PREFIX/share/fonts/X11/OTF /usr/share/fonts/X11-OTF
 ln -svfn $XORG_PREFIX/share/fonts/X11/TTF /usr/share/fonts/X11-TTF
+
+#XKeyboardConfig 32-bit
+wget http://xorg.freedesktop.org/archive/individual/data/xkeyboard-config/xkeyboard-config-2.21.tar.bz2 -O \
+  xkeyboard-config-2.21.tar.bz2
+
+mkdir xkeyboard-config && tar xf xkeyboard-config-*.tar.* -C xkeyboard-config --strip-components 1
+cd xkeyboard-config
+
+./configure $XORG_CONFIG32 --with-xkb-rules-symlink=xorg
+make PREFIX=/usr LIBDIR=/usr/lib
+make PREFIX=/usr LIBDIR=/usr/lib install
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf xkeyboard-config
+
+#XKeyboardConfig 64-bit
+wget http://xorg.freedesktop.org/archive/individual/data/xkeyboard-config/xkeyboard-config-2.21.tar.bz2 -O \
+  xkeyboard-config-2.21.tar.bz2
+
+mkdir xkeyboard-config && tar xf xkeyboard-config-*.tar.* -C xkeyboard-config --strip-components 1
+cd xkeyboard-config
+
+./configure $XORG_CONFIG64 --with-xkb-rules-symlink=xorg
+make PREFIX=/usr LIBDIR=/usr/lib64
+make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf xkeyboard-config
