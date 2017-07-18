@@ -1043,3 +1043,40 @@ cp -rfv docs/* /usr/share/doc/mesa-17.1.4
 cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf Mesa
+
+#Mesa 64-bit
+mkdir Mesa && tar xf Mesa-*.tar.* -C Mesa --strip-components 1
+cd Mesa
+
+patch -Np1 -i ../mesa-17.1.4-add_xdemos-1.patch
+GLL_DRV="i915,nouveau,svga,swrast"
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" .
+
+./autogen.sh CFLAGS='-O2' CXXFLAGS='-O2' \
+            --prefix=$XORG_PREFIX        \
+            --sysconfdir=/etc            \
+            --enable-texture-float       \
+            --libdir=/usr/lib64          \
+            --enable-osmesa              \
+            --enable-xa                  \
+            --enable-glx-tls             \
+            --with-platforms="drm,x11"   \
+            --with-gallium-drivers=$GLL_DRV \
+            --with-egl-platforms
+
+unset GLL_DRV
+
+make PREFIX=/usr LIBDIR=/usr/lib64
+make -C xdemos DEMOS_PREFIX=$XORG_PREFIX LIBDIR=/usr/lib64
+make PREFIX=/usr LIBDIR=/usr/lib64 install
+make -C xdemos DEMOS_PREFIX=$XORG_PREFIX LIBDIR=/usr/lib64 install
+
+install -v -dm755 /usr/share/doc/mesa-17.1.4 &&
+cp -rfv docs/* /usr/share/doc/mesa-17.1.4
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf Mesa
+
