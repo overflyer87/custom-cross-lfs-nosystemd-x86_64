@@ -285,7 +285,7 @@ wget https://www.python.org/ftp/python/2.7.6/Python-2.7.6.tar.xz -O \
 wget https://www.williamfeely.info/download/lfs-multilib/Python-2.7.6-multilib-1.patch -O \
   Python-2.7.6-multilib-1.patch
   
-mkdir Python-2 && tar xf Python-2.*.tar.* -C Python-2 --strip-components 1
+mkdir Python-2 && tar xf Python-2.7.6.tar.* -C Python-2 --strip-components 1
 cd Python-2
 
 patch -Np1 -i ../Python-2.7.6-multilib-1.patch
