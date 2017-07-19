@@ -1487,6 +1487,8 @@ checkBuiltPackage
 rm -rf xorg-server
 
 #Xorg Drivers
+#http://www.linuxfromscratch.org/blfs/view/svn/x/x7driver.html
+#Check there if you want synaptips, wacom, nouveau, Intel or AMD drivers!
 
 cd ${CLFSSOURCES}
 
@@ -1517,16 +1519,215 @@ rm -rf xorg-server
 
 cd ${CLFSSOURCES}/xc
 
-#libevdev
+#libevdev 32-bit
+wget http://www.freedesktop.org/software/libevdev/libevdev-1.5.7.tar.xz -O \
+  libevdev-1.5.7.tar.xz
+
+mkdir libevdev && tar xf libevdev-*.tar.* -C libevdev --strip-components 1
+cd libevdev
+
+buildSingleXLib32
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf libevdev
+
+#libevdev 64-bit
+mkdir libevdev && tar xf libevdev-*.tar.* -C libevdev --strip-components 1
+cd libevdev
+
+buildSingleXLib64
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf libevdev
+
+#Xorg Evdev Driver 32-bit
+wget https://www.x.org/pub/individual/driver/xf86-input-evdev-2.10.5.tar.bz2 -O \
+  xf86-input-evdev-2.10.5.tar.bz2
+  
+mkdir xf86-input-evdev && tar xf xf86-input-evdev-*.tar.* -C xf86-input-evdev --strip-components 1
+cd xf86-input-evdev
+
+buildSingleXLib32
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf xf86-input-evdev
+
+#Xorg Evdev Driver 64-bit
+mkdir xf86-input-evdev && tar xf xf86-input-evdev-*.tar.* -C xf86-input-evdev --strip-components 1
+cd xf86-input-evdev
+
+buildSingleXLib64
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf xf86-input-evdev
+
+#mtdev 32-bit
+wget http://bitmath.org/code/mtdev/mtdev-1.1.5.tar.bz2 -O \
+  mtdev-1.1.5.tar.bz2
+  
+mkdir mtdev && tar xf mtdev-*.tar.* -C mtdev --strip-components 1
+cd mtdev
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
+USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}"
+
+./configure --prefix=/usr \
+  --disable-static \
+  --libdir=/usr/lib
+  
+make PREFIX=/usr LIBDIR=/usr/lib
+make PREFIX=/usr LIBDIR=/usr/lib install
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf mtdev
+
+#mtdev 64-bit
+wget http://bitmath.org/code/mtdev/mtdev-1.1.5.tar.bz2 -O \
+  mtdev-1.1.5.tar.bz2
+  
+mkdir mtdev && tar xf mtdev-*.tar.* -C mtdev --strip-components 1
+cd mtdev
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}"
+
+./configure --prefix=/usr \
+  --disable-static \
+  --libdir=/usr/lib64
+  
+make PREFIX=/usr LIBDIR=/usr/lib64
+make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf mtdev
+
+#libinput 32-bit
+wget http://www.freedesktop.org/software/libinput/libinput-1.8.0.tar.xz -O \
+  libinput-1.8.0.tar.xz
+
+mkdir libinput && tar xf libinput-*.tar.* -C libinput --strip-components 1
+cd libinput
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
+USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}"
+
+./configure $XORG_CONFIG32          \
+            --disable-libwacom      \
+            --disable-debug-gui     \
+            --disable-tests         \
+            --disable-documentation \
+            --with-udev-dir=/lib/udev
+            
+make PREFIX=/usr LIBDIR=/usr/lib
+make PREFIX=/usr LIBDIR=/usr/lib install
 
 
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf libinput
 
 
+#libinput 64-bit
+mkdir libinput && tar xf libinput-*.tar.* -C libinput --strip-components 1
+cd libinput
 
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}"
 
+./configure $XORG_CONFIG64          \
+            --disable-libwacom      \
+            --disable-debug-gui     \
+            --disable-tests         \
+            --disable-documentation \
+            --with-udev-dir=/lib64/udev
+            
+make PREFIX=/usr LIBDIR=/usr/lib64
+make PREFIX=/usr LIBDIR=/usr/lib64 install
 
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf libinput
 
+#Xorg Fbdev Driver 32-bit
+wget https://www.x.org/pub/individual/driver/xf86-video-fbdev-0.4.4.tar.bz2 -O \
+  xf86-video-fbdev-0.4.4.tar.bz2
+  
+mkdir xf86vidfbdev && tar xf xf86-video-fbdev-*.tar.* -C xf86vidfbdev --strip-components 1
+cd xf86vidfbdev
 
+buildSingleXLib32
 
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf xf86vidfbdev
 
+#Xorg Fbdev Driver 64-bit
+mkdir xf86vidfbdev && tar xf xf86-video-fbdev-*.tar.* -C xf86vidfbdev --strip-components 1
+cd xf86vidfbdev
 
+buildSingleXLib64
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf xf86vidfbdev
+
+#NVIDIA PROPRIETARY DRIVER
+wget http://us.download.nvidia.com/XFree86/Linux-x86_64/384.47/NVIDIA-Linux-x86_64-384.47.run -O \
+  NVIDIA-Linux-x86_64-384.47.run
+
+as_root chmod +x NVIDIA-Linux-x86_64-384.47.run
+as_root /NVIDIA-Linux-x86_64-384.47.run \
+ --kernel-source-path=/lib/modules/CLFS-4.12.2_ORIGINAL \
+ USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}"
+
+#twm
+wget https://www.x.org/pub/individual/app/twm-1.0.9.tar.bz2 -O \
+  twm-1.0.9.tar.bz2
+  
+mkdir twm && tar xf twm-*.tar.* -C twm --strip-components 1
+cd twm
+
+sed -i -e '/^rcdir =/s,^\(rcdir = \).*,\1/etc/X11/app-defaults,' src/Makefile.in
+
+buildSingleXLib64
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf twm
+
+#xterm
+wget ftp://invisible-island.net/xterm/xterm-330.tgz -O \
+  xterm-330.tgz
+  
+mkdir xterm && tar xf xterm-*.tar.* -C xterm --strip-components 1
+cd xterm
+
+sed -i '/v0/{n;s/new:/new:kb=^?:/}' termcap &&
+printf '\tkbs=\\177,\n' >> terminfo &&
+
+TERMINFO=/usr/share/terminfo \
+./configure $XORG_CONFIG     \
+    --with-app-defaults=/etc/X11/app-defaults &&
+
+make PREFIX=/usr LIBDIR=/usr/lib64
+make install PREFIX=/usr LIBDIR=/usr/lib64
+make PREFIX=/usr LIBDIR=/usr/lib64 install-ti
+
+cat >> /etc/X11/app-defaults/XTerm << "EOF"
+*VT100*locale: true
+*VT100*faceName: Monospace
+*VT100*faceSize: 10
+*backarrowKeyIsErase: true
+*ptyInitialErase: true
+EOF
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf xterm
