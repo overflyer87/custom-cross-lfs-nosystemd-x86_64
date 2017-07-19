@@ -166,6 +166,8 @@ do
   ln -sfv ../../lib64/$(readlink /usr/lib64/lib${file}.so) /usr/lib64/lib${file}.so
 done
 
+
+cat > /etc/pam.d/system-auth << "EOF"
 # Begin /etc/pam.d/other
 
 auth            required        pam_unix.so     nullok
@@ -174,9 +176,11 @@ session         required        pam_unix.so
 password        required        pam_unix.so     nullok
 
 # End /etc/pam.d/other
+EOF
 
-install -vdm755 /etc/pam.d &&
-cat > /etc/pam.d/system-account << "EOF" &&
+install -vdm755 /etc/pam.d 
+
+cat > /etc/pam.d/system-account << "EOF" 
 # Begin /etc/pam.d/system-account
 
 account   required    pam_unix.so
