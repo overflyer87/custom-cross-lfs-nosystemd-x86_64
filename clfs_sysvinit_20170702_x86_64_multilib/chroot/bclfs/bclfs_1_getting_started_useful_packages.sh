@@ -122,7 +122,8 @@ wget https://curl.haxx.se/download/curl-7.54.1.tar.lzma -O \
 mkdir curl && tar xf curl-*.tar.* -C curl --strip-components 1
 cd curl
 
-CC="gcc ${BUILD64}" USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+CC="gcc ${BUILD64}" USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" 
+
   ./configure --prefix=/usr \
   --libdir=/usr/lib64 \
   --disable-static \
@@ -181,7 +182,8 @@ useradd  -c 'sshd PrivSep' \
 patch -Np1 -i ../openssh-7.5p1-openssl-1.1.0-1.patch &&
 
 CC="gcc ${BUILD64}" USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
-CXX="g++ ${BUILD64}" \
+CXX="g++ ${BUILD64}" 
+
 ./configure --prefix=/usr                     \
             --sysconfdir=/etc/ssh             \
             --libdir=/usr/lib64               \
