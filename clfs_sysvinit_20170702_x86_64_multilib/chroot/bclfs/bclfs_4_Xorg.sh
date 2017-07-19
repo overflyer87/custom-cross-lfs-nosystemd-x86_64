@@ -548,7 +548,7 @@ sed -i "s/pthread-stubs//" configure
 PYTHONHOME="/usr/lib64/python3.6/"
 PYTHONPATH="/usr/lib64/python3.6/"
 USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"
-CXX="g++ ${BUILD64}" CC="gcc ${BUILD64}
+CXX="g++ ${BUILD64}" CC="gcc ${BUILD64}"
 
 ./configure $XORG_CONFIG64     \
             --enable-xinput   \
@@ -610,7 +610,7 @@ md5sum -c ../lib-7.md5
 PYTHONHOME="/usr/lib64/python3.6/"
 PYTHONPATH="/usr/lib64/python3.6/"
 USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}"
-CXX="g++ ${BUILD32}" CC="gcc ${BUILD32}
+CXX="g++ ${BUILD32}" CC="gcc ${BUILD32}"
 
 for package in $(grep -v '^#' ../lib-7.md5 | awk '{print $2}')
 do
@@ -648,7 +648,7 @@ done
 PYTHONHOME="/usr/lib64/python3.6/"
 PYTHONPATH="/usr/lib64/python3.6/"
 USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"
-CXX="g++ ${BUILD64}" CC="gcc ${BUILD64}
+CXX="g++ ${BUILD64}" CC="gcc ${BUILD64}"
 
 cd ${CLFSSOURCES}/xc
 cd lib
