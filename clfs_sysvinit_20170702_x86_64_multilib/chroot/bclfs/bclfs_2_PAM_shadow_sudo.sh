@@ -140,8 +140,8 @@ CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}"\
 autoreconf
 
 ./configure \
-        --sbindir=/lib/security \
-        --enable-securedir=/lib/security \
+        --sbindir=/usr/lib/security \
+        --enable-securedir=/usr/lib/security \
         --docdir=/usr/share/doc/Linux-PAM-1.3.0\
         --enable-shared \
         --libdir=/usr/lib \
@@ -172,8 +172,8 @@ autoreconf
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"
 CC="gcc ${BUILD64}" ./configure --libdir=/usr/lib64 \
-           --sbindir=/lib64/security \
-           --enable-securedir=/lib64/security \
+           --sbindir=/usr/lib64/security \
+           --enable-securedir=/usr/lib64/security \
            --docdir=/usr/share/doc/Linux-PAM-1.3.0\
            --enable-shared \
            --enable-read-both-confs \
