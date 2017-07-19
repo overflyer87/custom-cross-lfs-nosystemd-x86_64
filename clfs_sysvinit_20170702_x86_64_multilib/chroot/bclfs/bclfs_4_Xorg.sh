@@ -460,7 +460,7 @@ patch -Np1 -i ../xcb-proto-1.12-python3-1.patch
 PYTHONHOME="/usr/lib64/python3.6/"
 PYTHONPATH="/usr/lib64/python3.6/"
 USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}"
-CXX="/usr/bin/g++ ${BUILD32}" CC="/usr/bin/gcc ${BUILD32}
+CXX="/usr/bin/g++ ${BUILD32}" CC="/usr/bin/gcc ${BUILD32}"
 
 ./configure $XORG_CONFIG32
 
@@ -474,13 +474,6 @@ checkBuiltPackage
 rm -rf xcb-proto
 
 #xcb-proto 64-bit
-wget http://xcb.freedesktop.org/dist/xcb-proto-1.12.tar.bz2 -O \
-  xcb-proto-1.12.tar.bz2
-wget http://www.linuxfromscratch.org/patches/blfs/svn/xcb-proto-1.12-python3-1.patch -O \
-  xcb-proto-1.12-python3-1.patch
-wget http://www.linuxfromscratch.org/patches/blfs/svn/xcb-proto-1.12-schema-1.patch -O \
-  xcb-proto-1.12-schema-1.patch
-
 mkdir xcb-proto && tar xf xcb-proto-1.12.tar.* -C xcb-proto --strip-components 1
 cd xcb-proto
 
@@ -491,7 +484,7 @@ patch -Np1 -i ../xcb-proto-1.12-python3-1.patch
 PYTHONHOME="/usr/lib64/python3.6/"
 PYTHONPATH="/usr/lib64/python3.6/"
 USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"
-CXX="/usr/bin/g++ ${BUILD64}" CC="/usr/bin/gcc ${BUILD64}
+CXX="/usr/bin/g++ ${BUILD64}" CC="/usr/bin/gcc ${BUILD64}"
 
 ./configure $XORG_CONFIG64
 
