@@ -362,9 +362,8 @@ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" LDFLAGS="-L/usr/lib64"
             --with-system-ffi   \
             --enable-unicode=ucs4 \
             --libdir=/usr/lib64 \
-            --platlib=/usr/lib64
 
-make EXTRA_CFLAGS="-fwrapv" PLATLIB=/usr/lib64 LIBDIR=/usr/lib64 PREFIX=/usr 
+make EXTRA_CFLAGS="-fwrapv" LIBDIR=/usr/lib64 PREFIX=/usr 
 as_root make EXTRA_CFLAGS="-fwrapv" LIBDIR=/usr/lib64 PREFIX=/usr install
 
 chmod -v 755 /usr/lib/libpython2.7.so.1.0
