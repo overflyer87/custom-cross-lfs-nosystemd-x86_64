@@ -1809,3 +1809,7 @@ Section "InputClass"
     Option "XkbOptions" "terminate:ctrl_alt_bksp"
 EndSection
 EOF
+
+#I will not install Xorg legacy
+#If you want to
+#Go to http://www.linuxfromscratch.org/blfs/view/svn/x/x7legacy.html
