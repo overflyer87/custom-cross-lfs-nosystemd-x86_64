@@ -1126,12 +1126,13 @@ cd ${CLFSSOURCES}/xc
 echo " "
 echo "Add this point you COULD install Linux-PAM!"
 echo "Xorg Apps will follow now and accept Linux-PAM as ooptional dep"
-echo "If you want that answer next question with N(o)"
+echo "If you want that answer next question with No"
 echo "And after Linux-PAM is install, sudo and shadow and cracklib are rebuilt"
 echo "start thies script again with"
-echo "bash <(sed -n '<linenumber>,$p' <scriptname.sh>)"
+echo "bash \<\(sed -n \'\<linenumber\>\,\$\p\' \<scriptname.sh\>\)"
 echo "Also you must run cblfs_1 script for installing libpng!!! Required Dep!"
 echo " "
+
 checkBuiltPackage
 rm -rf xbitmaps
 
