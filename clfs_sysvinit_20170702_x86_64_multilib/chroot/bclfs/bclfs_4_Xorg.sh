@@ -336,7 +336,7 @@ wget https://www.python.org/ftp/python/doc/2.7.13/python-2.7.13-docs-html.tar.bz
 mkdir Python-2 && tar xf Python-2.7.13.tar.* -C Python-2 --strip-components 1
 cd Python-2
 
-patch -Np1 -i ../python-2.7.12-lib64.patch
+patch -Np1 -i ../python-2713-multilib-1.patch
 
 sed -i -e "s|@@MULTILIB_DIR@@|/lib64|g" Lib/distutils/command/install.py \
        Lib/distutils/sysconfig.py \
@@ -522,7 +522,7 @@ sed -i "s/pthread-stubs//" configure
 PYTHONHOME="/usr/lib64/python3.6/"
 PYTHONPATH="/usr/lib64/python3.6/"
 USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}"
-CXX="g++ ${BUILD32}" CC="gcc ${BUILD32}
+CXX="g++ ${BUILD32}" CC="gcc ${BUILD32}"
 
 ./configure $XORG_CONFIG32    \
             --enable-xinput   \
