@@ -1687,7 +1687,7 @@ as_root /NVIDIA-Linux-x86_64-384.47.run \
  USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
  CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}"
 
-#twm
+#twm 64-bit
 wget https://www.x.org/pub/individual/app/twm-1.0.9.tar.bz2 -O \
   twm-1.0.9.tar.bz2
   
@@ -1702,7 +1702,10 @@ cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf twm
 
-#xterm
+USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}"
+
+#xterm 64-bit
 wget ftp://invisible-island.net/xterm/xterm-330.tgz -O \
   xterm-330.tgz
   
@@ -1731,3 +1734,78 @@ EOF
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf xterm
+
+#xclock 64-bit
+wget https://www.x.org/pub/individual/app/xclock-1.0.7.tar.bz2 -O \
+  xclock-1.0.7.tar.bz2
+
+mkdir xclock && tar xf xclock-*.tar.* -C xclock --strip-components 1
+cd xclock
+
+buildSingleXLib64
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf xclock
+
+#xinit 64-bit
+wget https://www.x.org/pub/individual/app/xinit-1.0.7.tar.bz2 -O \
+  xinit-1.0.7.tar.bz2
+
+mkdir xinit && tar xf xinit-*.tar.* -C xclock --strip-components 1
+cd xinit
+
+sed -e '/$serverargs $vtarg/ s/serverargs/: #&/' \
+    -i startx.cpp
+
+USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}"
+
+./configure $XORG_CONFIG64 --with-xinitdir=/etc/X11/app-defaults
+make PREFIX=/usr LIBDIR=/usr/lib64
+make PREFIX=/usr LIBDIR=/usr/lib64 install
+ldconfig
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf xinit
+
+#DejaVu Fonts
+wget https://netcologne.dl.sourceforge.net/project/dejavu/dejavu/2.37/dejavu-fonts-ttf-2.37.tar.bz2 -O \
+  dejavu-fonts-ttf-2.37.tar.bz2
+
+mkdir dejavu-fonts && tar xf dejavu-fonts-*.tar.* -C dejavu-fonts --strip-components 1
+cd dejavu-fonts
+
+mkdir /etc/fonts
+mkdir /etc/fonts/conf.d
+mkdir /etc/fonts.conf.avail
+mkdir -pv /usr/share/fonts/TTF
+
+cp -v fontconfig/* /etc/fonts/conf.avail
+cp -v fontconfig/* /etc/fonts/conf.d
+cp -v ttf/* /usr/share/fonts/TTF
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf dejavu-fonts
+
+cat > /etc/X11/xorg.conf.d/xkb-defaults.conf << "EOF"
+Section "InputClass"
+    Identifier "XKB Defaults"
+    MatchIsKeyboard "yes"
+    Option "XkbLayout" "de-latin1"
+    Option "XkbOptions" "terminate:ctrl_alt_bksp"
+EndSection
+EOF
+
+as_root usermod -a -G video overflyer
+
+cat > /etc/X11/xorg.conf.d/xkb-defaults.conf << "EOF"
+Section "InputClass"
+    Identifier "XKB Defaults"
+    MatchIsKeyboard "yes"
+    Option "XkbLayout" "fr"
+    Option "XkbOptions" "terminate:ctrl_alt_bksp"
+EndSection
+EOF
