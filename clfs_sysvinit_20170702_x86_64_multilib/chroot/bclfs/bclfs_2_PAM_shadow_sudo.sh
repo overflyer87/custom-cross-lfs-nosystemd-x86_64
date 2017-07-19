@@ -457,7 +457,7 @@ cd sudo
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
 CC="gcc ${BUILD64}" ./configure --prefix=/usr  \
             --libexecdir=/usr/lib64    \
-            --with-libdir=/usr/lib64   \
+            --libdir=/usr/lib64   \
             --with-secure-path         \
             --with-all-insults         \
             --with-env-editor          \
