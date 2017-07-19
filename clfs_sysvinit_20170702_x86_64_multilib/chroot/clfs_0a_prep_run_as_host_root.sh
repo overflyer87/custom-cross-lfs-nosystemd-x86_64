@@ -143,7 +143,10 @@ echo " "
 
 cp -v clfs_*.sh /home/${CLFSUSER}
 cp -v clfs_*.sh ${CLFS}
+cp -rv bclfs ${CLFS}
+
 chown -v ${CLFSUSER}:${CLFSUSER} /home/clfs
+
 
 echo " "
 echo "Check the screen output if everything looks fine"
