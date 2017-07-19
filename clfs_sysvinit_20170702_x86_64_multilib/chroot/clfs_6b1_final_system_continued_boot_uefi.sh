@@ -62,8 +62,6 @@ echo ""
 echo "Alright let's mount the boot partition /dev/sda1 to /boot/efi"
 mkdir -pv /boot/efi
 mount -vt vfat /dev/sda1 /boot/efi
-mkdir -v /back_original_boot_efi
-mv -v /boot/* /back_original_boot_efi
 
 #checkBuiltPackage
 
