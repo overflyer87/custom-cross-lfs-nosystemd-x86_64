@@ -202,8 +202,8 @@ install -v -m644    INSTALL LICENCE OVERVIEW README* \
 cd ${CLFSSOURCES}/bootscripts
 
 echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
-sudo make install-sshd
-sudo /etc/rc.d/init.d/sshd start
+make install-sshd
+/etc/rc.d/init.d/sshd start
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
@@ -251,7 +251,46 @@ patch -Np1 -i ../GPTfdisk-1.0.1-convenience-1.patch
 make PREFIX=/usr LIBDIR=/usr/lib64 POPT=1
 make PREFIX=/usr LIBDIR=/usr/lib64 POPT=1 install
 
-
 cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf gptfdisk
+
+#Lynx
+wget http://invisible-mirror.net/archives/lynx/tarballs/lynx2.8.8rel.2.tar.bz2 -O \
+  lynx2.8.8rel.2.tar.bz2
+
+wget http://www.linuxfromscratch.org/patches/blfs/svn/lynx-2.8.8rel.2-openssl_1.1.0-1.patch -O \
+  lynx-2.8.8rel.2-openssl_1.1.0-1.patch
+  
+mkdir lynx && tar xf lynx-*.tar.* -C lynx --strip-components 1
+cd lynx
+
+patch -p1 -i ../lynx-2.8.8rel.2-openssl_1.1.0-1.patch
+
+./configure --prefix=/usr          \
+            --sysconfdir=/etc/lynx \
+            --libdir=/usr/lib64    \
+            --datadir=/usr/share/doc/lynx-2.8.8rel.2 \
+            --with-zlib            \
+            --with-bzlib           \
+            --with-ssl             \
+            --with-screen=ncursesw \
+            --enable-locale-charset &&
+            
+PREFIX=/usr LIBDIR=/usr/lib64 make
+PREFIX=/usr LIBDIR=/usr/lib64 make install-full
+chgrp -v -R root /usr/share/doc/lynx-2.8.8rel.2/lynx_doc
+
+sed -e '/#LOCALE/     a LOCALE_CHARSET:TRUE'     \
+    -i /etc/lynx/lynx.cfg
+
+sed -e '/#DEFAULT_ED/ a DEFAULT_EDITOR:vi'       \
+    -i /etc/lynx/lynx.cfg
+
+sed -e '/#PERSIST/    a PERSISTENT_COOKIES:TRUE' \
+    -i /etc/lynx/lynx.cfg
+
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf lynx
