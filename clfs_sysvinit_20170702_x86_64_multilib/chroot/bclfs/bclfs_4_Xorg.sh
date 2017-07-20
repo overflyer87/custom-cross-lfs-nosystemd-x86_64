@@ -511,14 +511,9 @@ patch -Np1 -i ../libxcb-1.12-python3-1.patch
 
 sed -i "s/pthread-stubs//" configure
 
-PYTHONHOME="/usr/lib64/python3.6/"
-PYTHONPATH="/usr/lib64/python3.6/"
-
-USE_ARCH=32 \
-CXX="g++ ${BUILD32}" CC="gcc ${BUILD32}" \
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}"
-
-./configure $XORG_CONFIG32    \
+PYTHONHOME="/usr/lib64/python3.6/" PYTHONPATH="/usr/lib64/python3.6/" \
+USE_ARCH=32 CXX="g++ ${BUILD32}" CC="gcc ${BUILD32}" \
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" ./configure $XORG_CONFIG32    \
             --enable-xinput   \
             --without-doxygen \
             --libdir=/usr/lib \
@@ -539,12 +534,9 @@ cd libxcb
 patch -Np1 -i ../libxcb-1.12-python3-1.patch
 sed -i "s/pthread-stubs//" configure
 
-PYTHONHOME="/usr/lib64/python3.6/"
-PYTHONPATH="/usr/lib64/python3.6/"
-USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"
-CXX="g++ ${BUILD64}" CC="gcc ${BUILD64}"
-
-./configure $XORG_CONFIG64     \
+PYTHONHOME="/usr/lib64/python3.6/" PYTHONPATH="/usr/lib64/python3.6/" \
+USE_ARCH=64 CXX="g++ ${BUILD64}" CC="gcc ${BUILD64}" \
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure $XORG_CONFIG64   \
             --enable-xinput   \
             --without-doxygen \
             --libdir=/usr/lib64 \
