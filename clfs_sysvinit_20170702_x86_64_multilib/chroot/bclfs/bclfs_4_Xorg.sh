@@ -398,7 +398,7 @@ cd Python-3
 patch -Np1 -i ../python360-multilib.patch
 
 USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"
-CXX="/usr/bin/g++ ${BUILD64}" CC="/usr/bin/gcc ${BUILD64}" ./configure 
+CXX="/usr/bin/g++ ${BUILD64}" CC="/usr/bin/gcc ${BUILD64}" ./configure \
             --prefix=/usr       \
             --enable-shared     \
             --with-system-expat \
