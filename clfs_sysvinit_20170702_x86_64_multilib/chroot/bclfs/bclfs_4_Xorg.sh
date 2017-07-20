@@ -888,14 +888,14 @@ cd pybeaker
 PYTHONHOME="/usr/lib64/python3.6/" \
 PYTHONPATH="/usr/lib64/python3.6/" \
 
-python3-32 setup.py install --optimize=1
-python3-64 setup.py install --optimize=1
+python3 setup.py install --optimize=1
+python3 setup.py install --optimize=1
 
 PYTHONHOME="/usr/lib64/python2.7/" \
 PYTHONPATH="/usr/lib64/python2.7/" \
 
-python2-32 setup.py install --optimize=1
-python2-64 setup.py install --optimize=1
+python2 setup.py install --optimize=1
+python2 setup.py install --optimize=1
 
 
 cd ${CLFSSOURCES}
@@ -914,18 +914,18 @@ cd pyMarkupSafe
 
 PYTHONHOME="/usr/lib64/python3.6/" \
 PYTHONPATH="/usr/lib64/python3.6/" \
-python3-32 setup.py build
-python3-32 setup.py install --optimize=1
-python3-64 setup.py build
-python3-64 setup.py install --optimize=1
+python3 setup.py build
+python3 setup.py install --optimize=1
+python3 setup.py build
+python3 setup.py install --optimize=1
 
 
 PYTHONHOME="/usr/lib64/python2.7/" \
 PYTHONPATH="/usr/lib64/python2.7/" \
-python2-32 setup.py build
-python2-32 setup.py install --optimize=1
-python2-64 setup.py build
-python2-64 setup.py install --optimize=1
+python2 setup.py build
+python2 setup.py install --optimize=1
+python2 setup.py build
+python2 setup.py install --optimize=1
 
 
 cd ${CLFSSOURCES}
@@ -948,7 +948,7 @@ cd pymako
 
 PYTHONHOME="/usr/lib64/python2.7/"
 PYTHONPATH="/usr/lib64/python2.7/"
-python2-32 setup.py install --optimize=1
+python2 setup.py install --optimize=1
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
@@ -960,7 +960,7 @@ cd pymako
 
 PYTHONHOME="/usr/lib64/python2.7/"
 PYTHONPATH="/usr/lib64/python2.7/"
-python2-64 setup.py install --optimize=1
+python2 setup.py install --optimize=1
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
@@ -974,7 +974,7 @@ cd pymako
 PYTHONHOME="/usr/lib64/python3.6/" \
 PYTHONPATH="/usr/lib64/python3.6/" \
 sed -i "s:mako-render:&3:g" setup.py &&
-python3-32 setup.py install --optimize=1
+python3 setup.py install --optimize=1
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
@@ -987,7 +987,7 @@ cd pymako
 PYTHONHOME="/usr/lib64/python3.6/" \
 PYTHONPATH="/usr/lib64/python3.6/" \
 sed -i "s:mako-render:&3:g" setup.py &&
-python3-64 setup.py install --optimize=1
+python3 setup.py install --optimize=1
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
