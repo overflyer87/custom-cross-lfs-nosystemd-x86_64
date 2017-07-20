@@ -108,7 +108,6 @@ wget https://www.x.org/pub/individual/util/util-macros-1.19.1.tar.bz2 -O \
 mkdir util-macros && tar xf util-macros-*.tar.* -C util-macros --strip-components 1
 cd util-macros
 
-
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
 USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" ./configure $XORG_CONFIG32
 as_root make PREFIX=/usr LIBDIR=/usr/lib install
@@ -117,8 +116,7 @@ cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf util-macros
 
-#util-macros 64-bit
-  
+#util-macros 64-bit  
 mkdir util-macros && tar xf util-macros-*.tar.* -C util-macros --strip-components 1
 cd util-macros
 
@@ -160,8 +158,9 @@ e793ecefeaecfeabd1aed6a01095174e  xf86vidmodeproto-2.3.1.tar.bz2
 16791f7ca8c51a20608af11702e51083  xproto-7.0.31.tar.bz2
 EOF
 
-mkdir proto &&
-cd proto &&
+mkdir proto
+cd proto
+
 grep -v '^#' ../proto-7.md5 | awk '{print $2}' | wget -i- -c \
     -B https://www.x.org/pub/individual/proto/ &&
 md5sum -c ../proto-7.md5
@@ -195,8 +194,6 @@ done
 cd ${CLFSSOURCES}/xc
 
 checkBuiltPackage
-
-USE_ARCH="" CC="" CXX="" PKG_CONFIG_PATH="" LIBDIR=""
 
 #libXau 32-bit
 wget https://www.x.org/pub/individual/lib/libXau-1.0.8.tar.bz2 -O \
@@ -277,11 +274,11 @@ mkdir expat && tar xf expat-*.tar.* -C expat --strip-components 1
 cd expat
 
 USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}"
-CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" 
-./configure --prefix=/usr \
+CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" ./configure \
+  --prefix=/usr \
   --libdir=/usr/lib \
   --disable-static \
-  --enable-shared
+  --enable-shared &&
   
 make LIBDIR=/usr/lib PREFIX=/usr 
 as_root make LIBDIR=/usr/lib PREFIX=/usr install
@@ -298,16 +295,16 @@ mkdir expat && tar xf expat-*.tar.* -C expat --strip-components 1
 cd expat
 
 USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"
-CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" 
-./configure --prefix=/usr \
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" ./configure \
+  --prefix=/usr \
   --libdir=/usr/lib64 \
   --disable-static \
-  --enable-shared
+  --enable-shared &&
   
 make LIBDIR=/usr/lib64 PREFIX=/usr 
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
   
-install -v -m755 -d /usr/share/doc/expat-2.1.0 &&
+install -v -m755 -d /usr/share/doc/expat-2.1.0
 install -v -m644 doc/*.{html,png,css} /usr/share/doc/expat-2.1.0
 
 cd ${CLFSSOURCES}
@@ -342,17 +339,16 @@ sed -i -e "s|@@MULTILIB_DIR@@|/lib64|g" Lib/distutils/command/install.py \
        setup.py
        
 sed -i "s@/usr/X11R6@${XORG_PREFIX}@g" setup.py
-
 sed -i 's@lib/python@lib64/python@g' Modules/getpath.c
 
 USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" 
-CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" LDFLAGS="-L/usr/lib64"
-./configure --prefix=/usr       \
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" LDFLAGS="-L/usr/lib64" ./configure \
+            --prefix=/usr       \
             --enable-shared     \
             --with-system-expat \
             --with-system-ffi   \
             --enable-unicode=ucs4 \
-            --libdir=/usr/lib64 \
+            --libdir=/usr/lib64 &&
 
 make EXTRA_CFLAGS="-fwrapv" LIBDIR=/usr/lib64 PREFIX=/usr 
 as_root make EXTRA_CFLAGS="-fwrapv" LIBDIR=/usr/lib64 PREFIX=/usr install
@@ -402,8 +398,8 @@ cd Python-3
 patch -Np1 -i ../python360-multilib.patch
 
 USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"
-CXX="/usr/bin/g++ ${BUILD64}" CC="/usr/bin/gcc ${BUILD64}"
-./configure --prefix=/usr       \
+CXX="/usr/bin/g++ ${BUILD64}" CC="/usr/bin/gcc ${BUILD64}" ./configure 
+            --prefix=/usr       \
             --enable-shared     \
             --with-system-expat \
             --with-system-ffi   \
@@ -411,7 +407,7 @@ CXX="/usr/bin/g++ ${BUILD64}" CC="/usr/bin/gcc ${BUILD64}"
             --with-custom-platlibdir=/usr/lib64 \
             --with-ensurepip=yes &&
 
-make PREFIX=/usr LIBDIR=/usr/lib64 PLATLIBDIR=/usr/lib64 platlibdir=/usr/lib64
+make PREFIX=/usr LIBDIR=/usr/lib64 PLATLIBDIR=/usr/lib64 platlibdir=/usr/lib64 &&
 as_root make install PREFIX=/usr LIBDIR=/usr/lib64 PLATLIBDIR=/usr/lib64 \
   platlibdir=/usr/lib64
 
@@ -448,14 +444,14 @@ patch -Np1 -i ../xcb-proto-1.12-schema-1.patch
 
 patch -Np1 -i ../xcb-proto-1.12-python3-1.patch
 
-PYTHONHOME="/usr/lib64/python3.6/"
-PYTHONPATH="/usr/lib64/python3.6/"
-USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}"
-CXX="/usr/bin/g++ ${BUILD32}" CC="/usr/bin/gcc ${BUILD32}"
-
-./configure $XORG_CONFIG32
+PYTHONHOME="/usr/lib64/python3.6/" \
+PYTHONPATH="/usr/lib64/python3.6/" \
+USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
+CXX="/usr/bin/g++ ${BUILD32}" \
+CC="/usr/bin/gcc ${BUILD32}" ./configure $XORG_CONFIG32 && 
 
 make check
+checkBuiltPackage
 
 make PREFIX=/usr LIBDIR=/usr/lib
 make PREFIX=/usr LIBDIR=/usr/lib install
@@ -472,15 +468,14 @@ patch -Np1 -i ../xcb-proto-1.12-schema-1.patch
 
 patch -Np1 -i ../xcb-proto-1.12-python3-1.patch
 
-PYTHONHOME="/usr/lib64/python3.6/"
-PYTHONPATH="/usr/lib64/python3.6/"
-USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"
-CXX="/usr/bin/g++ ${BUILD64}" CC="/usr/bin/gcc ${BUILD64}"
-
-./configure $XORG_CONFIG64
+PYTHONHOME="/usr/lib64/python3.6/" \
+PYTHONPATH="/usr/lib64/python3.6/" \
+USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+CXX="/usr/bin/g++ ${BUILD64}" \
+CC="/usr/bin/gcc ${BUILD64}" ./configure $XORG_CONFIG64 &&
 
 make check
-
+checkBuiltPackage
 make PREFIX=/usr LIBDIR=/usr/lib64
 make PREFIX=/usr LIBDIR=/usr/lib64 install
 
@@ -632,11 +627,6 @@ do
   as_root /sbin/ldconfig
 done
 
-PYTHONHOME="/usr/lib64/python3.6/"
-PYTHONPATH="/usr/lib64/python3.6/"
-USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"
-CXX="g++ ${BUILD64}" CC="gcc ${BUILD64}"
-
 cd ${CLFSSOURCES}/xc
 cd lib
 
@@ -647,15 +637,35 @@ do
   pushd $packagedir
   case $packagedir in
     libICE* )
-      ./configure $XORG_CONFIG64 ICE_LIBS=-lpthread
+      
+      PYTHONHOME="/usr/lib64/python3.6/" \
+      PYTHONPATH="/usr/lib64/python3.6/" \
+      USE_ARCH=64 \
+      PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+      CXX="g++ ${BUILD64}" \ 
+      CC="gcc ${BUILD64}" ./configure $XORG_CONFIG64 \
+        ICE_LIBS=-lpthread
     ;;
 
     libXfont2-[0-9]* )
-      ./configure $XORG_CONFIG64 --disable-devel-docs
+        
+      PYTHONHOME="/usr/lib64/python3.6/" \
+      PYTHONPATH="/usr/lib64/python3.6/" \
+      USE_ARCH=64 \
+      PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+      CXX="g++ ${BUILD64}" \ 
+      CC="gcc ${BUILD64}" ./configure $XORG_CONFIG64 \
+          --disable-devel-docs
     ;;
 
     libXt-[0-9]* )
-      ./configure $XORG_CONFIG64 \
+      
+      PYTHONHOME="/usr/lib64/python3.6/" \
+      PYTHONPATH="/usr/lib64/python3.6/" \
+      USE_ARCH=64 \
+      PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+      CXX="g++ ${BUILD64}" \ 
+      CC="gcc ${BUILD64}" ./configure $XORG_CONFIG64 \
                   --with-appdefaultdir=/etc/X11/app-defaults
     ;;
 
@@ -838,9 +848,11 @@ mkdir libdrm && tar xf libdrm-*.tar.* -C libdrm --strip-components 1
 cd libdrm
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
-  USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}"
-
-./configure --prefix=/usr --enable-udev --libdir=/usr/lib64
+  USE_ARCH=64 CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" ./configure --prefix=/usr \
+      --enable-udev  \
+      --libdir=/usr/lib64 &&
+      
 make PREFIX=/usr LIBDIR=/usr/lib64
 make PREFIX=/usr LIBDIR=/usr/lib64 install
 
@@ -858,14 +870,14 @@ wget https://pypi.python.org/packages/93/b2/12de6937b06e9615dbb3cb3a1c9af17f133f
 mkdir pybeaker && tar xf Beaker-*.tar.* -C pybeaker --strip-components 1
 cd pybeaker
 
-PYTHONHOME="/usr/lib64/python3.6/"
-PYTHONPATH="/usr/lib64/python3.6/"
+PYTHONHOME="/usr/lib64/python3.6/" \
+PYTHONPATH="/usr/lib64/python3.6/" \
 
 python3-32 setup.py install --optimize=1
 python3-64 setup.py install --optimize=1
 
-PYTHONHOME="/usr/lib64/python2.7/"
-PYTHONPATH="/usr/lib64/python2.7/"
+PYTHONHOME="/usr/lib64/python2.7/" \
+PYTHONPATH="/usr/lib64/python2.7/" \
 
 python2-32 setup.py install --optimize=1
 python2-64 setup.py install --optimize=1
@@ -885,16 +897,16 @@ wget https://files.pythonhosted.org/packages/4d/de/32d741db316d8fdb7680822dd3700
 mkdir pyMarkupSafe && tar xf MarkupSafe-*.tar.* -C pyMarkupSafe --strip-components 1
 cd pyMarkupSafe
 
-PYTHONHOME="/usr/lib64/python3.6/"
-PYTHONPATH="/usr/lib64/python3.6/"
+PYTHONHOME="/usr/lib64/python3.6/" \
+PYTHONPATH="/usr/lib64/python3.6/" \
 python3-32 setup.py build
 python3-32 setup.py install --optimize=1
 python3-64 setup.py build
 python3-64 setup.py install --optimize=1
 
 
-PYTHONHOME="/usr/lib64/python2.7/"
-PYTHONPATH="/usr/lib64/python2.7/"
+PYTHONHOME="/usr/lib64/python2.7/" \
+PYTHONPATH="/usr/lib64/python2.7/" \
 python2-32 setup.py build
 python2-32 setup.py install --optimize=1
 python2-64 setup.py build
@@ -944,8 +956,8 @@ rm -rf pymako
 mkdir pymako && tar xf Mako-*.tar.* -C pymako --strip-components 1
 cd pymako
 
-PYTHONHOME="/usr/lib64/python3.6/"
-PYTHONPATH="/usr/lib64/python3.6/"
+PYTHONHOME="/usr/lib64/python3.6/" \
+PYTHONPATH="/usr/lib64/python3.6/" \
 sed -i "s:mako-render:&3:g" setup.py &&
 python3-32 setup.py install --optimize=1
 
@@ -957,8 +969,8 @@ rm -rf pymako
 mkdir pymako && tar xf Mako-*.tar.* -C pymako --strip-components 1
 cd pymako
 
-PYTHONHOME="/usr/lib64/python3.6/"
-PYTHONPATH="/usr/lib64/python3.6/"
+PYTHONHOME="/usr/lib64/python3.6/" \
+PYTHONPATH="/usr/lib64/python3.6/" \
 sed -i "s:mako-render:&3:g" setup.py &&
 python3-64 setup.py install --optimize=1
 
@@ -984,8 +996,8 @@ mkdir libvdpau && tar xf libvdpau-*.tar.* -C libvdpau --strip-components 1
 cd libvdpau
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}"
-./configure $XORG_CONFIG32 \
+USE_ARCH=32 CC="gcc ${BUILD32}" \
+CXX="g++ ${BUILD32}" ./configure $XORG_CONFIG32 \
             --docdir=/usr/share/doc/libvdpau-1.1.1 &&
 
 make PREFIX=/usr LIBDIR=/usr/lib
@@ -1000,8 +1012,8 @@ mkdir libvdpau && tar xf libvdpau-*.tar.* -C libvdpau --strip-components 1
 cd libvdpau
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
-USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}"
-./configure $XORG_CONFIG64 \
+USE_ARCH=64 CC="gcc ${BUILD64}" \
+CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64 \
             --docdir=/usr/share/doc/libvdpau-1.1.1 &&
 
 make PREFIX=/usr LIBDIR=/usr/lib64
@@ -1025,9 +1037,8 @@ patch -Np1 -i ../mesa-17.1.4-add_xdemos-1.patch
 GLL_DRV="i915,nouveau,svga,swrast"
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}"
-
-./autogen.sh CFLAGS='-O2' CXXFLAGS='-O2' \
+USE_ARCH=32 CC="gcc ${BUILD32}" \
+CXX="g++ ${BUILD32}" ./autogen.sh CFLAGS='-O2' CXXFLAGS='-O2' \
             --prefix=$XORG_PREFIX        \
             --sysconfdir=/etc            \
             --enable-texture-float       \
@@ -1037,7 +1048,7 @@ USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}"
             --enable-glx-tls             \
             --with-platforms="drm,x11"   \
             --with-gallium-drivers=$GLL_DRV \
-            --with-egl-platforms
+            --with-egl-platforms &&
 
 unset GLL_DRV
 
@@ -1061,9 +1072,8 @@ patch -Np1 -i ../mesa-17.1.4-add_xdemos-1.patch
 GLL_DRV="i915,nouveau,svga,swrast"
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
-USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}"
-
-./autogen.sh CFLAGS='-O2' CXXFLAGS='-O2' \
+USE_ARCH=64 CC="gcc ${BUILD64}" \
+CXX="g++ ${BUILD64}" ./autogen.sh CFLAGS='-O2' CXXFLAGS='-O2' \
             --prefix=$XORG_PREFIX        \
             --sysconfdir=/etc            \
             --enable-texture-float       \
@@ -1167,8 +1177,9 @@ b777bafb674555e48fd8437618270931  xwininfo-1.1.3.tar.bz2
 3025b152b4f13fdffd0c46d0be587be6  xwud-1.0.4.tar.bz2
 EOF
 
-mkdir app &&
-cd app &&
+mkdir app
+cd app
+
 grep -v '^#' ../app-7.md5 | awk '{print $2}' | wget -i- -c \
     -B https://www.x.org/pub/individual/app/ &&
 md5sum -c ../app-7.md5
@@ -1195,9 +1206,6 @@ md5sum -c ../app-7.md5
 #done
 #as_root rm -f $XORG_PREFIX/bin/xkeystone
 
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
-USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}"
-
 for package in $(grep -v '^#' ../app-7.md5 | awk '{print $2}')
 do
   packagedir=${package%.tar.bz2}
@@ -1208,8 +1216,12 @@ do
          sed -i -e "/D_XOPEN/s/5/6/" configure
        ;;
      esac
-
-     ./configure $XORG_CONFIG64
+      
+      
+    PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+    USE_ARCH=64 CC="gcc ${BUILD64}" \
+    CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64 &&
+    
      make PREFIX=/usr LIBDIR=/usr/lib64
      as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
   popd
@@ -1263,32 +1275,32 @@ grep -v '^#' ../font-7.md5 | awk '{print $2}' | wget -i- -c \
     -B https://www.x.org/pub/individual/font/ &&
 md5sum -c ../font-7.md5
 
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}"
-
 for package in $(grep -v '^#' ../font-7.md5 | awk '{print $2}')
 do
   packagedir=${package%.tar.bz2}
   tar -xf $package
   pushd $packagedir
-    ./configure $XORG_CONFIG32
-    make PREFIX=/usr LIBDIR=/usr/lib
-    as_root make PREFIX=/usr LIBDIR=/usr/lib install
+  
+  PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
+  USE_ARCH=32 CC="gcc ${BUILD32}" \
+  CXX="g++ ${BUILD32}" ./configure $XORG_CONFIG32 &&
+  make PREFIX=/usr LIBDIR=/usr/lib
+  as_root make PREFIX=/usr LIBDIR=/usr/lib install
   popd
   as_root rm -rf $packagedir
 done
 
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
-USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}"
-
 for package in $(grep -v '^#' ../font-7.md5 | awk '{print $2}')
 do
   packagedir=${package%.tar.bz2}
   tar -xf $package
   pushd $packagedir
-    ./configure $XORG_CONFIG64
-    make PREFIX=/usr LIBDIR=/usr/lib64
-    as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+  PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+  USE_ARCH=64 \
+  CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64 &&
+  make PREFIX=/usr LIBDIR=/usr/lib64 &&
+  as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
   popd
   as_root rm -rf $packagedir
 done
@@ -1306,7 +1318,11 @@ wget http://xorg.freedesktop.org/archive/individual/data/xkeyboard-config/xkeybo
 mkdir xkeyboard-config && tar xf xkeyboard-config-*.tar.* -C xkeyboard-config --strip-components 1
 cd xkeyboard-config
 
-./configure $XORG_CONFIG32 --with-xkb-rules-symlink=xorg
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
+USE_ARCH=32 CC="gcc ${BUILD32}" \
+CXX="g++ ${BUILD32}" ./configure $XORG_CONFIG32 \
+    --with-xkb-rules-symlink=xorg &&
+    
 make PREFIX=/usr LIBDIR=/usr/lib
 make PREFIX=/usr LIBDIR=/usr/lib install
 
@@ -1318,7 +1334,11 @@ rm -rf xkeyboard-config
 mkdir xkeyboard-config && tar xf xkeyboard-config-*.tar.* -C xkeyboard-config --strip-components 1
 cd xkeyboard-config
 
-./configure $XORG_CONFIG64 --with-xkb-rules-symlink=xorg
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+USE_ARCH=64 \
+CC="gcc ${BUILD64}" \
+CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64 \
+    --with-xkb-rules-symlink=xorg &&
 make PREFIX=/usr LIBDIR=/usr/lib64
 make PREFIX=/usr LIBDIR=/usr/lib64 install
 
@@ -1334,9 +1354,9 @@ mkdir libepoxy && tar xf libepoxy-*.tar.* -C libepoxy --strip-components 1
 cd libepoxy
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}"
-
-./configure --prefix=/usr --libdir=/usr/lib
+USE_ARCH=32 CC="gcc ${BUILD32}"  \
+CXX="g++ ${BUILD32}" ./configure --prefix=/usr \
+    --libdir=/usr/lib &&
 make PREFIX=/usr LIBDIR=/usr/lib
 make PREFIX=/usr LIBDIR=/usr/lib install
 
@@ -1350,9 +1370,9 @@ mkdir libepoxy && tar xf libepoxy-*.tar.* -C libepoxy --strip-components 1
 cd libepoxy
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
-USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}"
-
-./configure --prefix=/usr --libdir=/usr/lib64
+USE_ARCH=64 CC="gcc ${BUILD64}" \
+CXX="g++ ${BUILD64}" ./configure --prefix=/usr \
+    --libdir=/usr/lib64 &&
 make PREFIX=/usr LIBDIR=/usr/lib64
 make PREFIX=/usr LIBDIR=/usr/lib64 install
 
@@ -1368,11 +1388,10 @@ mkdir pixman && tar xf pixman-*.tar.* -C pixman --strip-components 1
 cd pixman
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}"
-
-./configure --prefix=/usr \
+USE_ARCH=32 CC="gcc ${BUILD32}" \
+CXX="g++ ${BUILD32}" ./configure --prefix=/usr \
   --disable-static \
-  --libdir=/usr/lib
+  --libdir=/usr/lib &&
   
 make PREFIX=/usr LIBDIR=/usr/lib
 make PREFIX=/usr LIBDIR=/usr/lib install
@@ -1386,11 +1405,10 @@ mkdir pixman && tar xf pixman-*.tar.* -C pixman --strip-components 1
 cd pixman
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
-USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}"
-
-./configure --prefix=/usr \
+USE_ARCH=64 CC="gcc ${BUILD64}" \
+CXX="g++ ${BUILD64}" ./configure --prefix=/usr \
   --disable-static \
-  --libdir=/usr/lib64
+  --libdir=/usr/lib64 &&
   
 make PREFIX=/usr LIBDIR=/usr/lib64
 make PREFIX=/usr LIBDIR=/usr/lib64 install
@@ -1449,14 +1467,14 @@ cd xorg-server
 patch -Np1 -i ../xorg-server-1.19.3-add_prime_support-1.patch
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
-USE_ARCH=32 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}"
-
-./configure $XORG_CONFIG64            \
+USE_ARCH=64 \
+CC="gcc ${BUILD64}" \
+CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64 \
            --enable-glamor          \
            --enable-install-setuid  \
            --enable-suid-wrapper    \
            --disable-systemd-logind \
-           --with-xkb-output=/var/lib/xkb
+           --with-xkb-output=/var/lib/xkb &&
            
 make PREFIX=/usr LIBDIR=/usr/lib64
 ldconfig
@@ -1582,11 +1600,11 @@ mkdir mtdev && tar xf mtdev-*.tar.* -C mtdev --strip-components 1
 cd mtdev
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
-USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}"
-
-./configure --prefix=/usr \
+USE_ARCH=64 \
+CC="gcc ${BUILD64}" \
+CXX="g++ ${BUILD64}" ./configure --prefix=/usr \
   --disable-static \
-  --libdir=/usr/lib64
+  --libdir=/usr/lib64 &&
   
 make PREFIX=/usr LIBDIR=/usr/lib64
 make PREFIX=/usr LIBDIR=/usr/lib64 install
@@ -1603,18 +1621,17 @@ mkdir libinput && tar xf libinput-*.tar.* -C libinput --strip-components 1
 cd libinput
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}"
-
-./configure $XORG_CONFIG32          \
+USE_ARCH=32 \
+CC="gcc ${BUILD32}" \
+CXX="g++ ${BUILD32}" ./configure $XORG_CONFIG32 \
             --disable-libwacom      \
             --disable-debug-gui     \
             --disable-tests         \
             --disable-documentation \
-            --with-udev-dir=/lib/udev
+            --with-udev-dir=/lib/udev && 
             
 make PREFIX=/usr LIBDIR=/usr/lib
 make PREFIX=/usr LIBDIR=/usr/lib install
-
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -1626,14 +1643,14 @@ mkdir libinput && tar xf libinput-*.tar.* -C libinput --strip-components 1
 cd libinput
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
-USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}"
-
-./configure $XORG_CONFIG64          \
+USE_ARCH=64 \
+CC="gcc ${BUILD64}" \
+CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64 \
             --disable-libwacom      \
             --disable-debug-gui     \
             --disable-tests         \
             --disable-documentation \
-            --with-udev-dir=/lib64/udev
+            --with-udev-dir=/lib64/udev &&
             
 make PREFIX=/usr LIBDIR=/usr/lib64
 make PREFIX=/usr LIBDIR=/usr/lib64 install
@@ -1747,9 +1764,10 @@ sed -e '/$serverargs $vtarg/ s/serverargs/: #&/' \
     -i startx.cpp
 
 USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
-CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}"
-
-./configure $XORG_CONFIG64 --with-xinitdir=/etc/X11/app-defaults
+CC="gcc ${BUILD64}" \
+CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64 \
+    --with-xinitdir=/etc/X11/app-defaults &&
+    
 make PREFIX=/usr LIBDIR=/usr/lib64
 make PREFIX=/usr LIBDIR=/usr/lib64 install
 ldconfig
