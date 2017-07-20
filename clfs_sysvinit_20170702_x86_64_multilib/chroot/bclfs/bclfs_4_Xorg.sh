@@ -513,8 +513,10 @@ sed -i "s/pthread-stubs//" configure
 
 PYTHONHOME="/usr/lib64/python3.6/"
 PYTHONPATH="/usr/lib64/python3.6/"
-USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}"
-CXX="g++ ${BUILD32}" CC="gcc ${BUILD32}"
+
+USE_ARCH=32 \
+CXX="g++ ${BUILD32}" CC="gcc ${BUILD32}" \
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}"
 
 ./configure $XORG_CONFIG32    \
             --enable-xinput   \
