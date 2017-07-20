@@ -579,6 +579,11 @@ grep -v '^#' ../lib-7.md5 | awk '{print $2}' | wget -i- -c \
     -B https://www.x.org/pub/individual/lib/ &&
 md5sum -c ../lib-7.md5
 
+PYTHONHOME="/usr/lib64/python3.6/" \
+PYTHONPATH="/usr/lib64/python3.6/" \
+USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
+CXX="g++ ${BUILD32}" CC="gcc ${BUILD32}"
+
 for package in $(grep -v '^#' ../lib-7.md5 | awk '{print $2}')
 do
   packagedir=${package%.tar.bz2}
@@ -597,24 +602,30 @@ do
     libXfont2-[0-9]* )
     PYTHONHOME="/usr/lib64/python3.6/" \
     PYTHONPATH="/usr/lib64/python3.6/" \
-    USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-    CXX="g++ ${BUILD32}" CC="gcc ${BUILD32}" ./configure $XORG_CONFIG32 \
+    USE_ARCH=32 \
+    PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
+    CXX="g++ ${BUILD32}" \
+    CC="gcc ${BUILD32}" ./configure $XORG_CONFIG32 \
       --disable-devel-docs
     ;;
 
     libXt-[0-9]* )
      PYTHONHOME="/usr/lib64/python3.6/" \
      PYTHONPATH="/usr/lib64/python3.6/" \
-     USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-     CXX="g++ ${BUILD32}" CC="gcc ${BUILD32}" ./configure $XORG_CONFIG32 \
+     USE_ARCH=32 \
+     PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
+     CXX="g++ ${BUILD32}" \
+     CC="gcc ${BUILD32}" ./configure $XORG_CONFIG32 \
                   --with-appdefaultdir=/etc/X11/app-defaults
     ;;
 
     * )
      PYTHONHOME="/usr/lib64/python3.6/" \
      PYTHONPATH="/usr/lib64/python3.6/" \
-     USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-     CXX="g++ ${BUILD32}" CC="gcc ${BUILD32}" ./configure $XORG_CONFIG32
+     USE_ARCH=32 \
+     PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
+     CXX="g++ ${BUILD32}" \
+     CC="gcc ${BUILD32}" ./configure $XORG_CONFIG32
     ;;
   esac
   make PREFIX=/usr LIBDIR=/usr/lib
@@ -629,6 +640,10 @@ done
 
 cd ${CLFSSOURCES}/xc
 cd lib
+
+PYTHONHOME="/usr/lib64/python3.6/" PYTHONPATH="/usr/lib64/python3.6/" \
+USE_ARCH=64 CXX="g++ ${BUILD64}" CC="gcc ${BUILD64}" \
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"
 
 for package in $(grep -v '^#' ../lib-7.md5 | awk '{print $2}')
 do
