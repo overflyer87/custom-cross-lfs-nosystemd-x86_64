@@ -58,7 +58,7 @@ sed -i -e 's/\ sulogin[^ ]*//' -e 's/pidof\.8//' -e '/ln .*pidof/d' \
 make -C src clobber
 make -C src CC="gcc ${BUILD64}"
 
-make -C src install
+make -C src uninstall
 
 cd ${CLFSSOURCES} 
 checkBuiltPackage
@@ -90,7 +90,7 @@ cd openrc
 
 PKG_CONFIG_PATH=/usr/lib64/pkgconfig/ \
 BRANDING='CLFS-20170702-x86_64-multilib' \ 
-MKPAM=pam \
+#MKPAM=pam \
 MKSELINUX=no \
 MKTERMCAP=ncurses \
 PKG_PREFIX="" \
@@ -102,25 +102,10 @@ LIBEXECDIR=/usr/lib64/openrc \
 BINDIR=/usr/bin \
 SBINDIR=/usr/bin \
 SYSCONFDIR=/etc/openrc \
-CC="gcc ${BUILD64}" make
-
-PKG_CONFIG_PATH=/usr/lib64/pkgconfig/ \
-BRANDING='CLFS-20170702-x86_64-multilib' \ 
-MKPAM=pam \
-MKSELINUX=no \
-MKTERMCAP=ncurses \
-PKG_PREFIX="" \
-PREFIX="/usr" \
-LIBDIR="/usr/lib64" \
-LIBMODE=0644 \
-SHLIBDIR=/usr/lib64 \
-LIBEXECDIR=/usr/lib64/openrc \
-BINDIR=/usr/bin \
-SBINDIR=/usr/bin \
-SYSCONFDIR=/etc/openrc \
+CC="gcc ${BUILD64}" make &&
 CC="gcc ${BUILD64}" make install
 
-install -m 644 support/sysvinit/inittab /etc/openrc/inittab
+install -m644 support/sysvinit/inittab /etc/openrc/inittab
 install -m644 -d /etc/logrotate.d/openrc
 install -m755 -d /usr/share/licenses/openrc
 install -m644 LICENSE AUTHORS /usr/share/licenses/openrc/
