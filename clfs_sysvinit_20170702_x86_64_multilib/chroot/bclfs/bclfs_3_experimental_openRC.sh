@@ -58,7 +58,7 @@ sed -i -e 's/\ sulogin[^ ]*//' -e 's/pidof\.8//' -e '/ln .*pidof/d' \
 make -C src clobber
 make -C src CC="gcc ${BUILD64}"
 
-make -C src uninstall
+make -C src install
 
 cd ${CLFSSOURCES} 
 checkBuiltPackage
