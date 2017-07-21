@@ -109,7 +109,7 @@ CC="gcc ${BUILD64}" make &&
 CC="gcc ${BUILD64}" make install
 
 install -m644 support/sysvinit/inittab /etc/openrc/inittab
-install -m644 -d /etc/logrotate.d/openrc
+install -m644 /etc/logrotate.d/openrc
 install -Dm0644 openrc.logrotate /etc/logrotate.d/openrc
 
 echo "/var/log/rc.log { compress rotate 4	weekly missingok notifempty }" > /etc/logrotate.d/openrc
