@@ -1732,7 +1732,7 @@ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}"
 wget ftp://invisible-island.net/xterm/xterm-330.tgz -O \
   xterm-330.tgz
   
-mkdir xterm && tar xf xterm-*.tar.* -C xterm --strip-components 1
+mkdir xterm && tar xf xterm-*.tgz -C xterm --strip-components 1
 cd xterm
 
 sed -i '/v0/{n;s/new:/new:kb=^?:/}' termcap &&
