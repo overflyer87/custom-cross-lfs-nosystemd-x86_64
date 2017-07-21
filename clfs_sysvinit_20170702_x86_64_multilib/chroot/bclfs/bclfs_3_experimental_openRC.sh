@@ -88,7 +88,7 @@ rm -rf openrc-sysvinit
 mkdir openrc && tar xf openrc-*.tar.* -C openrc --strip-components 1
 cd openrc
 
-PKG_CONFIG_PATH=/usr/lib64/pkgconfig/ \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64}/ \
 BRANDING='CLFS-20170702-x86_64-multilib' \ 
 #MKPAM=pam \
 MKSELINUX=no \
