@@ -409,8 +409,8 @@ make PREFIX=/usr LIBDIR=/usr/lib64 PLATLIBDIR=/usr/lib64 platlibdir=/usr/lib64 &
 as_root make install PREFIX=/usr LIBDIR=/usr/lib64 PLATLIBDIR=/usr/lib64 \
   platlibdir=/usr/lib64
 
-chmod -v 755 /usr/lib/libpython3.6m.so
-chmod -v 755 /usr/lib/libpython3.so
+chmod -v 755 /usr/lib64/libpython3.6m.so
+chmod -v 755 /usr/lib64/libpython3.so
 
 install -v -dm755 /usr/share/doc/python-3.6.0/html &&
 tar --strip-components=1 \
@@ -424,11 +424,6 @@ ln -svfn python-3.6.0 /usr/share/doc/python-3
 cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf Python-3
-
-
-PYTHONHOME="/usr/lib64/python3.6/" PYTHONPATH="/usr/lib64/python3.6/"  &&
-export PYTHONHOME="/usr/lib64/python3.6/" &&
-export PYTHONPATH="/usr/lib64/python3.6/"
 
 cd ${CLFSSOURCES}/xc
 
@@ -447,8 +442,6 @@ patch -Np1 -i ../xcb-proto-1.12-schema-1.patch
 
 patch -Np1 -i ../xcb-proto-1.12-python3-1.patch
 
-PYTHONHOME="/usr/lib64/python3.6/" \
-PYTHONPATH="/usr/lib64/python3.6/" \
 USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
 CXX="/usr/bin/g++ ${BUILD32}" \
 CC="/usr/bin/gcc ${BUILD32}" ./configure $XORG_CONFIG32 && 
@@ -471,8 +464,6 @@ patch -Np1 -i ../xcb-proto-1.12-schema-1.patch
 
 patch -Np1 -i ../xcb-proto-1.12-python3-1.patch
 
-PYTHONHOME="/usr/lib64/python3.6/" \
-PYTHONPATH="/usr/lib64/python3.6/" \
 USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
 CXX="/usr/bin/g++ ${BUILD64}" \
 CC="/usr/bin/gcc ${BUILD64}" ./configure $XORG_CONFIG64 &&
@@ -500,7 +491,6 @@ patch -Np1 -i ../libxcb-1.12-python3-1.patch
 
 sed -i "s/pthread-stubs//" configure
 
-PYTHONHOME="/usr/lib64/python3.6/" PYTHONPATH="/usr/lib64/python3.6/" \
 USE_ARCH=32 CXX="g++ ${BUILD32}" CC="gcc ${BUILD32}" \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" ./configure $XORG_CONFIG32    \
             --enable-xinput   \
@@ -523,7 +513,6 @@ cd libxcb
 patch -Np1 -i ../libxcb-1.12-python3-1.patch
 sed -i "s/pthread-stubs//" configure
 
-PYTHONHOME="/usr/lib64/python3.6/" PYTHONPATH="/usr/lib64/python3.6/" \
 USE_ARCH=64 CXX="g++ ${BUILD64}" CC="gcc ${BUILD64}" \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure $XORG_CONFIG64   \
             --enable-xinput   \
@@ -582,8 +571,6 @@ grep -v '^#' ../lib-7.md5 | awk '{print $2}' | wget -i- -c \
     -B https://www.x.org/pub/individual/lib/ &&
 md5sum -c ../lib-7.md5
 
-PYTHONHOME="/usr/lib64/python3.6/" \
-PYTHONPATH="/usr/lib64/python3.6/" \
 USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
 CXX="g++ ${BUILD32}" CC="gcc ${BUILD32}"
 
@@ -595,16 +582,13 @@ do
   case $packagedir in
     libICE* )
     
-    PYTHONHOME="/usr/lib64/python3.6/" \
-    PYTHONPATH="/usr/lib64/python3.6/" \
     USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
     CXX="g++ ${BUILD32}" CC="gcc ${BUILD32}" ./configure $XORG_CONFIG32 \
       ICE_LIBS=-lpthread
     ;;
     
     libXfont2-[0-9]* )
-    PYTHONHOME="/usr/lib64/python3.6/" \
-    PYTHONPATH="/usr/lib64/python3.6/" \
+
     USE_ARCH=32 \
     PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
     CXX="g++ ${BUILD32}" \
@@ -613,8 +597,7 @@ do
     ;;
 
     libXt-[0-9]* )
-     PYTHONHOME="/usr/lib64/python3.6/" \
-     PYTHONPATH="/usr/lib64/python3.6/" \
+
      USE_ARCH=32 \
      PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
      CXX="g++ ${BUILD32}" \
@@ -623,8 +606,7 @@ do
     ;;
 
     * )
-     PYTHONHOME="/usr/lib64/python3.6/" \
-     PYTHONPATH="/usr/lib64/python3.6/" \
+
      USE_ARCH=32 \
      PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
      CXX="g++ ${BUILD32}" \
@@ -644,7 +626,6 @@ done
 cd ${CLFSSOURCES}/xc
 cd lib
 
-PYTHONHOME="/usr/lib64/python3.6/" PYTHONPATH="/usr/lib64/python3.6/" \
 USE_ARCH=64 CXX="g++ ${BUILD64}" CC="gcc ${BUILD64}" \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"
 
@@ -655,9 +636,7 @@ do
   pushd $packagedir
   case $packagedir in
     libICE* )
-      
-      PYTHONHOME="/usr/lib64/python3.6/" \
-      PYTHONPATH="/usr/lib64/python3.6/" \
+
       USE_ARCH=64 \
       PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
       CXX="g++ ${BUILD64}" \ 
@@ -667,8 +646,6 @@ do
 
     libXfont2-[0-9]* )
         
-      PYTHONHOME="/usr/lib64/python3.6/" \
-      PYTHONPATH="/usr/lib64/python3.6/" \
       USE_ARCH=64 \
       PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
       CXX="g++ ${BUILD64}" \ 
@@ -678,8 +655,6 @@ do
 
     libXt-[0-9]* )
       
-      PYTHONHOME="/usr/lib64/python3.6/" \
-      PYTHONPATH="/usr/lib64/python3.6/" \
       USE_ARCH=64 \
       PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
       CXX="g++ ${BUILD64}" \ 
@@ -888,9 +863,6 @@ wget https://pypi.python.org/packages/93/b2/12de6937b06e9615dbb3cb3a1c9af17f133f
 mkdir pybeaker && tar xf Beaker-*.tar.* -C pybeaker --strip-components 1
 cd pybeaker
 
-PYTHONHOME="/usr/lib64/python3.6/" \
-PYTHONPATH="/usr/lib64/python3.6/" \
-
 python3 setup.py install --optimize=1
 python3 setup.py install --optimize=1
 
@@ -915,8 +887,6 @@ wget https://files.pythonhosted.org/packages/4d/de/32d741db316d8fdb7680822dd3700
 mkdir pyMarkupSafe && tar xf MarkupSafe-*.tar.* -C pyMarkupSafe --strip-components 1
 cd pyMarkupSafe
 
-PYTHONHOME="/usr/lib64/python3.6/" \
-PYTHONPATH="/usr/lib64/python3.6/" \
 python3 setup.py build
 python3 setup.py install --optimize=1
 python3 setup.py build
@@ -974,8 +944,6 @@ wget https://pypi.python.org/packages/source/M/Mako/Mako-1.0.4.tar.gz -O \
 mkdir pymako && tar xf Mako-*.tar.* -C pymako --strip-components 1
 cd pymako
 
-PYTHONHOME="/usr/lib64/python3.6/" \
-PYTHONPATH="/usr/lib64/python3.6/" \
 sed -i "s:mako-render:&3:g" setup.py &&
 python3 setup.py install --optimize=1
 
@@ -987,8 +955,6 @@ rm -rf pymako
 mkdir pymako && tar xf Mako-*.tar.* -C pymako --strip-components 1
 cd pymako
 
-PYTHONHOME="/usr/lib64/python3.6/" \
-PYTHONPATH="/usr/lib64/python3.6/" \
 sed -i "s:mako-render:&3:g" setup.py &&
 python3 setup.py install --optimize=1
 
