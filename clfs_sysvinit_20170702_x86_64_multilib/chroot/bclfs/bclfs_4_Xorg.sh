@@ -311,72 +311,73 @@ cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf expat
 
-#Python2.7.6 64-bit
-wget https://www.python.org/ftp/python/2.7.13/Python-2.7.13.tar.xz -O \
-  Python-2.7.13.tar.xz
-  
-wget https://www.python.org/ftp/python/doc/2.7.13/python-2.7.13-docs-html.tar.bz2 -O \
-  python-2.7.13-docs-html.tar.bz2
-  
-mkdir Python-2 && tar xf Python-2.7.13.tar.* -C Python-2 --strip-components 1
-cd Python-2
-
-patch -Np1 -i ../python2-multilib.patch
-
-sed -i -e "s|@LIB@|/lib64|g" Lib/distutils/command/install.py \
-       Lib/distutils/sysconfig.py \
-       Lib/pydoc.py \
-       Lib/site.py \
-       Lib/sysconfig.py \
-       Lib/test/test_dl.py \
-       Lib/test/test_site.py \
-       Lib/trace.py \
-       Makefile.pre.in \
-       Modules/getpath.c \
-       setup.py
-       
-sed -i "s@/usr/X11R6@${XORG_PREFIX}@g" setup.py
-sed -i 's@lib/python@lib64/python@g' Modules/getpath.c
-
-USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
-CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" LDFLAGS="-L/usr/lib64" ./configure \
-            --prefix=/usr       \
-            --enable-shared     \
-            --with-system-expat \
-            --with-system-ffi   \
-            --enable-unicode=ucs4 \
-            --libdir=/usr/lib64 &&
-
-make EXTRA_CFLAGS="-fwrapv" LIBDIR=/usr/lib64 PREFIX=/usr 
-as_root make EXTRA_CFLAGS="-fwrapv" LIBDIR=/usr/lib64 PREFIX=/usr install
-
-chmod -v 755 /usr/lib/libpython2.7.so.1.0
-
-mv -v /usr/bin/python{,-64} &&
-mv -v /usr/bin/python2{,-64} &&
-mv -v /usr/bin/python2.7{,-64} &&
-ln -sfv python2.7-64 /usr/bin/python2-64 &&
-ln -sfv python2-64 /usr/bin/python-64 &&
-ln -sfv multiarch_wrapper /usr/bin/python &&
-ln -sfv multiarch_wrapper /usr/bin/python2 &&
-ln -sfv multiarch_wrapper /usr/bin/python2.7 &&
-mv -v /usr/include/python2.7/pyconfig{,-64}.h
-
-install -v -dm755 /usr/share/doc/python-2.7.13 &&
-
-tar --strip-components=1                     \
-    --no-same-owner                          \
-    --directory /usr/share/doc/python-2.7.13 \
-    -xvf ../python-2.7.*.tar.* &&
-
-find /usr/share/doc/python-2.7.13 -type d -exec chmod 0755 {} \; &&
-find /usr/share/doc/python-2.7.13 -type f -exec chmod 0644 {} \;
-
-            
-cd ${CLFSSOURCES}
-checkBuiltPackage
-rm -rf Python-2
-
+#THis is the closest I came to mjnultilib building Python 2.7.13
+#Installs fine but wont execute. Module named site not found
+##Python2.7.6 64-bit
+#wget https://www.python.org/ftp/python/2.7.13/Python-2.7.13.tar.xz -O \
+#  Python-2.7.13.tar.xz
+#  
+#wget https://www.python.org/ftp/python/doc/2.7.13/python-2.7.13-docs-html.tar.bz2 -O \
+#  python-2.7.13-docs-html.tar.bz2
+#  
+#mkdir Python-2 && tar xf Python-2.7.13.tar.* -C Python-2 --strip-components 1
+#cd Python-2
+#
+#patch -Np1 -i ../python2-multilib.patch
+#
+#sed -i -e "s|@LIB@|/lib64|g" Lib/distutils/command/install.py \
+#       Lib/distutils/sysconfig.py \
+#       Lib/pydoc.py \
+#       Lib/site.py \
+#       Lib/sysconfig.py \
+#       Lib/test/test_dl.py \
+#       Lib/test/test_site.py \
+#       Lib/trace.py \
+#       Makefile.pre.in \
+#       Modules/getpath.c \
+#       setup.py
+#       
+#sed -i "s@/usr/X11R6@${XORG_PREFIX}@g" setup.py
+#sed -i 's@lib/python@lib64/python@g' Modules/getpath.c
+#USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+#CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" LDFLAGS="-L/usr/lib64" ./configure \
+#            --prefix=/usr       \
+#            --enable-shared     \
+#            --with-system-expat \
+#            --with-system-ffi   \
+#            --enable-unicode=ucs4 \
+#            --libdir=/usr/lib64 &&
+#
+#make EXTRA_CFLAGS="-fwrapv" LIBDIR=/usr/lib64 PREFIX=/usr 
+#as_root make EXTRA_CFLAGS="-fwrapv" LIBDIR=/usr/lib64 PREFIX=/usr install
+#
+#chmod -v 755 /usr/lib/libpython2.7.so.1.0
+#
+#mv -v /usr/bin/python{,-64} &&
+#mv -v /usr/bin/python2{,-64} &&
+#mv -v /usr/bin/python2.7{,-64} &&
+#ln -sfv python2.7-64 /usr/bin/python2-64 &&
+#ln -sfv python2-64 /usr/bin/python-64 &&
+#ln -sfv multiarch_wrapper /usr/bin/python &&
+#ln -sfv multiarch_wrapper /usr/bin/python2 &&
+#ln -sfv multiarch_wrapper /usr/bin/python2.7 &&
+#mv -v /usr/include/python2.7/pyconfig{,-64}.h
+#
+#install -v -dm755 /usr/share/doc/python-2.7.13 &&
+#
+#tar --strip-components=1                     \
+#    --no-same-owner                          \
+#    --directory /usr/share/doc/python-2.7.13 \
+#    -xvf ../python-2.7.*.tar.* &&
+#
+#find /usr/share/doc/python-2.7.13 -type d -exec chmod 0755 {} \; &&
+#find /usr/share/doc/python-2.7.13 -type f -exec chmod 0644 {} \;
+#
+#            
+#cd ${CLFSSOURCES}
+#checkBuiltPackage
+#rm -rf Python-2
+#
 cd ${CLFSSOURCES}
 
 #Python 3 64-bit
@@ -423,6 +424,11 @@ ln -svfn python-3.6.0 /usr/share/doc/python-3
 cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf Python-3
+
+
+PYTHONHOME="/usr/lib64/python3.6/" PYTHONPATH="/usr/lib64/python3.6/"  &&
+export PYTHONHOME="/usr/lib64/python3.6/" &&
+export PYTHONPATH="/usr/lib64/python3.6/"
 
 cd ${CLFSSOURCES}/xc
 
@@ -888,11 +894,11 @@ PYTHONPATH="/usr/lib64/python3.6/" \
 python3 setup.py install --optimize=1
 python3 setup.py install --optimize=1
 
-PYTHONHOME="/usr/lib64/python2.7/" \
-PYTHONPATH="/usr/lib64/python2.7/" \
-
-python2 setup.py install --optimize=1
-python2 setup.py install --optimize=1
+#PYTHONHOME="/usr/lib64/python2.7/" \
+#PYTHONPATH="/usr/lib64/python2.7/" \
+#
+#python2 setup.py install --optimize=1
+#python2 setup.py install --optimize=1
 
 
 cd ${CLFSSOURCES}
@@ -917,12 +923,12 @@ python3 setup.py build
 python3 setup.py install --optimize=1
 
 
-PYTHONHOME="/usr/lib64/python2.7/" \
-PYTHONPATH="/usr/lib64/python2.7/" \
-python2 setup.py build
-python2 setup.py install --optimize=1
-python2 setup.py build
-python2 setup.py install --optimize=1
+#PYTHONHOME="/usr/lib64/python2.7/" \
+#PYTHONPATH="/usr/lib64/python2.7/" \
+#python2 setup.py build
+#python2 setup.py install --optimize=1
+#python2 setup.py build
+#python2 setup.py install --optimize=1
 
 
 cd ${CLFSSOURCES}
@@ -937,31 +943,31 @@ cd ${CLFSSOURCES}
 
 wget https://pypi.python.org/packages/source/M/Mako/Mako-1.0.4.tar.gz -O \
   Mako-1.0.4.tar.gz
-
+#
 #Let's start with Python 2.7 Mako modules
 #32-bit
-mkdir pymako && tar xf Mako-*.tar.* -C pymako --strip-components 1
-cd pymako
+#mkdir pymako && tar xf Mako-*.tar.* -C pymako --strip-components 1
+#cd pymako
+#
+#PYTHONHOME="/usr/lib64/python2.7/"
+#PYTHONPATH="/usr/lib64/python2.7/"
+#python2 setup.py install --optimize=1
+#
+#cd ${CLFSSOURCES}
+#checkBuiltPackage
+#rm -rf pymako
 
-PYTHONHOME="/usr/lib64/python2.7/"
-PYTHONPATH="/usr/lib64/python2.7/"
-python2 setup.py install --optimize=1
-
-cd ${CLFSSOURCES}
-checkBuiltPackage
-rm -rf pymako
-
-#64-bit
-mkdir pymako && tar xf Mako-*.tar.* -C pymako --strip-components 1
-cd pymako
-
-PYTHONHOME="/usr/lib64/python2.7/"
-PYTHONPATH="/usr/lib64/python2.7/"
-python2 setup.py install --optimize=1
-
-cd ${CLFSSOURCES}
-checkBuiltPackage
-rm -rf pymako
+##64-bit
+#mkdir pymako && tar xf Mako-*.tar.* -C pymako --strip-components 1
+#cd pymako
+#
+#PYTHONHOME="/usr/lib64/python2.7/"
+#PYTHONPATH="/usr/lib64/python2.7/"
+#python2 setup.py install --optimize=1
+#
+#cd ${CLFSSOURCES}
+#checkBuiltPackage
+#rm -rf pymako
 
 #Python 3.6 Mako modules
 #32-bit
