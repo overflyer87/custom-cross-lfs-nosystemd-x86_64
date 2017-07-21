@@ -264,7 +264,7 @@ wget http://invisible-mirror.net/archives/lynx/tarballs/lynx2.8.8rel.2.tar.bz2 -
 wget http://www.linuxfromscratch.org/patches/blfs/svn/lynx-2.8.8rel.2-openssl_1.1.0-1.patch -O \
   lynx-2.8.8rel.2-openssl_1.1.0-1.patch
   
-mkdir lynx && tar xf lynx-*.tar.* -C lynx --strip-components 1
+mkdir lynx && tar xf lynx*.tar.* -C lynx --strip-components 1
 cd lynx
 
 patch -p1 -i ../lynx-2.8.8rel.2-openssl_1.1.0-1.patch
