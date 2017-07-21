@@ -315,18 +315,15 @@ rm -rf expat
 wget https://www.python.org/ftp/python/2.7.13/Python-2.7.13.tar.xz -O \
   Python-2.7.13.tar.xz
   
-wget https://www.williamfeely.info/download/lfs-multilib/Python-2.7.13-multilib-1.patch -O \
-  python-2713-multilib-1.patch
-
 wget https://www.python.org/ftp/python/doc/2.7.13/python-2.7.13-docs-html.tar.bz2 -O \
   python-2.7.13-docs-html.tar.bz2
   
 mkdir Python-2 && tar xf Python-2.7.13.tar.* -C Python-2 --strip-components 1
 cd Python-2
 
-patch -Np1 -i ../python-2713-multilib-1.patch
+patch -Np1 -i ../python2-multilib.patch
 
-sed -i -e "s|@@MULTILIB_DIR@@|/lib64|g" Lib/distutils/command/install.py \
+sed -i -e "s|@LIB@|/lib64|g" Lib/distutils/command/install.py \
        Lib/distutils/sysconfig.py \
        Lib/pydoc.py \
        Lib/site.py \
@@ -341,7 +338,7 @@ sed -i -e "s|@@MULTILIB_DIR@@|/lib64|g" Lib/distutils/command/install.py \
 sed -i "s@/usr/X11R6@${XORG_PREFIX}@g" setup.py
 sed -i 's@lib/python@lib64/python@g' Modules/getpath.c
 
-USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" 
+USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" LDFLAGS="-L/usr/lib64" ./configure \
             --prefix=/usr       \
             --enable-shared     \
@@ -365,15 +362,15 @@ ln -sfv multiarch_wrapper /usr/bin/python2 &&
 ln -sfv multiarch_wrapper /usr/bin/python2.7 &&
 mv -v /usr/include/python2.7/pyconfig{,-64}.h
 
-install -v -dm755 /usr/share/doc/python-2.7.6 &&
+install -v -dm755 /usr/share/doc/python-2.7.13 &&
 
 tar --strip-components=1                     \
     --no-same-owner                          \
-    --directory /usr/share/doc/python-2.7.6 \
-    -xvf ../python-2.7.6-docs-html.tar.bz2 &&
+    --directory /usr/share/doc/python-2.7.13 \
+    -xvf ../python-2.7.*.tar.* &&
 
-find /usr/share/doc/python-2.7.6 -type d -exec chmod 0755 {} \; &&
-find /usr/share/doc/python-2.7.6 -type f -exec chmod 0644 {} \;
+find /usr/share/doc/python-2.7.13 -type d -exec chmod 0755 {} \; &&
+find /usr/share/doc/python-2.7.13 -type f -exec chmod 0644 {} \;
 
             
 cd ${CLFSSOURCES}
