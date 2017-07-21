@@ -59,13 +59,13 @@ cp ${CLFSSOURCES}/mykernel.conf ${CLFSSOURCES}/linux/.config
 make
 make modules_install
 make firmware_install
-cp -v arch/x86_64/boot/bzImage /boot/efi/vmlinuz-clfs-4.12.2
-cp -v System.map /boot/efi/System.map-4.12.2
-cp -v .config /boot/efi/config-4.12.2
+cp -v arch/x86_64/boot/bzImage /boot/efi/vmlinuz-clfs-4.12.3
+cp -v System.map /boot/efi/System.map-4.12.3
+cp -v .config /boot/efi/config-4.12.3
 
 cd ${CLFSSOURCES}
 #checkBuiltPackage
-mv linux /lib/modules/CLFS-4.12.2_ORIGINAL
+mv linux /lib/modules/CLFS-4.12.3ORIGINAL
 
 mkdir -v /etc/modprobe.d
 
