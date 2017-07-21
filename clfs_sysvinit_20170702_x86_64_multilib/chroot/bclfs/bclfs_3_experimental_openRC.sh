@@ -88,6 +88,9 @@ rm -rf openrc-sysvinit
 mkdir openrc && tar xf openrc-*.tar.* -C openrc --strip-components 1
 cd openrc
 
+sed -e "s|/sbin|/usr/bin|g" -i support/sysvinit/inittab
+sed -i 's:0444:0644:' mk/sys.mk
+
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64}/ \
 BRANDING='CLFS-20170702-x86_64-multilib' \ 
 #MKPAM=pam \
@@ -107,6 +110,13 @@ CC="gcc ${BUILD64}" make install
 
 install -m644 support/sysvinit/inittab /etc/openrc/inittab
 install -m644 -d /etc/logrotate.d/openrc
+
+ sed -e 's/#unicode="NO"/unicode="YES"/' \
+        -e 's/#rc_logger="NO"/rc_logger="YES"/' \
+-i "${pkgdir}/etc/rc.conf"
+
+install -d /usr/lib/rc/cache
+
 install -m755 -d /usr/share/licenses/openrc
 install -m644 LICENSE AUTHORS /usr/share/licenses/openrc/
 install -m644 -d /etc/conf.d
