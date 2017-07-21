@@ -409,7 +409,7 @@ make PREFIX=/usr LIBDIR=/usr/lib64 PLATLIBDIR=/usr/lib64 platlibdir=/usr/lib64 &
 as_root make install PREFIX=/usr LIBDIR=/usr/lib64 PLATLIBDIR=/usr/lib64 \
   platlibdir=/usr/lib64
 
-chmod -v 755 /usr/lib/libpython3.6m.so &&
+chmod -v 755 /usr/lib/libpython3.6m.so
 chmod -v 755 /usr/lib/libpython3.so
 
 install -v -dm755 /usr/share/doc/python-3.6.0/html &&
@@ -417,7 +417,7 @@ tar --strip-components=1 \
     --no-same-owner \
     --no-same-permissions \
     -C /usr/share/doc/python-3.6.0/html \
-    -xvf ../python-3.6.0-docs-html.tar.bz2
+    -xvf ../python-360-docs.tar.bz2
 
 ln -svfn python-3.6.0 /usr/share/doc/python-3
 
