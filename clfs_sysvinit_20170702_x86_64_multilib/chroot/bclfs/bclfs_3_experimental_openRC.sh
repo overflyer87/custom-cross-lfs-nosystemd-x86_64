@@ -131,6 +131,7 @@ cp -r local.d/* /etc/local.d/
 cp etc/* /etc/
 rm /etc/Makefile
 
+ldconfig
 
 cd ${CLFSSOURCES} 
 checkBuiltPackage
