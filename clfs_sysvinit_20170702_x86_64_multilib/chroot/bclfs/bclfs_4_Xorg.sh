@@ -168,6 +168,8 @@ grep -v '^#' ../proto-7.md5 | awk '{print $2}' | wget -i- -c \
     -B https://www.x.org/pub/individual/proto/ &&
 md5sum -c ../proto-7.md5
 
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" 
+
 for package in $(grep -v '^#' ../proto-7.md5 | awk '{print $2}')
 do
   packagedir=${package%.tar.bz2}
@@ -183,6 +185,8 @@ done
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
 USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" 
 
 for package in $(grep -v '^#' ../proto-7.md5 | awk '{print $2}')
 do
@@ -539,7 +543,6 @@ wget http://www.freedesktop.org/software/fontconfig/release/fontconfig-2.12.4.ta
 mkdir fontconfig && tar xf fontconfig-*.tar.* -C fontconfig --strip-components 1
 cd fontconfig
 
-
 rm -f src/fcobjshash.h
 
 USE_ARCH=32 CXX="g++ ${BUILD32}" CC="gcc ${BUILD32}" \
@@ -564,7 +567,6 @@ wget http://www.freedesktop.org/software/fontconfig/release/fontconfig-2.12.4.ta
   
 mkdir fontconfig && tar xf fontconfig-*.tar.* -C fontconfig --strip-components 1
 cd fontconfig
-
 
 rm -f src/fcobjshash.h
 
@@ -629,6 +631,9 @@ md5sum -c ../lib-7.md5
 USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
 CXX="g++ ${BUILD32}" CC="gcc ${BUILD32}" \
 
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" 
+
+
 for package in $(grep -v '^#' ../lib-7.md5 | awk '{print $2}')
 do
   packagedir=${package%.tar.bz2}
@@ -684,6 +689,8 @@ cd lib
 USE_ARCH=64 CXX="g++ ${BUILD64}" CC="gcc ${BUILD64}" \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
 
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" 
+
 for package in $(grep -v '^#' ../lib-7.md5 | awk '{print $2}')
 do
   packagedir=${package%.tar.bz2}
@@ -718,10 +725,11 @@ do
     ;;
 
     * )
-      USE_ARCH=64 \
-      PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
-      CXX="g++ ${BUILD64}" \ 
-      CC="gcc ${BUILD64}" ./configure $XORG_CONFIG64
+     
+     USE_ARCH=64 \
+     PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+     CXX="g++ ${BUILD64}" \
+     CC="gcc ${BUILD64}" ./configure $XORG_CONFIG64
     ;;
   esac
   make PREFIX=/usr LIBDIR=/usr/lib64
@@ -1248,6 +1256,8 @@ md5sum -c ../app-7.md5
 #done
 #as_root rm -f $XORG_PREFIX/bin/xkeystone
 
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"
+
 for package in $(grep -v '^#' ../app-7.md5 | awk '{print $2}')
 do
   packagedir=${package%.tar.bz2}
@@ -1258,8 +1268,7 @@ do
          sed -i -e "/D_XOPEN/s/5/6/" configure
        ;;
      esac
-      
-      
+            
     PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
     USE_ARCH=64 CC="gcc ${BUILD64}" \
     CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64 &&
@@ -1317,6 +1326,8 @@ grep -v '^#' ../font-7.md5 | awk '{print $2}' | wget -i- -c \
     -B https://www.x.org/pub/individual/font/ &&
 md5sum -c ../font-7.md5
 
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}"
+
 for package in $(grep -v '^#' ../font-7.md5 | awk '{print $2}')
 do
   packagedir=${package%.tar.bz2}
@@ -1331,6 +1342,8 @@ do
   popd
   as_root rm -rf $packagedir
 done
+
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"
 
 for package in $(grep -v '^#' ../font-7.md5 | awk '{print $2}')
 do
