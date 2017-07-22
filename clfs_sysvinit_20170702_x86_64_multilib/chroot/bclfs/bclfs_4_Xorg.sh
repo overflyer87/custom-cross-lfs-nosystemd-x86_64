@@ -1412,7 +1412,8 @@ mkdir intltool && tar xf intltool-*.tar.* -C intltool --strip-components 1
 cd intltool
 
 USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" ./configure
+CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" ./configure --prefix=/usr \
+	--libdir=/usr/lib
 
 make PREFIX=/usr LIBDIR=/usr/lib
 
@@ -1430,7 +1431,8 @@ mkdir intltool && tar xf intltool-*.tar.* -C intltool --strip-components 1
 cd intltool
 
 USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
-CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" ./configure
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" ./configure --prefix=/usr \
+	--libdir=/usr/lib64
 
 make PREFIX=/usr LIBDIR=/usr/lib64
 
