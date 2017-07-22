@@ -112,11 +112,19 @@ install -m644 support/sysvinit/inittab /etc/openrc/inittab
 install -m644 /etc/logrotate.d/openrc
 install -Dm0644 openrc.logrotate /etc/logrotate.d/openrc
 
-echo "/var/log/rc.log { compress rotate 4	weekly missingok notifempty }" > /etc/logrotate.d/openrc
+cat > /etc/logrotate.d/openrc << "EOF"
+/var/log/rc.log {
+  compress
+  rotate 4
+  weekly 
+  missingok 
+  notifempty 
+}
+EOF
 
  sed -e 's/#unicode="NO"/unicode="YES"/' \
-        -e 's/#rc_logger="NO"/rc_logger="YES"/' \
--i "${pkgdir}/etc/rc.conf"
+     -e 's/#rc_logger="NO"/rc_logger="YES"/' \
+     -i "${pkgdir}/etc/rc.conf"
 
 install -d /usr/lib/rc/cache
 
