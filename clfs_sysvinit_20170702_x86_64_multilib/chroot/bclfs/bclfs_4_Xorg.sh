@@ -161,6 +161,9 @@ EOF
 mkdir proto
 cd proto
 
+USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" \
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
+
 grep -v '^#' ../proto-7.md5 | awk '{print $2}' | wget -i- -c \
     -B https://www.x.org/pub/individual/proto/ &&
 md5sum -c ../proto-7.md5
@@ -173,11 +176,13 @@ do
   USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" \
   PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" ./configure $XORG_CONFIG32  &&
   as_root make PREFIX=/usr LIBDIR=/usr/lib install
+  checkBuiltPackage
   popd
   rm -rf $packagedir
 done
 
-checkBuiltPackage
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
 
 for package in $(grep -v '^#' ../proto-7.md5 | awk '{print $2}')
 do
@@ -187,13 +192,12 @@ do
   PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
   USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64 &&
   as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+  checkBuiltPackage
   popd
   rm -rf $packagedir
 done
 
 cd ${CLFSSOURCES}/xc
-
-checkBuiltPackage
 
 #libXau 32-bit
 wget https://www.x.org/pub/individual/lib/libXau-1.0.8.tar.bz2 -O \
@@ -572,7 +576,7 @@ grep -v '^#' ../lib-7.md5 | awk '{print $2}' | wget -i- -c \
 md5sum -c ../lib-7.md5
 
 USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-CXX="g++ ${BUILD32}" CC="gcc ${BUILD32}"
+CXX="g++ ${BUILD32}" CC="gcc ${BUILD32}" \
 
 for package in $(grep -v '^#' ../lib-7.md5 | awk '{print $2}')
 do
@@ -627,7 +631,7 @@ cd ${CLFSSOURCES}/xc
 cd lib
 
 USE_ARCH=64 CXX="g++ ${BUILD64}" CC="gcc ${BUILD64}" \
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
 
 for package in $(grep -v '^#' ../lib-7.md5 | awk '{print $2}')
 do
