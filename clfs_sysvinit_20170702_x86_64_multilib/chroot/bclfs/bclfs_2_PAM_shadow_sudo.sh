@@ -253,7 +253,7 @@ cat > /etc/pam.d/system-password << "EOF"
 password  required    pam_cracklib.so   type=Linux retry=3 difok=5 \
                                         difignore=23 minlen=9 dcredit=1 \
                                         ucredit=1 lcredit=1 ocredit=1 \
-                                        dictpath=/lib/cracklib/pw_dict
+                                        dictpath=/lib64/cracklib/pw_dict
 # use sha512 hash for encryption, use shadow, and use the
 # authentication token (chosen password) set by pam_cracklib
 # above (or any previous modules)
