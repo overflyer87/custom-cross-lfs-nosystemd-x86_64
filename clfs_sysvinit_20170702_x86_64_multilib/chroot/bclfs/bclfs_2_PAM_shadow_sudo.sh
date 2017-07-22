@@ -108,7 +108,7 @@ make PREFIX=/usr LIBDIR=/usr/lib64
 make PREFIX=/usr LIBDIR=/usr/lib64 install   
 
 mv -v /usr/lib64/libcrack.so.* /lib64 &&
-ln -sfv ../../lib64/$(readlink /usr/lib/libcrack.so) /usr/lib64/libcrack.so
+ln -sfv ../../lib64/$(readlink /usr/lib64/libcrack.so) /usr/lib64/libcrack.so
 
 ldconfig
 
@@ -122,11 +122,6 @@ install -v -m755 -d      /lib64/cracklib                        &&
 
 create-cracklib-dict     /usr/share/dict/cracklib-words \
                          /usr/share/dict/cracklib-extra-words
-
-
-
-ln -sfv /usr/lib64/libcrack.so.2 /lib64/
-ln -sfv /usr/lib64/libcrack.so.2.9.0 /lib64/
 
 #make test
 #checkBuiltPackage
