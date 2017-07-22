@@ -1743,7 +1743,7 @@ wget http://us.download.nvidia.com/XFree86/Linux-x86_64/384.47/NVIDIA-Linux-x86_
 
 as_root chmod +x NVIDIA-Linux-x86_64-384.47.run
 as_root CC="gcc" CXX="g++" ./NVIDIA-Linux-x86_64-384.47.run \
- --kernel-source-path=/lib/modules/CLFS-4.12.3_ORIGINAL \
+ --kernel-source-path=/lib/modules/CLFS-4.12.3_ORIGINAL 
  
 
 #twm 64-bit
