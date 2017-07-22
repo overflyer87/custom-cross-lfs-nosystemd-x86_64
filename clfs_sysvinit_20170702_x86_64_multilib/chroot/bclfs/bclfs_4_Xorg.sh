@@ -1365,6 +1365,85 @@ ln -svfn $XORG_PREFIX/share/fonts/X11/OTF /usr/share/fonts/X11-OTF
 ln -svfn $XORG_PREFIX/share/fonts/X11/TTF /usr/share/fonts/X11-TTF
 
 cd ${CLFSSOURCES}/xc
+cd ${CLFSSOURCES}
+
+#XML::Parser (Perl module) 32-bit
+wget http://cpan.metacpan.org/authors/id/T/TO/TODDR/XML-Parser-2.44.tar.gz -O \
+	XML-Parser-2.44.tar.gz
+
+mkdir xmlparser && tar xf XML-Parser-*.tar.* -C xmlparser --strip-components 1
+cd xmlparser
+
+USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
+CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" perl Makefile.PL
+
+make PREFIX=/usr LIBDIR=/usr/lib
+
+make PREFIX=/usr LIBDIR=/usr/lib test
+checkBuiltPackage
+make PREFIX=/usr LIBDIR=/usr/lib install
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf xmlparser
+
+#XML::Parser (Perl module) 64-bit
+mkdir xmlparser && tar xf XML-Parser-*.tar.* -C xmlparser --strip-components 1
+cd xmlparser
+
+USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" perl Makefile.PL
+
+make PREFIX=/usr LIBDIR=/usr/lib64
+
+make PREFIX=/usr LIBDIR=/usr/lib64 check
+checkBuiltPackage
+make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf xmlparser
+
+#intltool 32-bit
+wget https://launchpad.net/intltool/trunk/0.51.0/+download/intltool-0.51.0.tar.gz -O \
+	intltool-0.51.0.tar.gz
+
+mkdir intltool && tar xf intltool-*.tar.* -C intltool --strip-components 1
+cd intltool
+
+USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
+CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" ./configure
+
+make PREFIX=/usr LIBDIR=/usr/lib
+
+make PREFIX=/usr LIBDIR=/usr/lib check
+checkBuiltPackage
+make PREFIX=/usr LIBDIR=/usr/lib install
+
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf intltool
+
+#intltool 64-bit
+mkdir intltool && tar xf intltool-*.tar.* -C intltool --strip-components 1
+cd intltool
+
+USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" ./configure
+
+make PREFIX=/usr LIBDIR=/usr/lib64
+
+make PREFIX=/usr LIBDIR=/usr/lib64 check
+checkBuiltPackage
+make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf intltool
+
+cd ${CLFSSOURCES}/xc
 
 #XKeyboardConfig 32-bit
 wget http://xorg.freedesktop.org/archive/individual/data/xkeyboard-config/xkeyboard-config-2.21.tar.bz2 -O \
