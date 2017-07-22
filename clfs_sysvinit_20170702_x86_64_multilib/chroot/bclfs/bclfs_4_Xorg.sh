@@ -504,7 +504,7 @@ make PREFIX=/usr LIBDIR=/usr/lib install
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
-rm -rf libxdcmp
+rm -rf libxcb
 
 #libxcb 64-bit
 mkdir libxcb && tar xf libxcb-*.tar.* -C libxcb --strip-components 1
@@ -526,7 +526,7 @@ make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
-rm -rf libxdcmp
+rm -rf libxcb
 
 cat > lib-7.md5 << "EOF"
 c5ba432dd1514d858053ffe9f4737dd8  xtrans-1.3.5.tar.bz2
