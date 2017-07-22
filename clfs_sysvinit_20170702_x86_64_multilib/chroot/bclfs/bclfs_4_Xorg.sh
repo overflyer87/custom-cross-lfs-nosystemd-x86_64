@@ -641,14 +641,14 @@ do
   pushd $packagedir
   case $packagedir in
     libICE* )
-    
+    export PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}"
     USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
     CXX="g++ ${BUILD32}" CC="gcc ${BUILD32}" ./configure $XORG_CONFIG32 \
       ICE_LIBS=-lpthread
     ;;
     
     libXfont2-[0-9]* )
-
+    export PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}"
     USE_ARCH=32 \
     PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
     CXX="g++ ${BUILD32}" \
@@ -657,16 +657,16 @@ do
     ;;
 
     libXt-[0-9]* )
-
-     USE_ARCH=32 \
-     PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-     CXX="g++ ${BUILD32}" \
-     CC="gcc ${BUILD32}" ./configure $XORG_CONFIG32 \
-                  --with-appdefaultdir=/etc/X11/app-defaults
+    export PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}"
+    USE_ARCH=32 \
+    PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
+    CXX="g++ ${BUILD32}" \
+    CC="gcc ${BUILD32}" ./configure $XORG_CONFIG32 \
+                 --with-appdefaultdir=/etc/X11/app-defaults
     ;;
 
     * )
-
+     export PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}"
      USE_ARCH=32 \
      PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
      CXX="g++ ${BUILD32}" \
@@ -698,7 +698,7 @@ do
   pushd $packagedir
   case $packagedir in
     libICE* )
-
+      export PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" 
       USE_ARCH=64 \
       PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
       CXX="g++ ${BUILD64}" \ 
@@ -707,7 +707,7 @@ do
     ;;
 
     libXfont2-[0-9]* )
-        
+      export PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" 
       USE_ARCH=64 \
       PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
       CXX="g++ ${BUILD64}" \ 
@@ -716,7 +716,7 @@ do
     ;;
 
     libXt-[0-9]* )
-      
+      export PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" 
       USE_ARCH=64 \
       PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
       CXX="g++ ${BUILD64}" \ 
@@ -725,7 +725,7 @@ do
     ;;
 
     * )
-     
+     export PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" 
      USE_ARCH=64 \
      PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
      CXX="g++ ${BUILD64}" \
