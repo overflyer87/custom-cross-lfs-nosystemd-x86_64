@@ -532,6 +532,57 @@ cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf libxcb
 
+#fontconfig 32-bit
+wget http://www.freedesktop.org/software/fontconfig/release/fontconfig-2.12.4.tar.bz2 -O \
+  fontconfig-2.12.4.tar.bz2
+  
+mkdir fontconfig && tar xf fontconfig-*.tar.* -C fontconfig --strip-components 1
+cd fontconfig
+
+
+rm -f src/fcobjshash.h
+
+USE_ARCH=32 CXX="g++ ${BUILD32}" CC="gcc ${BUILD32}" \
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" ./configure --prefix=/usr \
+            --sysconfdir=/etc    \
+            --localstatedir=/var \
+            --disable-docs       \
+            --docdir=/usr/share/doc/fontconfig-2.12.4 \
+            --libdir=/usr/lib
+
+make PREFIX=/usr LIBDIR=/usr/lib
+make PREFIX=/usr LIBDIR=/usr/lib install
+
+cd ${CLFSSOURCES/xc}
+checkBuiltPackage
+rm -rf fontconfig
+
+
+#fontconfig 64-bit
+wget http://www.freedesktop.org/software/fontconfig/release/fontconfig-2.12.4.tar.bz2 -O \
+  fontconfig-2.12.4.tar.bz2
+  
+mkdir fontconfig && tar xf fontconfig-*.tar.* -C fontconfig --strip-components 1
+cd fontconfig
+
+
+rm -f src/fcobjshash.h
+
+USE_ARCH=64 CXX="g++ ${BUILD64}" CC="gcc ${BUILD64}" \
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+            --sysconfdir=/etc    \
+            --localstatedir=/var \
+            --disable-docs       \
+            --docdir=/usr/share/doc/fontconfig-2.12.4 \
+            --libdir=/usr/lib
+
+make PREFIX=/usr LIBDIR=/usr/lib
+make PREFIX=/usr LIBDIR=/usr/lib install
+
+cd ${CLFSSOURCES/xc}
+checkBuiltPackage
+rm -rf fontconfig
+
 cat > lib-7.md5 << "EOF"
 c5ba432dd1514d858053ffe9f4737dd8  xtrans-1.3.5.tar.bz2
 0f618db70c4054ca67cee0cc156a4255  libX11-1.6.5.tar.bz2
