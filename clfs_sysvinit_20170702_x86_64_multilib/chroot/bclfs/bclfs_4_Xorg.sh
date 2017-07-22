@@ -1742,7 +1742,7 @@ wget http://us.download.nvidia.com/XFree86/Linux-x86_64/384.47/NVIDIA-Linux-x86_
   NVIDIA-Linux-x86_64-384.47.run
 
 as_root chmod +x NVIDIA-Linux-x86_64-384.47.run
-as_root /NVIDIA-Linux-x86_64-384.47.run \
+as_root ./NVIDIA-Linux-x86_64-384.47.run \
  --kernel-source-path=/lib/modules/CLFS-4.12.3_ORIGINAL \
  USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
  CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}"
