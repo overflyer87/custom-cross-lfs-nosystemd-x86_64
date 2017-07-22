@@ -718,7 +718,10 @@ do
     ;;
 
     * )
-      ./configure $XORG_CONFIG64
+      USE_ARCH=64 \
+      PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+      CXX="g++ ${BUILD64}" \ 
+      CC="gcc ${BUILD64}" ./configure $XORG_CONFIG64
     ;;
   esac
   make PREFIX=/usr LIBDIR=/usr/lib64
