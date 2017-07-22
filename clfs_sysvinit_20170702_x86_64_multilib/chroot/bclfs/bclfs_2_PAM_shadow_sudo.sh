@@ -99,7 +99,7 @@ CC="gcc ${BUILD64}" USE_ARCH=64 ./configure \
             --prefix=/usr    \
             --disable-static \
             --libdir=/usr/lib64  \
-            --with-default-dict=/lib/cracklib/pw_dict
+            --with-default-dict=/lib64/cracklib/pw_dict
 
 sed -i 's@prefix}/lib@&64@g' dicts/Makefile doc/Makefile lib/Makefile \
      m4/Makefile Makefile python/Makefile util/Makefile
