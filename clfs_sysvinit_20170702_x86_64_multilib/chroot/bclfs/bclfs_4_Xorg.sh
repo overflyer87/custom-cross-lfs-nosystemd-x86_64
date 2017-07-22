@@ -1742,10 +1742,9 @@ wget http://us.download.nvidia.com/XFree86/Linux-x86_64/384.47/NVIDIA-Linux-x86_
   NVIDIA-Linux-x86_64-384.47.run
 
 as_root chmod +x NVIDIA-Linux-x86_64-384.47.run
-as_root ./NVIDIA-Linux-x86_64-384.47.run \
+as_root CC="gcc" CXX="g++" ./NVIDIA-Linux-x86_64-384.47.run \
  --kernel-source-path=/lib/modules/CLFS-4.12.3_ORIGINAL \
- PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
- CC="gcc" CXX="g++"
+ 
 
 #twm 64-bit
 wget https://www.x.org/pub/individual/app/twm-1.0.9.tar.bz2 -O \
