@@ -508,7 +508,6 @@ cd coreutils
 
 patch -Np1 -i ../coreutils-8.27-uname-1.patch
 
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
 FORCE_UNSAFE_CONFIGURE=1 \
 CC="gcc ${BUILD64}" \
 ./configure \
@@ -520,9 +519,9 @@ make
 #make NON_ROOT_USERNAME=nobody check-root
 #echo "dummy:x:1000:nobody" >> /etc/group
 #chown -Rv nobody .
-
-su nobody -s /bin/bash \
-    -c "PATH=$PATH make RUN_EXPENSIVE_TESTS=yes -k check || true"
+#
+#su nobody -s /bin/bash \
+#    -c "PATH=$PATH make RUN_EXPENSIVE_TESTS=yes -k check || true"
 
 sed -i '/dummy/d' /etc/group
 
