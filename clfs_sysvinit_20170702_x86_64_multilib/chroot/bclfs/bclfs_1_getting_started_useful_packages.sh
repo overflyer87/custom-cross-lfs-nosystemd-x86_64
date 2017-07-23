@@ -211,34 +211,6 @@ cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf openssh
 
-#p7zip
-#So you can extract the sources you download from my github
-wget http://downloads.sourceforge.net/p7zip/p7zip_16.02_src_all.tar.bz2 -O \
-  p7zip_16.02_src_all.tar.bz2
-  
-mkdir p7zip && tar xf p7zip_*.tar.* -C p7zip --strip-components 1
-cd p7zip
-
-make all3
-
-make DEST_HOME=/usr \
-     DEST_MAN=/usr/share/man \
-     DEST_SHARE_DOC=/usr/share/doc/p7zip-16.02 \
-     DEST_LIB=/usr/lib64 \
-     install
-
-cd ${CLFSSOURCES}
-checkBuiltPackage
-rm -rf p7zip
-
-cd ~
-cd automatexlfs/clfs_sysvinit_20170702_x86_64_multilib/chroot
-
-7z e y sources/sources.tar.7z.001 
-tar xf sources/sources.tar.gz -C sources/
-rm -rf sources/*.tar.gz
-rm -rf sources/
-
 #gptfdisk
 wget http://downloads.sourceforge.net/project/gptfdisk/gptfdisk/1.0.1/gptfdisk-1.0.1.tar.gz -O \
   gptfdisk-1.0.1.tar.gz
