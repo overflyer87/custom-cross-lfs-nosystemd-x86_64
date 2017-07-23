@@ -194,3 +194,86 @@ update-desktop-database /usr/share/applications
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf desktop-file-utils
+
+#gobj-introspection
+wget http://ftp.gnome.org/pub/gnome/sources/gobject-introspection/1.52/gobject-introspection-1.52.1.tar.xz -O \
+gobject-introspection-1.52.1.tar.xz
+
+mkdir gobject-introspection && tar xf gobject-introspection-*.tar.* -C gobject-introspection --strip-components 1
+cd gobject-introspection
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
+     --prefix=/usr \
+     --libdir=/usr/lib64 \
+     --disable-static \
+     --enable-shared && 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf gobject-introspection
+
+#at-spi2-core
+wget http://ftp.gnome.org/pub/gnome/sources/at-spi2-core/2.24/at-spi2-core-2.24.1.tar.xz -O \
+  at-spi2-core-2.24.1.tar.xz
+
+mkdir atspi2core && tar xf at-spi2-core-*.tar.* -C atspi2core --strip-components 1
+cd atspi2core
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
+     --prefix=/usr \
+     --libdir=/usr/lib64 \
+     --disable-static \
+     --enable-shared \
+     --sysconfdir=/etc
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf atspi2core
+
+#ATK
+wget http://ftp.gnome.org/pub/gnome/sources/atk/2.24/atk-2.24.0.tar.xz -O \
+    atk-2.24.0.tar.xz
+
+mkdir atk && tar xf atk-*.tar.* -C atk --strip-components 1
+cd atk
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
+     --prefix=/usr \
+     --libdir=/usr/lib64 \
+     --disable-static \
+     --enable-shared \
+     --sysconfdir=/etc
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf atk
+
+#at-spi2-atk
+wget http://ftp.gnome.org/pub/gnome/sources/at-spi2-atk/2.24/at-spi2-atk-2.24.1.tar.xz -O \
+  at-spi2-atk-2.24.1.tar.xz
+
+mkdir atspi2atk && tar xf at-spi2-atk-*.tar.* -C atspi2atk --strip-components 1
+cd atspi2atk
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
+     --prefix=/usr \
+     --libdir=/usr/lib64 \
+     --disable-static \
+     --enable-shared \
+     --sysconfdir=/etc
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf atspi2atk
