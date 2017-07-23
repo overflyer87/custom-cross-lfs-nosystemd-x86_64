@@ -613,9 +613,8 @@ mkdir mtdev && tar xf mtdev-*.tar.* -C mtdev --strip-components 1
 cd mtdev
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}"
-
-./configure --prefix=/usr \
+USE_ARCH=32 CC="gcc ${BUILD32}" \
+CXX="g++ ${BUILD32}" ./configure --prefix=/usr \
   --disable-static \
   --libdir=/usr/lib
   
@@ -661,6 +660,7 @@ CXX="g++ ${BUILD32}" ./configure $XORG_CONFIG32 \
             --disable-libwacom      \
             --disable-debug-gui     \
             --disable-tests         \
+            --libdir=/usr/lib       \
             --disable-documentation \
             --with-udev-dir=/lib/udev && 
             
@@ -682,6 +682,7 @@ CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64 \
             --disable-libwacom      \
             --disable-debug-gui     \
             --disable-tests         \
+            --libdir=/usr/lib64     \
             --disable-documentation \
             --with-udev-dir=/lib64/udev &&
             
