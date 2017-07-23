@@ -293,7 +293,7 @@ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" perl Makefile.PL
 
 make PREFIX=/usr LIBDIR=/usr/lib64
 
-make PREFIX=/usr LIBDIR=/usr/lib64 check
+make PREFIX=/usr LIBDIR=/usr/lib64 test
 checkBuiltPackage
 make PREFIX=/usr LIBDIR=/usr/lib64 install
 
