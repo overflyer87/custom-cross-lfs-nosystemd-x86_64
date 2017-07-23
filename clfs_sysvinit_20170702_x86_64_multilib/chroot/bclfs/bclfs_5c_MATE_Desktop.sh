@@ -202,12 +202,11 @@ wget ftp://ftp.gnupg.org/gcrypt/libksba/libksba-1.3.5.tar.bz2 -O \
 mkdir libksba && tar xf libksba-*.tar.* -C libksba --strip-components 1
 cd libksba
 
-
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
     --libdir=/usr/lib64 \
     --disable-static
     
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 make check
 checkBuiltPackage
 
@@ -216,3 +215,67 @@ as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -r libksba
+
+#npth
+wget ftp://ftp.gnupg.org/gcrypt/npth/npth-1.5.tar.bz2 -O \
+    npth-1.5.tar.bz2
+
+mkdir npth && tar xf npth-*.tar.* -C npth --strip-components 1
+cd npth
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+    --libdir=/usr/lib64 \
+    --disable-static
+    
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+make check
+checkBuiltPackage
+
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -r npth
+
+#pinentry
+wget ftp://ftp.gnupg.org/gcrypt/pinentry/pinentry-1.0.0.tar.bz2 -O \
+    pinentry-1.0.0.tar.bz2
+
+mkdir pinentry && tar xf pinentry-*.tar.* -C pinentry --strip-components 1
+cd pinentry
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+    --libdir=/usr/lib64 \
+    --disable-static
+    
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -r pinentry
+
+#GCR
+wget http://ftp.gnome.org/pub/gnome/sources/gcr/3.20/gcr-3.20.0.tar.xz -O \
+    gcr-3.20.0.tar.xz
+    
+mkdir gcr && tar xf gcr-*.tar.* -C gcr --strip-components 1
+cd gcr
+
+sed -i -r 's:"(/desktop):"/org/gnome\1:' schema/*.xml
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+    --libdir=/usr/lib64 \
+    --disable-static \
+    --sysconfdir=/etc
+ 
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+make -k check
+checkBuiltPackage
+
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -r gcr
