@@ -41,7 +41,6 @@ function buildSingleXLib64() {
   as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
 }
 
-
 export -f buildSingleXLib64
 
 #Building the final CLFS System
@@ -61,7 +60,6 @@ PKG_CONFIG_PATH32=/usr/lib/pkgconfig
 PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 ACLOCAL="aclocal -I $XORG_PREFIX/share/aclocal"
 
-
 export CLFS=/
 export CLFSUSER=clfs
 export CLFSHOME=/home
@@ -79,8 +77,6 @@ export PKG_CONFIG_PATH32=/usr/lib/pkgconfig
 export PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 export ACLOCAL="aclocal -I $XORG_PREFIX/share/aclocal"
 
-
-cd ${CLFSSOURCES}
 cd ${CLFSSOURCES/xc}
 
 cat > lib-7.md5 << "EOF"
