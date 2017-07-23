@@ -53,6 +53,31 @@ cd ${CLFSSOURCES}
 mkdir cracklib && tar xf cracklib-*.tar.* -C cracklib --strip-components 1
 cd cracklib
 
+sed -i '/skipping/d' util/packer.c
+
+CC="gcc ${BUILD64}" USE_ARCH=64 ./configure --prefix=/usr \
+  --libdir=/usr/lib64 --disable-static --with-default-dict=/lib/cracklib/pw_dict &&
+sed -i 's@prefix}/lib@&64@g' dicts/Makefile doc/Makefile lib/Makefile \
+     m4/Makefile Makefile python/Makefile util/Makefile &&
+     
+make PREFIX=/usr LIBDIR=/usr/lib64
+
+mv -v /usr/lib64/libcrack.so.* /lib64
+ln -sfv ../../lib64/$(readlink /usr/lib64/libcrack.so) /usr/lib64/libcrack.so
+
+install -v -m644 -D    ../cracklib-words-2.9.6.gz \
+                         /usr/share/dict/cracklib-words.gz     &&
+
+gunzip -v                /usr/share/dict/cracklib-words.gz     &&
+ln -v -sf cracklib-words /usr/share/dict/words                 &&
+echo $(hostname) >>      /usr/share/dict/cracklib-extra-words  &&
+install -v -m755 -d      /lib64/cracklib                         &&
+
+create-cracklib-dict     /usr/share/dict/cracklib-words \
+                         /usr/share/dict/cracklib-extra-words
+                         
+make test
+
 cd ${CLFSSOURCES} 
 checkBuiltPackage
 rm -rf cracklib
