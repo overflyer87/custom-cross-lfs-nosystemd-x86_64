@@ -132,38 +132,51 @@ rm -rf cracklib
 
 
 #Linux-PAM 32-bit
-#mkdir linuxpam && tar xf Linux-PAM-1.3.0.tar.* -C linuxpam --strip-components 1
-#cd linuxpam
-#
-#USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-#CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}"\
-#
-#autoreconf
-#
-#./configure \
-#        --sbindir=/usr/lib/security \
-#        --enable-securedir=/usr/lib/security \
-#        --docdir=/usr/share/doc/Linux-PAM-1.3.0\
-#        --enable-shared \
-#        --libdir=/usr/lib \
-#        --enable-read-both-confs \
-#        --sysconfdir=/etc \
-#        --disable-regenerate-docu
-#
-#make PREFIX=/usr LIBDIR=/usr/lib
-#make PREFIX=/usr LIBDIR=/usr/lib install
-#chmod -v 4755 /sbin/unix_chkpwd 
-#chmod -v 4755 /lib/security/unix_chkpwd
-#
-#for file in pam pam_misc pamc
-#do
-#  mv -v /usr/lib/lib${file}.so.* /lib &&
-#  ln -sfv ../../lib/$(readlink /usr/lib/lib${file}.so) /usr/lib/lib${file}.so
-#done
-#
-#cd ${CLFSSOURCES} 
-##checkBuiltPackage
-#rm -rf linuxpam
+mkdir linuxpam && tar xf Linux-PAM-1.3.0.tar.* -C linuxpam --strip-components 1
+cd linuxpam
+
+USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
+CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}"\
+
+autoreconf
+
+./configure \
+        --sbindir=/usr/lib/security \
+        --enable-securedir=/usr/lib/security \
+        --docdir=/usr/share/doc/Linux-PAM-1.3.0\
+        --enable-shared \
+        --libdir=/usr/lib \
+        --enable-read-both-confs \
+        --sysconfdir=/etc \
+        --disable-regenerate-docu
+
+make PREFIX=/usr LIBDIR=/usr/lib
+
+install -v -m755 -d /etc/pam.d
+
+cat > /etc/pam.d/other << "EOF"
+auth     required       pam_deny.so
+account  required       pam_deny.so
+password required       pam_deny.so
+session  required       pam_deny.so
+EOF
+
+make check
+checkBuiltPackage
+make PREFIX=/usr LIBDIR=/usr/lib install
+
+chmod -v 4755 /sbin/unix_chkpwd 
+chmod -v 4755 /lib/security/unix_chkpwd
+
+for file in pam pam_misc pamc
+do
+  mv -v /usr/lib/lib${file}.so.* /lib &&
+  ln -sfv ../../lib/$(readlink /usr/lib/lib${file}.so) /usr/lib/lib${file}.so
+done
+
+cd ${CLFSSOURCES} 
+checkBuiltPackage
+rm -rf linuxpam
 
 #Linux-PAM 64-bit
 mkdir linuxpam && tar xf Linux-PAM-1.3.0.tar.* -C linuxpam --strip-components 1
@@ -185,7 +198,6 @@ make PREFIX=/usr LIBDIR=/usr/lib64
 
 #Config
 install -v -m755 -d /etc/pam.d 
-install -v -m755 -d /etc/pam.d &&
 
 cat > /etc/pam.d/other << "EOF"
 auth     required       pam_deny.so
@@ -221,61 +233,6 @@ password        required        pam_unix.so     nullok
 EOF
 
 install -vdm755 /etc/pam.d 
-
-cat > /etc/pam.d/system-account << "EOF" 
-# Begin /etc/pam.d/system-account
-
-account   required    pam_unix.so
-
-# End /etc/pam.d/system-account
-EOF
-
-cat > /etc/pam.d/system-auth << "EOF" &&
-# Begin /etc/pam.d/system-auth
-
-auth      required    pam_unix.so
-
-# End /etc/pam.d/system-auth
-EOF
-
-cat > /etc/pam.d/system-session << "EOF"
-# Begin /etc/pam.d/system-session
-
-session   required    pam_unix.so
-
-# End /etc/pam.d/system-session
-EOF
-
-cat > /etc/pam.d/system-password << "EOF"
-# Begin /etc/pam.d/system-password
-
-# check new passwords for strength (man pam_cracklib)
-password  required    pam_cracklib.so   type=Linux retry=3 difok=5 \
-                                        difignore=23 minlen=9 dcredit=1 \
-                                        ucredit=1 lcredit=1 ocredit=1 \
-                                        dictpath=/lib64/cracklib/pw_dict
-# use sha512 hash for encryption, use shadow, and use the
-# authentication token (chosen password) set by pam_cracklib
-# above (or any previous modules)
-password  required    pam_unix.so       sha512 shadow use_authtok
-
-# End /etc/pam.d/system-password
-EOF
-
-cat > /etc/pam.d/other << "EOF"
-# Begin /etc/pam.d/other
-
-auth        required        pam_warn.so
-auth        required        pam_deny.so
-account     required        pam_warn.so
-account     required        pam_deny.so
-password    required        pam_warn.so
-password    required        pam_deny.so
-session     required        pam_warn.so
-session     required        pam_deny.so
-
-# End /etc/pam.d/other
-EOF
 
 cd ${CLFSSOURCES} 
 checkBuiltPackage
@@ -475,6 +432,67 @@ grep failed ../make-check.log
 make install
 ln -sfv libsudo_util.so.0.0.0 /usr/lib64/sudo/libsudo_util.so.0
 
+cd ${CLFSSOURCES} 
+checkBuiltPackage
+rm -rf sudo 
+
+#Create PAM config files
+install -vdm755 /etc/pam.d &&
+cat > /etc/pam.d/system-account << "EOF" &&
+# Begin /etc/pam.d/system-account
+
+account   required    pam_unix.so
+
+# End /etc/pam.d/system-account
+EOF
+
+cat > /etc/pam.d/system-auth << "EOF" &&
+# Begin /etc/pam.d/system-auth
+
+auth      required    pam_unix.so
+
+# End /etc/pam.d/system-auth
+EOF
+
+cat > /etc/pam.d/system-session << "EOF"
+# Begin /etc/pam.d/system-session
+
+session   required    pam_unix.so
+
+# End /etc/pam.d/system-session
+EOF
+
+cat > /etc/pam.d/system-password << "EOF"
+# Begin /etc/pam.d/system-password
+
+# check new passwords for strength (man pam_cracklib)
+password  required    pam_cracklib.so   type=Linux retry=3 difok=5 \
+                                        difignore=23 minlen=9 dcredit=1 \
+                                        ucredit=1 lcredit=1 ocredit=1 \
+                                        dictpath=/lib/cracklib/pw_dict
+# use sha512 hash for encryption, use shadow, and use the
+# authentication token (chosen password) set by pam_cracklib
+# above (or any previous modules)
+password  required    pam_unix.so       sha512 shadow use_authtok
+
+# End /etc/pam.d/system-password
+EOF
+
+cat > /etc/pam.d/other << "EOF"
+# Begin /etc/pam.d/other
+
+auth        required        pam_warn.so
+auth        required        pam_deny.so
+account     required        pam_warn.so
+account     required        pam_deny.so
+password    required        pam_warn.so
+password    required        pam_deny.so
+session     required        pam_warn.so
+session     required        pam_deny.so
+
+# End /etc/pam.d/other
+EOF
+
 cat > /etc/pam.d/sudo << "EOF"
 # Begin /etc/pam.d/sudo
 
@@ -493,7 +511,3 @@ session   include     system-session
 # End /etc/pam.d/sudo
 EOF
 chmod 644 /etc/pam.d/sudo
-
-cd ${CLFSSOURCES} 
-checkBuiltPackage
-rm -rf sudo 
