@@ -791,7 +791,7 @@ rm -rf xclock
 wget https://www.x.org/pub/individual/app/xinit-1.0.7.tar.bz2 -O \
   xinit-1.0.7.tar.bz2
 
-mkdir xinit && tar xf xinit-*.tar.* -C xclock --strip-components 1
+mkdir xinit && tar xf xinit-*.tar.* -C xinit --strip-components 1
 cd xinit
 
 sed -e '/$serverargs $vtarg/ s/serverargs/: #&/' \
