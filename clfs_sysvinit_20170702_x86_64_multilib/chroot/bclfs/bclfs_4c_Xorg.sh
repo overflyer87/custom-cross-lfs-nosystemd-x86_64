@@ -671,7 +671,6 @@ cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf libinput
 
-
 #libinput 64-bit
 mkdir libinput && tar xf libinput-*.tar.* -C libinput --strip-components 1
 cd libinput
@@ -723,7 +722,8 @@ wget http://us.download.nvidia.com/XFree86/Linux-x86_64/384.47/NVIDIA-Linux-x86_
 as_root chmod +x NVIDIA-Linux-x86_64-384.47.run
 as_root CC="gcc" CXX="g++" ./NVIDIA-Linux-x86_64-384.47.run \
  --kernel-source-path=/lib/modules/CLFS-4.12.3_ORIGINAL 
- 
+
+checkBuiltPackage
 
 #twm 64-bit
 wget https://www.x.org/pub/individual/app/twm-1.0.9.tar.bz2 -O \
