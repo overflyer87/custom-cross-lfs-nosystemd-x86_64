@@ -338,3 +338,7 @@ echo "Cross compile tools are finished"
 echo "If there were no errors continue"
 echo "With Script #3"
 echo " "
+
+cd ~
+sh clfs_3_temp_sys_run_as_host_clfs_user.sh
+
