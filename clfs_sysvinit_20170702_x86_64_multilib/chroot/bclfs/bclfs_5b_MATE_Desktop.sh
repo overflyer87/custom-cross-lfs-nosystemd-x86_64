@@ -341,3 +341,229 @@ checkBuiltPackage
 rm -rf libvorbis
 
 #alsa-lib
+wget ftp://ftp.alsa-project.org/pub/lib/alsa-lib-1.1.4.1.tar.bz2 -O \
+    alsa-lib-1.1.4.1.tar.bz2
+
+mkdir alsa-lib && tar xf alsa-lib-*.tar.* -C alsa-lib --strip-components 1
+cd alsa-lib
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --disable-static 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+make check
+checkBuiltPackage
+
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+as_root install -v -d -m755 /usr/share/doc/alsa-lib-1.1.4.1/html/search &&
+as_root install -v -m644 doc/doxygen/html/*.* \
+                /usr/share/doc/alsa-lib-1.1.4.1/html 
+
+
+cat > /etc/asound.conf << "EOF"
+pcm.!default {
+  type hw
+  card 0
+}
+
+ctl.!default {
+  type hw           
+  card 0
+}
+EOF
+
+cat > /usr/share/alsa/alsa.conf << "EOF"
+pcm.!default {
+  type hw
+  card 0
+}
+
+ctl.!default {
+  type hw           
+  card 0
+}
+EOF
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf alsa-lib
+
+#gstreamer
+wget https://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.12.1.tar.xz -O \
+    gstreamer-1.12.1.tar.xz
+
+mkdir gstreamer && tar xf gstreamer-*.tar.* -C gstreamer --strip-components 1
+cd gstreamer
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --disable-static \
+   --with-package-name="GStreamer 1.12.1 BLFS" \
+   --with-package-origin="http://www.linuxfromscratch.org/blfs/view/svn/" 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+rm -rf /usr/bin/gst-* /usr/{lib,libexec}/gstreamer-1.0
+
+make check
+checkBuiltPackage
+
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+ldconfig
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf gstreamer
+
+#gst-plugins-base
+wget https://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-1.12.1.tar.xz -O \
+    gst-plugins-base-1.12.1.tar.xz
+
+mkdir gstplgbase && tar xf gst-plugins-base-*.tar.* -C gstplgbase --strip-components 1
+cd gstplgbase
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --disable-static \
+   --with-package-name="GStreamer 1.12.1 BLFS" \
+   --with-package-origin="http://www.linuxfromscratch.org/blfs/view/svn/" 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+make check
+checkBuiltPackage
+
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf gstplgbase
+
+#gst-plugins-good
+wget https://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.12.1.tar.xz -O \
+    gst-plugins-good-1.12.1.tar.xz
+
+mkdir gstplggood && tar xf gst-plugins-good-*.tar.* -C gstplggood --strip-components 1
+cd gstplggood
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --disable-static \
+   --with-package-name="GStreamer 1.12.1 BLFS" \
+   --with-package-origin="http://www.linuxfromscratch.org/blfs/view/svn/" 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+make check
+checkBuiltPackage
+
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf gstplggood
+
+#libcanberra
+wget http://0pointer.de/lennart/projects/libcanberra/libcanberra-0.30.tar.xz -O \
+    libcanberra-0.30.tar.xz
+
+mkdir libcanberra && tar xf libcanberra-*.tar.* -C libcanberra --strip-components 1
+cd libcanberra
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --disable-static \
+   --disable-oss 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf libcanberra
+
+#littleCMS2
+wget http://downloads.sourceforge.net/lcms/lcms2-2.8.tar.gz -O \
+    lcms2-2.8.tar.gz
+
+mkdir lcms2 && tar xf lcms2-*.tar.* -C lcms2 --strip-components 1
+cd lcms2
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --disable-static \
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf lcms2
+
+#sqlite
+wget http://sqlite.org/2017/sqlite-autoconf-3190300.tar.gz -O \
+    sqlite-autoconf-3190300.tar.gz
+
+mkdir sqlite-autoconf && tar xf sqlite-autoconf-*.tar.* -C sqlite-autoconf --strip-components 1
+cd sqlite-autoconf
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+            --disable-static        \
+            --libdir=/usr/lib64     \
+            CFLAGS="-g -O2 -DSQLITE_ENABLE_FTS3=1 \
+            -DSQLITE_ENABLE_COLUMN_METADATA=1     \
+            -DSQLITE_ENABLE_UNLOCK_NOTIFY=1       \
+            -DSQLITE_SECURE_DELETE=1              \
+            -DSQLITE_ENABLE_DBSTAT_VTAB=1" &&
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf sqlite-autoconf
+
+#Valgrind
+wget ftp://sourceware.org/pub/valgrind/valgrind-3.13.0.tar.bz2 -O \
+    valgrind-3.13.0.tar.bz2
+
+mkdir valgrind && tar xf valgrind-*.tar.* -C valgrind --strip-components 1
+cd valgrind
+
+sed -i 's|/doc/valgrind||' docs/Makefile.in
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --disable-static \
+   --datadir=/usr/share/doc/valgrind-3.13.0
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf valgrind
+
+#libgudev
+wget http://ftp.gnome.org/pub/gnome/sources/libgudev/231/libgudev-231.tar.xz -O \
+    libgudev-231.tar.xz
+
+mkdir libgudev && tar xf libgudev-*.tar.* -C libgudev --strip-components 1
+cd libgudev
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --disable-static \
+   --disable-umockdev
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf libgudev
+
+#libgusb
