@@ -865,6 +865,11 @@ as_root xmlcatalog --noout --add "rewriteURI" \
            "/usr/share/xml/docbook/xsl-stylesheets-<version>" \
     /etc/xml/catalog
 
+cp ${CLFSSOURCES}/docbook-xml-xsl.tar.* .
+mkdir xml && tar xf docbook-xml-xsl.tar.* -C xml --strip-components 1
+
+as_root cp -rv xml /etc/
+
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 echo " "
