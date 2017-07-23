@@ -49,14 +49,6 @@ export PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 
 cd ${CLFSSOURCES}
 
-#Cracklib 32-bit
-mkdir cracklib && tar xf cracklib-*.tar.* -C cracklib --strip-components 1
-cd cracklib
-
-cd ${CLFSSOURCES} 
-checkBuiltPackage
-rm -rf cracklib
-
 #Cracklib 64-bit
 mkdir cracklib && tar xf cracklib-*.tar.* -C cracklib --strip-components 1
 cd cracklib
@@ -64,14 +56,6 @@ cd cracklib
 cd ${CLFSSOURCES} 
 checkBuiltPackage
 rm -rf cracklib
-
-#Linux-PAM 32-bit
-mkdir linuxpam && tar xf Linux-PAM-1.3.0.tar.* -C linuxpam --strip-components 1
-cd linuxpam
-
-cd ${CLFSSOURCES} 
-checkBuiltPackage
-rm -rf linuxpam
 
 #Linux-PAM 64-bit
 mkdir linuxpam && tar xf Linux-PAM-1.3.0.tar.* -C linuxpam --strip-components 1
