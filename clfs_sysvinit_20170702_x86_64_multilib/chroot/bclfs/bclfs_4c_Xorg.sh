@@ -856,6 +856,8 @@ Section "InputClass"
 EndSection
 EOF
 
+as_root cp /etc/X11/xinit/xinitrc ~/.xinitrc
+
 #I will not install Xorg legacy
 #If you want to
 #Go to http://www.linuxfromscratch.org/blfs/view/svn/x/x7legacy.html
