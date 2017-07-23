@@ -517,3 +517,101 @@ ldconfig
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf pango
+
+#hicolor-icon-theme
+wget http://icon-theme.freedesktop.org/releases/hicolor-icon-theme-0.15.tar.xz -O \
+    hicolor-icon-theme-0.15.tar.xz
+
+mkdir hicoloricontheme && tar xf hicolor-icon-theme-*.tar.* -C hicoloricontheme --strip-components 1
+cd hicoloricontheme
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
+     --prefix=/usr \
+     --libdir=/usr/lib64 
+
+as_root make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf hicoloricontheme
+
+#adwaita-icon-theme
+wget http://ftp.gnome.org/pub/gnome/sources/adwaita-icon-theme/3.24/adwaita-icon-theme-3.24.0.tar.xz -O \
+    adwaita-icon-theme-3.24.0.tar.xz
+
+mkdir adwaiticontheme && tar xf adwaita-icon-theme-*.tar.* -C adwaiticontheme --strip-components 1
+cd adwaiticontheme
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
+     --prefix=/usr \
+     --libdir=/usr/lib64 
+
+as_root make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf adwaiticontheme
+
+#gdk-pixbuf
+wget http://ftp.gnome.org/pub/gnome/sources/gdk-pixbuf/2.36/gdk-pixbuf-2.36.6.tar.xz -O \
+    gdk-pixbuf-2.36.6.tar.xz
+
+mkdir gdk-pixbuf && tar xf gdk-pixbuf-*.tar.* -C gdk-pixbuf --strip-components 1
+cd gdk-pixbuf
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
+     --prefix=/usr \
+     --libdir=/usr/lib64 \
+     --with-x11
+
+make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64
+make -k check
+checkBuiltPackage
+make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
+
+ldconfig
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf gdk-pixbuf
+
+#gtk3
+wget http://ftp.gnome.org/pub/gnome/sources/gtk+/3.22/gtk+-3.22.16.tar.xz -O \
+    gtk+-3.22.16.tar.xz
+
+mkdir gtk3 && tar xf gtk+-3*.tar.* -C gtk3 --strip-components 1
+cd gtk3
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
+     --prefix=/usr \
+     --libdir=/usr/lib64 \
+     --sysconfdir=/etc         \
+     --enable-broadway-backend \
+     --enable-x11-backend      \
+     --disable-wayland-backend 
+
+make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64
+make -k check
+checkBuiltPackage
+as_root make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
+
+mkdir -vp ~/.config/gtk-3.0
+cat > ~/.config/gtk-3.0/settings.ini << "EOF"
+[Settings]
+gtk-theme-name = Adwaita
+gtk-icon-theme-name = oxygen
+gtk-font-name = DejaVu Sans 12
+gtk-cursor-theme-size = 18
+gtk-toolbar-style = GTK_TOOLBAR_BOTH_HORIZ
+gtk-xft-antialias = 1
+gtk-xft-hinting = 1
+gtk-xft-hintstyle = hintslight
+gtk-xft-rgba = rgb
+gtk-cursor-theme-name = Adwaita
+EOF
+
+ldconfig
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf gtk3
