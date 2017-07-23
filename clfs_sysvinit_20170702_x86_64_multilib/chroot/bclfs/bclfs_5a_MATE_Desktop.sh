@@ -336,3 +336,184 @@ cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf libjpeg-turbo
 
+#libpng installed by bootloader script clfs_6b1....sh
+#libepoxy installed by Xorg script
+
+#libtiff
+wget http://download.osgeo.org/libtiff/tiff-4.0.8.tar.gz -O \
+    tiff-4.0.8.tar.gz
+
+mkdir libtiff && tar xf tiff-*.tar.* -C libtiff --strip-components 1
+cd libtiff
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
+     --prefix=/usr \
+     --libdir=/usr/lib64 \
+     --disable-static
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+as_root PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf libtiff
+
+#ICU
+wget http://download.icu-project.org/files/icu4c/59.1/icu4c-59_1-src.tgz -O \
+    icu4c-59_1-src.tgz
+
+mkdir icu && tar xf icu*.tgz -C icu --strip-components 1
+cd icu
+cd source
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
+     --prefix=/usr \
+     --libdir=/usr/lib64 \
+     --disable-static
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+as_root make install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf icu
+
+#harfbuzz, freetype2 and which were installed by Xorg scripts
+#Pixman and libpng needed by  Cairo are also already installed by UEFI-bootloader script and Xorg script, respectively
+
+#Cairo
+wget http://cairographics.org/releases/cairo-1.14.10.tar.xz -O \
+    cairo-1.14.10.tar.xz
+
+mkdir cairo && tar xf cairo-*.tar.* -C cairo --strip-components 1
+cd cairo
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
+     --prefix=/usr \
+     --libdir=/usr/lib64 \
+     --disable-static \
+     --enable-tee
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+as_root make install
+
+ldconfig
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf cairo
+
+#Nevertheless I seem to need to rebuild
+#harfbuzz, fontconfig and freetype
+#Pango is complaining that it wont find any backends
+
+cd ${CLFSSOURCES}
+
+#freeype 64-bit
+mkdir freetype && tar xf freetype-*.tar.* -C freetype --strip-components 1
+cd freetype
+
+sed -ri "s:.*(AUX_MODULES.*valid):\1:" modules.cfg
+
+sed -r "s:.*(#.*SUBPIXEL_RENDERING) .*:\1:" \
+    -i include/freetype/config/ftoption.h 
+
+sed -i -r 's:.*(#.*BYTE.*) .*:\1:' include/freetype/config/ftoption.h
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+USE_ARCH=64 \
+CC="gcc ${BUILD64}" ./configure \
+--prefix=/usr \
+--disable-static \
+--libdir=/usr/lib64
+
+PREFIX=/usr LIBDIR=/usr/lib64 make
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+mv -v /usr/bin/freetype-config{,-64}
+ln -sf multiarch_wrapper /usr/bin/freetype-config
+install -v -m755 -d /usr/share/doc/freetype-2.4.12
+cp -v -R docs/* /usr/share/doc/freetype-2.4.12
+
+install -v -m755 -d /usr/share/doc/freetype-2.8
+cp -v -R docs/*     /usr/share/doc/freetype-2.8
+
+
+cd ${CLFSSOURCES} 
+#checkBuiltPackage
+rm -rf freetype
+
+#harfbuzz 64-bit
+mkdir harfbuzz && tar xf harfbuzz-*.tar.* -C harfbuzz --strip-components 1
+cd harfbuzz
+
+LIBDIR=/usr/lib64 USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+CXX="g++ ${BUILD64}" CC="gcc ${BUILD64}" \
+./configure --prefix=/usr --libdir=/usr/lib64
+PREFIX=/usr LIBDIR=/usr/lib64 make 
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES} 
+#checkBuiltPackage
+rm -rf harfbuzz
+
+cd ${CLFSSOURCES} 
+#checkBuiltPackage
+rm -rf freetype
+
+#freeype 64-bit
+mkdir freetype && tar xf freetype-*.tar.* -C freetype --strip-components 1
+cd freetype
+
+sed -ri "s:.*(AUX_MODULES.*valid):\1:" modules.cfg
+
+sed -r "s:.*(#.*SUBPIXEL_RENDERING) .*:\1:" \
+    -i include/freetype/config/ftoption.h 
+
+sed -i -r 's:.*(#.*BYTE.*) .*:\1:' include/freetype/config/ftoption.h
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+USE_ARCH=64 \
+CC="gcc ${BUILD64}" ./configure \
+--prefix=/usr \
+--disable-static \
+--libdir=/usr/lib64
+
+PREFIX=/usr LIBDIR=/usr/lib64 make
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+mv -v /usr/bin/freetype-config{,-64}
+ln -sf multiarch_wrapper /usr/bin/freetype-config
+install -v -m755 -d /usr/share/doc/freetype-2.4.12
+cp -v -R docs/* /usr/share/doc/freetype-2.4.12
+
+install -v -m755 -d /usr/share/doc/freetype-2.8
+cp -v -R docs/*     /usr/share/doc/freetype-2.8
+
+cd ${CLFSSOURCES} 
+#checkBuiltPackage
+rm -rf freetype
+
+cd ${CLFSSOURCES}/xc/mate
+
+#Pango
+wget http://ftp.gnome.org/pub/gnome/sources/pango/1.40/pango-1.40.6.tar.xz -O \
+    pango-1.40.6.tar.xz
+
+mkdir pango && tar xf pango-*.tar.* -C pango --strip-components 1
+cd pango
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
+     --prefix=/usr \
+     --libdir=/usr/lib64 \
+     --disable-static \
+     --sysconfdir=/etc
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+as_root make install
+
+ldconfig
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf pango
