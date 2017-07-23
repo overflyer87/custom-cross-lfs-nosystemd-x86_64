@@ -39,7 +39,6 @@ function buildSingleXLib64() {
   as_root make
 }
 
-
 export -f buildSingleXLib64
 
 #Building the final CLFS System
