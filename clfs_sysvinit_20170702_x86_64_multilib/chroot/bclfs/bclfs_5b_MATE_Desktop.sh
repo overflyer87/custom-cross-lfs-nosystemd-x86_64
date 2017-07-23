@@ -199,3 +199,145 @@ as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf dconf
+
+#json-glib
+wget http://ftp.gnome.org/pub/gnome/sources/json-glib/1.2/json-glib-1.2.8.tar.xz -O \
+    json-glib-1.2.8.tar.xz
+
+mkdir jsonglib && tar xf json-glib-*.tar.* -C jsonglib --strip-components 1
+cd jsonglib
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 
+    
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf jsonglib
+
+#libcroco
+wget http://ftp.gnome.org/pub/gnome/sources/libcroco/0.6/libcroco-0.6.12.tar.xz -O \
+    libcroco-0.6.12.tar.xz
+
+mkdir libcroco && tar xf libcroco-*.tar.* -C libcroco --strip-components 1
+cd libcroco
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --disable-static
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf libcroco
+
+#Vala
+wget http://ftp.gnome.org/pub/gnome/sources/vala/0.36/vala-0.36.4.tar.xz -O \
+    vala-0.36.4.tar.xz
+
+mkdir vala && tar xf vala-*.tar.* -C vala --strip-components 1
+cd vala
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --disable-static 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf vala
+
+#librsvg
+wget http://ftp.gnome.org/pub/gnome/sources/librsvg/2.40/librsvg-2.40.17.tar.xz -O \
+    librsvg-2.40.17.tar.xz
+
+mkdir librsvg && tar xf librsvg-*.tar.* -C librsvg --strip-components 1
+cd librsvg
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --disable-static \
+   --enable-vala
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf librsvg
+
+#shared-mime-info
+wget http://freedesktop.org/~hadess/shared-mime-info-1.8.tar.xz -O \
+    shared-mime-info-1.8.tar.xz
+
+mkdir sharedmimeinfo && tar xf shared-mime-info-*.tar.* -C sharedmimeinfo --strip-components 1
+cd sharedmimeinfo
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 
+
+make check
+checkBuiltPackage
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf sharedmimeinfo
+
+#libogg
+wget http://downloads.xiph.org/releases/ogg/libogg-1.3.2.tar.xz -O \
+    libogg-1.3.2.tar.xz
+
+mkdir libogg && tar xf libogg-*.tar.* -C libogg --strip-components 1
+cd libogg
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --disable-static \
+   --docdir=/usr/share/doc/libogg-1.3.2
+
+make check
+checkBuiltPackage
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf libogg
+
+#libvorbis
+wget http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.5.tar.xz -O \
+    libvorbis-1.3.5.tar.xz
+
+mkdir libvorbis && tar xf libvorbis-*.tar.* -C libvorbis --strip-components 1
+cd libvorbis
+
+sed -i '/components.png \\/{n;d}' doc/Makefile.in
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --disable-static 
+
+make LIBS=-lm check
+checkBuiltPackage
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+as_root install -v -m644 doc/Vorbis* /usr/share/doc/libvorbis-1.3.5
+
+ldconfig 
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf libvorbis
+
+#alsa-lib
