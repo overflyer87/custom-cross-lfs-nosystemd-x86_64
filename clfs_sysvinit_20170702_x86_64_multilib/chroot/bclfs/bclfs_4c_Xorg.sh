@@ -549,7 +549,7 @@ make PREFIX=/usr                \
      SHARED=yes                 \
      install install-lib        &&
 
-chmod -v 755 /usr/lib/libpci.so
+chmod -v 755 /usr/lib64/libpci.so
 
 
 cd ${CLFSSOURCES}
