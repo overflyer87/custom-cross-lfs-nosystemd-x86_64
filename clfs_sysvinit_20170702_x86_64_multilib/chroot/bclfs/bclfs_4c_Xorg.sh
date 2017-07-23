@@ -302,6 +302,12 @@ cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf xmlparser
 
+#REMEMBER
+#Escape all { or }
+#In intltool-update
+#When there is a regex ${<something>}
+#Lines 1065, 1222-1226, 1993-1996
+
 #intltool 32-bit
 wget https://launchpad.net/intltool/trunk/0.51.0/+download/intltool-0.51.0.tar.gz -O \
   intltool-0.51.0.tar.gz
