@@ -571,10 +571,10 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
             --localstatedir=/var \
             --disable-docs       \
             --docdir=/usr/share/doc/fontconfig-2.12.4 \
-            --libdir=/usr/lib
+            --libdir=/usr/lib64
 
-make PREFIX=/usr LIBDIR=/usr/lib
-make PREFIX=/usr LIBDIR=/usr/lib install
+make PREFIX=/usr LIBDIR=/usr/lib64
+make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
