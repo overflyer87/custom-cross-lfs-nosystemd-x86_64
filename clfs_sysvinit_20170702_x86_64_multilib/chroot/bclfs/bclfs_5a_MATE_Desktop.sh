@@ -77,7 +77,7 @@ export PKG_CONFIG_PATH32=/usr/lib/pkgconfig
 export PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 
 cd ${CLFSSOURCES}
-cd ${CLFSSOURCES/xc}
+cd ${CLFSSOURCES}/xc
 
 mkdir mate
 cd mate
