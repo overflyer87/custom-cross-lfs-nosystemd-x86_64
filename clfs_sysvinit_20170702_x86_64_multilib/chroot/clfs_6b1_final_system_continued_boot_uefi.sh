@@ -212,7 +212,7 @@ cd harfbuzz
 
 LIBDIR=/usr/lib USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
 CXX="g++ ${BUILD32}" CC="gcc ${BUILD32}" \
-./configure --prefix=/usr 
+./configure --prefix=/usr --libdir=/usr/lib
 PREFIX=/usr LIBDIR=/usr/lib make 
 PREFIX=/usr LIBDIR=/usr/lib make install
 
@@ -226,7 +226,7 @@ cd harfbuzz
 
 LIBDIR=/usr/lib64 USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
 CXX="g++ ${BUILD64}" CC="gcc ${BUILD64}" \
-./configure --prefix=/usr 
+./configure --prefix=/usr --libdir=/usr/lib64
 PREFIX=/usr LIBDIR=/usr/lib64 make 
 PREFIX=/usr LIBDIR=/usr/lib64 make install
 
