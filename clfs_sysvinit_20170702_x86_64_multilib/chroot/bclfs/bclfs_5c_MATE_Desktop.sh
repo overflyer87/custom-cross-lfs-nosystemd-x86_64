@@ -105,7 +105,7 @@ cd libgpgerror
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr --libdir=/usr/lib64
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root LIBDIR=/usr/lib64 PREFIX=/usr install
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -124,11 +124,95 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
 make check
 checkBuiltPackage
 
-as_root LIBDIR=/usr/lib64 PREFIX=/usr install
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -r libgcrypt
 
 #libtasn1
-wget
+wget http://ftp.gnu.org/gnu/libtasn1/libtasn1-4.12.tar.gz -O \
+    libtasn1-4.12.tar.gz
+
+mkdir libtasn1 && tar xf libtasn1-*.tar.* -C libtasn1 --strip-components 1
+cd libtasn1
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+    --libdir=/usr/lib64 \
+    --disable-static
+    
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
+make check
+checkBuiltPackage
+
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -r libtasn1
+
+#p11-kit
+wget https://github.com/p11-glue/p11-kit/releases/download/0.23.7/p11-kit-0.23.7.tar.gz -O \
+    p11-kit-0.23.7.tar.gz
+    
+mkdir p11-kit && tar xf p11-kit-*.tar.* -C p11-kit --strip-components 1
+cd p11-kit
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+    --libdir=/usr/lib64 \
+    --disable-static \
+    --sysconfdir=/etc \
+    --with-trust-paths=/etc/pki/anchor
+    
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
+make check
+checkBuiltPackage
+
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -r p11-kit
+
+#libassuan
+wget ftp://ftp.gnupg.org/gcrypt/libassuan/libassuan-2.4.3.tar.bz2 -O \
+    libassuan-2.4.3.tar.bz2
+    
+mkdir libassuan && tar xf libassuan-*.tar.* -C libassuan --strip-components 1
+cd libassuan
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+    --libdir=/usr/lib64 \
+    --disable-static
+    
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
+make check
+checkBuiltPackage
+
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -r libksba
+
+#libksba
+wget ftp://ftp.gnupg.org/gcrypt/libksba/libksba-1.3.5.tar.bz2 -O \
+    libksba-1.3.5.tar.bz2
+    
+mkdir libksba && tar xf libksba-*.tar.* -C libksba --strip-components 1
+cd libksba
+
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+    --libdir=/usr/lib64 \
+    --disable-static
+    
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
+make check
+checkBuiltPackage
+
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -r libksba
