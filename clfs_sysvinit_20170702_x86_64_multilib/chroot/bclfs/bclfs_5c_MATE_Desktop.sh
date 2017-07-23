@@ -110,3 +110,25 @@ as_root LIBDIR=/usr/lib64 PREFIX=/usr install
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -r libgpgerror
+
+
+#libgcrypt
+wget ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.7.8.tar.bz2 -O \
+    libgcrypt-1.7.8.tar.bz2
+    
+mkdir libgcrypt && tar xf libgcrypt-*.tar.* -C libgcrypt --strip-components 1
+cd libgcrypt
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr --libdir=/usr/lib64
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
+make check
+checkBuiltPackage
+
+as_root LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -r libgcrypt
+
+#libtasn1
+wget
