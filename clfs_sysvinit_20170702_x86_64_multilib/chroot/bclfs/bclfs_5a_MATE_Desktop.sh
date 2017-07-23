@@ -277,3 +277,62 @@ as_root make PREFIX=/usr LIBDIR=/usr/lib64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf atspi2atk
+
+#Cython
+wget https://pypi.python.org/packages/10/d5/753d2cb5073a9f4329d1ffed1de30b0458821780af8fdd8ba1ad5adb6f62/Cython-0.26.tar.gz -O \
+    Cython-0.26.tar.gz
+
+mkdir cython && tar xf Cython-*.tar.* -C cython --strip-components 1
+cd cython
+
+python3 setup.py build
+as_root python3 setup.py install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf cython
+
+#yasm
+wget http://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz -O \
+    yasm-1.3.0.tar.gz
+
+mkdir yasm && tar xf yasm-*.tar.* -C yasm --strip-components 1
+cd yasm
+
+sed -i 's#) ytasm.*#)#' Makefile.in
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
+     --prefix=/usr \
+     --libdir=/usr/lib64 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+as_root PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf yasm
+
+#libjpeg-turbo
+wget http://downloads.sourceforge.net/libjpeg-turbo/libjpeg-turbo-1.5.2.tar.gz -O \
+    libjpeg-turbo-1.5.2.tar.gz
+
+mkdir libjpeg-turbo && tar xf libjpeg-turbo-*.tar.* -C libjpeg-turbo --strip-components 1
+cd libjpeg-turbo
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
+     --prefix=/usr \
+     --libdir=/usr/lib64 \
+     --mandir=/usr/share/man \
+     --with-jpeg8            \
+     --disable-static        \
+     --docdir=/usr/share/doc/libjpeg-turbo-1.5.2
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+as_root PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+ldconfig
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf libjpeg-turbo
+
