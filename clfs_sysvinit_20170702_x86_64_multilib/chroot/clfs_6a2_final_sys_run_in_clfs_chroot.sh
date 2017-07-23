@@ -528,3 +528,6 @@ USE_ARCH=64 ./test
 rm -v multiarch_wrapper.c test{,-32,-64}
 
 cd ${CLFSSOURCES}
+
+sh ${CLFS}/clfs_6a3_final_sys_run_in_clfs_chroot.sh
+
