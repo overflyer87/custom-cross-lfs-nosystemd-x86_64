@@ -503,6 +503,8 @@ wget http://ftp.gnome.org/pub/gnome/sources/pango/1.40/pango-1.40.6.tar.xz -O \
 mkdir pango && tar xf pango-*.tar.* -C pango --strip-components 1
 cd pango
 
+ln -sv ${XORG_PREFIX}/share/fonts /usr/share/
+
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
      --prefix=/usr \
      --libdir=/usr/lib64 \
