@@ -808,8 +808,8 @@ CC="gcc ${BUILD64}" \
 CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64 \
     --with-xinitdir=/etc/X11/app-defaults &&
     
-make PREFIX=/usr LIBDIR=/usr/lib64
-make PREFIX=/usr LIBDIR=/usr/lib64 install
+make 
+make install
 ldconfig
 
 cd ${CLFSSOURCES}/xc
