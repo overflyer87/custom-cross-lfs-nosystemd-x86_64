@@ -1920,7 +1920,7 @@ cd dejavu-fonts
 
 mkdir /etc/fonts
 mkdir /etc/fonts/conf.d
-mkdir /etc/fonts.conf.avail
+mkdir /etc/fonts/conf.avail
 mkdir -pv /usr/share/fonts/TTF
 
 cp -v fontconfig/* /etc/fonts/conf.avail
