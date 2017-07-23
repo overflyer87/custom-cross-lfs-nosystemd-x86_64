@@ -50,43 +50,43 @@ export PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 cd ${CLFSSOURCES}
 
 #Cracklib 32-bit
-#mkdir cracklib && tar xf cracklib-*.tar.* -C cracklib --strip-components 1
-#cd cracklib
-#
-#sed -i '/skipping/d' util/packer.c
-#
-#PKG_CONFIG_PATH=${PKG_CONFIG_PATH32} \
-#CC="gcc ${BUILD32}" USE_ARCH=32 ./configure \
-#            --prefix=/usr    \
-#            --disable-static \
-#            --libdir=/usr/lib \
-#            --with-default-dict=/lib/cracklib/pw_dict
-#
-#make PREFIX=/usr LIBDIR=/usr/lib
-#make PREFIX=/usr LIBDIR=/usr/lib install   
-#
-#mv -v /usr/lib/libcrack.so.* /lib
-#ln -sfv ../../lib/$(readlink /usr/lib/libcrack.so) /usr/lib/libcrack.so
-#
-#ldconfig
-#
-#install -v -m644 -D    ../cracklib-words-2.9.6.gz \
-#                         /usr/share/dict/cracklib-words.gz     &&
-#
-#gunzip -v                /usr/share/dict/cracklib-words.gz     &&
-#ln -v -sf cracklib-words /usr/share/dict/words                 &&
-#echo $(hostname) >>      /usr/share/dict/cracklib-extra-words  &&
-#install -v -m755 -d      /lib/cracklib                         &&
-#
-#create-cracklib-dict     /usr/share/dict/cracklib-words \
-#                         /usr/share/dict/cracklib-extra-words
-#
-##make test
-##checkBuiltPackage
-#
-#cd ${CLFSSOURCES} 
-##checkBuiltPackage
-#rm -rf cracklib
+mkdir cracklib && tar xf cracklib-*.tar.* -C cracklib --strip-components 1
+cd cracklib
+
+sed -i '/skipping/d' util/packer.c
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH32} \
+CC="gcc ${BUILD32}" USE_ARCH=32 ./configure \
+            --prefix=/usr    \
+            --disable-static \
+            --libdir=/usr/lib \
+            --with-default-dict=/lib/cracklib/pw_dict
+
+make PREFIX=/usr LIBDIR=/usr/lib
+make PREFIX=/usr LIBDIR=/usr/lib install   
+
+mv -v /usr/lib/libcrack.so.* /lib
+ln -sfv ../../lib/$(readlink /usr/lib/libcrack.so) /usr/lib/libcrack.so
+
+ldconfig
+
+install -v -m644 -D    ../cracklib-words-2.9.6.gz \
+                         /usr/share/dict/cracklib-words.gz     &&
+
+gunzip -v                /usr/share/dict/cracklib-words.gz     &&
+ln -v -sf cracklib-words /usr/share/dict/words                 &&
+echo $(hostname) >>      /usr/share/dict/cracklib-extra-words  &&
+install -v -m755 -d      /lib/cracklib                         &&
+
+create-cracklib-dict     /usr/share/dict/cracklib-words \
+                         /usr/share/dict/cracklib-extra-words
+
+make test
+checkBuiltPackage
+
+cd ${CLFSSOURCES} 
+checkBuiltPackage
+rm -rf cracklib
 
 #Cracklib 64-bit
 mkdir cracklib && tar xf cracklib-*.tar.* -C cracklib --strip-components 1
