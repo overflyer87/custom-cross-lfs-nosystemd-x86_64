@@ -566,4 +566,364 @@ cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf libgudev
 
+#libusb
+wget https://github.com//libusb/libusb/releases/download/v1.0.21/libusb-1.0.21.tar.bz2 -O \
+    libusb-1.0.21.tar.bz2
+
+mkdir libusb && tar xf libusb-*.tar.* -C libusb --strip-components 1
+cd libusb
+
+sed -i "s/^PROJECT_LOGO/#&/" doc/doxygen.cfg.in
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --disable-static 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make -j1 PREFIX=/usr LIBDIR=/usr/lib64
+as_root make -j1 PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf libusb
+
 #libgusb
+wget http://people.freedesktop.org/~hughsient/releases/libgusb-0.2.10.tar.xz -O \
+    libgusb-0.2.10.tar.xz
+
+mkdir libgusb && tar xf libgusb-*.tar.* -C libgusb --strip-components 1
+cd libgusb
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --disable-static 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf libgusb
+
+#NSPR
+wget https://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v4.15/src/nspr-4.15.tar.gz -O \
+    nspr-4.15.tar.gz
+
+mkdir nspr && tar xf nspr-*.tar.* -C nspr --strip-components 1
+cd nspr
+
+cd nspr                                                     &&
+sed -ri 's#^(RELEASE_BINS =).*#\1#' pr/src/misc/Makefile.in &&
+sed -i 's#$(LIBRARY) ##'            config/rules.mk         &&
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --with-mozilla \
+   --with-pthreads \
+   $([ $(uname -m) = x86_64 ] && echo --enable-64bit)
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf nspr
+
+#startup-notification
+wget http://www.freedesktop.org/software/startup-notification/releases/startup-notification-0.12.tar.gz -O \
+    startup-notification-0.12.tar.gz
+
+mkdir startup-notification && tar xf startup-notification-*.tar.* -C startup-notification --strip-components 1
+cd startup-notification
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --disable-static 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+as_root install -v -m644 -D doc/startup-notification.txt \
+    /usr/share/doc/startup-notification-0.12/startup-notification.txt
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf startup-notification
+
+#mate-common
+wget https://github.com/mate-desktop/mate-common/releases/download/v1.13.0/mate-common-1.13.0.tar.xz -O \
+    mate-common-1.13.0.tar.gz
+
+mkdir mate-common && tar xf mate-common-*.tar.* -C mate-common --strip-components 1
+cd mate-common
+
+CC="gcc ${BUILD64}" CXX="g++ {BUILD64}" \
+USE_ARCH=64 LIBDIR=/usr/lib64 \
+PREFIX=/usr PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" sh autogen.sh
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cp macros/*.m4 /usr/share/aclocal 
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf mate-common
+
+#Damned now we really need to build GTK-doc
+
+#sgml-common
+wget http://anduin.linuxfromscratch.org/BLFS/sgml-common/sgml-common-0.6.3.tgz -O \
+    sgml-common-0.6.3.tgz
+
+wget http://www.linuxfromscratch.org/patches/blfs/svn/sgml-common-0.6.3-manpage-1.patch -O \
+    Sgml-common-0.6.3-manpage-1.patch 
+
+mkdir sgml-common && tar xf sgml-common-*.tgz -C sgml-common --strip-components 1
+cd sgml-common
+
+patch -Np1 -i ../Sgml-common-0.6.3-manpage-1.patch
+
+autoreconf -f -i
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --sysconfdir=/etc
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 docdir=/usr/share/doc install
+
+as_root install-catalog --remove /etc/sgml/sgml-ent.cat \
+    /usr/share/sgml/sgml-iso-entities-8879.1986/catalog &&
+
+as_root install-catalog --remove /etc/sgml/sgml-docbook.cat \
+    /etc/sgml/sgml-ent.cat
+
+as_root install-catalog --add /etc/sgml/sgml-ent.cat \
+    /usr/share/sgml/sgml-iso-entities-8879.1986/catalog &&
+
+as_root install-catalog --add /etc/sgml/sgml-docbook.cat \
+    /etc/sgml/sgml-ent.cat
+
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf sgml-common
+
+#Unzip
+wget http://downloads.sourceforge.net/infozip/unzip60.tar.gz -O \
+    unzip60.tar.gz
+
+mkdir unzip && tar xf unzip*.tar.* -C unzip --strip-components 1
+cd unzip
+
+sed -i 's/CC = cc#/CC = gcc#/' unix/Makefile
+
+CC="gcc ${BUILD64}" \
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64 -f unix/Makefile generic
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 -f unix/Makefile install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf unzip
+
+#docbook-xml
+wget http://www.docbook.org/xml/4.5/docbook-xml-4.5.zip -O \
+    docbook-xml-4.5.zip
+
+unzip docbook-xml-*.zip
+
+as_root install -v -d -m755 /usr/share/xml/docbook/xml-dtd-4.5 &&
+as_root install -v -d -m755 /etc/xml &&
+as_root chown -R root:root . &&
+as_root cp -v -af docbook.cat *.dtd ent/ *.mod \
+    /usr/share/xml/docbook/xml-dtd-4.5
+
+if [ ! -e /etc/xml/docbook ]; then
+    as_root xmlcatalog --noout --create /etc/xml/docbook
+fi &&
+as_root xmlcatalog --noout --add "public" \
+    "-//OASIS//DTD DocBook XML V4.5//EN" \
+    "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" \
+    /etc/xml/docbook &&
+as_root xmlcatalog --noout --add "public" \
+    "-//OASIS//DTD DocBook XML CALS Table Model V4.5//EN" \
+    "file:///usr/share/xml/docbook/xml-dtd-4.5/calstblx.dtd" \
+    /etc/xml/docbook &&
+as_root xmlcatalog --noout --add "public" \
+    "-//OASIS//DTD XML Exchange Table Model 19990315//EN" \
+    "file:///usr/share/xml/docbook/xml-dtd-4.5/soextblx.dtd" \
+    /etc/xml/docbook &&
+as_rootxmlcatalog --noout --add "public" \
+    "-//OASIS//ELEMENTS DocBook XML Information Pool V4.5//EN" \
+    "file:///usr/share/xml/docbook/xml-dtd-4.5/dbpoolx.mod" \
+    /etc/xml/docbook &&
+as_root xmlcatalog --noout --add "public" \
+    "-//OASIS//ELEMENTS DocBook XML Document Hierarchy V4.5//EN" \
+    "file:///usr/share/xml/docbook/xml-dtd-4.5/dbhierx.mod" \
+    /etc/xml/docbook &&
+as_root xmlcatalog --noout --add "public" \
+    "-//OASIS//ELEMENTS DocBook XML HTML Tables V4.5//EN" \
+    "file:///usr/share/xml/docbook/xml-dtd-4.5/htmltblx.mod" \
+    /etc/xml/docbook &&
+as_root xmlcatalog --noout --add "public" \
+    "-//OASIS//ENTITIES DocBook XML Notations V4.5//EN" \
+    "file:///usr/share/xml/docbook/xml-dtd-4.5/dbnotnx.mod" \
+    /etc/xml/docbook &&
+as_root xmlcatalog --noout --add "public" \
+    "-//OASIS//ENTITIES DocBook XML Character Entities V4.5//EN" \
+    "file:///usr/share/xml/docbook/xml-dtd-4.5/dbcentx.mod" \
+    /etc/xml/docbook &&
+as_root xmlcatalog --noout --add "public" \
+    "-//OASIS//ENTITIES DocBook XML Additional General Entities V4.5//EN" \
+    "file:///usr/share/xml/docbook/xml-dtd-4.5/dbgenent.mod" \
+    /etc/xml/docbook &&
+as_root xmlcatalog --noout --add "rewriteSystem" \
+    "http://www.oasis-open.org/docbook/xml/4.5" \
+    "file:///usr/share/xml/docbook/xml-dtd-4.5" \
+    /etc/xml/docbook &&
+as_root xmlcatalog --noout --add "rewriteURI" \
+    "http://www.oasis-open.org/docbook/xml/4.5" \
+    "file:///usr/share/xml/docbook/xml-dtd-4.5" \
+    /etc/xml/docbook
+
+if [ ! -e /etc/xml/catalog ]; then
+    xmlcatalog --noout --create /etc/xml/catalog
+fi &&
+as_root xmlcatalog --noout --add "delegatePublic" \
+    "-//OASIS//ENTITIES DocBook XML" \
+    "file:///etc/xml/docbook" \
+    /etc/xml/catalog &&
+as_root xmlcatalog --noout --add "delegatePublic" \
+    "-//OASIS//DTD DocBook XML" \
+    "file:///etc/xml/docbook" \
+    /etc/xml/catalog &&
+as_root xmlcatalog --noout --add "delegateSystem" \
+    "http://www.oasis-open.org/docbook/" \
+    "file:///etc/xml/docbook" \
+    /etc/xml/catalog &&
+as_root xmlcatalog --noout --add "delegateURI" \
+    "http://www.oasis-open.org/docbook/" \
+    "file:///etc/xml/docbook" \
+    /etc/xml/catalog
+
+for DTDVERSION in 4.1.2 4.2 4.3 4.4
+do
+  as_root xmlcatalog --noout --add "public" \
+    "-//OASIS//DTD DocBook XML V$DTDVERSION//EN" \
+    "http://www.oasis-open.org/docbook/xml/$DTDVERSION/docbookx.dtd" \
+    /etc/xml/docbook
+  as_root xmlcatalog --noout --add "rewriteSystem" \
+    "http://www.oasis-open.org/docbook/xml/$DTDVERSION" \
+    "file:///usr/share/xml/docbook/xml-dtd-4.5" \
+    /etc/xml/docbook
+  as_root xmlcatalog --noout --add "rewriteURI" \
+    "http://www.oasis-open.org/docbook/xml/$DTDVERSION" \
+    "file:///usr/share/xml/docbook/xml-dtd-4.5" \
+    /etc/xml/docbook
+  as_root xmlcatalog --noout --add "delegateSystem" \
+    "http://www.oasis-open.org/docbook/xml/$DTDVERSION/" \
+    "file:///etc/xml/docbook" \
+    /etc/xml/catalog
+  as_root xmlcatalog --noout --add "delegateURI" \
+    "http://www.oasis-open.org/docbook/xml/$DTDVERSION/" \
+    "file:///etc/xml/docbook" \
+    /etc/xml/catalog
+done
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+
+#docbook-xsl
+wget http://downloads.sourceforge.net/docbook/docbook-xsl-1.79.1.tar.bz2 -O \
+    docbook-xsl-1.79.1.tar.bz2
+
+mkdir docbook-xsl && tar xf docbook-xsl-*.tar.* -C docbook-xsl --strip-components 1
+cd docbook-xsl
+
+as_root install -v -m755 -d /usr/share/xml/docbook/xsl-stylesheets-1.79.1 &&
+
+as_root cp -v -R VERSION assembly common eclipse epub epub3 extensions fo        \
+         highlighting html htmlhelp images javahelp lib manpages params  \
+         profiling roundtrip slides template tests tools webhelp website \
+         xhtml xhtml-1_1 xhtml5                                          \
+    /usr/share/xml/docbook/xsl-stylesheets-1.79.1 &&
+
+as_root ln -s VERSION /usr/share/xml/docbook/xsl-stylesheets-1.79.1/VERSION.xsl &&
+
+as_root install -v -m644 -D README \
+                    /usr/share/doc/docbook-xsl-1.79.1/README.txt &&
+as_root install -v -m644    RELEASE-NOTES* NEWS* \
+                    /usr/share/doc/docbook-xsl-1.79.1
+
+as_root xmlcatalog --noout --add "rewriteSystem" \
+           "http://docbook.sourceforge.net/release/xsl/<version>" \
+           "/usr/share/xml/docbook/xsl-stylesheets-<version>" \
+    /etc/xml/catalog &&
+
+as_root xmlcatalog --noout --add "rewriteURI" \
+           "http://docbook.sourceforge.net/release/xsl/<version>" \
+           "/usr/share/xml/docbook/xsl-stylesheets-<version>" \
+    /etc/xml/catalog
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+echo " "
+echo "For me xmlcatalog --noout --add was failing"
+echo "With \"add command failed\""
+echo "I cheated and copied /etc/xml/* over to clfs from my host distro"
+echo " "
+rm -rf docbook-xsl
+
+#itstool
+wget http://files.itstool.org/itstool/itstool-2.0.2.tar.bz2 -O \
+    itstool-2.0.2.tar.bz2
+
+mkdir itstool && tar xf itstool-*.tar.* -C itstool --strip-components 1
+cd itstool
+
+sed -i 's/python \- \&/python3 \- \&/' configure
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr 
+as_root make PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf itstool
+
+#gtk-doc
+wget http://ftp.gnome.org/pub/gnome/sources/gtk-doc/1.25/gtk-doc-1.25.tar.xz -O \
+    gtk-doc-1.25.tar.xz
+
+mkdir gtk-doc && tar xf gtk-doc-*.tar.* -C gtk-doc --strip-components 1
+cd gtk-doc
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+    --libdir=/usr/lib64
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf gtk-doc
+
+#mate-desktop
+wget https://github.com/mate-desktop/mate-desktop/archive/v1.18.0.tar.gz -O \
+    mate-desktop-1.18.0.tar.gz
+
+mkdir mate-desktop && tar xf mate-desktop-*.tar.* -C mate-desktop --strip-components 1
+cd mate-desktop
+
+CC="gcc ${BUILD64}" CXX="g++ {BUILD64}" \
+USE_ARCH=64 LIBDIR=/usr/lib64 \
+PREFIX=/usr PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" sh autogen.sh
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf mate-desktop
