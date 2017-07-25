@@ -324,7 +324,7 @@ rm -rf gnomekeyring
 wget https://github.com/mate-desktop/mate-session-manager/archive/v1.19.0.tar.gz -O \
   mate-session-manager-1.19.0.tar.gz
 
-mkdir mate-session-manager && tar xf mate-session-manager-*.tar.* -C mate-session-manager --strip-components
+mkdir mate-session-manager && tar xf mate-session-manager-*.tar.* -C mate-session-manager --strip-components 1
 cd mate-session-manager
 
 ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" \
