@@ -548,8 +548,8 @@ make check
 checkBuiltPackage
 
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
-
 as_root unlink /usr/bin/python
+as_root cp libsoup-2.4.pc ${PKG_CONFIG_PATH64}
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -562,7 +562,8 @@ wget https://github.com/mate-desktop/libmateweather/archive/v1.19.1.tar.gz -O \
 mkdir libmateweather && tar xf libmateweather-*.tar.* -C libmateweather --strip-components 1
 cd libmateweather
 
-ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" \
+ LIBSOUP_LIBS=/usr/lib64 \
+  ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" \
   CXX="g++ ${BUILD64}" USE_ARCH=64 \
    PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr \
    --libdir=/usr/lib64 --sysconfdir=/etc --disable-static \
