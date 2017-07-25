@@ -422,7 +422,7 @@ rm -rf gnutls
 wget http://ftp.gnome.org/pub/gnome/sources/gsettings-desktop-schemas/3.24/gsettings-desktop-schemas-3.24.0.tar.xz -O \
     gsettings-desktop-schemas-3.24.0.tar.xz
     
-mkdir gsetdeskschemas && tar xf gsettings-desktop-schemas--*.tar.* -C gsetdeskschemas --strip-components 1
+mkdir gsetdeskschemas && tar xf gsettings-desktop-schemas-*.tar.* -C gsetdeskschemas --strip-components 1
 cd gsetdeskschemas
 
 sed -i -r 's:"(/system):"/org/gnome\1:g' schemas/*.i
