@@ -279,3 +279,31 @@ as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -r gcr
+
+#gnome-keyring
+mkdir gnomekeyring && tar xf gnome-keyring-*.tar.* -C gnome-keyring --strip-components
+cd gnome-keyring
+
+wget http://ftp.gnome.org/pub/gnome/sources/gnome-keyring/3.20/gnome-keyring-3.20.1.tar.xz
+    gnome-keyring-3.20.1.tar.xz
+    
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+    --libdir=/usr/lib64 \
+    --disable-static \
+    --sysconfdir=/etc \
+    --with-pam-dir=/lib64/security
+    
+#Let's fix an annoying problem with docbook.xsl
+#Replace the sourceforge URL in Makefile, Makefile.in and docs/Makefile.am
+#with the hardcoded path of anything containing html/docbook.xsl on you system
+#It is most likely to be found somewhere in /usr/share/xml ...
+
+sed -i 's/https\:\/\/sourceforge.net\/projects\/docbook\/files\/docbook-xsl\/1.79.1\/docbook.xsl/\/usr\/share\/xml\/1.79.1\/html\/docbook.xsl/'
+    
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+
+make check
+checkBuiltPackage
+
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+    
