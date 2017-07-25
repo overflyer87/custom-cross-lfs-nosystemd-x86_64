@@ -344,7 +344,23 @@ sed -i 's/http\:\/\/docbook.sourceforge.net\/release\/xsl\/current\/manpages\/do
 XSLTPROC_XSL=/usr/share/xml/docbook/xsl-stylesheets-1.79.1/html/docbook.xsl \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd egg
+make LIBDIR=/usr/lib64 PREFIX=/usr install
+cd ../data
+make LIBDIR=/usr/lib64 PREFIX=/usr install
+cd ../m4
+make LIBDIR=/usr/lib64 PREFIX=/usr install
+cd ../po
+make LIBDIR=/usr/lib64 PREFIX=/usr install
+cd ../capplet
+make LIBDIR=/usr/lib64 PREFIX=/usr install
+cd ../tools
+make LIBDIR=/usr/lib64 PREFIX=/usr install
+cd ../mate-session
+make LIBDIR=/usr/lib64 PREFIX=/usr install
+
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
