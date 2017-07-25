@@ -303,7 +303,7 @@ sed -i 's/http\:\/\/docbook.sourceforge.net\/release\/xsl\/current\/manpages\/do
 
 #Now remove a linebreak the upper sed command added
 #Basically it just converts double linebreaks to single linebreaks
-sed -i '/^$/{n;/^$/d}'
+sed -i '/^$/{n;/^$/d}' Makefile Makefile.in docs/Makefile.am
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 
