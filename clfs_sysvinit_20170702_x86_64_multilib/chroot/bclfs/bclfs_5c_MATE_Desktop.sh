@@ -321,4 +321,32 @@ checkBuiltPackage
 rm -rf gnomekeyring
 
 #mate-session-manager
-    
+wget https://github.com/mate-desktop/mate-session-manager/archive/v1.19.0.tar.gz -O \
+  mate-session-manager-1.19.0.tar.gz
+
+mkdir mate-session-manager && tar xf mate-session-manager-*.tar.* -C mate-session-manager --strip-components
+cd mate-session-manager
+
+ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+   PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr \
+   --libdir=/usr/lib64 --sysconfdir=/etc --disable-static \
+   --localstatedir=/var --bindir=/usr/bin --sbindir=/usr/sbin \
+   --datadir=/usr/share/doc --disable-docbook-docs
+
+#Fix the same docbook.xsl problem
+#That occured when building gnome-keyring
+
+export XSLTPROC_XSL=/usr/share/xml/docbook/xsl-stylesheets-1.79.1/html/docbook.xsl
+
+sed -i 's/XSLTPROC_XSL = \\//' doc/man/Makefile*
+sed -i 's/http\:\/\/docbook.sourceforge.net\/release\/xsl\/current\/manpages\/docbook.xsl//' doc/man/Makefile*
+
+XSLTPROC_XSL=/usr/share/xml/docbook/xsl-stylesheets-1.79.1/html/docbook.xsl \
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf mate-session-manager
