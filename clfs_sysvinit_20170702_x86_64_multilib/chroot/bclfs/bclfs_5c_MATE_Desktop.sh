@@ -530,7 +530,26 @@ checkBuiltPackage
 rm -rf glibnet
 
 #libsoup
+wget http://ftp.gnome.org/pub/gnome/sources/libsoup/2.58/libsoup-2.58.1.tar.xz -O \
+    libsoup-2.58.1.tar.xz
 
+mkdir libsoup && tar xf libsoup-*.tar.* -C libsoup --strip-components 1
+cd libsoup
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+   PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+   --libdir=/usr/lib64 --disable-static 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+make check 
+checkBuiltPackage
+
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf libsoup
 
 
 
