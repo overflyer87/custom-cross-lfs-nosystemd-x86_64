@@ -578,9 +578,8 @@ checkBuiltPackage
 rm -rf libmateweather
 
 #libwnk
-https://github.com/GNOME/libwnck/archive/3.24.0.tar.gz -O \
+wget https://github.com/GNOME/libwnck/archive/3.24.0.tar.gz -O \
     libwnck-3.24.0.tar.gz
-
 
 mkdir libwnck && tar xf libwnck-*.tar.* -C libwnck --strip-components 1
 cd libwnck
