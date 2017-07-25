@@ -464,7 +464,7 @@ wget http://www.cmake.org/files/v3.8/cmake-3.8.2.tar.gz -O \
     cmake-3.8.2.tar.gz
 
 sed -i '/CMAKE_USE_LIBUV 1/s/1/0/' CMakeLists.txt     &&
-sed -i '/"lib64"/s/64//' Modules/GNUInstallDirs.cmake &&
+#sed -i '/"lib64"/s/64//' Modules/GNUInstallDirs.cmake &&
 
 
 CC="gcc ${BUILD64}" \
