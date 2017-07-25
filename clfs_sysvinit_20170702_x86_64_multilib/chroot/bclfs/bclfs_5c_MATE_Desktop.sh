@@ -541,11 +541,15 @@ CC="gcc ${BUILD64}" \
    PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
    --libdir=/usr/lib64 --disable-static 
 
+as_root ln -sfv /usr/bin/python3 /usr/bin/python
+
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 make check 
 checkBuiltPackage
 
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+as_root unlink /usr/bin/python
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
