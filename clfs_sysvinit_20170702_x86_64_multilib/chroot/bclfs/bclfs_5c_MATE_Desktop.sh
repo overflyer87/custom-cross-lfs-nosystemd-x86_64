@@ -571,8 +571,10 @@ cd libmateweather
    --datadir=/usr/share/doc --disable-docbook-docs
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-make LIBDIR=/usr/lib64 PREFIX=/usr install
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf libmateweather
+
+#libwnk
