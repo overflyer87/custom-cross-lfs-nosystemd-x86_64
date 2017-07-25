@@ -589,8 +589,8 @@ CC="gcc ${BUILD64}" \
    PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr \
    --libdir=/usr/lib64 --sysconfdir=/etc --disable-static \
    --localstatedir=/var --bindir=/usr/bin --sbindir=/usr/sbin \
-   --datadir=/usr/share/doc --disable-docbook-docs 
-
+   --datadir=/usr/share/doc
+   
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 
