@@ -506,7 +506,30 @@ cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf libproxy
 
+#glib-networking
+wget ftp://ftp.gnome.org/pub/gnome/sources/glib-networking/2.50/glib-networking-2.50.0.tar.xz -O \
+    glib-networking-2.50.0.tar.xz
 
+mkdir glibnet && tar xf glib-networking-*.tar.* -C glibnet --strip-components 1
+cd glibnet
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+   PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+   --libdir=/usr/lib64 --disable-static \
+   --without-ca-certificates 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+make -k check 
+checkBuiltPackage
+
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf glibnet
+
+#libsoup
 
 
 
