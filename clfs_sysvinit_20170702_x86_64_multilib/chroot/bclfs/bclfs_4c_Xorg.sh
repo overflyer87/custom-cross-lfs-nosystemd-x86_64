@@ -723,11 +723,11 @@ checkBuiltPackage
 rm -rf xf86vidfbdev
 
 #NVIDIA PROPRIETARY DRIVER
-wget http://us.download.nvidia.com/XFree86/Linux-x86_64/384.47/NVIDIA-Linux-x86_64-384.47.run -O \
-  NVIDIA-Linux-x86_64-384.47.run
+wget http://us.download.nvidia.com/XFree86/Linux-x86_64/384.59/NVIDIA-Linux-x86_64-384.59.run -O \
+  NVIDIA-Linux-x86_64-384.59.run
 
-as_root chmod +x NVIDIA-Linux-x86_64-384.47.run
-as_root ./NVIDIA-Linux-x86_64-384.47.run \
+as_root chmod +x NVIDIA-Linux-x86_64-384.59.run
+as_root ./NVIDIA-Linux-x86_64-384.59.run \
  --kernel-source-path=/lib/modules/CLFS-4.12.3_ORIGINAL 
 
 checkBuiltPackage
