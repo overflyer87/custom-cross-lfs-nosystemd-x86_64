@@ -656,9 +656,12 @@ wget https://github.com/mate-desktop/mate-common/releases/download/v1.13.0/mate-
 mkdir mate-common && tar xf mate-common-*.tar.* -C mate-common --strip-components 1
 cd mate-common
 
-CC="gcc ${BUILD64}" CXX="g++ {BUILD64}" \
-USE_ARCH=64 LIBDIR=/usr/lib64 \
-PREFIX=/usr PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" sh autogen.sh
+ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+   PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr \
+   --libdir=/usr/lib64 --sysconfdir=/etc --disable-static \
+   --localstatedir=/var --bindir=/usr/bin --sbindir=/usr/sbin \
+   --datadir=/usr/share/doc --disable-docbook-docs
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
@@ -921,13 +924,15 @@ wget https://github.com/mate-desktop/mate-desktop/archive/v1.18.0.tar.gz -O \
 mkdir mate-desktop && tar xf mate-desktop-*.tar.* -C mate-desktop --strip-components 1
 cd mate-desktop
 
-CC="gcc ${BUILD64}" CXX="g++ {BUILD64}" \
-USE_ARCH=64 LIBDIR=/usr/lib64 \
-PREFIX=/usr PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" sh autogen.sh
-
+ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+   PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr \
+   --libdir=/usr/lib64 --sysconfdir=/etc --disable-static \
+   --localstatedir=/var --bindir=/usr/bin --sbindir=/usr/sbin \
+   --datadir=/usr/share/doc --disable-docbook-docs
+   
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
-
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
