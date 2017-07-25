@@ -454,7 +454,6 @@ CC="gcc ${BUILD64}" \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf libarchive
@@ -469,11 +468,9 @@ cd cmake
 sed -i '/CMAKE_USE_LIBUV 1/s/1/0/' CMakeLists.txt     &&
 #sed -i '/"lib64"/s/64//' Modules/GNUInstallDirs.cmake &&
 
-
 CC="gcc ${BUILD64}" \
   CXX="g++ ${BUILD64}" USE_ARCH=64 \
    PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./bootstrap --prefix=/usr \
-            --libdir=/usr/lib64  \
             --system-libs        \
             --mandir=/share/man  \
             --no-system-jsoncpp  \
