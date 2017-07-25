@@ -294,17 +294,19 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
     --with-pam-dir=/lib64/security
     
 #Let's fix an annoying problem with docbook.xsl
-#Replace the sourceforge URL in Makefile, Makefile.in and docs/Makefile.am
-#with the hardcoded path of anything containing html/docbook.xsl on you system
+#Delete all lines in Makefile and docs/Makefile.am
+#Where docbook.xsl download URL
+#is assigned to XSLTPROC_XSL
+#Instead export it in this script
+#and assign it the hardcoded path of anything containing html/docbook.xsl on you system
 #It is most likely to be found somewhere in /usr/share/xml ...
+#Also for paranoia reasons put the value assignment to XSLTPROC_XSL in front of the make command
+#This method was tested to work!!!!!!
 
 export XSLTPROC_XSL=/usr/share/xml/docbook/xsl-stylesheets-1.79.1/html/docbook.xsl
 
 sed -i 's/XSLTPROC_XSL = \\//' Makefile docs/Makefile.am
 sed -i 's/http\:\/\/docbook.sourceforge.net\/release\/xsl\/current\/manpages\/docbook.xsl//' Makefile docs/Makefile.am
-#sed -i '2750i XSLTPROC_XSL = \\  /usr/share/xml/docbook/xsl-stylesheets-1.79.1/html/docbook.xsl' Makefile docs/Makefile.am
-#sed -i 's/http\:\/\/docbook.sourceforge.net\/release\/xsl\/current\/manpages\/docbook.xsl/ \
-#\/usr\/share\/xml\/docbook\/xsl-stylesheets-1.79.1\/html\/docbook.xsl/' Makefile.in docs/Makefile.am
 
 XSLTPROC_XSL=/usr/share/xml/docbook/xsl-stylesheets-1.79.1/html/docbook.xsl \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
@@ -313,4 +315,10 @@ make check
 checkBuiltPackage
 
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf gnomekeyring
+
+#mate-session-manager
     
