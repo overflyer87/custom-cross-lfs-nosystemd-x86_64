@@ -298,8 +298,13 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
 #with the hardcoded path of anything containing html/docbook.xsl on you system
 #It is most likely to be found somewhere in /usr/share/xml ...
 
-sed -i 's/https\:\/\/sourceforge.net\/projects\/docbook\/files\/docbook-xsl\/1.79.1\/docbook.xsl/\/usr\/share\/xml\/1.79.1\/html\/docbook.xsl/'
-    
+sed -i 's/http\:\/\/docbook.sourceforge.net\/release\/xsl\/current\/manpages\/docbook.xsl/ \
+\/usr\/share\/xml\/docbook\/xsl-stylesheets-1.79.1\/html\/docbook.xsl/' Makefile Makefile.in docs/Makefile.am
+
+#Now remove a linebreak the upper sed command added
+#Basically it just converts double linebreaks to single linebreaks
+sed -i '/^$/{n;/^$/d}'
+
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 
 make check
