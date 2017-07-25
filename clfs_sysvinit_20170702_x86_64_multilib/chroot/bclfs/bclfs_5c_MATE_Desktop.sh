@@ -477,6 +477,9 @@ CC="gcc ${BUILD64}" \
             --no-system-librhash \
             --docdir=/share/doc/cmake-3.8.2 
 
+bin/ctest -O cmake-3.8.2-test.log
+checkBuiltPackage
+
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 
