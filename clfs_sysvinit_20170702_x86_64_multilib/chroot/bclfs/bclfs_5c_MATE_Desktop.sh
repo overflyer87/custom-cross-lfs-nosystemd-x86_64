@@ -439,6 +439,51 @@ cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf gsetdeskschemas
 
+#libarchive
+wget http://www.libarchive.org/downloads/libarchive-3.3.2.tar.gz -O \
+    libarchive-3.3.2.tar.gz
+
+mkdir libarchive && tar xf libarchive-*.tar.* -C libarchive --strip-components 1
+cd libarchive
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+   PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr \
+   --libdir=/usr/lib64 --disable-static 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf libarchive
+
+#CMake
+wget http://www.cmake.org/files/v3.8/cmake-3.8.2.tar.gz -O \
+    cmake-3.8.2.tar.gz
+
+sed -i '/CMAKE_USE_LIBUV 1/s/1/0/' CMakeLists.txt     &&
+sed -i '/"lib64"/s/64//' Modules/GNUInstallDirs.cmake &&
+
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+   PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./bootstrap --prefix=/usr \
+            --libdir=/usr/lib64  \
+            --system-libs        \
+            --mandir=/share/man  \
+            --no-system-jsoncpp  \
+            --no-system-librhash \
+            --docdir=/share/doc/cmake-3.8.2 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf cmake
+
 #libproxy
 wget https://github.com/libproxy/libproxy/archive/0.4.15.tar.gz -O \
     libproxy-0.4.15.tar.gz
@@ -448,7 +493,7 @@ cd libproxy
 
 CC="gcc ${BUILD64}" \
   CXX="g++ ${BUILD64}" USE_ARCH=64 \
-   PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+   PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr \
    --libdir=/usr/lib64 --disable-static 
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
