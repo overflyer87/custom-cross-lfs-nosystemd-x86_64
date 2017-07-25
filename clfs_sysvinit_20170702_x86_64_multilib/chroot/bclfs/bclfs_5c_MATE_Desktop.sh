@@ -392,3 +392,31 @@ checkBuiltPackage
 rm -rf nettle
 
 #GnuTLS
+wget https://www.gnupg.org/ftp/gcrypt/gnutls/v3.5/gnutls-3.5.14.tar.xz -O \
+    gnutls-3.5.14.tar.xz
+    
+mkdir gnutls && tar xf gnutls-*.tar.* -C gnutls --strip-components 1
+cd gnutls
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+   PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+   --libdir=/usr/lib64 --disable-static \
+   --with-default-trust-store-pkcs11="pkcs11:" \
+   --with-default-trust-store-file=/etc/ssl/ca-bundle.crt \
+   --disable-gtk-doc \
+   --enable-openssl-compatibility \
+   --with-included-unistring
+   
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+make check
+checkBuiltPackage
+
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf gnutls
+    
+    
+  
