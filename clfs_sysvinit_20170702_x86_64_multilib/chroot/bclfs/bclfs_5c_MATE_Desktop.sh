@@ -344,24 +344,51 @@ sed -i 's/http\:\/\/docbook.sourceforge.net\/release\/xsl\/current\/manpages\/do
 XSLTPROC_XSL=/usr/share/xml/docbook/xsl-stylesheets-1.79.1/html/docbook.xsl \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 
-make LIBDIR=/usr/lib64 PREFIX=/usr install
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd egg
-make LIBDIR=/usr/lib64 PREFIX=/usr install
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 cd ../data
-make LIBDIR=/usr/lib64 PREFIX=/usr install
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 cd ../m4
-make LIBDIR=/usr/lib64 PREFIX=/usr install
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 cd ../po
-make LIBDIR=/usr/lib64 PREFIX=/usr install
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 cd ../capplet
-make LIBDIR=/usr/lib64 PREFIX=/usr install
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 cd ../tools
-make LIBDIR=/usr/lib64 PREFIX=/usr install
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 cd ../mate-session
-make LIBDIR=/usr/lib64 PREFIX=/usr install
-
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+cd ..
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf mate-session-manager
+
+#nettle
+wget https://ftp.gnu.org/gnu/nettle/nettle-3.3.tar.gz -O \
+    nettle-3.3.tar.gz
+
+mkdir nettle && tar xf nettle-*.tar.* -C nettle --strip-components 1
+cd nettle
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+   PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+   --libdir=/usr/lib64 --disable-static 
+   
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+make check
+checkBuiltPackage
+
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+as_root chmod   -v   755 /usr/lib64/lib{hogweed,nettle}.so &&
+as_root install -v -m755 -d /usr/share/doc/nettle-3.3 &&
+as_root install -v -m644 nettle.html /usr/share/doc/nettle-3.3
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf nettle
+
+#GnuTLS
