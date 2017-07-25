@@ -578,3 +578,21 @@ checkBuiltPackage
 rm -rf libmateweather
 
 #libwnk
+https://github.com/GNOME/libwnck/archive/3.24.0.tar.gz -O \
+    libwnck-3.24.0.tar.gz
+
+
+mkdir libwnck && tar xf libwnck-*.tar.* -C libwnck --strip-components 1
+cd libwnck
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+   PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+   --libdir=/usr/lib64 --disable-static 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf libwnck
