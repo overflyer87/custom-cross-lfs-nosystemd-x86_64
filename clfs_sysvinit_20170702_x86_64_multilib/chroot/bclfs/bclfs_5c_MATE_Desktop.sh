@@ -556,8 +556,11 @@ checkBuiltPackage
 rm -rf libsoup
 
 #libmateweather
-mkdir matedesktop && tar xf mate-desktop-*.tar.* -C matedesktop --strip-components 1
-cd matedesktop
+wget https://github.com/mate-desktop/libmateweather/archive/v1.19.1.tar.gz -O \
+    libmateweather-v1.19.1.tar.gz
+
+mkdir libmateweather && tar xf libmateweather-*.tar.* -C libmateweather --strip-components 1
+cd libmateweather
 
 ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" \
   CXX="g++ ${BUILD64}" USE_ARCH=64 \
@@ -567,11 +570,8 @@ ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" \
    --datadir=/usr/share/doc --disable-docbook-docs
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-
-cd libmateweather
-
 make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf matedesktop
+rm -rf libmateweather
