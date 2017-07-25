@@ -555,5 +555,23 @@ cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf libsoup
 
+#libmateweather
+mkdir matedesktop && tar xf mate-desktop-*.tar.* -C matedesktop --strip-components 1
+cd matedesktop
 
+ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+   PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr \
+   --libdir=/usr/lib64 --sysconfdir=/etc --disable-static \
+   --localstatedir=/var --bindir=/usr/bin --sbindir=/usr/sbin \
+   --datadir=/usr/share/doc --disable-docbook-docs
 
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+
+cd libmateweather
+
+make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf matedesktop
