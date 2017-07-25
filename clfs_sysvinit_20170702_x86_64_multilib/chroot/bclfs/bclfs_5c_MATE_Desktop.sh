@@ -417,6 +417,24 @@ as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf gnutls
+
+#gsettings-desktop-schemas
+wget http://ftp.gnome.org/pub/gnome/sources/gsettings-desktop-schemas/3.24/gsettings-desktop-schemas-3.24.0.tar.xz -O \
+    gsettings-desktop-schemas-3.24.0.tar.xz
     
-    
-  
+mkdir gsetdeskschemas && tar xf gsettings-desktop-schemas--*.tar.* -C gsetdeskschemas --strip-components 1
+cd gsetdeskschemas
+
+sed -i -r 's:"(/system):"/org/gnome\1:g' schemas/*.i
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+   PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+   --libdir=/usr/lib64 --disable-static 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf gsetdeskschemas
