@@ -578,22 +578,53 @@ checkBuiltPackage
 rm -rf libmateweather
 
 #libwnk
-wget https://github.com/GNOME/libwnck/archive/3.24.0.tar.gz -O \
+wget http://ftp.gnome.org/pub/gnome/sources/libwnck/3.24/libwnck-3.24.0.tar.xz -O \
     libwnck-3.24.0.tar.gz
 
 mkdir libwnck && tar xf libwnck-*.tar.* -C libwnck --strip-components 1
 cd libwnck
 
-CC="gcc ${BUILD64}" \
-  CXX="g++ ${BUILD64}" USE_ARCH=64 \
-   PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr \
-   --libdir=/usr/lib64 --sysconfdir=/etc --disable-static \
-   --localstatedir=/var --bindir=/usr/bin --sbindir=/usr/sbin \
-   --datadir=/usr/share/doc
-   
+CC="gcc ${BUILD64}"   CXX="g++ ${BUILD64}" USE_ARCH=64    \
+  PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr    \
+  --libdir=/usr/lib64 --sysconfdir=/etc --disable-static    \
+  --localstatedir=/var --bindir=/usr/bin \
+  --sbindir=/usr/sbin --datadir=/usr/share/doc \
+  --with-x --enable-tools \
+  --enable-dependency-tracking \
+  --disable-gtk-doc --x-libraries=/usr/lib64 \
+  --x-includes=/usr/include/X11/ --enable-introspection=yes \
+  --enable-shared --enable-startup-notification \
+  --includedir=/usr/include/
+  
+  
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+  
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf libwnck
+
+#mate-menus
+wget https://github.com/mate-desktop/mate-menus/archive/v1.18.0.tar.gz -O \
+    mate-menus-1.18.0.tar.gz
+    
+mkdir mate-menus && tar xf mate-menus-*.tar.* -C mate-menus --strip-components 1
+cd mate-menus
+
+LIBSOUP_LIBS=/usr/lib64 \
+  ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+   PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr \
+   --libdir=/usr/lib64 --sysconfdir=/etc --disable-static \
+   --localstatedir=/var --bindir=/usr/bin --sbindir=/usr/sbin \
+   --datadir=/usr/share/doc --disable-docbook-docs
+   
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+  
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf mate-menus
+  
+  
