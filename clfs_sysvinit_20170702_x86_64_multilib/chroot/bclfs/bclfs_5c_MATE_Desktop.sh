@@ -631,7 +631,45 @@ as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf mate-menus
-  
+
+#yelp-xsl
+wget http://ftp.gnome.org/pub/gnome/sources/yelp-xsl/3.20/yelp-xsl-3.20.1.tar.xz -O \
+    yelp-xsl-3.20.1.tar.xz
+
+mkdir yelp-xsl && tar xf yelp-xsl-*.tar.* -C yelp-xsl --strip-components 1
+cd yelp-xsl
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr --libdir=/usr/lib64
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf yelp-xsl
+
+#Yelp
+wget ftp://ftp.gnome.org/pub/gnome/sources/yelp/3.22/yelp-3.22.0.tar.xz -O \
+    Yelp-3.22.0.tar.xz
+
+mkdir yelp && tar xf Yelp-*.tar.* -C yelp --strip-components 1
+cd yelp
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+  --libdir=/usr/lib64 \
+  --disable-static \
+  --disable-gtk-doc
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+as_root update-desktop-database
+
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf yelp
+
+
 #mate-panel
 wget https://github.com/mate-desktop/mate-panel/archive/v1.19.2.tar.gz -O \
     mate-panel-1.19.2.tar.gz
