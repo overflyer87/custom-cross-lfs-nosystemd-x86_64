@@ -618,7 +618,12 @@ LIBSOUP_LIBS=/usr/lib64 \
    PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr \
    --libdir=/usr/lib64 --sysconfdir=/etc --disable-static \
    --localstatedir=/var --bindir=/usr/bin --sbindir=/usr/sbin \
-   --datadir=/usr/share/doc --disable-docbook-docs
+   --datadir=/usr/share/doc --disable-python
+   
+   #--disable-python is a workaround
+   #otherwise python/matemenu.c throws compile errors
+   #posted Issue #52
+   #https://github.com/mate-desktop/mate-menus/issues/52
    
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
@@ -627,4 +632,24 @@ cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf mate-menus
   
+#mate-panel
+wget https://github.com/mate-desktop/mate-panel/archive/v1.19.2.tar.gz -O \
+    mate-panel-1.19.2.tar.gz
+    
+mkdir mate-panel && tar xf mate-panel-*.tar.* -C mate-panel --strip-components 1
+cd mate-panel
+
+LIBSOUP_LIBS=/usr/lib64 \
+  ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+   PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr \
+   --libdir=/usr/lib64 --sysconfdir=/etc --disable-static \
+   --localstatedir=/var --bindir=/usr/bin --sbindir=/usr/sbin \
+   --datadir=/usr/share/doc 
+   
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
   
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf mate-panel
