@@ -111,7 +111,6 @@ cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -r libgpgerror
 
-
 #libgcrypt
 wget ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.7.8.tar.bz2 -O \
     libgcrypt-1.7.8.tar.bz2
@@ -600,7 +599,6 @@ CC="gcc ${BUILD64}"   CXX="g++ ${BUILD64}" USE_ARCH=64    \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
   
-
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf libwnck
@@ -671,13 +669,10 @@ LIBSOUP_LIBS=/usr/lib64 \
    PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr \
    --libdir=/usr/lib64 --sysconfdir=/etc --disable-static \
    --localstatedir=/var --bindir=/usr/bin --sbindir=/usr/sbin \
-   --datadir=/usr/share/doc --disable-python
-   
-   #--disable-python is a workaround
-   #otherwise python/matemenu.c throws compile errors
-   #posted Issue #52
-   #https://github.com/mate-desktop/mate-menus/issues/52
-   
+   --datadir=/usr/share/doc
+
+#YOU NEED PYTHON 2.7 FOR PYTHON BINDING!!!
+
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
   
@@ -708,8 +703,82 @@ checkBuiltPackage
 rm -rf notificationdaemon
 
 #Zip 
+wget http://downloads.sourceforge.net/infozip/zip30.tar.gz -O \
+    zip30.tar.gz
+
+mkdir zip && tar xf zip*.tar.* -C zip --strip-components 1
+cd zip
+
+sed -i 's/CC = cc#/CC = gcc#/' unix/Makefile
+
+CC="gcc ${BUILD64}" \
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64 -f unix/Makefile generic_gcc
+as_root make PREFIX=/usr MANDIR=/usr/share/man/man1 LIBDIR=/usr/lib64 -f unix/Makefile install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf zip
+
+#autoconf2.13
+wget http://ftp.gnu.org/gnu/autoconf/autoconf-2.13.tar.gz -O \
+    autoconf-2.13.tar.gz
+
+wget http://www.linuxfromscratch.org/patches/blfs/svn/autoconf-2.13-consolidated_fixes-1.patch -O \
+    Autoconf-2.13-consolidated_fixes-1.patch
+
+mkdir autoconf && tar xf autoconf-*.tar.* -C autoconf --strip-components 1
+cd autoconf
+
+patch -Np1 -i ../Autoconf-2.13-consolidated_fixes-1.patch
+
+mv -v autoconf.texi autoconf213.texi                      &&
+rm -v autoconf.info       &&
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+   PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+   --libdir=/usr/lib64 --disable-static --program-suffix=2.13 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+as_root install -v -m644 autoconf213.info /usr/share/info &&
+as_root install-info --info-dir=/usr/share/info autoconf213.info
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf autoconf
 
 #js38
+wget https://ftp.osuosl.org/pub/blfs/conglomeration/mozjs/mozjs-38.2.1.rc0.tar.bz2 -O \
+    mozjs-38.2.1.rc0.tar.bz2
+
+mkdir mozjs && tar xf mozjs*.tar.* -C mozjs --strip-components 1
+cd mozjs
+
+cd js/src &&
+autoconf2.13 &&
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+  PYTHON=/usr/bin/python2-64 \
+  PYTHONPATH=/usr/lib64/python2.7 \
+  PYTHONHOME=/usr/lib64/python2.7 ./configure --prefix=/usr \
+    --with-intl-api     \
+    --libdir=/usr/lib64 \
+    --with-system-zlib  \
+    --with-system-ffi   \
+    --with-system-nspr  \
+    --with-system-icu   \
+    --enable-threadsafe \
+    --enable-readline   
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf mozjs
 
 #Polkit-0.113+git_2919920+js38 
 
