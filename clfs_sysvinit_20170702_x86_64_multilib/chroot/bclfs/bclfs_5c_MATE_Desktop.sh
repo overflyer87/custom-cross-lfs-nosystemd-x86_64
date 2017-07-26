@@ -632,6 +632,132 @@ cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf mate-menus
 
+#notification-daemon
+wget http://ftp.gnome.org/pub/gnome/sources/notification-daemon/3.20/notification-daemon-3.20.0.tar.xz -O \
+    notification-daemon-3.20.0.tar.xz
+
+mkdir notificationdaemon && tar xf notification-daemon-*.tar.* -C notificationdaemon --strip-components 1
+cd notificationdaemon
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+   PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+   --libdir=/usr/lib64 --disable-static 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+pgrep -l notification-da &&
+notify-send -i info Information "Hi ${USER}, This is a Test"
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf notificationdaemon
+
+#Zip 
+
+#js38
+
+#Polkit-0.113+git_2919920+js38 
+
+#libqmi
+
+#libmbim
+
+#ModemManager
+
+#libdaemon
+
+#libglade
+
+#GTK2
+
+#Avahi
+
+#GeoCLue
+
+#Aspell
+
+#enchant
+
+#libsecret
+
+#libwebp
+
+#Ruby
+
+#libnotify
+wget http://ftp.gnome.org/pub/gnome/sources/libnotify/0.7/libnotify-0.7.7.tar.xz -O \
+    libnotify-0.7.7.tar.xz
+
+mkdir libnotify && tar xf libnotify-*.tar.* -C libnotify --strip-components 1
+cd libnotify
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+   PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+   --libdir=/usr/lib64 --disable-static 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf libnotify
+
+#Hyphen
+wget https://netix.dl.sourceforge.net/project/hunspell/Hyphen/2.8/hyphen-2.8.8.tar.gz -O \
+    hyphen-2.8.8.tar.gz
+
+mkdir hyphen && tar xf hyphen-*.tar.* -C hyphen --strip-components 1
+cd hyphen
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+   PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+   --libdir=/usr/lib64 --disable-static 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf hyphen
+
+#WebKitGTK
+wget http://webkitgtk.org/releases/webkitgtk-2.16.5.tar.xz -O \
+    webkitgtk-2.16.5.tar.xz
+
+mkdir webkitgtk && tar xf webkitgtk-*.tar.* -C webkitgtk --strip-components 1
+cd webkitgtk
+
+sed -i 's/unsigned short/char16_t/'            \
+       Source/JavaScriptCore/API/JSStringRef.h \
+       Source/WebKit2/Shared/API/c/WKString.h 
+
+sed -i '/stdbool.h/ a#include <uchar.h>' \
+       Source/JavaScriptCore/API/JSBase.h
+mkdir -vp build
+cd        build
+
+CFLAGS=-Wno-expansion-to-defined  \
+CXXFLAGS=-Wno-expansion-to-defined \
+cmake -DCMAKE_BUILD_TYPE=Release  \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_SKIP_RPATH=ON       \
+      -DPORT=GTK                  \
+      -DLIB_INSTALL_DIR=/usr/lib64  \
+      -DUSE_LIBHYPHEN=ON         \
+      -DENABLE_MINIBROWSER=ON     \
+      -Wno-dev .. &&
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf webkitgtk
+
 #yelp-xsl
 wget http://ftp.gnome.org/pub/gnome/sources/yelp-xsl/3.20/yelp-xsl-3.20.1.tar.xz -O \
     yelp-xsl-3.20.1.tar.xz
@@ -643,6 +769,14 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr --libdir=/usr/l
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+
+as_root install -vdm755 /usr/share/gtk-doc/html/webkit{2,dom}gtk-4.0 &&
+as_root install -vm644  ../Documentation/webkit2gtk-4.0/html/*   \
+                /usr/share/gtk-doc/html/webkit2gtk-4.0       &&
+as_root install -vm644  ../Documentation/webkitdomgtk-4.0/html/* \
+                /usr/share/gtk-doc/html/webkitdomgtk-4.0
+
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
