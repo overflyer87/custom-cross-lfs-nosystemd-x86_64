@@ -776,6 +776,15 @@ CC="gcc ${BUILD64}" \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 
+as_root pushd /usr/include/mozjs-38 &&
+for link in `find . -type l`; do
+    header=`readlink $link`
+    as_root rm -f $link
+    as_root cp -pv $header $link
+    as_root chmod 644 $link
+done &&
+as_root popd
+
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf mozjs
@@ -924,7 +933,6 @@ as_root update-desktop-database
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf yelp
-
 
 #mate-panel
 wget https://github.com/mate-desktop/mate-panel/archive/v1.19.2.tar.gz -O \
