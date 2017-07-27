@@ -805,7 +805,7 @@ rm -rf autoconf
 wget http://www.freedesktop.org/software/ModemManager/ModemManager-1.6.8.tar.xz -O \
     ModemManager-1.6.8.tar.xz
 
-mkdir ModemManager && tar xf ModemManager-*.tar.* -C ModemManageron --strip-components 1
+mkdir ModemManager && tar xf ModemManager-*.tar.* -C ModemManager --strip-components 1
 cd ModemManager
 
 CC="gcc ${BUILD64}" \
