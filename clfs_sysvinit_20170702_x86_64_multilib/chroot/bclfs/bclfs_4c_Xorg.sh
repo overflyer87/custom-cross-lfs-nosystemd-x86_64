@@ -235,8 +235,8 @@ do
   PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
   USE_ARCH=32 CC="gcc ${BUILD32}" \
   CXX="g++ ${BUILD32}" ./configure $XORG_CONFIG32 &&
-  make PREFIX=/usr LIBDIR=/usr/lib
-  as_root make PREFIX=/usr LIBDIR=/usr/lib install
+  make PREFIX=/usr 
+  as_root make PREFIX=/usr install
   popd
   as_root rm -rf $packagedir
 done
@@ -252,8 +252,8 @@ do
   USE_ARCH=64 \
   CC="gcc ${BUILD64}" \
   CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64 &&
-  make PREFIX=/usr LIBDIR=/usr/lib64 &&
-  as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+  make PREFIX=/usr &&
+  as_root make PREFIX=/usr install
   popd
   as_root rm -rf $packagedir
 done
@@ -279,7 +279,7 @@ make PREFIX=/usr LIBDIR=/usr/lib
 
 make PREFIX=/usr LIBDIR=/usr/lib test
 checkBuiltPackage
-make PREFIX=/usr LIBDIR=/usr/lib install
+as_root make PREFIX=/usr LIBDIR=/usr/lib install
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
@@ -296,7 +296,7 @@ make PREFIX=/usr LIBDIR=/usr/lib64
 
 make PREFIX=/usr LIBDIR=/usr/lib64 test
 checkBuiltPackage
-make PREFIX=/usr LIBDIR=/usr/lib64 install
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
@@ -323,7 +323,7 @@ make PREFIX=/usr LIBDIR=/usr/lib
 
 make PREFIX=/usr LIBDIR=/usr/lib check
 checkBuiltPackage
-make PREFIX=/usr LIBDIR=/usr/lib install
+as_root make PREFIX=/usr LIBDIR=/usr/lib install
 
 
 cd ${CLFSSOURCES}
@@ -342,8 +342,7 @@ make PREFIX=/usr LIBDIR=/usr/lib64
 
 make PREFIX=/usr LIBDIR=/usr/lib64 check
 checkBuiltPackage
-make PREFIX=/usr LIBDIR=/usr/lib64 install
-
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
@@ -364,7 +363,7 @@ CXX="g++ ${BUILD32}" ./configure $XORG_CONFIG32 \
     --with-xkb-rules-symlink=xorg &&
     
 make PREFIX=/usr LIBDIR=/usr/lib
-make PREFIX=/usr LIBDIR=/usr/lib install
+as_root make PREFIX=/usr LIBDIR=/usr/lib install
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -380,7 +379,7 @@ CC="gcc ${BUILD64}" \
 CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64 \
     --with-xkb-rules-symlink=xorg &&
 make PREFIX=/usr LIBDIR=/usr/lib64
-make PREFIX=/usr LIBDIR=/usr/lib64 install
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -398,12 +397,11 @@ USE_ARCH=32 CC="gcc ${BUILD32}"  \
 CXX="g++ ${BUILD32}" ./configure --prefix=/usr \
     --libdir=/usr/lib &&
 make PREFIX=/usr LIBDIR=/usr/lib
-make PREFIX=/usr LIBDIR=/usr/lib install
+as_root make PREFIX=/usr LIBDIR=/usr/lib install
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf libepoxy
-
 
 #libepoxy 64-bit
 mkdir libepoxy && tar xf libepoxy-*.tar.* -C libepoxy --strip-components 1
@@ -414,7 +412,7 @@ USE_ARCH=64 CC="gcc ${BUILD64}" \
 CXX="g++ ${BUILD64}" ./configure --prefix=/usr \
     --libdir=/usr/lib64 &&
 make PREFIX=/usr LIBDIR=/usr/lib64
-make PREFIX=/usr LIBDIR=/usr/lib64 install
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -434,7 +432,7 @@ CXX="g++ ${BUILD32}" ./configure --prefix=/usr \
   --libdir=/usr/lib &&
   
 make PREFIX=/usr LIBDIR=/usr/lib
-make PREFIX=/usr LIBDIR=/usr/lib install
+as_root make PREFIX=/usr LIBDIR=/usr/lib install
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -451,7 +449,7 @@ CXX="g++ ${BUILD64}" ./configure --prefix=/usr \
   --libdir=/usr/lib64 &&
   
 make PREFIX=/usr LIBDIR=/usr/lib64
-make PREFIX=/usr LIBDIR=/usr/lib64 install
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -517,13 +515,13 @@ CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64 \
            --with-xkb-output=/var/lib/xkb &&
            
 make PREFIX=/usr LIBDIR=/usr/lib64
-ldconfig
+as_root ldconfig
 make check
 checkBuiltPackage
-make PREFIX=/usr LIBDIR=/usr/lib64 install
-mkdir -pv /etc/X11/xorg.conf.d
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+as_root mkdir -pv /etc/X11/xorg.conf.d
 
-cat >> /etc/sysconfig/createfiles << "EOF"
+as_root cat >> /etc/sysconfig/createfiles << "EOF"
 /tmp/.ICE-unix dir 1777 root root
 /tmp/.X11-unix dir 1777 root root
 EOF
@@ -550,14 +548,13 @@ make PREFIX=/usr                \
      LIBDIR=/usr/lib64          \
      SHARED=yes
 
-make PREFIX=/usr                \
+as_root make PREFIX=/usr        \
      SHAREDIR=/usr/share/hwdata \
      LIBDIR=/usr/lib64          \
      SHARED=yes                 \
      install install-lib        &&
 
-chmod -v 755 /usr/lib64/libpci.so
-
+as_root chmod -v 755 /usr/lib64/libpci.so
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
@@ -625,7 +622,7 @@ CXX="g++ ${BUILD32}" ./configure --prefix=/usr \
   --libdir=/usr/lib
   
 make PREFIX=/usr LIBDIR=/usr/lib
-make PREFIX=/usr LIBDIR=/usr/lib install
+as_root make PREFIX=/usr LIBDIR=/usr/lib install
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -646,7 +643,7 @@ CXX="g++ ${BUILD64}" ./configure --prefix=/usr \
   --libdir=/usr/lib64 &&
   
 make PREFIX=/usr LIBDIR=/usr/lib64
-make PREFIX=/usr LIBDIR=/usr/lib64 install
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -671,7 +668,7 @@ CXX="g++ ${BUILD32}" ./configure $XORG_CONFIG32 \
             --with-udev-dir=/lib/udev && 
             
 make PREFIX=/usr LIBDIR=/usr/lib
-make PREFIX=/usr LIBDIR=/usr/lib install
+as_root make PREFIX=/usr LIBDIR=/usr/lib install
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -693,7 +690,7 @@ CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64 \
             --with-udev-dir=/lib64/udev &&
             
 make PREFIX=/usr LIBDIR=/usr/lib64
-make PREFIX=/usr LIBDIR=/usr/lib64 install
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -727,8 +724,7 @@ wget http://us.download.nvidia.com/XFree86/Linux-x86_64/384.59/NVIDIA-Linux-x86_
   NVIDIA-Linux-x86_64-384.59.run
 
 as_root chmod +x NVIDIA-Linux-x86_64-384.59.run
-as_root ./NVIDIA-Linux-x86_64-384.59.run \
- --kernel-source-path=/lib/modules/CLFS-4.12.3_ORIGINAL 
+as_root ./NVIDIA-Linux-x86_64-384.59.run --kernel-source-path=/lib/modules/CLFS-4.12.3_ORIGINAL 
 
 checkBuiltPackage
 
@@ -765,10 +761,10 @@ TERMINFO=/usr/share/terminfo \
     --with-app-defaults=/etc/X11/app-defaults &&
 
 make PREFIX=/usr LIBDIR=/usr/lib64
-make install PREFIX=/usr LIBDIR=/usr/lib64
-make PREFIX=/usr LIBDIR=/usr/lib64 install-ti
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install 
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install-ti
 
-cat >> /etc/X11/app-defaults/XTerm << "EOF"
+as_root cat >> /etc/X11/app-defaults/XTerm << "EOF"
 *VT100*locale: true
 *VT100*faceName: Monospace
 *VT100*faceSize: 10
@@ -808,9 +804,9 @@ CC="gcc ${BUILD64}" \
 CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64 \
     --with-xinitdir=/etc/X11/app-defaults &&
     
-make 
-make install
-ldconfig
+make PREFIX=/usr LIBDIR=/usr/lib64 
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+as_root ldconfig
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -825,7 +821,7 @@ cd dejavu-fonts
 
 mkdir /etc/fonts
 mkdir /etc/fonts/conf.d
-mkdir /etc/fonts/.conf.avail
+mkdir /etc/fonts/conf.avail
 mkdir -pv /usr/share/fonts/TTF
 
 cp -v fontconfig/* /etc/fonts/conf.avail
@@ -836,7 +832,7 @@ cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf dejavu-fonts
 
-cat > /etc/X11/xorg.conf.d/xkb-defaults.conf << "EOF"
+as_root cat > /etc/X11/xorg.conf.d/xkb-defaults.conf << "EOF"
 Section "InputClass"
     Identifier "XKB Defaults"
     MatchIsKeyboard "yes"
@@ -847,7 +843,7 @@ EOF
 
 as_root usermod -a -G video overflyer
 
-cat > /etc/X11/xorg.conf.d/xkb-defaults.conf << "EOF"
+as_root cat > /etc/X11/xorg.conf.d/xkb-defaults.conf << "EOF"
 Section "InputClass"
     Identifier "XKB Defaults"
     MatchIsKeyboard "yes"
