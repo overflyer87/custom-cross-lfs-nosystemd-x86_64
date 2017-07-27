@@ -876,6 +876,86 @@ cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf gtk2
 
+#PyCairo2
+wget https://github.com/pygobject/pycairo/releases/download/v1.14.0/pycairo-1.14.0.tar.gz -O \
+    pycairo-1.14.0.tar.gz
+
+mkdir pycairo && tar xf pycairo-*.tar.* -C pycairo --strip-components 1
+cd pycairo
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} LIBDIR=/usr/lib64 PREFIX=/usr python2 setup.py build  
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} LIBDIR=/usr/lib64 PREFIX=/usr as_root python2 setup.py install --optimize=1
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} LIBDIR=/usr/lib64 PREFIX=/usr python3 setup.py build
+as_root PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} LIBDIR=/usr/lib64 PREFIX=/usr python3 setup.py install --optimize=1
+
+as_root mv /usr/lib/pkgconfig/pycairo.pc /usr/lib64/pkgconfig/pycairo.pc
+as_root mv /usr/lib/pkgconfig/py3cairo.pc /usr/lib64/pkgconfig/py3cairo.pc
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf pycairo
+
+#PyGObject2
+wget http://ftp.gnome.org/pub/gnome/sources/pygobject/2.28/pygobject-2.28.6.tar.xz -O \
+    pygobject-2.28.6.tar.xz
+
+wget http://www.linuxfromscratch.org/patches/blfs/svn/Pygobject-2.28.6-fixes-1.patch -O \
+    Pygobject-2.28.6-fixes-1.patch
+
+mkdir pygobject && tar xf pygobject-2*.tar.* -C pygobject --strip-components 1
+cd pygobject
+
+patch -Np1 -i ../Pygobject-2.28.6-fixes-1.patch
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+  PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+  --libdir=/usr/lib64 --disable-introspection --disable-docs
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf pygobject
+
+#PyGObject3
+wget http://ftp.gnome.org/pub/gnome/sources/pygobject/3.24/pygobject-3.24.1.tar.xz -O \
+    pygobject-3.24.1.tar.xz
+
+mkdir pygobject3 && tar xf pygobject-3*.tar.* -C pygobject3 --strip-components 1
+cd pygobject3
+
+mkdir python2 &&
+pushd python2 &&
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+  PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ../configure --prefix=/usr \
+    --with-python=/usr/bin/python2-64 --libdir=/usr/lib64 &&
+make PREFIX=/usr LIBDIR=/usr/lib64 &&
+popd
+
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 -C python2 install
+
+cd ..
+
+mkdir python3 &&
+pushd python3 &&
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+  PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ../configure --prefix=/usr \
+    --with-python=/usr/bin/python3 --libdir=/usr/lib64 &&
+make PREFIX=/usr LIBDIR=/usr/lib64 &&
+popd
+
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 -C python3 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf pygobject
+
 #Avahi
 wget https://github.com/lathiat/avahi/releases/download/v0.7/avahi-0.7.tar.gz -O \
     avahi-0.7.tar.gz
@@ -883,6 +963,39 @@ wget https://github.com/lathiat/avahi/releases/download/v0.7/avahi-0.7.tar.gz -O
 mkdir avahi && tar xf avahi-*.tar.* -C avahi --strip-components 1
 cd avahi
 
+wget https://github.com/lathiat/avahi/releases/download/v0.7/avahi-0.7.tar.gz -O \
+    avahi-0.7.tar.gz
+
+as_root groupadd -fg 84 avahi 
+as_root useradd -c "Avahi Daemon Owner" -d /var/run/avahi-daemon -u 84 \
+        -g avahi -s /bin/false avahi
+
+as_root groupadd -fg 86 netdev
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+  PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+            --sysconfdir=/etc    \
+            --localstatedir=/var \
+            --libdir=/usr/lib64  \
+            --disable-static     \
+            --disable-mono       \
+            --disable-monodoc    \
+            --disable-qt3        \
+            --disable-qt4        \
+            --disable-qt5        \
+            --enable-core-docs   \
+            --with-distro=none   \
+            --with-systemdsystemunitdir=no \
+            --enable-python \
+            --enable-gtk3   \
+            --enable-gtk2 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/bootscripts
+as_root make install-avahi
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
