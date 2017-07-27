@@ -171,8 +171,8 @@ do
   tar -xf $package
   pushd $packagedir  
   USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" \
-  PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" ./configure $XORG_CONFIG32  &&
-  as_root make PREFIX=/usr LIBDIR=/usr/lib install
+  PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" ./configure $XORG_CONFIG32 &&
+  as_root make install
   checkBuiltPackage
   popd
   rm -rf $packagedir
@@ -190,7 +190,7 @@ do
   pushd $packagedir  
   PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
   USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64 &&
-  as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+  as_root make install
   checkBuiltPackage
   popd
   rm -rf $packagedir
@@ -314,74 +314,7 @@ cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf expat
 
-#This is the closest I came to mjnultilib building Python 2.7.13
-#Installs fine but wont execute. Module named site not found
-##Python2.7.6 64-bit
-#wget https://www.python.org/ftp/python/2.7.13/Python-2.7.13.tar.xz -O \
-#  Python-2.7.13.tar.xz
-#  
-#wget https://www.python.org/ftp/python/doc/2.7.13/python-2.7.13-docs-html.tar.bz2 -O \
-#  python-2.7.13-docs-html.tar.bz2
-#  
-#mkdir Python-2 && tar xf Python-2.7.13.tar.* -C Python-2 --strip-components 1
-#cd Python-2
-#
-#patch -Np1 -i ../python2-multilib.patch
-#
-#sed -i -e "s|@LIB@|/lib64|g" Lib/distutils/command/install.py \
-#       Lib/distutils/sysconfig.py \
-#       Lib/pydoc.py \
-#       Lib/site.py \
-#       Lib/sysconfig.py \
-#       Lib/test/test_dl.py \
-#       Lib/test/test_site.py \
-#       Lib/trace.py \
-#       Makefile.pre.in \
-#       Modules/getpath.c \
-#       setup.py
-#       
-#sed -i "s@/usr/X11R6@${XORG_PREFIX}@g" setup.py
-#sed -i 's@lib/python@lib64/python@g' Modules/getpath.c
-#USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
-#CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" LDFLAGS="-L/usr/lib64" ./configure \
-#            --prefix=/usr       \
-#            --enable-shared     \
-#            --with-system-expat \
-#            --with-system-ffi   \
-#            --enable-unicode=ucs4 \
-#            --libdir=/usr/lib64 &&
-#
-#make EXTRA_CFLAGS="-fwrapv" LIBDIR=/usr/lib64 PREFIX=/usr 
-#as_root make EXTRA_CFLAGS="-fwrapv" LIBDIR=/usr/lib64 PREFIX=/usr install
-#
-#chmod -v 755 /usr/lib/libpython2.7.so.1.0
-#
-#mv -v /usr/bin/python{,-64} &&
-#mv -v /usr/bin/python2{,-64} &&
-#mv -v /usr/bin/python2.7{,-64} &&
-#ln -sfv python2.7-64 /usr/bin/python2-64 &&
-#ln -sfv python2-64 /usr/bin/python-64 &&
-#ln -sfv multiarch_wrapper /usr/bin/python &&
-#ln -sfv multiarch_wrapper /usr/bin/python2 &&
-#ln -sfv multiarch_wrapper /usr/bin/python2.7 &&
-#mv -v /usr/include/python2.7/pyconfig{,-64}.h
-#
-#install -v -dm755 /usr/share/doc/python-2.7.13 &&
-#
-#tar --strip-components=1                     \
-#    --no-same-owner                          \
-#    --directory /usr/share/doc/python-2.7.13 \
-#    -xvf ../python-2.7.*.tar.* &&
-#
-#find /usr/share/doc/python-2.7.13 -type d -exec chmod 0755 {} \; &&
-#find /usr/share/doc/python-2.7.13 -type f -exec chmod 0644 {} \;
-#
-#            
-#cd ${CLFSSOURCES}
-#checkBuiltPackage
-#rm -rf Python-2
-#
-cd ${CLFSSOURCES}
+#Python 2.7.13 multilib build can be found in bclfs_MATE_5c script
 
 #Python 3 64-bit
 wget https://www.python.org/ftp/python/3.6.0/Python-3.6.0.tar.xz -O \
@@ -412,8 +345,8 @@ make PREFIX=/usr LIBDIR=/usr/lib64 PLATLIBDIR=/usr/lib64 platlibdir=/usr/lib64 &
 as_root make install PREFIX=/usr LIBDIR=/usr/lib64 PLATLIBDIR=/usr/lib64 \
   platlibdir=/usr/lib64
 
-chmod -v 755 /usr/lib64/libpython3.6m.so
-chmod -v 755 /usr/lib64/libpython3.so
+as_root chmod -v 755 /usr/lib64/libpython3.6m.so
+as_root chmod -v 755 /usr/lib64/libpython3.so
 
 install -v -dm755 /usr/share/doc/python-3.6.0/html &&
 tar --strip-components=1 \
@@ -442,7 +375,6 @@ mkdir xcb-proto && tar xf xcb-proto-1.12.tar.* -C xcb-proto --strip-components 1
 cd xcb-proto
 
 patch -Np1 -i ../xcb-proto-1.12-schema-1.patch
-
 patch -Np1 -i ../xcb-proto-1.12-python3-1.patch
 
 USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
@@ -453,7 +385,7 @@ make check
 checkBuiltPackage
 
 make PREFIX=/usr LIBDIR=/usr/lib
-make PREFIX=/usr LIBDIR=/usr/lib install
+as_root make PREFIX=/usr LIBDIR=/usr/lib install
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -464,7 +396,6 @@ mkdir xcb-proto && tar xf xcb-proto-1.12.tar.* -C xcb-proto --strip-components 1
 cd xcb-proto
 
 patch -Np1 -i ../xcb-proto-1.12-schema-1.patch
-
 patch -Np1 -i ../xcb-proto-1.12-python3-1.patch
 
 USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
@@ -474,7 +405,7 @@ CC="/usr/bin/gcc ${BUILD64}" ./configure $XORG_CONFIG64 &&
 make check
 checkBuiltPackage
 make PREFIX=/usr LIBDIR=/usr/lib64
-make PREFIX=/usr LIBDIR=/usr/lib64 install
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -503,7 +434,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" ./configure $XORG_CONFIG32    \
             --docdir='${datadir}'/doc/libxcb-1.12 &&
             
 make PREFIX=/usr LIBDIR=/usr/lib
-make PREFIX=/usr LIBDIR=/usr/lib install
+as_root make PREFIX=/usr LIBDIR=/usr/lib install
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -525,7 +456,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure $XORG_CONFIG64   \
             --docdir='${datadir}'/doc/libxcb-1.12 &&
             
 make PREFIX=/usr LIBDIR=/usr/lib64
-make PREFIX=/usr LIBDIR=/usr/lib64 install
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -549,7 +480,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" ./configure --prefix=/usr \
             --libdir=/usr/lib
 
 make PREFIX=/usr LIBDIR=/usr/lib
-make PREFIX=/usr LIBDIR=/usr/lib install
+as_root make PREFIX=/usr LIBDIR=/usr/lib install
 
 cd ${CLFSSOURCES/xc}
 checkBuiltPackage
@@ -574,7 +505,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
             --libdir=/usr/lib64
 
 make PREFIX=/usr LIBDIR=/usr/lib64
-make PREFIX=/usr LIBDIR=/usr/lib64 install
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
