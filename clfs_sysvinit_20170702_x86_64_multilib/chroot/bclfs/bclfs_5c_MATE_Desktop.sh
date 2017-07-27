@@ -1291,14 +1291,17 @@ sed -i 's/unsigned short/char16_t/'            \
 
 sed -i '/stdbool.h/ a#include <uchar.h>' \
        Source/JavaScriptCore/API/JSBase.h
+       
 mkdir -vp build
 cd        build
 
-CFLAGS=-Wno-expansion-to-defined  \
-CXXFLAGS=-Wno-expansion-to-defined \
-CC="gcc ${BUILD64}" \
-CXX="g++ ${BUILD64}" USE_ARCH=64 \
-PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} cmake -DCMAKE_BUILD_TYPE=Release  \
+LIBS_PATH=-L./usr/lib64 INC_PATH=-I./usr/include/ \
+      LD_LIB_PATH=/usr/lib64 LD_LIBRARY_PATH=/usr/lib64 \
+      CFLAGS=-Wno-expansion-to-defined  \
+      CXXFLAGS=-Wno-expansion-to-defined \
+      CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+      USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} \
+      LIBRARY_PATH=/usr/lib64 cmake -DCMAKE_BUILD_TYPE=Release  \
       -DCMAKE_INSTALL_PREFIX=/usr \
       -DCMAKE_SKIP_RPATH=ON       \
       -DPORT=GTK                  \
@@ -1307,9 +1310,23 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} cmake -DCMAKE_BUILD_TYPE=Release  \
       -DENABLE_MINIBROWSER=ON     \
       -Wno-dev .. &&
 
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+LIBS_PATH=-L./usr/lib64 INC_PATH=-I./usr/include/ \
+      LD_LIB_PATH=/usr/lib64 LD_LIBRARY_PATH=/usr/lib64 \
+      CFLAGS=-Wno-expansion-to-defined  \
+      CXXFLAGS=-Wno-expansion-to-defined \
+      CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+      USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} \
+      LIBRARY_PATH=/usr/lib64 cmake -DCMAKE_BUILD_TYPE=Release make PREFIX=/usr LIBDIR=/usr/lib64
+      
 
+LIBS_PATH=-L./usr/lib64 INC_PATH=-I./usr/include/ \
+      LD_LIB_PATH=/usr/lib64 LD_LIBRARY_PATH=/usr/lib64 \
+      CFLAGS=-Wno-expansion-to-defined  \
+      CXXFLAGS=-Wno-expansion-to-defined \
+      CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+      USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} \
+      LIBRARY_PATH=/usr/lib64 cmake -DCMAKE_BUILD_TYPE=Release as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+            
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf webkitgtk
@@ -1332,7 +1349,6 @@ as_root install -vm644  ../Documentation/webkit2gtk-4.0/html/*   \
                 /usr/share/gtk-doc/html/webkit2gtk-4.0       &&
 as_root install -vm644  ../Documentation/webkitdomgtk-4.0/html/* \
                 /usr/share/gtk-doc/html/webkitdomgtk-4.0
-
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
