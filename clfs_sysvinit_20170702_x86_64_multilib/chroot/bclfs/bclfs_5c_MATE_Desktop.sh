@@ -797,18 +797,96 @@ rm -rf autoconf
 #
 ##Polkit-0.113+git_2919920+js38 
 ###ModemManager
-
-#libqmi
-
-#libmbim
+#
+##libqmi (for ModemManager)
+#
+##libmbim (for ModemManager)
 
 #libdaemon
+wget http://0pointer.de/lennart/projects/libdaemon/libdaemon-0.14.tar.gz -O \
+    libdaemon-0.14.tar.gz
+
+mkdir libdaemon && tar xf libdaemon-*.tar.* -C libdaemon --strip-components 1
+cd libdaemon
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+  PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+  --libdir=/usr/lib64 --disable-static
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make docdir=/usr/share/doc/libdaemon-0.14 LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf libdaemon
 
 #libglade
+wget http://ftp.gnome.org/pub/gnome/sources/libglade/2.6/libglade-2.6.4.tar.bz2 -O \
+    libglade-2.6.4.tar.bz2
+
+mkdir libglade && tar xf libglade-*.tar.* -C libglade --strip-components 1
+cd libglade
+
+sed -i '/DG_DISABLE_DEPRECATED/d' glade/Makefile.in 
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+  PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+  --libdir=/usr/lib64 --disable-static
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf libglade
 
 #GTK2
+wget http://ftp.gnome.org/pub/gnome/sources/gtk+/2.24/gtk+-2.24.31.tar.xz -O \
+    gtk+-2.24.31.tar.xz
+
+mkdir gtk2 && tar xf gtk+-2*.tar.* -C gtk2 --strip-components 1
+cd gtk2
+
+sed -e 's#l \(gtk-.*\).sgml#& -o \1#' \
+    -i docs/{faq,tutorial}/Makefile.in      
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+  PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+  --sysconfdir=/etc --libdir=/usr/lib64
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cat > ~/.gtkrc-2.0 << "EOF"
+include "/usr/share/themes/Glider/gtk-2.0/gtkrc"
+gtk-icon-theme-name = "hicolor"
+EOF
+
+cat > /etc/gtk-2.0/gtkrc << "EOF"
+include "/usr/share/themes/Clearlooks/gtk-2.0/gtkrc"
+gtk-icon-theme-name = "elementary"
+EOF
+
+ldconfig
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf gtk2
 
 #Avahi
+wget https://github.com/lathiat/avahi/releases/download/v0.7/avahi-0.7.tar.gz -O \
+    avahi-0.7.tar.gz
+
+mkdir avahi && tar xf avahi-*.tar.* -C avahi --strip-components 1
+cd avahi
+
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf avahi
 
 #GeoCLue
 
