@@ -797,9 +797,48 @@ rm -rf autoconf
 #
 ##Polkit-0.113+git_2919920+js38 
 #
-##libqmi (recommended for ModemManager)
-#
-##libmbim (recommended for ModemManager)
+
+#libqmi (recommended for ModemManager)
+wget http://www.freedesktop.org/software/libqmi/libqmi-1.18.0.tar.xz -O \
+    libqmi-1.18.0.tar.xz
+
+mkdir libqmi && tar xf libqmi-*.tar.* -C libqmi --strip-components 1
+cd libqmi
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+   PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr  \
+            --libdir=/usr/lib64 \
+            --sysconfdir=/etc    \
+            --disable-static
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf libqmi
+
+#libmbim (recommended for ModemManager)
+wget http://www.freedesktop.org/software/libmbim/libmbim-1.14.0.tar.xz -O \
+    libmbim-1.14.0.tar.xz
+
+mkdir libmbim && tar xf libmbim-*.tar.* -C libmbim --strip-components 1
+cd libmbim
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+   PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr  \
+            --libdir=/usr/lib64 \
+            --sysconfdir=/etc    \
+            --disable-static
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf libmbim
 
 #ModemManager
 wget http://www.freedesktop.org/software/ModemManager/ModemManager-1.6.8.tar.xz -O \
@@ -1005,7 +1044,6 @@ popd
 
 as_root make PREFIX=/usr LIBDIR=/usr/lib64 -C python3 install
 
-
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf dbus-python
@@ -1086,14 +1124,121 @@ checkBuiltPackage
 rm -rf geoclue
 
 #Aspell
+wget https://ftp.gnu.org/gnu/aspell/aspell-0.60.6.1.tar.gz -O \
+    aspell-0.60.6.1.tar.gz
+
+mkdir aspell && tar xf aspell-*.tar.* -C aspell --strip-components 1
+cd aspell
+
+sed -i '/ top.do_check ==/s/top.do_check/*&/' modules/filter/tex.cpp &&
+sed -i '/word ==/s/word/*&/'                  prog/check_funs.cpp
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+  PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+  --libdir=/usr/lib64
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+as_root ln -svfn aspell-0.60 /usr/lib64/aspell 
+as_root install -v -m755 -d /usr/share/doc/aspell-0.60.6.1/aspell{,-dev}.html
+
+as_root install -v -m644 manual/aspell.html/* \
+    /usr/share/doc/aspell-0.60.6.1/aspell.html
+
+as_root install -v -m644 manual/aspell-dev.html/* \
+    /usr/share/doc/aspell-0.60.6.1/aspell-dev.html
+
+as_root install -v -m 755 scripts/ispell /usr/bin/
+as_root install -v -m 755 scripts/spell /usr/bin/
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf aspell
 
 #enchant
+wget http://www.abisource.com/downloads/enchant/1.6.0/enchant-1.6.0.tar.gz -O \
+    enchant-1.6.0.tar.gz
+    
+mkdir enchant && tar xf enchant-*.tar.* -C enchant --strip-components 1
+cd enchant
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+  PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+  --libdir=/usr/lib64
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf enchant
 
 #libsecret
+wget http://ftp.gnome.org/pub/gnome/sources/libsecret/0.18/libsecret-0.18.5.tar.xz -O \
+    libsecret-0.18.5.tar.xz
+
+mkdir libsecret && tar xf libsecret-*.tar.* -C libsecret --strip-components 1
+cd libsecret
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+  PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+  --libdir=/usr/lib64 --disable-gtk-doc --disable-manpages
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf libsecret
 
 #libwebp
+wget http://downloads.webmproject.org/releases/webp/libwebp-0.6.0.tar.gz -O \
+    libwebp-0.6.0.tar.gz
+
+mkdir libwebp && tar xf libwebp-*.tar.* -C libwebp --strip-components 1
+cd libwebp
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+  PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+  --libdir=/usr/lib64 \
+  --enable-libwebpmux     \
+  --enable-libwebpdemux   \
+  --enable-libwebpdecoder \
+  --enable-libwebpextras  \
+  --enable-swap-16bit-csp \
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf libwebp
 
 #Ruby
+wget http://cache.ruby-lang.org/pub/ruby/2.4/ruby-2.4.1.tar.xz -O \
+    ruby-2.4.1.tar.xz 
+
+mkdir ruby && tar xf ruby-*.tar.* -C ruby --strip-components 1
+cd ruby
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+  PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+  --libdir=/usr/lib64 \
+  --enable-shared \
+  --docdir=/usr/share/doc/ruby-2.4.1
+  
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install 
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf ruby
 
 #libnotify
 wget http://ftp.gnome.org/pub/gnome/sources/libnotify/0.7/libnotify-0.7.7.tar.xz -O \
@@ -1151,7 +1296,9 @@ cd        build
 
 CFLAGS=-Wno-expansion-to-defined  \
 CXXFLAGS=-Wno-expansion-to-defined \
-cmake -DCMAKE_BUILD_TYPE=Release  \
+CC="gcc ${BUILD64}" \
+CXX="g++ ${BUILD64}" USE_ARCH=64 \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} cmake -DCMAKE_BUILD_TYPE=Release  \
       -DCMAKE_INSTALL_PREFIX=/usr \
       -DCMAKE_SKIP_RPATH=ON       \
       -DPORT=GTK                  \
