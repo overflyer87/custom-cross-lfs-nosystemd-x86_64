@@ -796,11 +796,34 @@ rm -rf autoconf
 #rm -rf mozjs
 #
 ##Polkit-0.113+git_2919920+js38 
-###ModemManager
 #
-##libqmi (for ModemManager)
+##libqmi (recommended for ModemManager)
 #
-##libmbim (for ModemManager)
+##libmbim (recommended for ModemManager)
+
+#ModemManager
+wget http://www.freedesktop.org/software/ModemManager/ModemManager-1.6.8.tar.xz -O \
+    ModemManager-1.6.8.tar.xz
+
+mkdir ModemManager && tar xf ModemManager-*.tar.* -C ModemManageron --strip-components 1
+cd ModemManager
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+   PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr  \
+            --libdir=/usr/lib64 \
+            --sysconfdir=/etc    \
+            --localstatedir=/var \
+            --enable-more-warnings=no \
+            --disable-static  \
+            --disable-gtk-doc
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf ModemManager
 
 #libdaemon
 wget http://0pointer.de/lennart/projects/libdaemon/libdaemon-0.14.tar.gz -O \
@@ -954,7 +977,38 @@ as_root make PREFIX=/usr LIBDIR=/usr/lib64 -C python3 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf pygobject
+rm -rf pygobject3
+
+#DbusPy
+wget http://dbus.freedesktop.org/releases/dbus-python/dbus-python-1.2.4.tar.gz -O \
+    dbus-python-1.2.4.tar.gz
+
+mkdir dbus-python && tar xf dbus-python-*.tar.* -C dbus-python --strip-components 1
+cd dbus-python
+
+mkdir python2 &&
+pushd python2 &&
+PYTHON=/usr/bin/python2     \
+ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ../configure --prefix=/usr \
+ --libdir=/usr/lib64 --docdir=/usr/share/doc/dbus-python-1.2.4 &&
+make PREFIX=/usr LIBDIR=/usr/lib64 &&
+popd
+
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 -C python 2 install
+
+mkdir python3 &&
+pushd python3 &&
+PYTHON=/usr/bin/python3 \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64}  ../configure --prefix=/usr --libdir=/usr/lib64 &&
+make PREFIX=/usr LIBDIR=/usr/lib64 &&
+popd
+
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 -C python3 install
+
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf dbus-python
 
 #Avahi
 wget https://github.com/lathiat/avahi/releases/download/v0.7/avahi-0.7.tar.gz -O \
@@ -1001,7 +1055,35 @@ cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf avahi
 
+cd ${CLFSSOURCES}
+wget http://anduin.linuxfromscratch.org/BLFS/blfs-bootscripts/blfs-bootscripts-20170611.tar.xz -O \
+    blfs-bootscripts-20170611.tar.xz
+    
+mkdir blfs-bootscripts && tar xf blfs-bootscripts-*.tar.* -C blfs-bootscripts --strip-components 1
+cd blfs-bootscripts
+
+as_root make install-avahi
+cd ${CLFSSOURCES}/xc/mate
+
 #GeoCLue
+wget http://www.freedesktop.org/software/geoclue/releases/2.4/geoclue-2.4.7.tar.xz -O \
+    geoclue-2.4.7.tar.xz
+
+mkdir geoclue && tar xf geoclue-*.tar.* -C geoclue --strip-components 1
+cd geoclue
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+  PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+  --sysconfdir=/etc --libdir=/usr/lib64 --disable-modem-gps-source \
+  --disable-3g-source
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf geoclue
 
 #Aspell
 
