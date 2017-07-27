@@ -388,7 +388,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
 
 ./configure --prefix=/usr --enable-udev --libdir=/usr/lib
 make PREFIX=/usr LIBDIR=/usr/lib
-make PREFIX=/usr LIBDIR=/usr/lib install
+as_root make PREFIX=/usr LIBDIR=/usr/lib install
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -405,7 +405,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
       --libdir=/usr/lib64 &&
       
 make PREFIX=/usr LIBDIR=/usr/lib64
-make PREFIX=/usr LIBDIR=/usr/lib64 install
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -421,8 +421,8 @@ wget https://pypi.python.org/packages/93/b2/12de6937b06e9615dbb3cb3a1c9af17f133f
 mkdir pybeaker && tar xf Beaker-*.tar.* -C pybeaker --strip-components 1
 cd pybeaker
 
-python3 setup.py install --optimize=1
-python3 setup.py install --optimize=1
+as_root python3 setup.py install --optimize=1
+as_root python3 setup.py install --optimize=1
 
 #PYTHONHOME="/usr/lib64/python2.7/" \
 #PYTHONPATH="/usr/lib64/python2.7/" \
@@ -446,9 +446,9 @@ mkdir pyMarkupSafe && tar xf MarkupSafe-*.tar.* -C pyMarkupSafe --strip-componen
 cd pyMarkupSafe
 
 python3 setup.py build
-python3 setup.py install --optimize=1
+as_root python3 setup.py install --optimize=1
 python3 setup.py build
-python3 setup.py install --optimize=1
+as_root python3 setup.py install --optimize=1
 
 
 #PYTHONHOME="/usr/lib64/python2.7/" \
@@ -503,7 +503,7 @@ mkdir pymako && tar xf Mako-*.tar.* -C pymako --strip-components 1
 cd pymako
 
 sed -i "s:mako-render:&3:g" setup.py &&
-python3 setup.py install --optimize=1
+as_root python3 setup.py install --optimize=1
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
@@ -514,7 +514,7 @@ mkdir pymako && tar xf Mako-*.tar.* -C pymako --strip-components 1
 cd pymako
 
 sed -i "s:mako-render:&3:g" setup.py &&
-python3 setup.py install --optimize=1
+as_root python3 setup.py install --optimize=1
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
@@ -543,7 +543,7 @@ CXX="g++ ${BUILD32}" ./configure $XORG_CONFIG32 \
             --docdir=/usr/share/doc/libvdpau-1.1.1 &&
 
 make PREFIX=/usr LIBDIR=/usr/lib
-make PREFIX=/usr LIBDIR=/usr/lib install
+as_root make PREFIX=/usr LIBDIR=/usr/lib install
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
@@ -559,7 +559,7 @@ CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64 \
             --docdir=/usr/share/doc/libvdpau-1.1.1 &&
 
 make PREFIX=/usr LIBDIR=/usr/lib64
-make PREFIX=/usr LIBDIR=/usr/lib64 install
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
@@ -596,8 +596,8 @@ unset GLL_DRV
 
 make PREFIX=/usr LIBDIR=/usr/lib
 make -C xdemos DEMOS_PREFIX=$XORG_PREFIX LIBDIR=/usr/lib
-make PREFIX=/usr LIBDIR=/usr/lib install
-make -C xdemos DEMOS_PREFIX=$XORG_PREFIX LIBDIR=/usr/lib install
+as_root make PREFIX=/usr LIBDIR=/usr/lib install
+as_root make -C xdemos DEMOS_PREFIX=$XORG_PREFIX LIBDIR=/usr/lib install
 
 install -v -dm755 /usr/share/doc/mesa-17.1.4 &&
 cp -rfv docs/* /usr/share/doc/mesa-17.1.4
@@ -631,8 +631,8 @@ unset GLL_DRV
 
 make PREFIX=/usr LIBDIR=/usr/lib64
 make -C xdemos DEMOS_PREFIX=$XORG_PREFIX LIBDIR=/usr/lib64
-make PREFIX=/usr LIBDIR=/usr/lib64 install
-make -C xdemos DEMOS_PREFIX=$XORG_PREFIX LIBDIR=/usr/lib64 install
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+as_root make -C xdemos DEMOS_PREFIX=$XORG_PREFIX LIBDIR=/usr/lib64 install
 
 install -v -dm755 /usr/share/doc/mesa-17.1.4 &&
 cp -rfv docs/* /usr/share/doc/mesa-17.1.4
