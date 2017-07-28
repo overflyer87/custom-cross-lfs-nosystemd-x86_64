@@ -117,7 +117,7 @@ make install
 ln -sfv /tools/bin/perl /usr/bin
 
 cd ${CLFSSOURCES}
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf perl
 
 #Linux headers
