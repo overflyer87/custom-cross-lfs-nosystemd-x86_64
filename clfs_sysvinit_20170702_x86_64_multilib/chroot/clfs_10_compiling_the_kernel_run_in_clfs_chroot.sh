@@ -65,7 +65,7 @@ cp -v .config /boot/efi/config-4.12.4
 
 cd ${CLFSSOURCES}
 #checkBuiltPackage
-mv linux /lib/modules/CLFS-4.12.3ORIGINAL
+mv linux /lib/modules/CLFS-4.12.4_ORIGINAL
 
 mkdir -v /etc/modprobe.d
 
