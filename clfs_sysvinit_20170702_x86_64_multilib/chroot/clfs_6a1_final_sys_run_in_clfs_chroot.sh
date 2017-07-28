@@ -63,7 +63,7 @@ make install-private-headers
 ln -sv tclsh8.6 /tools/bin/tclsh
 
 cd ${CLFSSOURCES}
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf tcl
 
 #Expect
@@ -81,7 +81,7 @@ make
 make SCRIPTS="" install
 
 cd ${CLFSSOURCES}
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf expect
 
 #DejaGNU
@@ -94,7 +94,7 @@ cd dejagnu
 make install
 
 cd ${CLFSSOURCES}
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf dejagnu
 
 #Chapter 10
@@ -130,7 +130,7 @@ make INSTALL_HDR_PATH=/usr headers_install
 find /usr/include -name .install -or -name ..install.cmd | xargs rm -fv
 
 cd ${CLFSSOURCES}
-#checkBuiltPackage  
+checkBuiltPackage  
 rm -rf linux
 
 #Man Pages
@@ -140,7 +140,7 @@ cd man-pages
 make install
 
 cd ${CLFSSOURCES}
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf man-pages
 
 #Glibc 32-bit
@@ -167,13 +167,13 @@ CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" \
 
 make
 sed -i '/cross-compiling/s@ifeq@ifneq@g' ../glibc/localedata/Makefile
-#make check
+make check
 touch /etc/ld.so.conf
 make install
 rm -v /usr/include/rpcsvc/*.x
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf glibc
 rm -rf glibc-build 
 
@@ -202,9 +202,8 @@ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
     --cache-file=config.cache
 
 make 
-#make check
-
-#checkBuiltPackage 
+make check
+checkBuiltPackage 
 
 make install &&
 rm -v /usr/include/rpcsvc/*.x
@@ -248,7 +247,7 @@ cp -v zone.tab zone1970.tab iso3166.tab $ZONEINFO
 zic -d $ZONEINFO -p America/New_York
 unset ZONEINFO
 
-#tzselect
+tzselect
 
 cp -v /usr/share/zoneinfo/Europe/Berlin \
     /etc/localtime
@@ -265,7 +264,7 @@ cat > /etc/ld.so.conf << "EOF"
 EOF
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf glibc
 rm -rf glibc-build 
 
@@ -280,7 +279,7 @@ echo 'int main(){}' > dummy.c
 gcc ${BUILD32} dummy.c
 readelf -l a.out | grep ': /lib'
 
-#checkBuiltPackage 
+checkBuiltPackage 
 
 echo 'main(){}' > dummy.c
 gcc ${BUILD64} dummy.c
