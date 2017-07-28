@@ -482,9 +482,9 @@ cd pymako
 
 as_root python2 setup.py install --optimize=1
 
-#cd ${CLFSSOURCES}
-#checkBuiltPackage
-#rm -rf pymako
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf pymako
 
 #Python 3.6 Mako modules
 #32-bit
