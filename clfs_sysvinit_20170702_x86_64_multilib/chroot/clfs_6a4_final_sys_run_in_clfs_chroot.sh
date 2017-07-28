@@ -78,11 +78,11 @@ CC="gcc ${BUILD64}" \
 
 make
 echo "quit" | ./bc/bc -l Test/checklib.b
-#checkBuiltPackage
+checkBuiltPackage
 make install
 
 cd ${CLFSSOURCES}
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf bc
 
 #Diffutils
@@ -98,12 +98,12 @@ CC="gcc ${BUILD64}" \
 sed -i 's@\(^#define DEFAULT_EDITOR_PROGRAM \).*@\1"vi"@' lib/config.h
 
 make
-#make check
-#checkBuiltPackage
+make check
+checkBuiltPackage
 make install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf diffutils
 
 #File 32-bit
@@ -116,8 +116,8 @@ CC="gcc ${BUILD32}" \
     --prefix=/usr
 
 make
-#make check
-#checkBuiltPackage
+make check
+checkBuiltPackage
 make install
 
 cd ${CLFSSOURCES} 
@@ -135,8 +135,8 @@ CC="gcc ${BUILD64}" \
     --libdir=/usr/lib64
 
 make
-#make check
-#checkBuiltPackage
+make check
+checkBuiltPackage
 make install
 
 cd ${CLFSSOURCES} 
@@ -153,8 +153,8 @@ CC="gcc ${BUILD64}" ./configure \
     --libexecdir=/usr/lib64
 
 make
-#make check
-#checkBuiltPackage
+make check
+checkBuiltPackage
 make install
 
 mkdir -v /usr/share/doc/gawk-4.1.4
@@ -176,8 +176,8 @@ CC="gcc ${BUILD64}" \
     --localstatedir=/var/lib64/locate
 
 make
-#make check
-#checkBuiltPackage
+make check
+checkBuiltPackage
 make install
 
 cd ${CLFSSOURCES} 
@@ -195,8 +195,8 @@ CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" \
     --docdir=/usr/share/doc/gettext-0.19.8.1
 
 make
-#make check
-#checkBuiltPackage
+make check
+checkBuiltPackage
 make install
 
 cd ${CLFSSOURCES} 
@@ -215,8 +215,8 @@ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
     --docdir=/usr/share/doc/gettext-0.19.8.1
 
 make
-#make check
-#checkBuiltPackage
+make check
+checkBuiltPackage
 make install
 
 cd ${CLFSSOURCES} 
@@ -233,8 +233,8 @@ CC="gcc ${BUILD64}" ./configure \
     --bindir=/bin
 
 make
-#make check
-#checkBuiltPackage
+make check
+checkBuiltPackage
 make install
 
 cd ${CLFSSOURCES} 
@@ -255,7 +255,7 @@ make
 make install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf groff
 
 #Less
@@ -272,7 +272,7 @@ make install
 mv -v /usr/bin/less /bin
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf less
 
 #Gzip
@@ -286,15 +286,15 @@ CC="gcc ${BUILD64}" \
     --bindir=/bin
 
 make
-#make PERL=perl-64 check
-#checkBuiltPackage
+make PERL=perl-64 check
+checkBuiltPackage
 make install
 
 mv -v /bin/{gzexe,uncompress} /usr/bin
 mv -v /bin/z{egrep,cmp,diff,fgrep,force,grep,less,more,new} /usr/bin
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf gzip
 
 #IPUtils
@@ -317,7 +317,7 @@ ln -sv ping /bin/ping4
 ln -sv ping /bin/ping6
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf iputils
 
 #Kbd
@@ -332,8 +332,8 @@ CC="gcc ${BUILD64}" PKG_CONFIG_PATH="/tools/lib64/pkgconfig" \
     --enable-optional-progs
 
 make
-#make check
-#checkBuiltPackage
+make check
+checkBuiltPackage
 make install
 
 mv -v /usr/bin/{dumpkeys,kbd_mode,loadkeys,setfont} /bin
@@ -342,7 +342,7 @@ mkdir -v /usr/share/doc/kbd-2.0.4
 cp -R -v docs/doc/* /usr/share/doc/kbd-2.0.4
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf kbd
 
 #Libpipeline 32-bit
@@ -358,7 +358,7 @@ make
 make install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf libpipeline
 
 #Libpipeline 64-bit
@@ -372,12 +372,12 @@ USE_ARCH=64 CC="gcc ${BUILD64}" \
     --libdir=/usr/lib64
 
 make
-#make check
-#checkBuiltPackage
+make check
+checkBuiltPackage
 make install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf libpipeline
 
 #Man-DB
@@ -399,8 +399,8 @@ USE_ARCH=64 CC="gcc ${BUILD64}" \
     --with-grap=/usr/bin/grap
 
 make
-#make check
-#checkBuiltPackage
+make check
+checkBuiltPackage
 make install
 
 cd ${CLFSSOURCES} 
@@ -416,12 +416,12 @@ CC="gcc ${BUILD64}" ./configure \
     --prefix=/usr
 
 make
-#make check
-#checkBuiltPackage
+make check
+checkBuiltPackage
 make install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf make
 
 #XZ 32-bit
@@ -434,8 +434,8 @@ CC="gcc ${BUILD32}" ./configure \
     --docdir=/usr/share/doc/xz-5.2.3
 
 make
-#make check
-#checkBuiltPackage
+make check
+checkBuiltPackage
 make install
 
 mv -v /usr/lib/liblzma.so.* /lib
@@ -456,8 +456,8 @@ CC="gcc ${BUILD64}" ./configure \
     --docdir=/usr/share/doc/xz-5.2.3
 
 make
-#make check
-#checkBuiltPackage
+make check
+checkBuiltPackage
 make install
 
 mv -v /usr/bin/{xz,lzma,lzcat,unlzma,unxz,xzcat} /bin
@@ -466,7 +466,7 @@ mv -v /usr/lib64/liblzma.so.* /lib64
 ln -sfv ../../lib64/$(readlink /usr/lib64/liblzma.so) /usr/lib64/liblzma.so
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf xz-utils
 
 #Kmod 32-bit
@@ -485,12 +485,12 @@ USE_ARCH=32 CC="gcc ${BUILD32}" \
     --with-xz
 
 make
-#make check
-#checkBuiltPackage
+make check
+checkBuiltPackage
 make install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf kmod
 
 #Kmod 64-bit
@@ -509,8 +509,8 @@ USE_ARCH=64 CC="gcc ${BUILD64}" \
     --with-xz
 
 make
-#make check
-#checkBuiltPackage
+make check
+checkBuiltPackage
 make install
 
 ln -sfv kmod /bin/lsmod
@@ -519,7 +519,7 @@ for tool in depmod insmod modinfo modprobe rmmod; do
 done
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf kmod
 
 #Patch
@@ -531,12 +531,12 @@ USE_ARCH=64 CC="gcc ${BUILD64}" ./configure \
     --prefix=/usr
 
 make
-#make check
-#checkBuiltPackage
+make check
+checkBuiltPackage
 make install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf patch
 
 #Psmisc
@@ -554,7 +554,7 @@ mv -v /usr/bin/fuser /bin
 mv -v /usr/bin/killall /bin
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf psmisc
 
 
@@ -570,7 +570,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
 make && make install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf libestr
 
 #Libestr 64-bit
@@ -586,7 +586,7 @@ CC="gcc ${BUILD64}" \
 make && make install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf libestr
 
 #Libee 32-bit
@@ -600,9 +600,8 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
 
 make -j1 && make -j1 install
 
-
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf libee
 
 #Libee 64-bit
@@ -618,7 +617,7 @@ CC="gcc ${BUILD64}" \
 make -j1 && make -j1 install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf libee
 
 
@@ -633,8 +632,8 @@ CC="gcc ${BUILD64}" \
     --libdir=/usr/lib64 && 
 
 make
-#make check
-#checkBuiltPackage
+make check
+checkBuiltPackage
 make install
 
 install -dv /etc/rsyslog.d
@@ -704,7 +703,7 @@ user.*                          -/var/log/user.log
 EOF
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf rsyslog
 
 #Sysvinit
@@ -760,9 +759,8 @@ cat >> /etc/inittab << "EOF"
 EOF
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf sysvinit
-
 
 #Tar
 mkdir tar && tar xf tar-*.tar.* -C tar --strip-components 1
@@ -778,13 +776,13 @@ FORCE_UNSAFE_CONFIGURE=1 CC="gcc ${BUILD64}" \
     --libexecdir=/usr/sbin &&
 
 make
-#make check
-#checkBuiltPackage
+make check
+checkBuiltPackage
 make install
 make -C doc install-html docdir=/usr/share/doc/tar-1.29
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf tar
 
 #Texinfo
@@ -799,7 +797,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
     --prefix=/usr
 
 make 
-#checkBuiltPackage
+checkBuiltPackage
 make install
 
 make TEXMF=/usr/share/texmf install-tex
@@ -834,7 +832,7 @@ done &&
 popd
 
 cd ${CLFSSOURCES}
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf gperf
 
 #Eudev 32-bit
@@ -850,12 +848,12 @@ CC="gcc ${BUILD32}" ./configure --prefix=/usr --sysconfdir=/etc \
     --disable-gudev --disable-gtk-doc-html --enable-libkmod
 
 make
-#make check
-#checkBuiltPackage
+make check
+checkBuiltPackage
 make install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf eudev
 
 #Gperf 64-bit
@@ -874,7 +872,7 @@ PREFIX=/usr LIBDIR=/usr/lib64 make
 PREFIX=/usr LIBDIR=/usr/lib64 make install
 
 cd ${CLFSSOURCES}
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf gperf
 
 #Eudev 64-bit
@@ -891,7 +889,7 @@ CC="gcc ${BUILD64}" ./configure --prefix=/usr --sysconfdir=/etc \
     --with-firmware-path=/lib/firmware --enable-libkmod
 
 make && make check
-#checkBuiltPackage
+checkBuiltPackage
 make install
 install -dv /lib/firmware
 
@@ -899,7 +897,7 @@ echo "# dummy, so that network is once again on eth*" \
 > /etc/udev/rules.d/80-net-name-slot.rules
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf eudev
 
 #Util-linux 64 Bit
@@ -924,15 +922,15 @@ CC="gcc ${BUILD64}" ./configure \
 
 make 
 
-#chown -Rv nobody . &&
-#su nobody -s /bin/bash -c "PATH=$PATH make -k check"
-#checkBuiltPackage
+chown -Rv nobody . &&
+su nobody -s /bin/bash -c "PATH=$PATH make -k check"
+checkBuiltPackage
 
 make install
 mv -v /usr/bin/logger /bin
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf util-linux
 
 #Vim
@@ -950,7 +948,7 @@ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
 
 make
 #make test
-#checkBuiltPackage
+checkBuiltPackage
 make -j1 install
 
 ln -sv vim /usr/bin/vi
@@ -972,7 +970,7 @@ endif
 EOF
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf vim
 
 #Nano
@@ -999,7 +997,7 @@ set suspend
 EOF
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf nano
 #Exiting....
 
