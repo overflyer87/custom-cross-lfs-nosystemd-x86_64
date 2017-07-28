@@ -251,7 +251,7 @@ CXX="g++ ${BUILD64}" ./configure \
     --prefix=/usr \
     --libdir=/usr/lib64
 
-make
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 make install
 
 cd ${CLFSSOURCES} 
