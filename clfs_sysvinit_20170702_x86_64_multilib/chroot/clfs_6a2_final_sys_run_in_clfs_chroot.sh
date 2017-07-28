@@ -57,11 +57,11 @@ CC="gcc ${BUILD64}" ./configure \
     --prefix=/usr
 
 make
-#make check
-#checkBuiltPackage 
+make check
+checkBuiltPackage 
 make install
 cd ${CLFSSOURCES} 
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf m4
 
 #GMP 32-bit
@@ -76,12 +76,12 @@ LDFLAGS="-Wl,-rpath-link,/usr/lib:/lib ${BUILD32}" \
     --enable-cxx
 
 make
-#make check
-#checkBuiltPackage 
+make check
+checkBuiltPackage 
 make install
 mv -v /usr/include/gmp{,-32}.h
 cd ${CLFSSOURCES} 
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf gmp
 
 #GMP 64-bit
@@ -98,8 +98,8 @@ LDFLAGS="-Wl,-rpath-link,/usr/lib64:/lib64 ${BUILD64}" \
     --docdir=/usr/share/doc/gmp-6.1.2
 
 make && make html
-#make check
-#checkBuiltPackage 
+make check
+checkBuiltPackage 
 
 make install && make install-html
 
@@ -142,8 +142,8 @@ CC="gcc -isystem /usr/include ${BUILD32}" \
     --docdir=/usr/share/doc/mpfr-3.1.5
 
 make && make html
-#make check
-#checkBuiltPackage 
+make check
+checkBuiltPackage 
 
 make install && make install-html
 
@@ -165,13 +165,13 @@ CC="gcc -isystem /usr/include ${BUILD64}" \
     --docdir=/usr/share/doc/mpfr-3.1.5
 
 make && make html
-#make check
-#checkBuiltPackage 
+make check
+checkBuiltPackage 
 
 make install && make install-html
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf mpfr
 
 #MPC 32-bit
@@ -188,12 +188,12 @@ LDFLAGS="-Wl,-rpath-link,/usr/lib:/lib ${BUILD32}" \
     --host=${CLFS_TARGET32}
 
 make
-#make check
-#checkBuiltPackage 
+make check
+checkBuiltPackage 
 make install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf mpc
 
 #MPC 64-bit
@@ -210,12 +210,12 @@ LDFLAGS="-Wl,-rpath-link,/usr/lib64:/lib64 ${BUILD64}" \
     --docdir=/usr/share/doc/mpc-1.0.3
 
 make && make-html
-#make check
-#checkBuiltPackage 
+make check
+checkBuiltPackage 
 make install && make install-html
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf mpc
 
 #ISL 32-bit
@@ -231,8 +231,8 @@ LDFLAGS="-Wl,-rpath-link,/usr/lib:/lib ${BUILD32}" \
     --host=${CLFS_TARGET32}
 
 make
-#make check
-#checkBuiltPackage 
+make check
+checkBuiltPackage 
 make install
 
 mkdir -pv /usr/share/gdb/auto-load/usr/lib
@@ -254,15 +254,15 @@ LDFLAGS="-Wl,-rpath-link,/usr/lib64:/lib64 ${BUILD64}" \
     --libdir=/usr/lib64
 
 make
-#make check
-#checkBuiltPackage 
+make check
+checkBuiltPackage 
 make install
 
 mkdir -pv /usr/share/gdb/auto-load/usr/lib64
 mv -v /usr/lib64/*gdb.py /usr/share/gdb/auto-load/usr/lib64
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf isl
 
 #Zlib 32-bit
@@ -276,15 +276,15 @@ LDFLAGS="-Wl,-rpath-link,/usr/lib:/lib ${BUILD32}" \
     --prefix=/usr
 
 make
-#make check
-#checkBuiltPackage 
+make check
+checkBuiltPackage 
 make install
 
 mv -v /usr/lib/libz.so.* /lib
 ln -sfv ../../lib/$(readlink /usr/lib/libz.so) /usr/lib/libz.so
 
 cd ${CLFSSOURCES}
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf zlib
 
 #Zlib 64-bit
@@ -299,8 +299,8 @@ LDFLAGS="-Wl,-rpath-link,/usr/lib64:/lib64 ${BUILD64}" \
     --libdir=/usr/lib64
 
 make
-#make check
-#checkBuiltPackage 
+make check
+checkBuiltPackage 
 make install
 
 mv -v /usr/lib64/libz.so.* /lib64
@@ -310,7 +310,7 @@ mkdir -pv /usr/share/doc/zlib-1.2.11
 cp -rv doc/* examples /usr/share/doc/zlib-1.2.11
 
 cd ${CLFSSOURCES}
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf zlib
 
 #Flex 32-bit
@@ -325,7 +325,7 @@ make
 make install
 
 cd ${CLFSSOURCES}
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf flex
 
 #Flex 64-bit
@@ -338,14 +338,14 @@ CC="gcc ${BUILD64}" ./configure \
     --docdir=/usr/share/doc/flex-2.6.4
 
 make
-#make check
-#checkBuiltPackage 
+make check
+checkBuiltPackage 
 make install
 
 ln -sv flex /usr/bin/lex
 
 cd ${CLFSSOURCES}
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf flex
 
 #Bison 32-bit
@@ -358,12 +358,12 @@ CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" \
     --docdir=/usr/share/doc/bison-3.0.4
 
 make
-#make check
-#checkBuiltPackage 
+make check
+checkBuiltPackage 
 make install
 
 cd ${CLFSSOURCES}
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf bison
 
 #Bison 64-bit
@@ -377,12 +377,12 @@ CXX="g++ ${BUILD64}" \
     --libdir=/usr/lib64 \
     --docdir=/usr/share/doc/bison-3.0.4 &&
 make
-#make check
-#checkBuiltPackage 
+make check
+checkBuiltPackage 
 make install
 
 cd ${CLFSSOURCES}
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf bison
 
 #Binutils
@@ -408,8 +408,8 @@ LDFLAGS="-Wl,-rpath-link,/usr/lib64:/lib64:/usr/lib:/lib ${BUILD64}" \
     --enable-threads
 
 make tooldir=/usr
-#make check
-#checkBuiltPackage 
+make check
+checkBuiltPackage 
 make tooldir=/usr install
 
 cd ${CLFSSOURCES} 
@@ -446,7 +446,7 @@ make
 #ulimit -s 32768
 #make -k check
 #../gcc/contrib/test_summary
-#checkBuiltPackage 
+checkBuiltPackage 
 
 make install
 ln -sv ../usr/bin/cpp /lib
@@ -511,19 +511,19 @@ int main(int argc, char **argv)
 EOF
 
 gcc ${BUILD64} multiarch_wrapper.c -o /usr/bin/multiarch_wrapper
-#checkBuiltPackage 
+checkBuiltPackage 
 
 echo 'echo "32bit Version"' > test-32
 echo 'echo "64bit Version"' > test-64
 chmod -v 755 test-32 test-64
 ln -sv /usr/bin/multiarch_wrapper test
 
-#checkBuiltPackage 
+checkBuiltPackage 
 
 USE_ARCH=32 ./test
 USE_ARCH=64 ./test
 
-#checkBuiltPackage 
+checkBuiltPackage 
 
 rm -v multiarch_wrapper.c test{,-32,-64}
 
