@@ -315,6 +315,8 @@ wget https://launchpad.net/intltool/trunk/0.51.0/+download/intltool-0.51.0.tar.g
 mkdir intltool && tar xf intltool-*.tar.* -C intltool --strip-components 1
 cd intltool
 
+patch -Np1 -i ../intltool-0.51.0-perl-5.22-compatibility.patch
+
 USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" ./configure --prefix=/usr \
   --libdir=/usr/lib
@@ -333,6 +335,8 @@ rm -rf intltool
 #intltool 64-bit
 mkdir intltool && tar xf intltool-*.tar.* -C intltool --strip-components 1
 cd intltool
+
+patch -Np1 -i ../intltool-0.51.0-perl-5.22-compatibility.patch
 
 USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" ./configure --prefix=/usr \
