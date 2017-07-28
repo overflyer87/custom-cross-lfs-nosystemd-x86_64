@@ -99,7 +99,7 @@ env
 
 echo " "
 
-#checkBuiltPackage 
+checkBuiltPackage 
 
 cd ${CLFSSOURCES}
 
@@ -117,7 +117,7 @@ CC_FOR_BUILD=gcc \
 
 make && make install
 cd ${CLFSSOURCES} 
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf gmp
 
 #MPFR
@@ -133,7 +133,7 @@ patch -Np1 -i ../mpfr-3.1.5-fixes-1.patch
 
 make && make install
 cd ${CLFSSOURCES} 
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf mpfr
 
 #MPC
@@ -148,7 +148,7 @@ cd mpc
 
 make && make install
 cd ${CLFSSOURCES} 
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf mpc
 
 #ISL
@@ -163,7 +163,7 @@ cd isl
 
 make && make install
 cd ${CLFSSOURCES} 
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf isl
 
 #Zlib
@@ -177,7 +177,7 @@ cd zlib
 make && make install
 
 cd ${CLFSSOURCES}
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf zlib
 
 #Binutils
@@ -204,7 +204,7 @@ cd ../binutils-build
 
 make && make install
 cd ${CLFSSOURCES} 
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf binutils
 rm -rf binutils-build
 
@@ -242,7 +242,7 @@ make AS_FOR_TARGET="${AS}" \
 make install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf gcc
 rm -rf gcc-build
 
@@ -264,7 +264,7 @@ cd ncurses
 make && make install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf ncurses
 
 #Bash
@@ -297,7 +297,7 @@ EOF
 make && make install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf bash
 
 #Bzip2
@@ -311,7 +311,7 @@ make CC="${CC}" AR="${AR}" RANLIB="${RANLIB}"
 make PREFIX=/tools install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf bzip2
 
 #Check
@@ -327,7 +327,7 @@ cd check
 make && make install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf check
 
 #Coreutils
@@ -345,7 +345,7 @@ sed -i -e 's/^man1_MANS/#man1_MANS/' Makefile
 make && make install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf coreutils
 
 #Diffutils
@@ -360,7 +360,7 @@ cd diffutils
 make && make install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf diffutils
 
 #File
@@ -376,7 +376,7 @@ cd file
 make && make install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf file
 
 #Findutils
@@ -395,7 +395,7 @@ echo "ac_cv_func_fnmatch_gnu=yes" >> config.cache
 make && make install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf findutils
 
 #Gawk
@@ -410,7 +410,7 @@ cd gawk
 make && make install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf gawk
 
 #Gettext
@@ -433,7 +433,7 @@ make -C src msgfmt msgmerge xgettext
 cp -v src/{msgfmt,msgmerge,xgettext} /tools/bin
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf gettext
 
 #Grep
@@ -449,7 +449,7 @@ cd grep
 make && make install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf grep
 
 #Gzip
@@ -464,7 +464,7 @@ cd gzip
 make && make install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf gzip
 
 #Make
@@ -479,7 +479,7 @@ cd make
 make && make install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf make
 
 #Patch
@@ -494,7 +494,7 @@ cd patch
 make && make install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf patch
 
 #Sed
@@ -509,7 +509,7 @@ cd sed
 make && make install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf sed
 
 #Tar
@@ -537,7 +537,7 @@ EOF
 make && make install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf tar
 
 #Texinfo
@@ -553,7 +553,7 @@ PERL=/usr/bin/perl \
 make && make install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf texinfo
 
 #Util-linux
@@ -577,7 +577,7 @@ NCURSES5_CONFIG=" " \
 make && make install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf util-linux
 
 #Vim
@@ -626,7 +626,7 @@ syntax on
 EOF
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf vim
 
 #Nano
@@ -654,7 +654,7 @@ set suspend
 EOF
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf nano
 
 #XZ Utils
@@ -670,7 +670,7 @@ cd xz
 make && make install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf xz
 
 
