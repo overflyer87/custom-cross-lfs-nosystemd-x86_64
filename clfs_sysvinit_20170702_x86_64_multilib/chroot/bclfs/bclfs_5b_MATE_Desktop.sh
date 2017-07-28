@@ -96,7 +96,7 @@ export CC="gcc ${BUILD64}"
 #We left off installing gtk3
 #Now we continue with libxslt which first needs libxml2 (WITH THE PYTHON MODULE!!!)
 
-#libxml2 WITH ITS PYTHON MODULE
+#libxml2 WITH ITS PYTHON 2 MODULE
 wget http://xmlsoft.org/sources/libxml2-2.9.4.tar.gz -O \
     libxml2-2.9.4.tar.gz
 
@@ -107,7 +107,44 @@ wget http://www.w3.org/XML/Test/xmlts20130923.tar.gz -O \
 mkdir libxml2 && tar xf libxml2-*.tar.* -C libxml2 --strip-components 1
 cd libxml2
 
-#run this to build Pytghon3 module
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --disable-static \
+   --with-history   \
+   --libdir=/usr/lib64 \
+   --with-icu \
+   --with-threads
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} make PREFIX=/usr LIBDIR=/usr/lib64
+
+tar xf ../xmlts20130923.tar.gz
+make check > check.log
+grep -E '^Total|expected' check.log
+checkBuiltPackage
+
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install 
+
+cd ${CLFSSOURCES}/xc/mate
+as_root updatedb
+as_root locate libxml | grep /usr/lib64/python2.7/
+echo "Did locate libxml \| grep /usr/lib64/python2.7/ find the libxml python modules?"
+echo ""
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf libxml2
+
+#libxml2 WITH ITS PYTHON 3 MODULE
+wget http://xmlsoft.org/sources/libxml2-2.9.4.tar.gz -O \
+    libxml2-2.9.4.tar.gz
+
+#Download testsuite. WE NEED IT to build the Python module!
+wget http://www.w3.org/XML/Test/xmlts20130923.tar.gz -O \
+    xmlts20130923.tar.gz
+
+mkdir libxml2 && tar xf libxml2-*.tar.* -C libxml2 --strip-components 1
+cd libxml2
+
+#run this to build Python3 module
 #Python2 module would be the default
 #We try not to use Python2 in CLFS multib!
 sed -i '/_PyVerify_fd/,+1d' python/types.c
@@ -134,7 +171,8 @@ as_root updatedb
 as_root locate libxml | grep /usr/lib64/python3.6/
 echo "Did locate libxml | grep /usr/lib64/python3.6/ find the libxml python modules?"
 echo ""
-checkBuiltPackage
+
+cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf libxml2
 
