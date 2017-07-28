@@ -446,7 +446,7 @@ fs_uuid=$(blkid -o value -s PARTUUID /dev/sda4)
 
 cat > /boot/efi/loader/entries/clfs-uefi.conf << "EOF"
 title   Cross Linux from Scratch
-linux   /vmlinuz-clfs-4.12.3
+linux   /vmlinuz-clfs-4.12.4
 initrd  /intel-ucode.img
 EOF
 
