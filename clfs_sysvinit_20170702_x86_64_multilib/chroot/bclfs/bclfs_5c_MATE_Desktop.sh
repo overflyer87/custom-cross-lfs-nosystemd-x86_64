@@ -1377,6 +1377,22 @@ cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf yelp
 
+#yelp-tools
+wget https://github.com/GNOME/yelp-tools/archive/3.18.0.tar.gz -O \
+    yelp-tools-3.18.0.tar.gz
+
+mkdir yelp-tools && tar xf yelp-tools-*.tar.* -C yelp-tools --strip-components 1
+cd yelp-tools
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr --libdir=/usr/lib64
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf yelp
+
 #mate-panel
 wget https://github.com/mate-desktop/mate-panel/archive/v1.19.2.tar.gz -O \
     mate-panel-1.19.2.tar.gz
