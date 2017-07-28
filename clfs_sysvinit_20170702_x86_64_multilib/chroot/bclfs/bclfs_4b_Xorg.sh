@@ -423,12 +423,8 @@ cd pybeaker
 
 as_root python3 setup.py install --optimize=1
 as_root python3 setup.py install --optimize=1
-
-#PYTHONHOME="/usr/lib64/python2.7/" \
-#PYTHONPATH="/usr/lib64/python2.7/" \
-#
-#python2 setup.py install --optimize=1
-#python2 setup.py install --optimize=1
+as_root python2 setup.py install --optimize=1
+as_root python2 setup.py install --optimize=1
 
 
 cd ${CLFSSOURCES}
@@ -450,13 +446,10 @@ as_root python3 setup.py install --optimize=1
 python3 setup.py build
 as_root python3 setup.py install --optimize=1
 
-
-#PYTHONHOME="/usr/lib64/python2.7/" \
-#PYTHONPATH="/usr/lib64/python2.7/" \
-#python2 setup.py build
-#python2 setup.py install --optimize=1
-#python2 setup.py build
-#python2 setup.py install --optimize=1
+python2 setup.py build
+as_root python2 setup.py install --optimize=1
+python2 setup.py build
+as_root python2 setup.py install --optimize=1
 
 
 cd ${CLFSSOURCES}
@@ -471,28 +464,24 @@ cd ${CLFSSOURCES}
 
 wget https://pypi.python.org/packages/source/M/Mako/Mako-1.0.4.tar.gz -O \
   Mako-1.0.4.tar.gz
-#
+
 #Let's start with Python 2.7 Mako modules
 #32-bit
-#mkdir pymako && tar xf Mako-*.tar.* -C pymako --strip-components 1
-#cd pymako
-#
-#PYTHONHOME="/usr/lib64/python2.7/"
-#PYTHONPATH="/usr/lib64/python2.7/"
-#python2 setup.py install --optimize=1
-#
-#cd ${CLFSSOURCES}
-#checkBuiltPackage
-#rm -rf pymako
+mkdir pymako && tar xf Mako-*.tar.* -C pymako --strip-components 1
+cd pymako
 
-##64-bit
-#mkdir pymako && tar xf Mako-*.tar.* -C pymako --strip-components 1
-#cd pymako
-#
-#PYTHONHOME="/usr/lib64/python2.7/"
-#PYTHONPATH="/usr/lib64/python2.7/"
-#python2 setup.py install --optimize=1
-#
+as_root python2 setup.py install --optimize=1
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf pymako
+
+#64-bit
+mkdir pymako && tar xf Mako-*.tar.* -C pymako --strip-components 1
+cd pymako
+
+as_root python2 setup.py install --optimize=1
+
 #cd ${CLFSSOURCES}
 #checkBuiltPackage
 #rm -rf pymako
