@@ -85,14 +85,16 @@ cd linux
 make mrproper
 make ARCH=x86_64 headers_check
 make ARCH=x86_64 INSTALL_HDR_PATH=/tools headers_install
+
 cd ${CLFSSOURCES} 
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf linux
 
 #M4
 mkdir m4 && tar xf m4-*.tar.* -C m4 --strip-components 1
 cd m4
 ./configure --prefix=/cross-tools && make && make install
+
 cd ${CLFSSOURCES} 
 checkBuiltPackage
 rm -rf m4
@@ -104,6 +106,7 @@ cd ncurses
 make -C include 
 make -C progs tic
 install -v -m755 progs/tic /cross-tools/bin
+
 cd ${CLFSSOURCES} 
 checkBuiltPackage
 rm -rf ncurses
@@ -190,6 +193,7 @@ AR=ar AS=as \
     --disable-werror
 
 make && make install
+
 cd ${CLFSSOURCES} 
 checkBuiltPackage
 rm -rf binutils
@@ -239,6 +243,7 @@ LDFLAGS="-Wl,-rpath,/cross-tools/lib" \
 
 make all-gcc all-target-libgcc
 make install-gcc install-target-libgcc
+
 cd ${CLFSSOURCES} 
 checkBuiltPackage
 rm -rf gcc
