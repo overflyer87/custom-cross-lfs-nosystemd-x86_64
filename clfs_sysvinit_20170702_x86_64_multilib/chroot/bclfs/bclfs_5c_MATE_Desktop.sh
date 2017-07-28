@@ -331,7 +331,7 @@ ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" \
    PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr \
    --libdir=/usr/lib64 --sysconfdir=/etc --disable-static \
    --localstatedir=/var --bindir=/usr/bin --sbindir=/usr/sbin \
-   --datadir=/usr/share/doc --disable-docbook-docs
+   --disable-docbook-docs
 
 #Fix the same docbook.xsl problem
 #That occured when building gnome-keyring
@@ -567,7 +567,7 @@ cd libmateweather
    PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr \
    --libdir=/usr/lib64 --sysconfdir=/etc --disable-static \
    --localstatedir=/var --bindir=/usr/bin --sbindir=/usr/sbin \
-   --datadir=/usr/share/doc --disable-docbook-docs
+   --disable-docbook-docs
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
@@ -669,7 +669,6 @@ LIBSOUP_LIBS=/usr/lib64 \
    PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr \
    --libdir=/usr/lib64 --sysconfdir=/etc --disable-static \
    --localstatedir=/var --bindir=/usr/bin --sbindir=/usr/sbin \
-   --datadir=/usr/share/doc
 
 #YOU NEED PYTHON 2.7 FOR PYTHON BINDING!!!
 
@@ -1384,7 +1383,11 @@ wget https://github.com/GNOME/yelp-tools/archive/3.18.0.tar.gz -O \
 mkdir yelp-tools && tar xf yelp-tools-*.tar.* -C yelp-tools --strip-components 1
 cd yelp-tools
 
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr --libdir=/usr/lib64
+ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+   PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr \
+   --libdir=/usr/lib64 --sysconfdir=/etc \
+   --localstatedir=/var --bindir=/usr/bin --sbindir=/usr/sbin \
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
@@ -1404,9 +1407,8 @@ LIBSOUP_LIBS=/usr/lib64 \
   ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" \
   CXX="g++ ${BUILD64}" USE_ARCH=64 \
    PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr \
-   --libdir=/usr/lib64 --sysconfdir=/etc --disable-static \
+   --libdir=/usr/lib64 --sysconfdir=/etc \
    --localstatedir=/var --bindir=/usr/bin --sbindir=/usr/sbin \
-   --datadir=/usr/share/doc 
    
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
