@@ -350,7 +350,7 @@ done
 
 pwconv
 
-groupconv
+grpconv
 
 passwd root
 
@@ -380,7 +380,7 @@ grep failed ../make-check.log
 checkBuiltPackage
 make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-ln -sfv libsudo_util.so.0.0.0 /usr/lib/sudo/libsudo_util.so.0
+ln -sfv libsudo_util.so.0.0.0 /usr/lib64/sudo/libsudo_util.so.0
 
 cat > /etc/pam.d/sudo << "EOF"
 # Begin /etc/pam.d/sudo
