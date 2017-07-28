@@ -357,6 +357,14 @@ wget http://xorg.freedesktop.org/archive/individual/data/xkeyboard-config/xkeybo
 mkdir xkeyboard-config && tar xf xkeyboard-config-*.tar.* -C xkeyboard-config --strip-components 1
 cd xkeyboard-config
 
+#REMEMBER
+#Escape all { or }
+#In intltool-update
+#When there is a regex ${<something>}
+#Lines 1065, 1222-1226, 1993-1996
+
+nano /usr/bin/intltool-update
+
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
 USE_ARCH=32 CC="gcc ${BUILD32}" \
 CXX="g++ ${BUILD32}" ./configure $XORG_CONFIG32 \
@@ -372,6 +380,8 @@ rm -rf xkeyboard-config
 #XKeyboardConfig 64-bit
 mkdir xkeyboard-config && tar xf xkeyboard-config-*.tar.* -C xkeyboard-config --strip-components 1
 cd xkeyboard-config
+
+nano /usr/bin/intltool-update
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
 USE_ARCH=64 \
