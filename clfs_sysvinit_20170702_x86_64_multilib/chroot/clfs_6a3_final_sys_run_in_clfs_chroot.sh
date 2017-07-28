@@ -64,7 +64,7 @@ CC="gcc ${BUILD32}" \
 
 make PREFIX=/usr LIBDIR=/lib
 make -j1 tests root-tests
-#checkBuiltPackage
+checkBuiltPackage
 make PREFIX=/usr LIBDIR=/lib install install-dev install-lib
 
 ln -sfv ../../lib/$(readlink /lib/libattr.so) /usr/lib/libattr.so
@@ -72,7 +72,7 @@ rm -v /lib/libattr.so
 chmod 755 -v /lib/libattr.so.1.1.0
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf attr
 
 #Attr 64-bit
@@ -89,8 +89,8 @@ CC="gcc ${BUILD64}" \
     --libexecdir=/usr/lib64
 
 make PREFIX=/usr LIBDIR=/lib64
-#make -j1 tests root-tests
-#checkBuiltPackage
+make -j1 tests root-tests
+checkBuiltPackage
 make  PREFIX=/usr LIBDIR=/lib64 install install-dev install-lib
 
 ln -sfv ../../lib64/$(readlink /lib64/libattr.so) /usr/lib64/libattr.so
@@ -115,7 +115,7 @@ CC="gcc ${BUILD32}" \
     --libexecdir=/usr/lib
 
 make PREFIX=/usr LIBDIR=/lib
-#make tests
+make tests
 checkBuiltPackage
 make PREFIX=/usr LIBDIR=/lib install install-dev install-lib
 
@@ -141,7 +141,7 @@ CC="gcc ${BUILD64}" \
     --libexecdir=/usr/lib64
 
 make PREFIX=/usr LIBDIR=/lib64
-#make tests
+make tests
 checkBuiltPackage
 make PREFIX=/usr LIBDIR=/lib64 install install-dev install-lib
 
@@ -166,7 +166,7 @@ rm -v /lib/libcap.so
 mv -v /lib/libcap.a /usr/lib
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf libcap
 
 #Libcap 64-bit
@@ -182,7 +182,7 @@ rm -v /lib64/libcap.so
 mv -v /lib64/libcap.a /usr/lib64
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf libcap
 
 #Sed
@@ -195,8 +195,8 @@ CC="gcc ${BUILD64}" ./configure \
     --docdir=/usr/share/doc/sed-4.4
 
 make && make-html
-#make check
-#checkBuiltPackage
+make check
+checkBuiltPackage
 
 make install && make install-html-am
 
@@ -214,10 +214,9 @@ USE_ARCH=64 CXX="g++ ${BUILD64}" CC="gcc ${BUILD64}" ./configure \
     --with-pc-path=/usr/share/pkgconfig \
     --libdir=/usr/lib64 \
 
-
 make
-#make check
-#checkBuiltPackage
+make check
+checkBuiltPackage
 make install
 
 export PKG_CONFIG_PATH32="/usr/lib/pkgconfig"
@@ -232,7 +231,7 @@ PKG_CONFIG_PATH32="/usr/lib/pkgconfig"
 PKG_CONFIG_PATH64="/usr/lib64/pkgconfig"
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf pkg-config
 
 #Ncurses 32-bit
@@ -264,7 +263,7 @@ ln -sfv libncurses++w.a /usr/lib/libncurses++.a
 ln -sfv ncursesw6-config-32 /usr/bin/ncurses6-config-32
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf ncurses
 
 #Ncurses 64-bit
@@ -361,9 +360,9 @@ CC="gcc ${BUILD32}" ./configure \
     --docdir=/usr/share/doc/util-linux-2.29.2
 
 make
-#chown -Rv nobody .
-#su nobody -s /bin/bash -c "PATH=$PATH make -k check"
-#checkBuiltPackage
+chown -Rv nobody .
+su nobody -s /bin/bash -c "PATH=$PATH make -k check"
+checkBuiltPackage
 
 make install
 
@@ -408,7 +407,7 @@ CC="gcc ${BUILD32}" ./configure \
 
 make
 sed -i -r 's|(pmap_initname)\\\$|\1|' testsuite/pmap.test/pmap.exp
-#make check
+make check
 checkBuiltPackage
 make install
 
@@ -433,7 +432,7 @@ CC="gcc ${BUILD64}" ./configure \
 
 make
 sed -i -r 's|(pmap_initname)\\\$|\1|' testsuite/pmap.test/pmap.exp
-#make check
+make check
 checkBuiltPackage
 make install
 
@@ -492,7 +491,7 @@ CC="gcc ${BUILD64}" \
     --disable-uuidd
 
 make
-#make check
+make check
 checkBuiltPackage
 
 make install
@@ -516,12 +515,13 @@ CC="gcc ${BUILD64}" \
     --enable-install-program=hostname
 
 make
-#make NON_ROOT_USERNAME=nobody check-root
-#echo "dummy:x:1000:nobody" >> /etc/group
-#chown -Rv nobody .
-#
-#su nobody -s /bin/bash \
-#    -c "PATH=$PATH make RUN_EXPENSIVE_TESTS=yes -k check || true"
+
+make NON_ROOT_USERNAME=nobody check-root
+echo "dummy:x:1000:nobody" >> /etc/group
+chown -Rv nobody .
+
+su nobody -s /bin/bash \
+   -c "PATH=$PATH make RUN_EXPENSIVE_TESTS=yes -k check || true"
 
 sed -i '/dummy/d' /etc/group
 
@@ -561,8 +561,8 @@ CC="gcc ${BUILD32}" ./configure \
     --prefix=/usr \
     --cache-file=config.cache
 
-#make LDEMULATION=elf_i386 check
-#checkBuiltPackage
+make LDEMULATION=elf_i386 check
+checkBuiltPackage
 
 make install
 mv -v /usr/bin/libtool{,-32}
@@ -584,8 +584,8 @@ CC="gcc ${BUILD64}" ./configure \
     --cache-file=config.cache
 
 make
-#make check
-#checkBuiltPackage
+make check
+checkBuiltPackage
 make install
 
 mv -v /usr/bin/libtool{,-64}
@@ -625,8 +625,8 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}"
 make -f Makefile-libbz2_so CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}"
 make clean
 make CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" libbz2.a
-#make CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" check
-#checkBuiltPackage
+make CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" check
+checkBuiltPackage
 
 cp -v libbz2.a /usr/lib
 cp -av libbz2.so* /lib
@@ -634,7 +634,7 @@ ln -sv ../../lib/libbz2.so.1.0 /usr/lib/libbz2.so
 
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf bzip2
 
 #Bzip2 64-bit
@@ -658,7 +658,7 @@ ln -sv bzip2 /bin/bunzip2
 ln -sv bzip2 /bin/bzcat
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf bzip2
 
 #GDBM 32-bit
@@ -672,12 +672,12 @@ CC="gcc ${BUILD32}" \
     --enable-libgdbm-compat
 
 make
-#make check
-#checkBuiltPackage
+make check
+checkBuiltPackage
 make install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf gdbm
 
 #GDBM 64-bit
@@ -692,12 +692,12 @@ CC="gcc ${BUILD64}" \
     --libdir=/usr/lib64
 
 make
-#make check
-#checkBuiltPackage
+make check
+checkBuiltPackage
 make install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf gdbm
 
 #Perl 32-bit
@@ -721,8 +721,8 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
     -Duseshrplib
 
 make
-#make test
-#checkBuiltPackage
+make test
+checkBuiltPackage
 make install
 unset BUILD_ZLIB BUILD_BZIP2
 
@@ -759,8 +759,8 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
     -Duseshrplib
 
 make
-#make test
-#checkBuiltPackage
+make test
+checkBuiltPackage
 make install
 unset BUILD_ZLIB BUILD_BZIP2
 
@@ -771,7 +771,7 @@ ln -sv multiarch_wrapper /usr/bin/perl
 ln -sv multiarch_wrapper /usr/bin/perl5.26.0
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf perl
 
 #Readline 32-bit
@@ -798,7 +798,7 @@ ln -svf ../../lib/$(readlink /lib/libhistory.so) /usr/lib/libhistory.so
 rm -v /lib/lib{readline,history}.so
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf readline
 
 #Readline 64-bit
@@ -825,7 +825,7 @@ ln -svf ../../lib64/$(readlink /lib64/libhistory.so) /usr/lib64/libhistory.so
 rm -v /lib64/lib{readline,history}.so
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf readline
 
 #Autoconf
@@ -838,8 +838,8 @@ CC="gcc ${BUILD64}" \
     --prefix=/usr
 
 make
-#make check VERBOSE=yes
-#checkBuiltPackage
+make check VERBOSE=yes
+checkBuiltPackage
 make install
 
 cd ${CLFSSOURCES} 
@@ -859,8 +859,8 @@ CC="gcc ${BUILD64}" \
     --docdir=/usr/share/doc/automake-1.15
 
 make
-#make check
-#checkBuiltPackage
+make check
+checkBuiltPackage
 make install
 
 cd ${CLFSSOURCES} 
@@ -884,7 +884,7 @@ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
     --docdir=/usr/share/doc/bash-4.4
 
 make
-#make tests
+make tests
 checkBuiltPackage
 make install
 mv -v /usr/bin/bash /bin
@@ -897,7 +897,7 @@ echo " "
 
 cd ${CLFSSOURCES}
 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf bash
 
 exec /bin/bash --login +h
