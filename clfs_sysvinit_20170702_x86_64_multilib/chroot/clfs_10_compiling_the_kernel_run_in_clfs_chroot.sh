@@ -59,9 +59,9 @@ cp ${CLFSSOURCES}/mykernel.conf ${CLFSSOURCES}/linux/.config
 make
 make modules_install
 make firmware_install
-cp -v arch/x86_64/boot/bzImage /boot/efi/vmlinuz-clfs-4.12.3
-cp -v System.map /boot/efi/System.map-4.12.3
-cp -v .config /boot/efi/config-4.12.3
+cp -v arch/x86_64/boot/bzImage /boot/efi/vmlinuz-clfs-4.12.4
+cp -v System.map /boot/efi/System.map-4.12.4
+cp -v .config /boot/efi/config-4.12.4
 
 cd ${CLFSSOURCES}
 #checkBuiltPackage
