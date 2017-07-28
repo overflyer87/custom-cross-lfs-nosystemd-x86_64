@@ -1369,7 +1369,9 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 as_root update-desktop-database
-
+as_root libtool --finish /usr/lib64/yelp/web-extensions
+as_root libtool --finish /usr/lib64/
+ldconfig
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
