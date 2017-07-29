@@ -383,7 +383,6 @@ wget https://www.kernel.org/pub/software/utils/pciutils/pciutils-3.5.5.tar.xz -O
 mkdir pciutils && tar xf pciutils-*.tar.* -C pciutils --strip-components 1
 cd pciutils
 
-
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
 USE_ARCH=64 \
 CC="gcc ${BUILD64}" \
@@ -405,6 +404,27 @@ checkBuiltPackage
 rm -rf xorg-server
 
 cd ${CLFSSOURCES}/xc
+
+#mtdev 64-bit
+wget http://bitmath.org/code/mtdev/mtdev-1.1.5.tar.bz2 -O \
+  mtdev-1.1.5.tar.bz2
+  
+mkdir mtdev && tar xf mtdev-*.tar.* -C mtdev --strip-components 1
+cd mtdev
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+USE_ARCH=64 \
+CC="gcc ${BUILD64}" \
+CXX="g++ ${BUILD64}" ./configure --prefix=/usr \
+  --disable-static \
+  --libdir=/usr/lib64 &&
+  
+make PREFIX=/usr LIBDIR=/usr/lib64
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf mtdev
 
 #libevdev 64-bit
 wget http://www.freedesktop.org/software/libevdev/libevdev-1.5.7.tar.xz -O \
@@ -431,27 +451,6 @@ buildSingleXLib64
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf xf86-input-evdev
-
-#mtdev 64-bit
-wget http://bitmath.org/code/mtdev/mtdev-1.1.5.tar.bz2 -O \
-  mtdev-1.1.5.tar.bz2
-  
-mkdir mtdev && tar xf mtdev-*.tar.* -C mtdev --strip-components 1
-cd mtdev
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
-USE_ARCH=64 \
-CC="gcc ${BUILD64}" \
-CXX="g++ ${BUILD64}" ./configure --prefix=/usr \
-  --disable-static \
-  --libdir=/usr/lib64 &&
-  
-make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
-
-cd ${CLFSSOURCES}/xc
-checkBuiltPackage
-rm -rf mtdev
 
 #libinput 64-bit
 wget http://www.freedesktop.org/software/libinput/libinput-1.8.0.tar.xz -O \
