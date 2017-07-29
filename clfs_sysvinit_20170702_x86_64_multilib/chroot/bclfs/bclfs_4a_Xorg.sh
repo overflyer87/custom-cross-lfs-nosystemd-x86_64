@@ -28,7 +28,7 @@ export -f as_root
 function buildSingleXLib32() {
   ./configure $XORG_CONFIG32
   make
-  as_root make
+  as_root make install
 }
 
 export -f buildSingleXLib32
@@ -36,7 +36,7 @@ export -f buildSingleXLib32
 function buildSingleXLib64() {
  ./configure $XORG_CONFIG64
   make
-  as_root make
+  as_root make install
 }
 
 export -f buildSingleXLib64
@@ -330,7 +330,7 @@ wget https://gitweb.gentoo.org/proj/python-gentoo-patches.git/snapshot/python-ge
 mkdir Python-2 && tar xf Python-2.7.13.tar.* -C Python-2 --strip-components 1
 cd Python-2
 
-cp ${CLFSSOURCES}/python2713-lib64-patch.patch ${CLFSSOURCES}/xc/mate/Python-2
+cp ${CLFSSOURCES}/python2713-lib64-patch.patch ${CLFSSOURCES}/Python-2
 
 patch -Np0 -i python2713-lib64-patch.patch
 
@@ -372,8 +372,6 @@ cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf Python-2
 
-
-
 #Python 3 64-bit
 wget https://www.python.org/ftp/python/3.6.0/Python-3.6.0.tar.xz -O \
   Python-3.6.0.tar.xz
@@ -389,8 +387,9 @@ cd Python-3
 
 patch -Np1 -i ../python360-multilib.patch
 
-USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"
-CXX="/usr/bin/g++ ${BUILD64}" CC="/usr/bin/gcc ${BUILD64}" ./configure \
+USE_ARCH=64 CXX="/usr/bin/g++ ${BUILD64}" \
+    CC="/usr/bin/gcc ${BUILD64}" \
+    PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
             --prefix=/usr       \
             --enable-shared     \
             --with-system-expat \
@@ -435,9 +434,9 @@ cd xcb-proto
 patch -Np1 -i ../xcb-proto-1.12-schema-1.patch
 patch -Np1 -i ../xcb-proto-1.12-python3-1.patch
 
-USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
 CXX="/usr/bin/g++ ${BUILD32}" \
-CC="/usr/bin/gcc ${BUILD32}" ./configure $XORG_CONFIG32 && 
+CC="/usr/bin/gcc ${BUILD32}" \
+USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" ./configure $XORG_CONFIG32 && 
 
 make check
 checkBuiltPackage
@@ -456,9 +455,9 @@ cd xcb-proto
 patch -Np1 -i ../xcb-proto-1.12-schema-1.patch
 patch -Np1 -i ../xcb-proto-1.12-python3-1.patch
 
-USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
 CXX="/usr/bin/g++ ${BUILD64}" \
-CC="/usr/bin/gcc ${BUILD64}" ./configure $XORG_CONFIG64 &&
+CC="/usr/bin/gcc ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure $XORG_CONFIG64 &&
 
 make check
 checkBuiltPackage
