@@ -170,6 +170,9 @@ done
 cd ${CLFSSOURCES}/xc
 
 #xcb-util 64-bit
+wget http://xcb.freedesktop.org/dist/xcb-util-0.4.0.tar.bz2 -O \
+  xcb-util-0.4.0.tar.bz2
+  
 mkdir xcb-util && tar xf xcb-util-*.tar.* -C xcb-util --strip-components 1
 cd xcb-util
 
@@ -180,6 +183,9 @@ checkBuiltPackage
 rm -rf xcb-util
 
 #xcb-util-image 64-bit
+wget http://xcb.freedesktop.org/dist/xcb-util-image-0.4.0.tar.bz2 -O \
+  xcb-util-image-0.4.0.tar.bz2
+  
 mkdir xcb-util-image && tar xf xcb-util-image-*.tar.* -C xcb-util-image --strip-components 1
 cd xcb-util-image
 
@@ -191,6 +197,9 @@ checkBuiltPackage
 rm -rf xcb-util-image
 
 #xcb-util-keysyms 64-bit
+wget http://xcb.freedesktop.org/dist/xcb-util-keysyms-0.4.0.tar.bz2 -O \
+  xcb-util-keysyms-0.4.0.tar.bz2
+  
 mkdir xcb-util-keysyms && tar xf xcb-util-keysyms-*.tar.* -C xcb-util-keysyms --strip-components 1
 cd xcb-util-keysyms
 
@@ -200,7 +209,10 @@ cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf xcb-util-keysyms
 
-#xcb-util-keysyms 64-bit
+#xcb-util-renderutil 64-bit
+wget http://xcb.freedesktop.org/dist/xcb-util-renderutil-0.3.9.tar.bz2 -O \
+  xcb-util-renderutil-0.3.9.tar.bz2
+    
 mkdir xcb-util-renderutil && tar xf xcb-util-renderutil-*.tar.* -C xcb-util-renderutil --strip-components 1
 cd xcb-util-renderutil
 
@@ -211,6 +223,9 @@ checkBuiltPackage
 rm -rf xcb-util-renderutil
 
 #xcb-util-wm 64-bit
+wget http://xcb.freedesktop.org/dist/xcb-util-wm-0.4.1.tar.bz2 -O \
+  xcb-util-wm-0.4.1.tar.bz2
+
 mkdir xcb-util-wm && tar xf xcb-util-wm-*.tar.* -C xcb-util-wm --strip-components 1
 cd xcb-util-wm
 
@@ -221,6 +236,10 @@ checkBuiltPackage
 rm -rf xcb-util-wm
 
 #xcb-util-cursor 64-bit
+wget http://xcb.freedesktop.org/dist/xcb-util-cursor-0.1.3.tar.bz2 -O \
+  xcb-util-cursor-0.1.3.tar.bz2
+
+
 mkdir xcb-util-cursor && tar xf xcb-util-cursor-*.tar.* -C xcb-util-cursor --strip-components 1
 cd xcb-util-cursor
 
@@ -231,6 +250,9 @@ checkBuiltPackage
 rm -rf xcb-util-cursor
 
 #libdrm 64-bit
+wget http://dri.freedesktop.org/libdrm/libdrm-2.4.81.tar.bz2 -O \
+  libdrm-2.4.81.tar.bz2
+
 mkdir libdrm && tar xf libdrm-*.tar.* -C libdrm --strip-components 1
 cd libdrm
 
@@ -344,6 +366,9 @@ rm -rf pymako
 #Later I will install the proprietary NVIDIA drivers
 
 #libvdpau 64-bit
+wget http://people.freedesktop.org/~aplattner/vdpau/libvdpau-1.1.1.tar.bz2 -O \
+  libvdpau-1.1.1.tar.bz2
+  
 mkdir libvdpau && tar xf libvdpau-*.tar.* -C libvdpau --strip-components 1
 cd libvdpau
 
@@ -360,6 +385,9 @@ checkBuiltPackage
 rm -rf libvdpau
 
 #Mesa 64-bit
+wget https://mesa.freedesktop.org/archive/mesa-17.1.4.tar.xz -O \
+  Mesa-17.1.4.tar.xz
+
 mkdir Mesa && tar xf Mesa-*.tar.* -C Mesa --strip-components 1
 cd Mesa
 
@@ -397,6 +425,9 @@ rm -rf Mesa
 cd ${CLFSSOURCES}/xc
 
 #xbitmaps 64-bit
+wget https://www.x.org/pub/individual/data/xbitmaps-1.1.1.tar.bz2 -O \
+  xbitmaps-1.1.1.tar.bz2
+  
 mkdir xbitmaps && tar xf xbitmaps-*.tar.* -C xbitmaps --strip-components 1
 cd xbitmaps
 
