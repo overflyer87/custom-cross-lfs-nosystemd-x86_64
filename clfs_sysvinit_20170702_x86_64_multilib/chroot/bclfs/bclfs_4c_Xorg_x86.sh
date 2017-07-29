@@ -464,19 +464,9 @@ cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf xf86vidfbdev
 
-#Xorg Fbdev Driver 64-bit
-mkdir xf86vidfbdev && tar xf xf86-video-fbdev-*.tar.* -C xf86vidfbdev --strip-components 1
-cd xf86vidfbdev
-
-buildSingleXLib64
-
-cd ${CLFSSOURCES}/xc
-checkBuiltPackage
-rm -rf xf86vidfbdev
-
 #THE PROPRIETARY NVIDIA DRIVER INSTALLATION CAN BE FOUND IN THE X64 SCRIPT
 
-#twm 64-bit
+#twm 32-bit
 wget https://www.x.org/pub/individual/app/twm-1.0.9.tar.bz2 -O \
   twm-1.0.9.tar.bz2
   
@@ -485,7 +475,7 @@ cd twm
 
 sed -i -e '/^rcdir =/s,^\(rcdir = \).*,\1/etc/X11/app-defaults,' src/Makefile.in
 
-buildSingleXLib64
+buildSingleXLib32
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -494,7 +484,7 @@ rm -rf twm
 USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}"
 
-#xterm 64-bit
+#xterm 32-bit
 wget ftp://invisible-island.net/xterm/xterm-330.tgz -O \
   xterm-330.tgz
   
@@ -504,14 +494,14 @@ cd xterm
 sed -i '/v0/{n;s/new:/new:kb=^?:/}' termcap &&
 printf '\tkbs=\\177,\n' >> terminfo &&
 
-USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
-CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
-TERMINFO=/usr/share/terminfo ./configure $XORG_CONFIG     \
+USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
+CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" \
+TERMINFO=/usr/share/terminfo ./configure $XORG_CONFIG32     \
     --with-app-defaults=/etc/X11/app-defaults &&
 
-make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install-ti
+make PREFIX=/usr LIBDIR=/usr/lib
+as_root make PREFIX=/usr LIBDIR=/usr/lib install 
+as_root make PREFIX=/usr LIBDIR=/usr/lib install-ti
 
 as_root cat >> /etc/X11/app-defaults/XTerm << "EOF"
 *VT100*locale: true
@@ -525,20 +515,20 @@ cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf xterm
 
-#xclock 64-bit
+#xclock 32-bit
 wget https://www.x.org/pub/individual/app/xclock-1.0.7.tar.bz2 -O \
   xclock-1.0.7.tar.bz2
 
 mkdir xclock && tar xf xclock-*.tar.* -C xclock --strip-components 1
 cd xclock
 
-buildSingleXLib64
+buildSingleXLib32
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf xclock
 
-#xinit 64-bit
+#xinit 32-bit
 wget https://www.x.org/pub/individual/app/xinit-1.0.7.tar.bz2 -O \
   xinit-1.0.7.tar.bz2
 
@@ -548,13 +538,13 @@ cd xinit
 sed -e '/$serverargs $vtarg/ s/serverargs/: #&/' \
     -i startx.cpp
 
-USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
-CC="gcc ${BUILD64}" \
-CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64 \
+USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
+CC="gcc ${BUILD32}" \
+CXX="g++ ${BUILD32}" ./configure $XORG_CONFIG32 \
     --with-xinitdir=/etc/X11/app-defaults &&
     
-make PREFIX=/usr LIBDIR=/usr/lib64 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+make PREFIX=/usr LIBDIR=/usr/lib
+as_root make PREFIX=/usr LIBDIR=/usr/lib install
 as_root ldconfig
 
 cd ${CLFSSOURCES}/xc
