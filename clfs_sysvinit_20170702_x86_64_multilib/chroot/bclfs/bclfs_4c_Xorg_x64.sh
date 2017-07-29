@@ -25,15 +25,6 @@ function as_root()
 
 export -f as_root
 
-function buildSingleXLib32() {
-  PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-  USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" ./configure $XORG_CONFIG32
-  make PREFIX=/usr LIBDIR=/usr/lib
-  as_root make PREFIX=/usr LIBDIR=/usr/lib install
-}
-
-export -f buildSingleXLib32
-
 function buildSingleXLib64() {
   PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
   USE_ARCH=64 CC="gcc ${BUILD64}" \
@@ -41,7 +32,6 @@ function buildSingleXLib64() {
   make PREFIX=/usr LIBDIR=/usr/lib64
   as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
 }
-
 
 export -f buildSingleXLib64
 
@@ -58,7 +48,7 @@ MAKEFLAGS='j8'
 BUILD32="-m32"
 BUILD64="-m64"
 CLFS_TARGET32="i686-pc-linux-gnu"
-PKG_CONFIG_PATH32=/usr/lib/pkgconfig
+PKG_CONFIG_PATH=/usr/lib64/pkgconfig
 PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 ACLOCAL="aclocal -I $XORG_PREFIX/share/aclocal"
 
@@ -75,7 +65,7 @@ export MAKEFLAGS=j8
 export BUILD32="-m32"
 export BUILD64="-m64"
 export CLFS_TARGET32="i686-pc-linux-gnu"
-export PKG_CONFIG_PATH32=/usr/lib/pkgconfig
+export PKG_CONFIG_PATH=/usr/lib64/pkgconfig
 export PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 export ACLOCAL="aclocal -I $XORG_PREFIX/share/aclocal"
 
@@ -132,28 +122,6 @@ grep -v '^#' ../app-7.md5 | awk '{print $2}' | wget -i- -c \
     -B https://www.x.org/pub/individual/app/ &&
 md5sum -c ../app-7.md5
 
-#PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-#USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}"
-#
-#for package in $(grep -v '^#' ../app-7.md5 | awk '{print $2}')
-#do
-#  packagedir=${package%.tar.bz2}
-#  tar -xf $package
-#  pushd $packagedir
-#     case $packagedir in
-#       luit-[0-9]* )
-#         sed -i -e "/D_XOPEN/s/5/6/" configure
-#       ;;
-#     esac
-#
-#     ./configure $XORG_CONFIG32
-#     make PREFIX=/usr LIBDIR=/usr/lib
-#     as_root make PREFIX=/usr LIBDIR=/usr/lib install
-#  popd
-#  rm -rf $packagedir
-#done
-#as_root rm -f $XORG_PREFIX/bin/xkeystone
-
 export PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"
 
 for package in $(grep -v '^#' ../app-7.md5 | awk '{print $2}')
@@ -180,19 +148,6 @@ done
 as_root rm -f $XORG_PREFIX/bin/xkeystone
 
 cd ${CLFSSOURCES}/xc
-
-#xcursor-themes 32-bit
-wget https://www.x.org/pub/individual/data/xcursor-themes-1.0.4.tar.bz2 -O \
-  xcursor-themes-1.0.4.tar.bz2 
-  
-mkdir xcursor-themes && tar xf xcursor-themes-*.tar.* -C xcursor-themes --strip-components 1
-cd xcursor-themes
-
-buildSingleXLib32
-
-cd ${CLFSSOURCES}/xc
-checkBuiltPackage
-rm -rf xcursor-themes
 
 #xcursor-themes 64-bit
 mkdir xcursor-themes && tar xf xcursor-themes-*.tar.* -C xcursor-themes --strip-components 1
@@ -224,23 +179,6 @@ grep -v '^#' ../font-7.md5 | awk '{print $2}' | wget -i- -c \
     -B https://www.x.org/pub/individual/font/ &&
 md5sum -c ../font-7.md5
 
-export PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}"
-
-for package in $(grep -v '^#' ../font-7.md5 | awk '{print $2}')
-do
-  packagedir=${package%.tar.bz2}
-  tar -xf $package
-  pushd $packagedir
-  
-  PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-  USE_ARCH=32 CC="gcc ${BUILD32}" \
-  CXX="g++ ${BUILD32}" ./configure $XORG_CONFIG32 &&
-  make PREFIX=/usr 
-  as_root make PREFIX=/usr install
-  popd
-  as_root rm -rf $packagedir
-done
-
 export PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"
 
 for package in $(grep -v '^#' ../font-7.md5 | awk '{print $2}')
@@ -265,26 +203,6 @@ ln -svfn $XORG_PREFIX/share/fonts/X11/TTF /usr/share/fonts/X11-TTF
 cd ${CLFSSOURCES}/xc
 cd ${CLFSSOURCES}
 
-#XML::Parser (Perl module) 32-bit
-wget http://cpan.metacpan.org/authors/id/T/TO/TODDR/XML-Parser-2.44.tar.gz -O \
-  XML-Parser-2.44.tar.gz
-
-mkdir xmlparser && tar xf XML-Parser-*.tar.* -C xmlparser --strip-components 1
-cd xmlparser
-
-USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" perl Makefile.PL
-
-make PREFIX=/usr LIBDIR=/usr/lib
-
-make PREFIX=/usr LIBDIR=/usr/lib test
-checkBuiltPackage
-as_root make PREFIX=/usr LIBDIR=/usr/lib install
-
-cd ${CLFSSOURCES}
-checkBuiltPackage
-rm -rf xmlparser
-
 #XML::Parser (Perl module) 64-bit
 mkdir xmlparser && tar xf XML-Parser-*.tar.* -C xmlparser --strip-components 1
 cd xmlparser
@@ -307,26 +225,6 @@ rm -rf xmlparser
 #In intltool-update
 #When there is a regex ${<something>}
 #Lines 1065, 1222-1226, 1993-1996
-
-#intltool 32-bit
-wget https://launchpad.net/intltool/trunk/0.51.0/+download/intltool-0.51.0.tar.gz -O \
-  intltool-0.51.0.tar.gz
-
-mkdir intltool && tar xf intltool-*.tar.* -C intltool --strip-components 1
-cd intltool
-
-patch -Np1 -i ../intltool-0.51.0-perl-5.22-compatibility.patch
-
-USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" ./configure --prefix=/usr \
-  --libdir=/usr/lib
-
-make PREFIX=/usr LIBDIR=/usr/lib
-
-make PREFIX=/usr LIBDIR=/usr/lib check
-checkBuiltPackage
-as_root make PREFIX=/usr LIBDIR=/usr/lib install
-
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
@@ -354,33 +252,6 @@ rm -rf intltool
 
 cd ${CLFSSOURCES}/xc
 
-#XKeyboardConfig 32-bit
-wget http://xorg.freedesktop.org/archive/individual/data/xkeyboard-config/xkeyboard-config-2.21.tar.bz2 -O \
-  xkeyboard-config-2.21.tar.bz2
-
-mkdir xkeyboard-config && tar xf xkeyboard-config-*.tar.* -C xkeyboard-config --strip-components 1
-cd xkeyboard-config
-
-#REMEMBER
-#Escape all { or }
-#In intltool-update
-#When there is a regex ${<something>}
-#Lines 1065, 1222-1226, 1993-1996
-
-nano /usr/bin/intltool-update
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-USE_ARCH=32 CC="gcc ${BUILD32}" \
-CXX="g++ ${BUILD32}" ./configure $XORG_CONFIG32 \
-    --with-xkb-rules-symlink=xorg &&
-    
-make PREFIX=/usr LIBDIR=/usr/lib
-as_root make PREFIX=/usr LIBDIR=/usr/lib install
-
-cd ${CLFSSOURCES}/xc
-checkBuiltPackage
-rm -rf xkeyboard-config
-
 #XKeyboardConfig 64-bit
 mkdir xkeyboard-config && tar xf xkeyboard-config-*.tar.* -C xkeyboard-config --strip-components 1
 cd xkeyboard-config
@@ -399,24 +270,6 @@ cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf xkeyboard-config
 
-#libepoxy 32-bit
-wget https://github.com/anholt/libepoxy/releases/download/1.4.3/libepoxy-1.4.3.tar.xz -O \
-  libepoxy-1.4.3.tar.xz
-
-mkdir libepoxy && tar xf libepoxy-*.tar.* -C libepoxy --strip-components 1
-cd libepoxy
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-USE_ARCH=32 CC="gcc ${BUILD32}"  \
-CXX="g++ ${BUILD32}" ./configure --prefix=/usr \
-    --libdir=/usr/lib &&
-make PREFIX=/usr LIBDIR=/usr/lib
-as_root make PREFIX=/usr LIBDIR=/usr/lib install
-
-cd ${CLFSSOURCES}/xc
-checkBuiltPackage
-rm -rf libepoxy
-
 #libepoxy 64-bit
 mkdir libepoxy && tar xf libepoxy-*.tar.* -C libepoxy --strip-components 1
 cd libepoxy
@@ -431,26 +284,6 @@ as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf libepoxy
-
-#Pixman 32-bit
-wget http://cairographics.org/releases/pixman-0.34.0.tar.gz -O \
-  pixman-0.34.0.tar.gz
-
-mkdir pixman && tar xf pixman-*.tar.* -C pixman --strip-components 1
-cd pixman
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-USE_ARCH=32 CC="gcc ${BUILD32}" \
-CXX="g++ ${BUILD32}" ./configure --prefix=/usr \
-  --disable-static \
-  --libdir=/usr/lib &&
-  
-make PREFIX=/usr LIBDIR=/usr/lib
-as_root make PREFIX=/usr LIBDIR=/usr/lib install
-
-cd ${CLFSSOURCES}/xc
-checkBuiltPackage
-rm -rf pixman
 
 #Pixman 64-bit
 mkdir pixman && tar xf pixman-*.tar.* -C pixman --strip-components 1
@@ -468,43 +301,6 @@ as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf pixman
-
-##Xorg Server 32-bit
-#wget https://www.x.org/pub/individual/xserver/xorg-server-1.19.3.tar.bz2 -O \
-#  xorg-server-1.19.3.tar.bz2 
-#
-#wget http://www.linuxfromscratch.org/patches/blfs/svn/xorg-server-1.19.3-add_prime_support-1.patch -O \
-#  Xorg-server-1.19.3-add_prime_support-1.patch
-#  
-#mkdir xorg-server && tar xf xorg-server-*.tar.* -C xorg-server --strip-components 1
-#cd xorg-server
-#
-#patch -Np1 -i ../xorg-server-1.19.3-add_prime_support-1.patch
-#
-#PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-#USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}"
-#
-#./configure $XORG_CONFIG32            \
-#           --enable-glamor          \
-#           --enable-install-setuid  \
-#           --enable-suid-wrapper    \
-#           --disable-systemd-logind \
-#           --with-xkb-output=/var/lib/xkb
-#           
-#make PREFIX=/usr LIBDIR=/usr/lib
-#ldconfig
-#make check
-#make PREFIX=/usr LIBDIR=/usr/lib install
-#mkdir -pv /etc/X11/xorg.conf.d
-#
-#cat >> /etc/sysconfig/createfiles << "EOF"
-#/tmp/.ICE-unix dir 1777 root root
-#/tmp/.X11-unix dir 1777 root root
-#EOF
-#
-#cd ${CLFSSOURCES}/xc
-#checkBuiltPackage
-#rm -rf xorg-server
 
 #Xorg Server 64-bit
 wget https://www.x.org/pub/individual/xserver/xorg-server-1.19.3.tar.bz2 -O \
@@ -550,14 +346,18 @@ rm -rf xorg-server
 
 cd ${CLFSSOURCES}
 
-#pcituils
+#pcituils 64-bit
 wget https://www.kernel.org/pub/software/utils/pciutils/pciutils-3.5.5.tar.xz -O \
   pciutils-3.5.5.tar.xz
 
 mkdir pciutils && tar xf pciutils-*.tar.* -C pciutils --strip-components 1
 cd pciutils
 
-make PREFIX=/usr                \
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+USE_ARCH=64 \
+CC="gcc ${BUILD64}" \
+CXX="g++ ${BUILD64}" make PREFIX=/usr \
      SHAREDIR=/usr/share/hwdata \
      LIBDIR=/usr/lib64          \
      SHARED=yes
@@ -576,19 +376,6 @@ rm -rf xorg-server
 
 cd ${CLFSSOURCES}/xc
 
-#libevdev 32-bit
-wget http://www.freedesktop.org/software/libevdev/libevdev-1.5.7.tar.xz -O \
-  libevdev-1.5.7.tar.xz
-
-mkdir libevdev && tar xf libevdev-*.tar.* -C libevdev --strip-components 1
-cd libevdev
-
-buildSingleXLib32
-
-cd ${CLFSSOURCES}/xc
-checkBuiltPackage
-rm -rf libevdev
-
 #libevdev 64-bit
 mkdir libevdev && tar xf libevdev-*.tar.* -C libevdev --strip-components 1
 cd libevdev
@@ -599,19 +386,6 @@ cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf libevdev
 
-#Xorg Evdev Driver 32-bit
-wget https://www.x.org/pub/individual/driver/xf86-input-evdev-2.10.5.tar.bz2 -O \
-  xf86-input-evdev-2.10.5.tar.bz2
-  
-mkdir xf86-input-evdev && tar xf xf86-input-evdev-*.tar.* -C xf86-input-evdev --strip-components 1
-cd xf86-input-evdev
-
-buildSingleXLib32
-
-cd ${CLFSSOURCES}
-checkBuiltPackage
-rm -rf xf86-input-evdev
-
 #Xorg Evdev Driver 64-bit
 mkdir xf86-input-evdev && tar xf xf86-input-evdev-*.tar.* -C xf86-input-evdev --strip-components 1
 cd xf86-input-evdev
@@ -621,26 +395,6 @@ buildSingleXLib64
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf xf86-input-evdev
-
-#mtdev 32-bit
-wget http://bitmath.org/code/mtdev/mtdev-1.1.5.tar.bz2 -O \
-  mtdev-1.1.5.tar.bz2
-  
-mkdir mtdev && tar xf mtdev-*.tar.* -C mtdev --strip-components 1
-cd mtdev
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-USE_ARCH=32 CC="gcc ${BUILD32}" \
-CXX="g++ ${BUILD32}" ./configure --prefix=/usr \
-  --disable-static \
-  --libdir=/usr/lib
-  
-make PREFIX=/usr LIBDIR=/usr/lib
-as_root make PREFIX=/usr LIBDIR=/usr/lib install
-
-cd ${CLFSSOURCES}/xc
-checkBuiltPackage
-rm -rf mtdev
 
 #mtdev 64-bit
 wget http://bitmath.org/code/mtdev/mtdev-1.1.5.tar.bz2 -O \
@@ -662,31 +416,6 @@ as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf mtdev
-
-#libinput 32-bit
-wget http://www.freedesktop.org/software/libinput/libinput-1.8.0.tar.xz -O \
-  libinput-1.8.0.tar.xz
-
-mkdir libinput && tar xf libinput-*.tar.* -C libinput --strip-components 1
-cd libinput
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-USE_ARCH=32 \
-CC="gcc ${BUILD32}" \
-CXX="g++ ${BUILD32}" ./configure $XORG_CONFIG32 \
-            --disable-libwacom      \
-            --disable-debug-gui     \
-            --disable-tests         \
-            --libdir=/usr/lib       \
-            --disable-documentation \
-            --with-udev-dir=/lib/udev && 
-            
-make PREFIX=/usr LIBDIR=/usr/lib
-as_root make PREFIX=/usr LIBDIR=/usr/lib install
-
-cd ${CLFSSOURCES}/xc
-checkBuiltPackage
-rm -rf libinput
 
 #libinput 64-bit
 mkdir libinput && tar xf libinput-*.tar.* -C libinput --strip-components 1
@@ -710,18 +439,6 @@ cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf libinput
 
-#Xorg Fbdev Driver 32-bit
-wget https://www.x.org/pub/individual/driver/xf86-video-fbdev-0.4.4.tar.bz2 -O \
-  xf86-video-fbdev-0.4.4.tar.bz2
-  
-mkdir xf86vidfbdev && tar xf xf86-video-fbdev-*.tar.* -C xf86vidfbdev --strip-components 1
-cd xf86vidfbdev
-
-buildSingleXLib32
-
-cd ${CLFSSOURCES}/xc
-checkBuiltPackage
-rm -rf xf86vidfbdev
 
 #Xorg Fbdev Driver 64-bit
 mkdir xf86vidfbdev && tar xf xf86-video-fbdev-*.tar.* -C xf86vidfbdev --strip-components 1
