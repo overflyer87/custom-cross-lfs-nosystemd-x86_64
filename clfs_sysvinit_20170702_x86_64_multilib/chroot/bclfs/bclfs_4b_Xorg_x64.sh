@@ -291,8 +291,8 @@ CXX="g++ ${BUILD64}" USE_ARCH=64 CC="gcc ${BUILD64}" PKG_CONFIG_PATH="${PKG_CONF
 
 as_root python3 setup.py install --optimize=1
 as_root python3 setup.py install --optimize=1
-as_root python2 setup.py install --optimize=1
-as_root python2 setup.py install --optimize=1
+#as_root python2 setup.py install --optimize=1
+#as_root python2 setup.py install --optimize=1
 
 
 cd ${CLFSSOURCES}
@@ -317,13 +317,12 @@ python3 setup.py build
 as_root python3 setup.py install --optimize=1
 
 
-CXX="g++ ${BUILD64}" USE_ARCH=64 CC="gcc ${BUILD64}" PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" 
-
-python2 setup.py build
-as_root python2 setup.py install --optimize=1
-python2 setup.py build
-as_root python2 setup.py install --optimize=1
-
+#CXX="g++ ${BUILD64}" USE_ARCH=64 CC="gcc ${BUILD64}" PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" 
+#
+#python2 setup.py build
+#as_root python2 setup.py install --optimize=1
+#python2 setup.py build
+#as_root python2 setup.py install --optimize=1
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
@@ -339,29 +338,28 @@ wget https://pypi.python.org/packages/source/M/Mako/Mako-1.0.4.tar.gz -O \
   Mako-1.0.4.tar.gz
 
 #Let's start with Python 2.7 Mako modules
-#32-bit
-mkdir pymako && tar xf Mako-*.tar.* -C pymako --strip-components 1
-cd pymako
+#64-bit
+#mkdir pymako && tar xf Mako-*.tar.* -C pymako --strip-components 1
+#cd pymako
+#
+#CXX="g++ ${BUILD64}" USE_ARCH=64 CC="gcc ${BUILD64}" PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" 
+#as_root python2 setup.py install --optimize=1
+#
+#cd ${CLFSSOURCES}
+#checkBuiltPackage
+#rm -rf pymako
 
-CXX="g++ ${BUILD64}" USE_ARCH=64 CC="gcc ${BUILD64}" PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" 
-as_root python2 setup.py install --optimize=1
-
-cd ${CLFSSOURCES}
-checkBuiltPackage
-rm -rf pymako
-
+#Python 3.6 Mako modules
 #64-bit
 mkdir pymako && tar xf Mako-*.tar.* -C pymako --strip-components 1
 cd pymako
 
 CXX="g++ ${BUILD64}" USE_ARCH=64 CC="gcc ${BUILD64}" PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" 
-as_root python2 setup.py install --optimize=1
+as_root python3 setup.py install --optimize=1
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf pymako
-
-#Python 3.6 Mako modules
 
 #So before we can build Mesa
 #There are some reccomended deps
