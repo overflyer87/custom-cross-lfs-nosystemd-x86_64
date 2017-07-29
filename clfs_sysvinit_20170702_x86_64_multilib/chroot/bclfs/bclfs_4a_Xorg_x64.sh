@@ -72,11 +72,12 @@ cd ${CLFSSOURCES}
 mkdir xc && cd xc
 
 export XORG_PREFIX="/usr"
-export XORG_CONFIG32="--prefix=$XORG_PREFIX --sysconfdir=/etc --localstatedir=/var \
-  --libdir=$XORG_PREFIX/lib"
 export XORG_CONFIG64="--prefix=$XORG_PREFIX --sysconfdir=/etc --localstatedir=/var \
   --libdir=$XORG_PREFIX/lib64"
 
+XORG_PREFIX="/usr"
+XORG_CONFIG64="--prefix=$XORG_PREFIX --sysconfdir=/etc --localstatedir=/var \
+  --libdir=$XORG_PREFIX/lib64"
 
 cat > /etc/profile.d/xorg.sh << EOF
 export XORG_PREFIX="/usr"
