@@ -25,15 +25,6 @@ function as_root()
 
 export -f as_root
 
-function buildSingleXLib32() {
-  PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-  USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" ./configure $XORG_CONFIG32
-  make PREFIX=/usr LIBDIR=/usr/lib
-  as_root make PREFIX=/usr LIBDIR=/usr/lib install
-}
-
-export -f buildSingleXLib32
-
 function buildSingleXLib64() {
   PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
   USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64
