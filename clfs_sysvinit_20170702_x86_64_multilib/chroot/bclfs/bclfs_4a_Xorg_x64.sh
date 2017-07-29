@@ -137,6 +137,10 @@ EOF
 mkdir proto
 cd proto
 
+grep -v '^#' ../proto-7.md5 | awk '{print $2}' | wget -i- -c \
+    -B https://www.x.org/pub/individual/proto/ &&
+md5sum -c ../proto-7.md5
+
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
 USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
 
