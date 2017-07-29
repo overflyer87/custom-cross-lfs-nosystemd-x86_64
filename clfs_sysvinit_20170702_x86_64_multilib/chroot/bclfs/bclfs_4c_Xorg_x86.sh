@@ -71,6 +71,13 @@ export ACLOCAL="aclocal -I $XORG_PREFIX/share/aclocal"
 cd ${CLFSSOURCES}
 cd ${CLFSSOURCES/xc}
 
+export XORG_PREFIX="/usr"
+export XORG_CONFIG32="--prefix=$XORG_PREFIX --sysconfdir=/etc --localstatedir=/var \
+  --libdir=$XORG_PREFIX/lib"
+  
+XORG_CONFIG32="--prefix=$XORG_PREFIX --sysconfdir=/etc --localstatedir=/var \
+  --libdir=$XORG_PREFIX/lib"
+
 #Add this point you COULD install Linux-PAM
 
 #Xorg Apps
