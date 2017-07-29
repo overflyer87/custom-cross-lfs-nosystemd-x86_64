@@ -76,8 +76,9 @@ mkdir xc && cd xc
 export XORG_PREFIX="/usr"
 export XORG_CONFIG32="--prefix=$XORG_PREFIX --sysconfdir=/etc --localstatedir=/var \
   --libdir=$XORG_PREFIX/lib"
-export XORG_CONFIG64="--prefix=$XORG_PREFIX --sysconfdir=/etc --localstatedir=/var \
-  --libdir=$XORG_PREFIX/lib64"
+  
+XORG_CONFIG32="--prefix=$XORG_PREFIX --sysconfdir=/etc --localstatedir=/var \
+  --libdir=$XORG_PREFIX/lib"
 
 cat > /etc/profile.d/xorg.sh << EOF
 export XORG_PREFIX="/usr"
@@ -304,6 +305,11 @@ tar --strip-components=1 \
     -xvf ../python-360-docs.tar.bz2
 
 ln -svfn python-3.6.0 /usr/share/doc/python-3
+
+as_root ln -sfv python2.7-32 /usr/bin/python3-32 &&
+as_root ln -sfv multiarch_wrapper /usr/bin/python &&
+as_root ln -sfv multiarch_wrapper /usr/bin/python &&
+as_root ln -sfv multiarch_wrapper /usr/bin/python3.6 &&
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
