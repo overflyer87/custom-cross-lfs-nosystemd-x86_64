@@ -56,7 +56,7 @@ MAKEFLAGS='j8'
 BUILD32="-m32"
 BUILD64="-m64"
 CLFS_TARGET32="i686-pc-linux-gnu"
-PKG_CONFIG_PATH32=/usr/lib/pkgconfig
+PKG_CONFIG_PATH=/usr/lib64/pkgconfig
 PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 ACLOCAL="aclocal -I $XORG_PREFIX/share/aclocal"
 
@@ -120,64 +120,6 @@ grep -v '^#' ../lib-7.md5 | awk '{print $2}' | wget -i- -c \
     -B https://www.x.org/pub/individual/lib/ &&
 md5sum -c ../lib-7.md5
 
-USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-CXX="g++ ${BUILD32}" CC="gcc ${BUILD32}" \
-
-export PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" 
-
-
-for package in $(grep -v '^#' ../lib-7.md5 | awk '{print $2}')
-do
-  packagedir=${package%.tar.bz2}
-  tar -xf $package
-  pushd $packagedir
-  case $packagedir in
-    libICE* )
-    export PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}"
-    USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-    CXX="g++ ${BUILD32}" CC="gcc ${BUILD32}" ./configure $XORG_CONFIG32 \
-      ICE_LIBS=-lpthread
-    ;;
-    
-    libXfont2-[0-9]* )
-    export PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}"
-    USE_ARCH=32 \
-    PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-    CXX="g++ ${BUILD32}" \
-    CC="gcc ${BUILD32}" ./configure $XORG_CONFIG32 \
-      --disable-devel-docs
-    ;;
-
-    libXt-[0-9]* )
-    export PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}"
-    USE_ARCH=32 \
-    PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-    CXX="g++ ${BUILD32}" \
-    CC="gcc ${BUILD32}" ./configure $XORG_CONFIG32 \
-                 --with-appdefaultdir=/etc/X11/app-defaults
-    ;;
-
-    * )
-     export PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}"
-     USE_ARCH=32 \
-     PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-     CXX="g++ ${BUILD32}" \
-     CC="gcc ${BUILD32}" ./configure $XORG_CONFIG32
-    ;;
-  esac
-  make PREFIX=/usr LIBDIR=/usr/lib
-  #make check 2>&1 | tee ../$packagedir-make_check.log
-  #grep -A9 summary *make_check.log
-  as_root make PREFIX=/usr LIBDIR=/usr/lib install
-  checkBuiltPackage
-  popd
-  rm -rf $packagedir
-  as_root /sbin/ldconfig
-done
-
-cd ${CLFSSOURCES}/xc
-cd lib
-
 USE_ARCH=64 CXX="g++ ${BUILD64}" CC="gcc ${BUILD64}" \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
 
@@ -236,19 +178,6 @@ done
 
 cd ${CLFSSOURCES}/xc
 
-#xcb-util 32-bit
-wget http://xcb.freedesktop.org/dist/xcb-util-0.4.0.tar.bz2 -O \
-  xcb-util-0.4.0.tar.bz2
-
-mkdir xcb-util && tar xf xcb-util-*.tar.* -C xcb-util --strip-components 1
-cd xcb-util
-
-buildSingleXLib32
-
-cd ${CLFSSOURCES}/xc
-checkBuiltPackage
-rm -rf xcb-util
-
 #xcb-util 64-bit
 mkdir xcb-util && tar xf xcb-util-*.tar.* -C xcb-util --strip-components 1
 cd xcb-util
@@ -258,20 +187,6 @@ buildSingleXLib64
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf xcb-util
-
-#xcb-util-image 32-bit
-wget http://xcb.freedesktop.org/dist/xcb-util-image-0.4.0.tar.bz2 -O \
-  xcb-util-image-0.4.0.tar.bz2
-
-mkdir xcb-util-image && tar xf xcb-util-image-*.tar.* -C xcb-util-image --strip-components 1
-cd xcb-util-image
-
-buildSingleXLib32
-#LD_LIBRARY_PATH=$XORG_PREFIX/lib make check
-
-cd ${CLFSSOURCES}/xc
-checkBuiltPackage
-rm -rf xcb-util-image
 
 #xcb-util-image 64-bit
 mkdir xcb-util-image && tar xf xcb-util-image-*.tar.* -C xcb-util-image --strip-components 1
@@ -284,19 +199,6 @@ cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf xcb-util-image
 
-#xcb-util-keysyms 32-bit
-wget http://xcb.freedesktop.org/dist/xcb-util-keysyms-0.4.0.tar.bz2 -O \
-  xcb-util-keysyms-0.4.0.tar.bz2
-
-mkdir xcb-util-keysyms && tar xf xcb-util-keysyms-*.tar.* -C xcb-util-keysyms --strip-components 1
-cd xcb-util-keysyms
-
-buildSingleXLib32
-
-cd ${CLFSSOURCES}/xc
-checkBuiltPackage
-rm -rf xcb-util-keysyms
-
 #xcb-util-keysyms 64-bit
 mkdir xcb-util-keysyms && tar xf xcb-util-keysyms-*.tar.* -C xcb-util-keysyms --strip-components 1
 cd xcb-util-keysyms
@@ -307,19 +209,6 @@ cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf xcb-util-keysyms
 
-#xcb-util-renderutil 32-bit
-wget http://xcb.freedesktop.org/dist/xcb-util-renderutil-0.3.9.tar.bz2 -O \
-  xcb-util-renderutil-0.3.9.tar.bz2
-
-mkdir xcb-util-renderutil && tar xf xcb-util-renderutil-*.tar.* -C xcb-util-renderutil --strip-components 1
-cd xcb-util-renderutil
-
-buildSingleXLib32
-
-cd ${CLFSSOURCES}/xc
-checkBuiltPackage
-rm -rf xcb-util-renderutil
-
 #xcb-util-keysyms 64-bit
 mkdir xcb-util-renderutil && tar xf xcb-util-renderutil-*.tar.* -C xcb-util-renderutil --strip-components 1
 cd xcb-util-renderutil
@@ -329,19 +218,6 @@ buildSingleXLib64
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf xcb-util-renderutil
-
-#xcb-util-wm 32-bit
-wget http://xcb.freedesktop.org/dist/xcb-util-wm-0.4.1.tar.bz2 -O \
-  xcb-util-wm-0.4.1.tar.bz2
-
-mkdir xcb-util-wm && tar xf xcb-util-wm-*.tar.* -C xcb-util-wm --strip-components 1
-cd xcb-util-wm
-
-buildSingleXLib32
-
-cd ${CLFSSOURCES}/xc
-checkBuiltPackage
-rm -rf xcb-util-wm
 
 #xcb-util-wm 64-bit
 mkdir xcb-util-wm && tar xf xcb-util-wm-*.tar.* -C xcb-util-wm --strip-components 1
@@ -353,19 +229,6 @@ cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf xcb-util-wm
 
-#xcb-util-cursor 32-bit
-wget http://xcb.freedesktop.org/dist/xcb-util-cursor-0.1.3.tar.bz2 -O \
-  xcb-util-cursor-0.1.3.tar.bz2
-
-mkdir xcb-util-cursor && tar xf xcb-util-cursor-*.tar.* -C xcb-util-cursor --strip-components 1
-cd xcb-util-cursor
-
-buildSingleXLib32
-
-cd ${CLFSSOURCES}/xc
-checkBuiltPackage
-rm -rf xcb-util-cursor
-
 #xcb-util-cursor 64-bit
 mkdir xcb-util-cursor && tar xf xcb-util-cursor-*.tar.* -C xcb-util-cursor --strip-components 1
 cd xcb-util-cursor
@@ -375,24 +238,6 @@ buildSingleXLib64
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf xcb-util-cursor
-
-#libdrm 32-bit
-wget http://dri.freedesktop.org/libdrm/libdrm-2.4.81.tar.bz2 -O \
-  libdrm-2.4.81.tar.bz2
-
-mkdir libdrm && tar xf libdrm-*.tar.* -C libdrm --strip-components 1
-cd libdrm
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-  USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}"
-
-./configure --prefix=/usr --enable-udev --libdir=/usr/lib
-make PREFIX=/usr LIBDIR=/usr/lib
-as_root make PREFIX=/usr LIBDIR=/usr/lib install
-
-cd ${CLFSSOURCES}/xc
-checkBuiltPackage
-rm -rf libdrm
 
 #libdrm 64-bit
 mkdir libdrm && tar xf libdrm-*.tar.* -C libdrm --strip-components 1
@@ -421,6 +266,8 @@ wget https://pypi.python.org/packages/93/b2/12de6937b06e9615dbb3cb3a1c9af17f133f
 mkdir pybeaker && tar xf Beaker-*.tar.* -C pybeaker --strip-components 1
 cd pybeaker
 
+CXX="g++ ${BUILD64}" USE_ARCH=64 CC="gcc ${BUILD64}" PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" 
+
 as_root python3 setup.py install --optimize=1
 as_root python3 setup.py install --optimize=1
 as_root python2 setup.py install --optimize=1
@@ -441,10 +288,15 @@ wget https://files.pythonhosted.org/packages/4d/de/32d741db316d8fdb7680822dd3700
 mkdir pyMarkupSafe && tar xf MarkupSafe-*.tar.* -C pyMarkupSafe --strip-components 1
 cd pyMarkupSafe
 
+CXX="g++ ${BUILD64}" USE_ARCH=64 CC="gcc ${BUILD64}" PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" 
+
 python3 setup.py build
 as_root python3 setup.py install --optimize=1
 python3 setup.py build
 as_root python3 setup.py install --optimize=1
+
+
+CXX="g++ ${BUILD64}" USE_ARCH=64 CC="gcc ${BUILD64}" PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" 
 
 python2 setup.py build
 as_root python2 setup.py install --optimize=1
@@ -458,7 +310,7 @@ rm -rf pyMarkupSafe
 
 #Build Python Mako modules for Mesa
 #Both for Python 2.7 and 3.6
-#32-bit and 64-bit each
+#64-bit each
 
 cd ${CLFSSOURCES}
 
@@ -470,6 +322,7 @@ wget https://pypi.python.org/packages/source/M/Mako/Mako-1.0.4.tar.gz -O \
 mkdir pymako && tar xf Mako-*.tar.* -C pymako --strip-components 1
 cd pymako
 
+CXX="g++ ${BUILD64}" USE_ARCH=64 CC="gcc ${BUILD64}" PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" 
 as_root python2 setup.py install --optimize=1
 
 cd ${CLFSSOURCES}
@@ -480,6 +333,7 @@ rm -rf pymako
 mkdir pymako && tar xf Mako-*.tar.* -C pymako --strip-components 1
 cd pymako
 
+CXX="g++ ${BUILD64}" USE_ARCH=64 CC="gcc ${BUILD64}" PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" 
 as_root python2 setup.py install --optimize=1
 
 cd ${CLFSSOURCES}
@@ -487,27 +341,6 @@ checkBuiltPackage
 rm -rf pymako
 
 #Python 3.6 Mako modules
-#32-bit
-mkdir pymako && tar xf Mako-*.tar.* -C pymako --strip-components 1
-cd pymako
-
-sed -i "s:mako-render:&3:g" setup.py &&
-as_root python3 setup.py install --optimize=1
-
-cd ${CLFSSOURCES}
-checkBuiltPackage
-rm -rf pymako
-
-#64-bit
-mkdir pymako && tar xf Mako-*.tar.* -C pymako --strip-components 1
-cd pymako
-
-sed -i "s:mako-render:&3:g" setup.py &&
-as_root python3 setup.py install --optimize=1
-
-cd ${CLFSSOURCES}
-checkBuiltPackage
-rm -rf pymako
 
 #So before we can build Mesa
 #There are some reccomended deps
@@ -518,25 +351,6 @@ rm -rf pymako
 #I have an NVIDIA GTX 1080
 #I will go with vdpau for now
 #Later I will install the proprietary NVIDIA drivers
-
-#libvdpau 32-bit
-wget http://people.freedesktop.org/~aplattner/vdpau/libvdpau-1.1.1.tar.bz2 -O \
-  libvdpau-1.1.1.tar.bz2
-
-mkdir libvdpau && tar xf libvdpau-*.tar.* -C libvdpau --strip-components 1
-cd libvdpau
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-USE_ARCH=32 CC="gcc ${BUILD32}" \
-CXX="g++ ${BUILD32}" ./configure $XORG_CONFIG32 \
-            --docdir=/usr/share/doc/libvdpau-1.1.1 &&
-
-make PREFIX=/usr LIBDIR=/usr/lib
-as_root make PREFIX=/usr LIBDIR=/usr/lib install
-
-cd ${CLFSSOURCES}
-checkBuiltPackage
-rm -rf libvdpau
 
 #libvdpau 64-bit
 mkdir libvdpau && tar xf libvdpau-*.tar.* -C libvdpau --strip-components 1
@@ -553,47 +367,6 @@ as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
 cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf libvdpau
-
-#Mesa 32-bit
-wget https://mesa.freedesktop.org/archive/mesa-17.1.4.tar.xz -O \
-  Mesa-17.1.4.tar.xz
-
-wget http://www.linuxfromscratch.org/patches/blfs/svn/mesa-17.1.4-add_xdemos-1.patch -O \
-mesa-17.1.4-add_xdemos-1.patch
-  
-mkdir Mesa && tar xf Mesa-*.tar.* -C Mesa --strip-components 1
-cd Mesa
-
-patch -Np1 -i ../mesa-17.1.4-add_xdemos-1.patch
-GLL_DRV="i915,nouveau,svga,swrast"
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-USE_ARCH=32 CC="gcc ${BUILD32}" \
-CXX="g++ ${BUILD32}" ./autogen.sh CFLAGS='-O2' CXXFLAGS='-O2' \
-            --prefix=$XORG_PREFIX        \
-            --sysconfdir=/etc            \
-            --enable-texture-float       \
-            --libdir=/usr/lib            \
-            --enable-osmesa              \
-            --enable-xa                  \
-            --enable-glx-tls             \
-            --with-platforms="drm,x11"   \
-            --with-gallium-drivers=$GLL_DRV \
-            --with-egl-platforms &&
-
-unset GLL_DRV
-
-make PREFIX=/usr LIBDIR=/usr/lib
-make -C xdemos DEMOS_PREFIX=$XORG_PREFIX LIBDIR=/usr/lib
-as_root make PREFIX=/usr LIBDIR=/usr/lib install
-as_root make -C xdemos DEMOS_PREFIX=$XORG_PREFIX LIBDIR=/usr/lib install
-
-install -v -dm755 /usr/share/doc/mesa-17.1.4 &&
-cp -rfv docs/* /usr/share/doc/mesa-17.1.4
-
-cd ${CLFSSOURCES}
-checkBuiltPackage
-rm -rf Mesa
 
 #Mesa 64-bit
 mkdir Mesa && tar xf Mesa-*.tar.* -C Mesa --strip-components 1
@@ -631,19 +404,6 @@ checkBuiltPackage
 rm -rf Mesa
 
 cd ${CLFSSOURCES}/xc
-
-#xbitmaps 32-bit
-wget https://www.x.org/pub/individual/data/xbitmaps-1.1.1.tar.bz2 -O \
-  xbitmaps-1.1.1.tar.bz2
-  
-mkdir xbitmaps && tar xf xbitmaps-*.tar.* -C xbitmaps --strip-components 1
-cd xbitmaps
-
-buildSingleXLib32
-
-cd ${CLFSSOURCES}/xc
-checkBuiltPackage
-rm -rf xbitmaps
 
 #xbitmaps 64-bit
 mkdir xbitmaps && tar xf xbitmaps-*.tar.* -C xbitmaps --strip-components 1
