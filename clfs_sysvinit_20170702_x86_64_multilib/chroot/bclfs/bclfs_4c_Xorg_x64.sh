@@ -73,6 +73,18 @@ cd ${CLFSSOURCES}
 cd ${CLFSSOURCES/xc}
 
 #Add this point you COULD install Linux-PAM
+echo "Add this point you COULD install Linux-PAM. Run bclfs_2 script for that."
+checkBuiltPackage 
+
+cd ${CLFSSOURCES}/xc
+
+export XORG_PREFIX="/usr"
+export XORG_CONFIG64="--prefix=$XORG_PREFIX --sysconfdir=/etc --localstatedir=/var \
+  --libdir=$XORG_PREFIX/lib64"
+
+XORG_PREFIX="/usr"
+XORG_CONFIG64="--prefix=$XORG_PREFIX --sysconfdir=/etc --localstatedir=/var \
+  --libdir=$XORG_PREFIX/lib64"
 
 #Xorg Apps
 cat > app-7.md5 << "EOF"
