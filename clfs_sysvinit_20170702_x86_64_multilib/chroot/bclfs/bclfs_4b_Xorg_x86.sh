@@ -34,7 +34,6 @@ function buildSingleXLib32() {
 
 export -f buildSingleXLib32
 
-
 #Building the final CLFS System
 CLFS=/
 CLFSHOME=/home
