@@ -150,9 +150,12 @@ as_root rm -f $XORG_PREFIX/bin/xkeystone
 cd ${CLFSSOURCES}/xc
 
 #xcursor-themes 64-bit
+wget https://www.x.org/pub/individual/data/xcursor-themes-1.0.4.tar.bz2 -O \
+  xcursor-themes-1.0.4.tar.bz2 
+  
 mkdir xcursor-themes && tar xf xcursor-themes-*.tar.* -C xcursor-themes --strip-components 1
 cd xcursor-themes
-
+ 
 buildSingleXLib64
 
 cd ${CLFSSOURCES}/xc
@@ -204,6 +207,9 @@ cd ${CLFSSOURCES}/xc
 cd ${CLFSSOURCES}
 
 #XML::Parser (Perl module) 64-bit
+wget http://cpan.metacpan.org/authors/id/T/TO/TODDR/XML-Parser-2.44.tar.gz -O \
+  XML-Parser-2.44.tar.gz
+  
 mkdir xmlparser && tar xf XML-Parser-*.tar.* -C xmlparser --strip-components 1
 cd xmlparser
 
@@ -231,6 +237,9 @@ checkBuiltPackage
 rm -rf intltool
 
 #intltool 64-bit
+wget https://launchpad.net/intltool/trunk/0.51.0/+download/intltool-0.51.0.tar.gz -O \
+  intltool-0.51.0.tar.gz
+  
 mkdir intltool && tar xf intltool-*.tar.* -C intltool --strip-components 1
 cd intltool
 
@@ -253,6 +262,9 @@ rm -rf intltool
 cd ${CLFSSOURCES}/xc
 
 #XKeyboardConfig 64-bit
+wget http://xorg.freedesktop.org/archive/individual/data/xkeyboard-config/xkeyboard-config-2.21.tar.bz2 -O \
+  xkeyboard-config-2.21.tar.bz2
+  
 mkdir xkeyboard-config && tar xf xkeyboard-config-*.tar.* -C xkeyboard-config --strip-components 1
 cd xkeyboard-config
 
@@ -271,6 +283,9 @@ checkBuiltPackage
 rm -rf xkeyboard-config
 
 #libepoxy 64-bit
+wget https://github.com/anholt/libepoxy/releases/download/1.4.3/libepoxy-1.4.3.tar.xz -O \
+  libepoxy-1.4.3.tar.xz
+  
 mkdir libepoxy && tar xf libepoxy-*.tar.* -C libepoxy --strip-components 1
 cd libepoxy
 
@@ -286,6 +301,9 @@ checkBuiltPackage
 rm -rf libepoxy
 
 #Pixman 64-bit
+wget http://cairographics.org/releases/pixman-0.34.0.tar.gz -O \
+  pixman-0.34.0.tar.gz
+  
 mkdir pixman && tar xf pixman-*.tar.* -C pixman --strip-components 1
 cd pixman
 
@@ -312,7 +330,7 @@ wget http://www.linuxfromscratch.org/patches/blfs/svn/xorg-server-1.19.3-add_pri
 mkdir xorg-server && tar xf xorg-server-*.tar.* -C xorg-server --strip-components 1
 cd xorg-server
 
-patch -Np1 -i ../xorg-server-1.19.3-add_prime_support-1.patch
+patch -Np1 -i ../Xorg-server-1.19.3-add_prime_support-1.patch
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
 USE_ARCH=64 \
@@ -377,6 +395,9 @@ rm -rf xorg-server
 cd ${CLFSSOURCES}/xc
 
 #libevdev 64-bit
+wget http://www.freedesktop.org/software/libevdev/libevdev-1.5.7.tar.xz -O \
+  libevdev-1.5.7.tar.xz
+  
 mkdir libevdev && tar xf libevdev-*.tar.* -C libevdev --strip-components 1
 cd libevdev
 
@@ -387,6 +408,9 @@ checkBuiltPackage
 rm -rf libevdev
 
 #Xorg Evdev Driver 64-bit
+wget https://www.x.org/pub/individual/driver/xf86-input-evdev-2.10.5.tar.bz2 -O \
+  xf86-input-evdev-2.10.5.tar.bz2
+  
 mkdir xf86-input-evdev && tar xf xf86-input-evdev-*.tar.* -C xf86-input-evdev --strip-components 1
 cd xf86-input-evdev
 
@@ -418,6 +442,9 @@ checkBuiltPackage
 rm -rf mtdev
 
 #libinput 64-bit
+wget http://www.freedesktop.org/software/libinput/libinput-1.8.0.tar.xz -O \
+    libinput-1.8.0.tar.xz
+    
 mkdir libinput && tar xf libinput-*.tar.* -C libinput --strip-components 1
 cd libinput
 
@@ -439,8 +466,10 @@ cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf libinput
 
-
 #Xorg Fbdev Driver 64-bit
+wget https://www.x.org/pub/individual/driver/xf86-video-fbdev-0.4.4.tar.bz2 -O \
+    xf86-video-fbdev-0.4.4.tar.bz2
+
 mkdir xf86vidfbdev && tar xf xf86-video-fbdev-*.tar.* -C xf86vidfbdev --strip-components 1
 cd xf86vidfbdev
 
