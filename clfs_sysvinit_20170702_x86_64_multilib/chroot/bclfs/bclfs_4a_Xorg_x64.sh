@@ -93,7 +93,8 @@ mkdir util-macros && tar xf util-macros-*.tar.* -C util-macros --strip-component
 cd util-macros
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
-USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64
+USE_ARCH=64 CC="gcc ${BUILD64}" \ 
+CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64 &&
 as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc
