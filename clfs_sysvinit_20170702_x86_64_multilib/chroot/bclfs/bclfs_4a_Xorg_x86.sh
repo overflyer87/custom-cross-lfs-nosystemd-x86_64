@@ -198,16 +198,6 @@ cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf libffi
 
-#libffi 32-bit
-mkdir libffi && tar xf libffi-*.tar.* -C libffi --strip-components 1
-cd libffi
-
-buildSingleXLib64
-
-cd ${CLFSSOURCES}/xc
-checkBuiltPackage
-rm -rf libffi
-
 cd ${CLFSSOURCES}
 
 #Expat (Needed by Python) 32-bit
@@ -298,7 +288,6 @@ USE_ARCH=32 CXX="/usr/bin/g++ ${BUILD32}" \
             --with-system-expat \
             --with-system-ffi   \
             --libdir=/usr/lib64 \
-            --with-custom-platlibdir=/usr/lib \
             --with-ensurepip=yes &&
 
 make PREFIX=/usr LIBDIR=/usr/lib &&
