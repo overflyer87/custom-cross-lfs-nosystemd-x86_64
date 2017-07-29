@@ -70,6 +70,14 @@ export ACLOCAL="aclocal -I $XORG_PREFIX/share/aclocal"
 
 cd ${CLFSSOURCES}/xc
 
+export XORG_PREFIX="/usr"
+export XORG_CONFIG64="--prefix=$XORG_PREFIX --sysconfdir=/etc --localstatedir=/var \
+  --libdir=$XORG_PREFIX/lib64"
+
+XORG_PREFIX="/usr"
+XORG_CONFIG64="--prefix=$XORG_PREFIX --sysconfdir=/etc --localstatedir=/var \
+  --libdir=$XORG_PREFIX/lib64"
+
 cat > lib-7.md5 << "EOF"
 c5ba432dd1514d858053ffe9f4737dd8  xtrans-1.3.5.tar.bz2
 0f618db70c4054ca67cee0cc156a4255  libX11-1.6.5.tar.bz2
