@@ -105,6 +105,13 @@ d810ab17e24c1418dedf7207fb2841d4  libpciaccess-0.13.5.tar.bz2
 66662e76899112c0f99e22f2fc775a7e  libxshmfence-1.2.tar.bz2
 EOF
 
+export XORG_PREFIX="/usr"
+export XORG_CONFIG32="--prefix=$XORG_PREFIX --sysconfdir=/etc --localstatedir=/var \
+  --libdir=$XORG_PREFIX/lib"
+  
+XORG_CONFIG32="--prefix=$XORG_PREFIX --sysconfdir=/etc --localstatedir=/var \
+  --libdir=$XORG_PREFIX/lib"
+
 mkdir lib
 cd lib
 grep -v '^#' ../lib-7.md5 | awk '{print $2}' | wget -i- -c \
