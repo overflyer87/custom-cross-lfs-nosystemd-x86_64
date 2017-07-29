@@ -25,14 +25,6 @@ function as_root()
 
 export -f as_root
 
-function buildSingleXLib32() {
-  ./configure $XORG_CONFIG32
-  make
-  as_root make install
-}
-
-export -f buildSingleXLib32
-
 function buildSingleXLib64() {
  ./configure $XORG_CONFIG64
   make
@@ -54,7 +46,7 @@ MAKEFLAGS='j8'
 BUILD32="-m32"
 BUILD64="-m64"
 CLFS_TARGET32="i686-pc-linux-gnu"
-PKG_CONFIG_PATH32=/usr/lib/pkgconfig
+PKG_CONFIG_PATH=/usr/lib64/pkgconfig
 PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 ACLOCAL="aclocal -I $XORG_PREFIX/share/aclocal"
 
@@ -71,7 +63,7 @@ export MAKEFLAGS=j8
 export BUILD32="-m32"
 export BUILD64="-m64"
 export CLFS_TARGET32="i686-pc-linux-gnu"
-export PKG_CONFIG_PATH32=/usr/lib/pkgconfig
+export PKG_CONFIG_PATH=/usr/lib64/pkgconfig
 export PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 export ACLOCAL="aclocal -I $XORG_PREFIX/share/aclocal"
 
@@ -95,21 +87,6 @@ export XORG_CONFIG64="--prefix=$XORG_PREFIX --sysconfdir=/etc --localstatedir=/v
 EOF
 
 chmod 644 /etc/profile.d/xorg.sh
-
-#util-macros 32-bit
-wget https://www.x.org/pub/individual/util/util-macros-1.19.1.tar.bz2 -O \
-  util-macros-1.19.1.tar.bz2
-  
-mkdir util-macros && tar xf util-macros-*.tar.* -C util-macros --strip-components 1
-cd util-macros
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" ./configure $XORG_CONFIG32
-as_root make PREFIX=/usr LIBDIR=/usr/lib install
-
-cd ${CLFSSOURCES}/xc
-checkBuiltPackage
-rm -rf util-macros
 
 #util-macros 64-bit  
 mkdir util-macros && tar xf util-macros-*.tar.* -C util-macros --strip-components 1
@@ -156,28 +133,6 @@ EOF
 mkdir proto
 cd proto
 
-USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" \
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-
-grep -v '^#' ../proto-7.md5 | awk '{print $2}' | wget -i- -c \
-    -B https://www.x.org/pub/individual/proto/ &&
-md5sum -c ../proto-7.md5
-
-export PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" 
-
-for package in $(grep -v '^#' ../proto-7.md5 | awk '{print $2}')
-do
-  packagedir=${package%.tar.bz2}
-  tar -xf $package
-  pushd $packagedir  
-  USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" \
-  PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" ./configure $XORG_CONFIG32 &&
-  as_root make install
-  checkBuiltPackage
-  popd
-  rm -rf $packagedir
-done
-
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
 USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
 
@@ -198,19 +153,6 @@ done
 
 cd ${CLFSSOURCES}/xc
 
-#libXau 32-bit
-wget https://www.x.org/pub/individual/lib/libXau-1.0.8.tar.bz2 -O \
-  libXau-1.0.8.tar.bz2
-  
-mkdir libxau && tar xf libXau-*.tar.* -C libxau --strip-components 1
-cd libxau
-
-buildSingleXLib32
-
-cd ${CLFSSOURCES}/xc
-checkBuiltPackage
-rm -rf libxau
-
 #libXau 64-bit
 mkdir libxau && tar xf libXau-*.tar.* -C libxau --strip-components 1
 cd libxau
@@ -220,19 +162,6 @@ buildSingleXLib64
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf libxau
-
-#libXdmcp 32-bit
-wget https://www.x.org/pub/individual/lib/libXdmcp-1.1.2.tar.bz2 -O \
-  libXdcmp-1.1.2.tar.bz2
-
-mkdir libxdcmp && tar xf libXdcmp-*.tar.* -C libxdcmp --strip-components 1
-cd libxdcmp
-
-buildSingleXLib32
-
-cd ${CLFSSOURCES}/xc
-checkBuiltPackage
-rm -rf libxdcmp
 
 #libXdmcp 64-bit
 mkdir libxdcmp && tar xf libXdcmp-*.tar.* -C libxdcmp --strip-components 1
@@ -244,20 +173,7 @@ cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf libxdcmp
 
-#libffi 32-bit
-wget ftp://sourceware.org/pub/libffi/libffi-3.2.1.tar.gz -O \
-  libffi-3.2.1.tar.gz
-
-mkdir libffi && tar xf libffi-*.tar.* -C libffi --strip-components 1
-cd libffi
-
-buildSingleXLib32
-
-cd ${CLFSSOURCES}/xc
-checkBuiltPackage
-rm -rf libffi
-
-#libffi 32-bit
+#libffi 64-bit
 mkdir libffi && tar xf libffi-*.tar.* -C libffi --strip-components 1
 cd libffi
 
@@ -268,30 +184,6 @@ checkBuiltPackage
 rm -rf libffi
 
 cd ${CLFSSOURCES}
-
-#Expat (Needed by Python) 32-bit
-wget http://downloads.sourceforge.net/expat/expat-2.1.0.tar.gz -O \
-  expat-2.1.0.tar.gz
-
-mkdir expat && tar xf expat-*.tar.* -C expat --strip-components 1
-cd expat
-
-USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}"
-CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" ./configure \
-  --prefix=/usr \
-  --libdir=/usr/lib \
-  --disable-static \
-  --enable-shared &&
-  
-make LIBDIR=/usr/lib PREFIX=/usr 
-as_root make LIBDIR=/usr/lib PREFIX=/usr install
-  
-install -v -m755 -d /usr/share/doc/expat-2.1.0 &&
-install -v -m644 doc/*.{html,png,css} /usr/share/doc/expat-2.1.0
-
-cd ${CLFSSOURCES}
-checkBuiltPackage
-rm -rf expat
 
 #Expat (Needed by Python) 64-bit
 mkdir expat && tar xf expat-*.tar.* -C expat --strip-components 1
@@ -420,34 +312,6 @@ rm -rf Python-3
 
 cd ${CLFSSOURCES}/xc
 
-#xcb-proto 32-bit
-wget http://xcb.freedesktop.org/dist/xcb-proto-1.12.tar.bz2 -O \
-  xcb-proto-1.12.tar.bz2
-wget http://www.linuxfromscratch.org/patches/blfs/svn/xcb-proto-1.12-python3-1.patch -O \
-  xcb-proto-1.12-python3-1.patch
-wget http://www.linuxfromscratch.org/patches/blfs/svn/xcb-proto-1.12-schema-1.patch -O \
-  xcb-proto-1.12-schema-1.patch
-
-mkdir xcb-proto && tar xf xcb-proto-1.12.tar.* -C xcb-proto --strip-components 1
-cd xcb-proto
-
-patch -Np1 -i ../xcb-proto-1.12-schema-1.patch
-patch -Np1 -i ../xcb-proto-1.12-python3-1.patch
-
-CXX="/usr/bin/g++ ${BUILD32}" \
-CC="/usr/bin/gcc ${BUILD32}" \
-USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" ./configure $XORG_CONFIG32 && 
-
-make check
-checkBuiltPackage
-
-make PREFIX=/usr LIBDIR=/usr/lib
-as_root make PREFIX=/usr LIBDIR=/usr/lib install
-
-cd ${CLFSSOURCES}/xc
-checkBuiltPackage
-rm -rf xcb-proto
-
 #xcb-proto 64-bit
 mkdir xcb-proto && tar xf xcb-proto-1.12.tar.* -C xcb-proto --strip-components 1
 cd xcb-proto
@@ -518,31 +382,6 @@ as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf libxcb
-
-#fontconfig 32-bit
-wget http://www.freedesktop.org/software/fontconfig/release/fontconfig-2.12.4.tar.bz2 -O \
-  fontconfig-2.12.4.tar.bz2
-  
-mkdir fontconfig && tar xf fontconfig-*.tar.* -C fontconfig --strip-components 1
-cd fontconfig
-
-rm -f src/fcobjshash.h
-
-USE_ARCH=32 CXX="g++ ${BUILD32}" CC="gcc ${BUILD32}" \
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" ./configure --prefix=/usr \
-            --sysconfdir=/etc    \
-            --localstatedir=/var \
-            --disable-docs       \
-            --docdir=/usr/share/doc/fontconfig-2.12.4 \
-            --libdir=/usr/lib
-
-make PREFIX=/usr LIBDIR=/usr/lib
-as_root make PREFIX=/usr LIBDIR=/usr/lib install
-
-cd ${CLFSSOURCES/xc}
-checkBuiltPackage
-rm -rf fontconfig
-
 
 #fontconfig 64-bit
 wget http://www.freedesktop.org/software/fontconfig/release/fontconfig-2.12.4.tar.bz2 -O \
