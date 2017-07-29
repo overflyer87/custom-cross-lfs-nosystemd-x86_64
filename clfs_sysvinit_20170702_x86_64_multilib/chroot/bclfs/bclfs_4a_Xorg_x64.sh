@@ -89,6 +89,9 @@ EOF
 chmod 644 /etc/profile.d/xorg.sh
 
 #util-macros 64-bit  
+wget https://www.x.org/pub/individual/util/util-macros-1.19.1.tar.bz2 -O \
+  util-macros-1.19.1.tar.bz2
+  
 mkdir util-macros && tar xf util-macros-*.tar.* -C util-macros --strip-components 1
 cd util-macros
 
@@ -155,6 +158,9 @@ done
 cd ${CLFSSOURCES}/xc
 
 #libXau 64-bit
+wget https://www.x.org/pub/individual/lib/libXau-1.0.8.tar.bz2 -O \
+  libXau-1.0.8.tar.bz2
+  
 mkdir libxau && tar xf libXau-*.tar.* -C libxau --strip-components 1
 cd libxau
 
@@ -165,6 +171,9 @@ checkBuiltPackage
 rm -rf libxau
 
 #libXdmcp 64-bit
+wget https://www.x.org/pub/individual/lib/libXdmcp-1.1.2.tar.bz2 -O \
+  libXdcmp-1.1.2.tar.bz2
+
 mkdir libxdcmp && tar xf libXdcmp-*.tar.* -C libxdcmp --strip-components 1
 cd libxdcmp
 
@@ -175,6 +184,9 @@ checkBuiltPackage
 rm -rf libxdcmp
 
 #libffi 64-bit
+wget ftp://sourceware.org/pub/libffi/libffi-3.2.1.tar.gz -O \
+  libffi-3.2.1.tar.gz
+
 mkdir libffi && tar xf libffi-*.tar.* -C libffi --strip-components 1
 cd libffi
 
@@ -187,6 +199,9 @@ rm -rf libffi
 cd ${CLFSSOURCES}
 
 #Expat (Needed by Python) 64-bit
+wget http://downloads.sourceforge.net/expat/expat-2.1.0.tar.gz -O \
+  expat-2.1.0.tar.gz
+  
 mkdir expat && tar xf expat-*.tar.* -C expat --strip-components 1
 cd expat
 
@@ -314,6 +329,13 @@ rm -rf Python-3
 cd ${CLFSSOURCES}/xc
 
 #xcb-proto 64-bit
+wget http://xcb.freedesktop.org/dist/xcb-proto-1.12.tar.bz2 -O \
+  xcb-proto-1.12.tar.bz2
+wget http://www.linuxfromscratch.org/patches/blfs/svn/xcb-proto-1.12-python3-1.patch -O \
+  xcb-proto-1.12-python3-1.patch
+wget http://www.linuxfromscratch.org/patches/blfs/svn/xcb-proto-1.12-schema-1.patch -O \
+  xcb-proto-1.12-schema-1.patch
+  
 mkdir xcb-proto && tar xf xcb-proto-1.12.tar.* -C xcb-proto --strip-components 1
 cd xcb-proto
 
@@ -333,7 +355,7 @@ cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf xcb-proto
 
-#libxcb 32-bit
+#libxcb 64-bit
 wget http://xcb.freedesktop.org/dist/libxcb-1.12.tar.bz2 -O \
   libxcb-1.12.tar.bz2
 
@@ -347,30 +369,8 @@ patch -Np1 -i ../libxcb-1.12-python3-1.patch
 
 sed -i "s/pthread-stubs//" configure
 
-USE_ARCH=32 CXX="g++ ${BUILD32}" CC="gcc ${BUILD32}" \
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" ./configure $XORG_CONFIG32    \
-            --enable-xinput   \
-            --without-doxygen \
-            --libdir=/usr/lib \
-            --without-doxygen \
-            --docdir='${datadir}'/doc/libxcb-1.12 &&
-            
-make PREFIX=/usr LIBDIR=/usr/lib
-as_root make PREFIX=/usr LIBDIR=/usr/lib install
-
-cd ${CLFSSOURCES}/xc
-checkBuiltPackage
-rm -rf libxcb
-
-#libxcb 64-bit
-mkdir libxcb && tar xf libxcb-*.tar.* -C libxcb --strip-components 1
-cd libxcb
-
-patch -Np1 -i ../libxcb-1.12-python3-1.patch
-sed -i "s/pthread-stubs//" configure
-
 USE_ARCH=64 CXX="g++ ${BUILD64}" CC="gcc ${BUILD64}" \
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure $XORG_CONFIG64   \
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure $XORG_CONFIG64    \
             --enable-xinput   \
             --without-doxygen \
             --libdir=/usr/lib64 \
