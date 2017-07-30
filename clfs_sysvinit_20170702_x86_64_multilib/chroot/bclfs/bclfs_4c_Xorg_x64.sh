@@ -244,10 +244,6 @@ rm -rf xmlparser
 #When there is a regex ${<something>}
 #Lines 1065, 1222-1226, 1993-1996
 
-cd ${CLFSSOURCES}
-checkBuiltPackage
-rm -rf intltool
-
 #intltool 64-bit
 wget https://launchpad.net/intltool/trunk/0.51.0/+download/intltool-0.51.0.tar.gz -O \
   intltool-0.51.0.tar.gz
