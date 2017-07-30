@@ -141,7 +141,7 @@ rm -rf mateutils
 wget http://ftp.gnome.org/pub/gnome/sources/vte/0.48/vte-0.48.3.tar.xz -O \
     vte-0.48.3.tar.xz
 
-mkdir vte && tar xf vte-*.tar.* -C vte--strip-components 1
+mkdir vte && tar xf vte-*.tar.* -C vte --strip-components 1
 cd vte
 
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
