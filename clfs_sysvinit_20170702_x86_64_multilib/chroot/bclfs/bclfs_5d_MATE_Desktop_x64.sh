@@ -235,3 +235,22 @@ as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf iso-codes
+
+#libxklavier
+wget http://pkgs.fedoraproject.org/repo/pkgs/libxklavier/libxklavier-5.4.tar.bz2/13af74dcb6011ecedf1e3ed122bd31fa/libxklavier-5.4.tar.bz2 -O \
+    libxklavier-5.4.tar.bz2
+
+mkdir libxklavier && tar xf libxklavier-*.tar.* -C libxklavier --strip-components 1
+cd libxklavier
+    
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr --libdir=/usr/lib64 \
+    --disable-static
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+    
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf libxklavier
