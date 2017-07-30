@@ -1321,8 +1321,9 @@ LIBS_PATH=-L./usr/lib64 INC_PATH=-I./usr/include/ \
       CFLAGS=-Wno-expansion-to-defined  \
       CXXFLAGS=-Wno-expansion-to-defined \
       CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+      PREFIX=/usr LIBDIR=/usr/lib64 \
       USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} \
-      LIBRARY_PATH=/usr/lib64 cmake -DCMAKE_BUILD_TYPE=Release make PREFIX=/usr LIBDIR=/usr/lib64
+      LIBRARY_PATH=/usr/lib64 -DCMAKE_BUILD_TYPE=Release make
       
 
 LIBS_PATH=-L./usr/lib64 INC_PATH=-I./usr/include/ \
@@ -1330,8 +1331,9 @@ LIBS_PATH=-L./usr/lib64 INC_PATH=-I./usr/include/ \
       CFLAGS=-Wno-expansion-to-defined  \
       CXXFLAGS=-Wno-expansion-to-defined \
       CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+      PREFIX=/usr LIBDIR=/usr/lib64 \
       USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} \
-      LIBRARY_PATH=/usr/lib64 cmake -DCMAKE_BUILD_TYPE=Release as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+      LIBRARY_PATH=/usr/lib64 -DCMAKE_BUILD_TYPE=Release make
             
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
