@@ -78,6 +78,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
 USE_ARCH=64 LIBDIR=lib64 make CC="gcc ${BUILD64}" PERL=/usr/bin/perl-64
 USE_ARCH=64 LIBDIR=lib64 make PERL=/usr/bin/perl-64 MANDIR=/usr/share/man install
 
+mkdir /etc/ssl/certs
 cp -v -r certs /etc/ssl &&
 install -v -d -m755 /usr/share/doc/openssl-1.1.0f &&
 cp -v -r doc/{HOWTO,README,*.{txt,html,gif}} \
