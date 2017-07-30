@@ -206,7 +206,9 @@ USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
     --localstatedir=/var \
     --bindir=/usr/bin \
     --sbindir=/usr/sbin --disable-gtk-doc &&
-    
+
+sed -i 's/HELP_DIR/#HELP_DIR/' Makefile Makefile.in
+sed -i 's/help/#help/' Makefile Makefile.in Makefile.am
   
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
@@ -214,3 +216,22 @@ as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf mateterm
+
+#iso-codes
+wget https://pkg-isocodes.alioth.debian.org/downloads/iso-codes-3.75.tar.xz
+    iso-codes-3.75.tar.xz
+
+mkdir iso-codes && tar xf iso-codes-*.tar.* -C iso-codes --strip-components 1
+cd iso-codes
+
+sed -i '/^LN_S/s/s/sfvn/' */Makefile
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr --libdir=/usr/lib64
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf iso-codes
