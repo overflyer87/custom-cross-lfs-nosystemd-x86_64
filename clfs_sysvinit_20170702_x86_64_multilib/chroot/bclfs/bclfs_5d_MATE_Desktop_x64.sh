@@ -185,3 +185,32 @@ as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
 cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf vte
+
+#mate-terminal
+wget https://github.com/mate-desktop/mate-terminal/archive/v1.18.1.tar.gz -O \
+    mate-terminal-1.18.1.tar.gz
+    
+mkdir mateterm && tar xf mate-terminal-*.tar.* -C mateterm --strip-components 1
+cd mateterm
+
+cp -rv /usr/share/aclocal/*.m4 m4/
+
+CPPFLAGS="-I/usr/include" LDFLAGS="-L/usr/lib64"  \
+PYTHON="/usr/bin/python2" PYTHONPATH="/usr/lib64/python2.7" \
+PYTHONHOME="/usr/lib64/python2.7" PYTHON_INCLUDES="/usr/include/python2.7" \
+ACLOCAL_FLAG="/usr/share/aclocal/" LIBSOUP_LIBS=/usr/lib64   \
+ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
+    --libdir=/usr/lib64 \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --bindir=/usr/bin \
+    --sbindir=/usr/sbin --disable-gtk-doc &&
+    
+  
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf mateterm
