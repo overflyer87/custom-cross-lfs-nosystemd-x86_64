@@ -313,7 +313,7 @@ rm -rf gnome-keyring
 wget http://dbus.freedesktop.org/releases/dbus-glib/dbus-glib-0.108.tar.gz -O \
     dbus-glib-0.108.tar.gz
 
-mkdir dbus-glib && tar xf dbus-glib-*.tar.* -C dbus-glib --strip-components
+mkdir dbus-glib && tar xf dbus-glib-*.tar.* -C dbus-glib --strip-components 1
 cd dbus-glib
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
