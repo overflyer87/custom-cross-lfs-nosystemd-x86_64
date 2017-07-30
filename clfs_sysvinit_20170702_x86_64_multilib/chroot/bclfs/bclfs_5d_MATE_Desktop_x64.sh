@@ -102,3 +102,27 @@ as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
 cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf libgtop
+
+#mate-utils
+wget https://github.com/mate-desktop/mate-utils/archive/v1.18.2.tar.gz -O \
+    mate-utils-1.18.2.tar.gz    
+    
+mkdir mateutils && tar xf mate-utils-*.tar.* -C mateutils --strip-components 1
+cd mateutils
+
+cp -rv /usr/share/aclocal/*.m4 m4/
+
+ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" \
+CXX="g++ ${BUILD64}" USE_ARCH=64 \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr \
+--libdir=/usr/lib64 --sysconfdir=/etc --disable-static \
+--localstatedir=/var --bindir=/usr/bin --sbindir=/usr/sbin \
+--datadir=/usr/share/doc --disable-docbook-docs
+
+make PREFIX=/usr LIBDIR=/usr/lib64
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf mateutils
+
