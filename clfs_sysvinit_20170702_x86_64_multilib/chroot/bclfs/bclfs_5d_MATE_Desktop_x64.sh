@@ -269,17 +269,13 @@ USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
     --sysconfdir=/etc \
     --localstatedir=/var \
     --bindir=/usr/bin \
-    --sbindir=/usr/sbin --disable-gtk-doc \
+    --sbindir=/usr/sbin \
     --disable-static --enable-shared &&
-
-sed -i 's/HELP_DIR/#HELP_DIR/' Makefile Makefile.in
-sed -i 's/help/#help/' Makefile Makefile.in Makefile.am
   
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-
 cd ${CLFSSOURCES}
 checkBuiltPackage
-rm -rf libxklavier
+rm -rf libmatekbd
 
