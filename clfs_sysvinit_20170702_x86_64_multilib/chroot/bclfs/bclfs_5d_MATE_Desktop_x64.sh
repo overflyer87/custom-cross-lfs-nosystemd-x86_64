@@ -112,17 +112,49 @@ cd mateutils
 
 cp -rv /usr/share/aclocal/*.m4 m4/
 
-ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" \
-CXX="g++ ${BUILD64}" USE_ARCH=64 \
-PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr \
---libdir=/usr/lib64 --sysconfdir=/etc --disable-static \
---localstatedir=/var --bindir=/usr/bin --sbindir=/usr/sbin \
---datadir=/usr/share/doc --disable-gtk-doc
-
-make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+CPPFLAGS="-I/usr/include" LDFLAGS="-L/usr/lib64"  \
+PYTHON="/usr/bin/python2" PYTHONPATH="/usr/lib64/python2.7" \
+PYTHONHOME="/usr/lib64/python2.7" PYTHON_INCLUDES="/usr/include/python2.7" \
+ACLOCAL_FLAG="/usr/share/aclocal/" LIBSOUP_LIBS=/usr/lib64   \
+ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
+    --libdir=/usr/lib64 \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --bindir=/usr/bin \
+    --sbindir=/usr/sbin --disable-gtk-doc &&
+    
+#Deactivate building of baobab because it will fail
+#Because itstool will throw error
+#Babobab can show size of directory trees in percentage
+#Let's see later if this tool was essential...hope not
+sed -i 's/baobab/#baobab' Makefile*
+   
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf mateutils
 
+#vte
+wget http://ftp.gnome.org/pub/gnome/sources/vte/0.48/vte-0.48.3.tar.xz -O \
+    vte-0.48.3.tar.xz
+
+mkdir vte && tar xf vte-*.tar.* -C vte--strip-components 1
+cd vte
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+    --disable-static \
+    --libdir=/usr/lib64 \
+    --sysconfdir=/etc \
+    --enable-introspection \
+    --disable-gtk-doc
+    
+make PREFIX=/usr LIBDIR=/usr/lib64
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf vte
