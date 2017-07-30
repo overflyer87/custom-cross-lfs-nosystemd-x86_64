@@ -1009,8 +1009,6 @@ popd
 
 as_root make PREFIX=/usr LIBDIR=/usr/lib64 -C python2 install
 
-cd ..
-
 mkdir python3 &&
 pushd python3 &&
 
