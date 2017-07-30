@@ -154,7 +154,8 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
             --enable-pcre2grep-libz             \
             --enable-pcre2grep-libbz2           \
             --enable-pcre2test-libreadline      \
-            --disable-static  &&
+            --disable-static  \
+            --libdir=/usr/lib64 &&
             
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
