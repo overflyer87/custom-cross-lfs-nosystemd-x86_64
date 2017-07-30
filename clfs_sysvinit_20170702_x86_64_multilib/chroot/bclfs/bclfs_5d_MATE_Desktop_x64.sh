@@ -117,7 +117,7 @@ CXX="g++ ${BUILD64}" USE_ARCH=64 \
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr \
 --libdir=/usr/lib64 --sysconfdir=/etc --disable-static \
 --localstatedir=/var --bindir=/usr/bin --sbindir=/usr/sbin \
---datadir=/usr/share/doc --disable-docbook-docs
+--datadir=/usr/share/doc --disable-gtk-doc
 
 make PREFIX=/usr LIBDIR=/usr/lib64
 as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
