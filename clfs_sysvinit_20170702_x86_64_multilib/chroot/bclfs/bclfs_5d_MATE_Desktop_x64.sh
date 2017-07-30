@@ -280,15 +280,11 @@ checkBuiltPackage
 rm -rf libmatekbd
 
 #json-c
-wget https://s3.amazonaws.com/json-c_releases/releases/json-c-0.12.1.tar.gz -O \
-    json-c-0.12.1.tar.gz
-    
-
-mkdir jsonc && tar xf json-c-*.tar.* -C jsonc --strip-components 1
-cd jsonc
+git clone https://github.com/json-c/json-c    
+cd json-c
 
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
-PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr --libdir=/usr/lib64 \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr --libdir=/usr/lib64 \
     --disable-static
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make -j1 LIBDIR=/usr/lib64 PREFIX=/usr
@@ -296,10 +292,26 @@ as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
-rm -rf jsonc
+rm -rf json-c
+
+#FLAC
+wget http://downloads.xiph.org/releases/flac/flac-1.3.2.tar.xz -O \
+    flac-1.3.2.tar.xz
+
+mkdir flac && tar xf flac-*.tar.* -C flac --strip-components 1
+cd flac
 
 
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr --libdir=/usr/lib64 \
+    --disable-static --disable-thorough-tests
+    
+    
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf flac
 
 
