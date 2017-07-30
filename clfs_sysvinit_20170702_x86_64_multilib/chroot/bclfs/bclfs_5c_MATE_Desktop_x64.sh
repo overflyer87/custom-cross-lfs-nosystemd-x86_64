@@ -646,7 +646,9 @@ as_root ln -sfv python2-64 /usr/bin/python-64 &&
 as_root ln -sfv multiarch_wrapper /usr/bin/python &&
 as_root ln -sfv multiarch_wrapper /usr/bin/python2 &&
 as_root ln -sfv multiarch_wrapper /usr/bin/python2.7 &&
-as_root mv -v /usr/include/python2.7/pyconfig{,-64}.h
+#Deactivate renaming header according to cblfs
+#mate-menu will not find since Python.h includes pyconfig.h not pyconfig-64.h
+#as_root mv -v /usr/include/python2.7/pyconfig{,-64}.h
 
 as_root install -v -dm755 /usr/share/doc/python-2.7.13 &&
 
