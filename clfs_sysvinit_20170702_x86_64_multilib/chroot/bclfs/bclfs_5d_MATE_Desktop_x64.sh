@@ -137,6 +137,32 @@ cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf mateutils
 
+#PCRE2
+wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre2-10.23.tar.bz2 -O \
+    pcre2-10.23.tar.bz2
+
+mkdir pcre2 && tar xf pcre2-*.tar.* -C pcre2 --strip-components 1
+cd pcre2
+
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+     --docdir=/usr/share/doc/pcre2-10.23 \
+            --enable-unicode                    \
+            --enable-pcre2-16                   \
+            --enable-pcre2-32                   \
+            --enable-pcre2grep-libz             \
+            --enable-pcre2grep-libbz2           \
+            --enable-pcre2test-libreadline      \
+            --disable-static  &&
+            
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+     
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf pcre2
+
 #vte
 wget http://ftp.gnome.org/pub/gnome/sources/vte/0.48/vte-0.48.3.tar.xz -O \
     vte-0.48.3.tar.xz
