@@ -1039,7 +1039,7 @@ PYTHON=/usr/bin/python2     \
 make PREFIX=/usr LIBDIR=/usr/lib64 &&
 popd
 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 -C python 2 install
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 -C python2 install
 
 mkdir python3 &&
 pushd python3 &&
