@@ -301,11 +301,9 @@ wget http://downloads.xiph.org/releases/flac/flac-1.3.2.tar.xz -O \
 mkdir flac && tar xf flac-*.tar.* -C flac --strip-components 1
 cd flac
 
-
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr --libdir=/usr/lib64 \
     --disable-static --disable-thorough-tests
-    
     
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
@@ -314,4 +312,20 @@ cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf flac
 
+#libsndfile
+wget http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.28.tar.gz -O \
+    libsndfile-1.0.28.tar.gz
 
+mkdir libsndfile && tar xf libsndfile-*.tar.* -C libsndfile --strip-components 1
+cd libsndfile
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr --libdir=/usr/lib64 \
+    --disable-static --disable-thorough-tests
+    
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf libsndfile
