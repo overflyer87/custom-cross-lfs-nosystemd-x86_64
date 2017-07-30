@@ -735,7 +735,6 @@ as_root install-catalog --add /etc/sgml/sgml-ent.cat \
 as_root install-catalog --add /etc/sgml/sgml-docbook.cat \
     /etc/sgml/sgml-ent.cat
 
-
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf sgml-common
@@ -750,8 +749,8 @@ cd unzip
 sed -i 's/CC = cc#/CC = gcc#/' unix/Makefile
 
 CC="gcc ${BUILD64}" \
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64 -f unix/Makefile generic
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 -f unix/Makefile install
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make prefix=/usr libdir=/usr/lib64 -f unix/Makefile generic
+as_root make prefix=/usr libdir=/usr/lib64 -f unix/Makefile install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
