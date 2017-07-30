@@ -113,7 +113,7 @@ useradd -c "D-Bus Message Daemon User" -d /var/run/dbus \
 make PREFIX=/usr LIBDIR=/usr/lib64
 as_root make PREFIX=/usr LIBDIR=/usr/lib64 install 
 
-dbus-uuidgen --ensure
+as_root dbus-uuidgen --ensure
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -180,7 +180,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
 make PREFIX=/usr LIBDIR=/usr/lib64
 as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-update-desktop-database /usr/share/applications
+as_root update-desktop-database /usr/share/applications
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -297,7 +297,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
      --libdir=/usr/lib64 
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-as_root PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64 install
+as_root make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -319,7 +319,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
      --docdir=/usr/share/doc/libjpeg-turbo-1.5.2
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-as_root PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64 install
+as_root make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
 
 ldconfig
 
@@ -343,7 +343,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
      --disable-static
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-as_root PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64 install
+as_root make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
