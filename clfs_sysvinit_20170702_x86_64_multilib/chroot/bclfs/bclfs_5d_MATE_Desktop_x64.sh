@@ -250,7 +250,36 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr --libdir=/usr/lib
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-    
 cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf libxklavier
+
+#libmatekbd
+wget https://github.com/mate-desktop/libmatekbd/archive/v1.18.2.tar.gz -O \
+    libmatekbd-1.18.2.tar.gz
+
+mkdir libmatekbd && tar xf libmatekbd-*.tar.* -C libmatekbd --strip-components 1
+cd libmatekbd
+
+cp -rv /usr/share/aclocal/*.m4 m4/
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
+    --libdir=/usr/lib64 \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --bindir=/usr/bin \
+    --sbindir=/usr/sbin --disable-gtk-doc \
+    --disable-static --enable-shared &&
+
+sed -i 's/HELP_DIR/#HELP_DIR/' Makefile Makefile.in
+sed -i 's/help/#help/' Makefile Makefile.in Makefile.am
+  
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf libxklavier
+
