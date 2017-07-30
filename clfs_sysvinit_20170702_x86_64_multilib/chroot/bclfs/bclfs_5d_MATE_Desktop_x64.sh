@@ -72,7 +72,7 @@ cd ${CLFSSOURCES}/xc/mate
 
 #We will only do 64-bit builds in this script
 #We compiled Xorg with 32-bit libraries
-#THat should suffice
+#That should suffice
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" 
 USE_ARCH=64 
@@ -83,3 +83,22 @@ export PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"
 export USE_ARCH=64 
 export CXX="g++ ${BUILD64}" 
 export CC="gcc ${BUILD64}"
+
+#libgtop 
+wget http://ftp.gnome.org/pub/gnome/sources/libgtop/2.36/libgtop-2.36.0.tar.xz -O \
+    libgtop-2.36.0.tar.xz
+
+mkdir libgtop && tar xf libgtop-*.tar.* -C libgtop --strip-components 1
+cd libgtop
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+    --disable-static \
+    --libdir=/usr/lib64
+    
+make PREFIX=/usr LIBDIR=/usr/lib64
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf libgtop
