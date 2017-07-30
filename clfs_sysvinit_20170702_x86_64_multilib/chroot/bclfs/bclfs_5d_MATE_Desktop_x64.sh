@@ -321,7 +321,7 @@ cd libsndfile
 
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr --libdir=/usr/lib64 \
-    --disable-static --disable-thorough-tests
+    --disable-static 
     
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
@@ -329,3 +329,24 @@ as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf libsndfile
+
+#libcap
+wget https://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2/libcap-2.25.tar.xz -O \
+    libcap-2.25.tar.xz
+    
+mkdir libcap && tar xf libcap-*.tar.* -C libcap --strip-components 1
+cd libcap
+
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} make PREFIX=/usr LIBDIR=/usr/lib64 -C pam_cap
+
+install -v -m755 pam_cap/pam_cap.so /lib64/security &&
+install -v -m644 pam_cap/capability.conf /etc/security
+
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf libcap
+
+    
