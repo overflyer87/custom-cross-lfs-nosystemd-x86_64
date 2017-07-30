@@ -951,6 +951,8 @@ wget https://github.com/mate-desktop/mate-desktop/archive/v1.18.0.tar.gz -O \
 mkdir mate-desktop && tar xf mate-desktop-*.tar.* -C mate-desktop --strip-components 1
 cd mate-desktop
 
+cp -rv /usr/share/aclocal/*.m4 m4/
+
 CPPFLAGS="-I/usr/include" LDFLAGS="-L/usr/lib64"  \
 PYTHON="/usr/bin/python2" PYTHONPATH="/usr/lib64/python2.7" \
 PYTHONHOME="/usr/lib64/python2.7" PYTHON_INCLUDES="/usr/include/python2.7" \
