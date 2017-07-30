@@ -891,27 +891,6 @@ cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf libdaemon
 
-#libglade
-wget http://ftp.gnome.org/pub/gnome/sources/libglade/2.6/libglade-2.6.4.tar.bz2 -O \
-    libglade-2.6.4.tar.bz2
-
-mkdir libglade && tar xf libglade-*.tar.* -C libglade --strip-components 1
-cd libglade
-
-sed -i '/DG_DISABLE_DEPRECATED/d' glade/Makefile.in 
-
-CC="gcc ${BUILD64}" \
-  CXX="g++ ${BUILD64}" USE_ARCH=64 \
-  PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
-  --libdir=/usr/lib64 --disable-static
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
-
-cd ${CLFSSOURCES}/xc/mate
-checkBuiltPackage
-rm -rf libglade
-
 #GTK2
 wget http://ftp.gnome.org/pub/gnome/sources/gtk+/2.24/gtk+-2.24.31.tar.xz -O \
     gtk+-2.24.31.tar.xz
@@ -945,6 +924,28 @@ ldconfig
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf gtk2
+
+
+#libglade
+wget http://ftp.gnome.org/pub/gnome/sources/libglade/2.6/libglade-2.6.4.tar.bz2 -O \
+    libglade-2.6.4.tar.bz2
+
+mkdir libglade && tar xf libglade-*.tar.* -C libglade --strip-components 1
+cd libglade
+
+sed -i '/DG_DISABLE_DEPRECATED/d' glade/Makefile.in 
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+  PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+  --libdir=/usr/lib64 --disable-static
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf libglade
 
 #PyCairo2
 wget https://github.com/pygobject/pycairo/releases/download/v1.14.0/pycairo-1.14.0.tar.gz -O \
