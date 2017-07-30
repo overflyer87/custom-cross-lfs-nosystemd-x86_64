@@ -925,7 +925,6 @@ cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf gtk2
 
-
 #libglade
 wget http://ftp.gnome.org/pub/gnome/sources/libglade/2.6/libglade-2.6.4.tar.bz2 -O \
     libglade-2.6.4.tar.bz2
@@ -955,9 +954,9 @@ mkdir pycairo && tar xf pycairo-*.tar.* -C pycairo --strip-components 1
 cd pycairo
 
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} LIBDIR=/usr/lib64 PREFIX=/usr python2 setup.py build  
-PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} LIBDIR=/usr/lib64 PREFIX=/usr as_root python2 setup.py install --optimize=1
+as_root python2 setup.py PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} LIBDIR=/usr/lib64 PREFIX=/usr install --optimize=1
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} LIBDIR=/usr/lib64 PREFIX=/usr python3 setup.py build
-as_root PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} LIBDIR=/usr/lib64 PREFIX=/usr python3 setup.py install --optimize=1
+as_root python3 setup.py PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} LIBDIR=/usr/lib64 PREFIX=/usr install --optimize=1
 
 as_root mv /usr/lib/pkgconfig/pycairo.pc /usr/lib64/pkgconfig/pycairo.pc
 as_root mv /usr/lib/pkgconfig/py3cairo.pc /usr/lib64/pkgconfig/py3cairo.pc
