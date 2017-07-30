@@ -270,11 +270,11 @@ checkBuiltPackage
 rm -r gcr
 
 #gnome-keyring
-mkdir gnomekeyring && tar xf gnome-keyring-*.tar.* -C gnome-keyring --strip-components
-cd gnome-keyring
-
-wget http://ftp.gnome.org/pub/gnome/sources/gnome-keyring/3.20/gnome-keyring-3.20.1.tar.xz
+wget http://ftp.gnome.org/pub/gnome/sources/gnome-keyring/3.20/gnome-keyring-3.20.1.tar.xz -O \
     gnome-keyring-3.20.1.tar.xz
+
+mkdir gnome-keyring && tar xf gnome-keyring-*.tar.* -C gnome-keyring --strip-components 1
+cd gnome-keyring
     
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
     --libdir=/usr/lib64 \
@@ -307,7 +307,26 @@ as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf gnomekeyring
+rm -rf gnome-keyring
+
+#dbus-glib
+wget http://dbus.freedesktop.org/releases/dbus-glib/dbus-glib-0.108.tar.gz -O \
+    dbus-glib-0.108.tar.gz
+
+mkdir dbus-glib && tar xf dbus-glib-*.tar.* -C dbus-glib --strip-components
+cd dbus-glib
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+            --sysconfdir=/etc \
+            --libdir=/usr/lib64 \
+            --disable-static &&
+            
+make PREFIX=/usr LIBDIR=/usr/lib4
+as_root make PREFIX=/usr LIBDIR=/usr/lib4 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf dbus-glib
 
 #mate-session-manager
 wget https://github.com/mate-desktop/mate-session-manager/archive/v1.19.0.tar.gz -O \
@@ -583,8 +602,7 @@ CC="gcc ${BUILD64}"   CXX="g++ ${BUILD64}" USE_ARCH=64    \
   --disable-gtk-doc --x-libraries=/usr/lib64 \
   --x-includes=/usr/include/X11/ --enable-introspection=yes \
   --enable-shared --enable-startup-notification \
-  --includedir=/usr/include/
-  
+  --includedir=/usr/include/  
   
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
