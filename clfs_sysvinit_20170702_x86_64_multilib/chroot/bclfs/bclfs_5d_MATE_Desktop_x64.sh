@@ -115,7 +115,6 @@ cp -rv /usr/share/aclocal/*.m4 m4/
 CPPFLAGS="-I/usr/include" LDFLAGS="-L/usr/lib64"  \
 PYTHON="/usr/bin/python2" PYTHONPATH="/usr/lib64/python2.7" \
 PYTHONHOME="/usr/lib64/python2.7" PYTHON_INCLUDES="/usr/include/python2.7" \
-ACLOCAL_FLAG="/usr/share/aclocal/" LIBSOUP_LIBS=/usr/lib64   \
 ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
 USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
     --libdir=/usr/lib64 \
@@ -198,7 +197,6 @@ cp -rv /usr/share/aclocal/*.m4 m4/
 CPPFLAGS="-I/usr/include" LDFLAGS="-L/usr/lib64"  \
 PYTHON="/usr/bin/python2" PYTHONPATH="/usr/lib64/python2.7" \
 PYTHONHOME="/usr/lib64/python2.7" PYTHON_INCLUDES="/usr/include/python2.7" \
-ACLOCAL_FLAG="/usr/share/aclocal/" LIBSOUP_LIBS=/usr/lib64   \
 ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
 USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
     --libdir=/usr/lib64 \
@@ -546,3 +544,173 @@ as_root sed -i '/load-module module-console-kit/s/^/#/' /etc/pulse/default.pa
 cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf pulseaudio
+
+#libmatemixer
+wget https://github.com/mate-desktop/libmatemixer/archive/v1.18.0.tar.gz -O \
+    libmatemixer-1.18.0.tar.gz
+    
+mkdir libmatemixer && tar xf libmatemixer-*.tar.* -C libmatemixer --strip-components 1
+cd libmatemixer
+
+as_root cp -rv /usr/share/aclocal/*.m4 m4/
+
+ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
+    --libdir=/usr/lib64 \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --bindir=/usr/bin \
+    --sbindir=/usr/sbin --disable-gtk-doc
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf libmatemixer
+
+#NSS
+wget https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_31_RTM/src/nss-3.31.tar.gz -O \
+    nss-3.31.tar.gz
+    
+wget http://www.linuxfromscratch.org/patches/blfs/svn/nss-3.31-standalone-1.patch -O \
+    NSS-3.31-standalone-1.patch
+    
+mkdir nss && tar xf nss-*.tar.* -C nss --strip-components 1
+cd nss
+
+patch -Np1 -i ../NSS-3.31-standalone-1.patch 
+cd nss
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} make -j1 BUILD_OPT=1 \
+  NSPR_INCLUDE_DIR=/usr/include/nspr  \
+  USE_SYSTEM_ZLIB=1                   \
+  ZLIB_LIBS=-lz                       \
+  NSS_ENABLE_WERROR=0                 \
+  LIBDIR=/usr/lib64                   \
+  PREFIX=/usr                         \
+  $([ $(uname -m) = x86_64 ] && echo USE_64=1) \
+  $([ -f /usr/include/sqlite3.h ] && echo NSS_USE_SYSTEM_SQLITE=1)
+  
+cd ../dist
+
+as_root install -v -m755 Linux*/lib/*.so              /usr/lib64              &&
+as_root install -v -m644 Linux*/lib/{*.chk,libcrmf.a} /usr/lib64              &&
+
+as_root install -v -m755 -d                           /usr/include/nss      &&
+as_root cp -v -RL {public,private}/nss/*              /usr/include/nss      &&
+as_root chmod -v 644                                  /usr/include/nss/*    &&
+
+as_root install -v -m755 Linux*/bin/{certutil,nss-config,pk12util} /usr/bin &&
+
+as_root install -v -m644 Linux*/lib/pkgconfig/nss.pc  /usr/lib64/pkgconfig
+
+if [ -e /usr/lib64/libp11-kit.so ]; then
+  as_root readlink /usr/lib64/libnssckbi.so ||
+  as_root rm -v /usr/lib64/libnssckbi.so    &&
+  as_root ln -sfv ./pkcs11/p11-kit-trust.so /usr/lib64/libnssckbi.so
+fi
+
+cd ${CLFSSOURCES}/make-ca.sh-*
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf nss
+
+#mate-setting-daemon
+wget https://github.com/mate-desktop/mate-settings-daemon/archive/v1.18.1.tar.gz -O \
+    mate-settings-daemon-1.18.1.tar.gz
+
+mkdir matesetd && tar xf mate-settings-daemon-*.tar.* -C matesetd --strip-components 1
+cd matesetd
+
+as_root cp -rv /usr/share/aclocal/*.m4 m4/
+
+ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
+    --libdir=/usr/lib64 \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --bindir=/usr/bin \
+    --sbindir=/usr/sbin \
+    --enable-pulse
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf matesetd
+
+#mate-media
+wget https://github.com/mate-desktop/mate-media/archive/v1.19.0.tar.gz -O \
+    mate-media-1.19.0.tar.gz
+
+mkdir matemedia && tar xf mate-media-*.tar.* -C matemedia --strip-components 1
+cd matemedia
+
+as_root cp -rv /usr/share/aclocal/*.m4 m4/
+
+ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
+    --libdir=/usr/lib64 \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --bindir=/usr/bin \
+    --sbindir=/usr/sbin 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf matemedia
+
+#mate-screensaver
+wget https://github.com/mate-desktop/mate-screensaver/archive/v1.18.1.tar.gz -O \
+    mate-screensaver-1.18.1.tar.gz
+
+mkdir mate-screensaver && tar xf mate-screensaver-*.tar.* -C mate-screensaver --strip-components 1
+cd mate-screensaver
+
+as_root cp -rv /usr/share/aclocal/*.m4 m4/
+
+ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
+    --libdir=/usr/lib64 \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --bindir=/usr/bin \
+    --sbindir=/usr/sbin 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf mate-screensaver
+
+#libwebp
+wget http://downloads.webmproject.org/releases/webp/libwebp-0.6.0.tar.gz _O \
+    libwebp-0.6.0.tar.gz
+    
+mkdir libwebp && tar xf libwebp-*.tar.* -C libwebp --strip-components 1
+cd libwebp
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+            --disable-static \
+            --libdir=/usr/lib64 \
+            --enable-libwebpmux     \
+            --enable-libwebpdemux   \
+            --enable-libwebpdecoder \
+            --enable-libwebpextras  \
+            --enable-swap-16bit-csp 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf libwebp
