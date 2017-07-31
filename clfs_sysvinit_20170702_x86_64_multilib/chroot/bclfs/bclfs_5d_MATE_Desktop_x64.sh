@@ -99,7 +99,7 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
 make PREFIX=/usr LIBDIR=/usr/lib64
 as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}
+cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf libgtop
 
@@ -132,7 +132,7 @@ sed -i 's/baobab/#baobab' Makefile*
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-cd ${CLFSSOURCES}
+cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf mateutils
 
@@ -142,7 +142,6 @@ wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre2-10.23.tar.bz2 -
 
 mkdir pcre2 && tar xf pcre2-*.tar.* -C pcre2 --strip-components 1
 cd pcre2
-
 
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
@@ -159,7 +158,7 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
      
-cd ${CLFSSOURCES}
+cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf pcre2
 
@@ -181,7 +180,7 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
 make PREFIX=/usr LIBDIR=/usr/lib64
 as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}
+cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf vte
 
@@ -230,7 +229,7 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr --libdir=/usr/lib
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-cd ${CLFSSOURCES}
+cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf iso-codes
 
@@ -273,7 +272,7 @@ USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-cd ${CLFSSOURCES}
+cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf libmatekbd
 
@@ -306,7 +305,7 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr --libdir=/usr/lib
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-cd ${CLFSSOURCES}
+cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf flac
 
@@ -324,7 +323,7 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr --libdir=/usr/lib
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-cd ${CLFSSOURCES}
+cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf libsndfile
 
@@ -341,7 +340,7 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} make PREFIX=/usr LIBDIR=/usr/lib64 -C pam_c
 as_root install -v -m755 pam_cap/pam_cap.so /lib64/security &&
 as_root install -v -m644 pam_cap/capability.conf /etc/security
 
-cd ${CLFSSOURCES}
+cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf libcap
 
@@ -361,7 +360,7 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr    \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-cd ${CLFSSOURCES}
+cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf speex        
 
@@ -381,7 +380,7 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr    \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install       
 
-cd ${CLFSSOURCES}
+cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf speexdsp
 
@@ -407,7 +406,7 @@ as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 as_root install -vdm755 /usr/share/doc/libical-2.0.0/html &&
 as_root cp -vr apidocs/html/* /usr/share/doc/libical-2.0.0/html
 
-cd ${CLFSSOURCES}
+cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf libical
 
@@ -486,7 +485,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install    
 as_root ln -s gconf.xml.defaults /etc/gconf/gconf.xml.system
 
-cd ${CLFSSOURCES}
+cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf gconf
 
@@ -506,7 +505,7 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install    
 
-cd ${CLFSSOURCES}
+cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf sbc
 
@@ -541,7 +540,7 @@ as_root rm /etc/dbus-1/system.d/pulseaudio-system.conf
 as_root cp -v src/default.pa /etc/pulse
 as_root sed -i '/load-module module-console-kit/s/^/#/' /etc/pulse/default.pa
 
-cd ${CLFSSOURCES}
+cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf pulseaudio
 
@@ -565,7 +564,7 @@ USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-cd ${CLFSSOURCES}
+cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf libmatemixer
 
@@ -614,7 +613,7 @@ fi
 
 cd ${CLFSSOURCES}/make-ca.sh-*
 
-cd ${CLFSSOURCES}
+cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf nss
 
@@ -639,7 +638,7 @@ USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-cd ${CLFSSOURCES}
+cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf matesetd
 
@@ -663,7 +662,7 @@ USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-cd ${CLFSSOURCES}
+cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf matemedia
 
@@ -687,7 +686,7 @@ USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-cd ${CLFSSOURCES}
+cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf mate-screensaver
 
@@ -702,7 +701,7 @@ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
             --disable-static \
             --libdir=/usr/lib64 \
-            --enable-libwebpmux     \
+            --enable-libwebpmux  \
             --enable-libwebpdemux   \
             --enable-libwebpdecoder \
             --enable-libwebpextras  \
@@ -711,6 +710,7 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-cd ${CLFSSOURCES}
+cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf libwebp
+
