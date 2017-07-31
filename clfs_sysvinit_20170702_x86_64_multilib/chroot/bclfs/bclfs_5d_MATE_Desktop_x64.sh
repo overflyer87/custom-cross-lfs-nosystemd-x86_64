@@ -513,3 +513,36 @@ checkBuiltPackage
 rm -rf sbc
 
 #PulseAudio
+wget http://freedesktop.org/software/pulseaudio/releases/pulseaudio-10.0.tar.xz -O \
+    pulseaudio-10.0.tar.xz    
+
+mkdir pulseaudio && tar xf pulseaudio-*.tar.* -C pulseaudio --strip-components 1
+cd pulseaudio
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+            --disable-static \
+            --libdir=/usr/lib64 \
+            --localstatedir=/var \
+            --disable-bluez4     \
+            --disable-rpath \
+            --disable-systemd-daemon \
+            --disable-systemd-login \
+            --disable-systemd-journal \
+            --enable-bluez5
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+
+make check
+checkBuiltPackage
+
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install    
+
+as_root rm /etc/dbus-1/system.d/pulseaudio-system.conf
+ás_root install -dm755 /etc/pulse
+as_root cp -v src/default.pa /etc/pulse
+as_root sed -i '/load-module module-console-kit/s/^/#/' /etc/pulse/default.pa
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf pulseaudio
