@@ -414,11 +414,102 @@ checkBuiltPackage
 rm -rf libical
 
 #BlueZ
+wget http://www.kernel.org/pub/linux/bluetooth/bluez-5.45.tar.xz -O \
+    bluez-5.45.tar.xz
+
+wget http://www.linuxfromscratch.org/patches/blfs/svn/bluez-5.45-obexd_without_systemd-1.patch -O \
+    Bluez-5.45-obexd_without_systemd-1.patch
+
+mkdir bluez && tar xf bluez-*.tar.* -C bluez --strip-components 1
+cd bluez
+
+patch -Np1 -i ../Bluez-5.45-obexd_without_systemd-1.patch
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr    \
+            --disable-static \
+            --enable-shared \
+            --sysconfdir=/etc    \
+            --localstatedir=/var  \
+            --enable-library   \
+            --disable-systemd  \
+            --libdir=/usr/lib64
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install    
+
+as_root ln -svf ../libexec/bluetooth/bluetoothd /usr/sbin
+as_root install -v -dm755 /etc/bluetooth &&
+as_root install -v -m644 src/main.conf /etc/bluetooth/main.conf
+
+as_root cat > /etc/bluetooth/rfcomm.conf << "EOF"
+# Start rfcomm.conf
+# Set up the RFCOMM configuration of the Bluetooth subsystem in the Linux kernel.
+# Use one line per command
+# See the rfcomm man page for options
 
 
+# End of rfcomm.conf
+EOF
 
+as_root cat > /etc/bluetooth/uart.conf << "EOF"
+# Start uart.conf
+# Attach serial devices via UART HCI to BlueZ stack
+# Use one line per device
+# See the hciattach man page for options
 
+# End of uart.conf
+EOF
 
+cd ${CLFSSOURCES}/blfs-bootscripts
 
+as_root make install-bluetooth
 
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf bluez
 
+#gconf
+wget http://ftp.gnome.org/pub/gnome/sources/GConf/3.2/GConf-3.2.6.tar.xz -O \
+    GConf-3.2.6.tar.xz
+
+mkdir gconf && tar xf GConf-*.tar.* -C gconf --strip-components 1
+cd gconf
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+            --disable-static \
+            --enable-shared \
+            --sysconfdir=/etc  \
+            --disable-orbit \
+            --libdir=/usr/lib64
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install    
+as_root ln -s gconf.xml.defaults /etc/gconf/gconf.xml.system
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf gconf
+
+#SBC
+wget http://www.kernel.org/pub/linux/bluetooth/sbc-1.3.tar.xz -O \
+    sbc-1.3.tar.xz
+
+mkdir sbc && tar xf sbc-*.tar.* -C sbc --strip-components 1
+cd sbc
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+            --disable-static \
+            --disable-tester \
+            --libdir=/usr/lib64
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install    
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf sbc
+
+#PulseAudio
