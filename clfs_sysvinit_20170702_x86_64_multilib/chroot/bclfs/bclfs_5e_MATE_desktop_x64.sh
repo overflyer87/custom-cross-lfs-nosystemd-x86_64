@@ -216,19 +216,24 @@ checkBuiltPackage
 rm -rf matend
 
 #mozjs38
-wget https://people.mozilla.org/~sstangl/mozjs-38.2.1.rc0.tar.bz2 -O \
+wget https://ftp.osuosl.org/pub/blfs/conglomeration/mozjs/mozjs-38.2.1.rc0.tar.bz2 -O \
     mozjs-38.2.1.rc0.tar.bz2
 
 wget http://www.linuxfromscratch.org/patches/blfs/svn/js38-38.2.1-upstream_fixes-2.patch -O \
     js38-38.2.1-upstream_fixes-2.patch
 
-mkdir mozjs && tar xvjf mozjs-*.tar.* -C mozjs --strip-components 1
+mkdir mozjs && tar xvjf mozjs-38*.tar.* -C mozjs --strip-components 1
 cd mozjs
 
 patch -Np1 -i ../js38-38.2.1-upstream_fixes-2.patch
 
 cd js/src && autoconf2.13
 
+as_root cp /usr/bin/python* _virtualenv/bin/
+
+CPPFLAGS="-I/usr/include" LDFLAGS="-L/usr/lib64"  \
+PYTHON="/usr/bin/python2" PYTHONPATH="/usr/lib64/python2.7" \
+PYTHONHOME="/usr/lib64/python2.7" PYTHON_INCLUDES="/usr/include/python2.7" \
 CC="gcc ${BUILD64}" USE_ARCH=64 \
 CXX="g++ ${BUILD64}" \
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
