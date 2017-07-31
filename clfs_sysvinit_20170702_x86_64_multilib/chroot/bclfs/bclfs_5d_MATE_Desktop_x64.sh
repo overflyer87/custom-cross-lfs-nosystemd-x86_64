@@ -388,13 +388,32 @@ checkBuiltPackage
 rm -rf speexdsp
 
 #libical
-wget
+wget https://github.com/libical/libical/releases/download/v2.0.0/libical-2.0.0.tar.gz -O \
+    libical-2.0.0.tar.gz
 
+mkdir libical && tar xf libical-*.tar.* -C libical --strip-components 1
+cd libical
 
+mkdir build 
+cd build 
 
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} cmake -DCMAKE_INSTALL_PREFIX=/usr      \
+      -DCMAKE_BUILD_TYPE=Release       \
+      -DSHARED_ONLY=yes                \
+      -LIBRARY_OUTPUT_PATH=/usr/lib64  \
+      -DLIB_DIR=/usr/lib64 .. &&
 
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install       
+as_root install -vdm755 /usr/share/doc/libical-2.0.0/html &&
+as_root cp -vr apidocs/html/* /usr/share/doc/libical-2.0.0/html
 
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf libical
 
+#BlueZ
 
 
 
