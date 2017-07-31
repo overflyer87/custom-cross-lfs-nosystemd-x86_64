@@ -135,4 +135,28 @@ checkBuiltPackage
 rm -rf zenity
 
 #marco
+wget https://github.com/mate-desktop/marco/archive/v1.19.0.tar.gz -O \
+    marco-1.19.0.tar.gz
+    
+mkdir marco && tar xf marco-*.tar.* -C marco --strip-components 1
+cd marco
+
+ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
+    --libdir=/usr/lib64 \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --bindir=/usr/bin \
+    --sbindir=/usr/sbin 
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf marco
+
+#mate-control-center
 wget
