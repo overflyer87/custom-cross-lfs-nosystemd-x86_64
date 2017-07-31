@@ -348,4 +348,58 @@ checkBuiltPackage
 rm -rf libcap
 
 #speex
-wget 
+wget http://downloads.xiph.org/releases/speex/speex-1.2rc2.tar.gz -O \
+    Speex-1.2rc2.tar.gz
+
+mkdir speex && tar xf speexdsp-*.tar.* -C speex --strip-components 1
+cd speex
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr    \
+            --disable-static \
+            --docdir=/usr/share/doc/speex-1.2rc2  
+            --libdir=/usr/lib64
+            
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf speex        
+
+#Speexdsp
+wget http://downloads.xiph.org/releases/speex/speexdsp-1.2rc3.tar.gz -O \
+    speexdsp-1.2rc3.tar.gz
+    
+mkdir speexdsp && tar xf speexdsp-*.tar.* -C speexdsp --strip-components 1
+cd speexdsp
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr    \
+            --disable-static \
+            --docdir=/usr/share/doc/speex-1.2rc2  
+            --libdir=/usr/lib64
+            
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+as_root make LIBDIR=/usr/lib64 PREFIX=/usr install       
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf speexdsp
+
+#libical
+wget
+
+
+
+
+
+
+
+
+
+
+
+
+
+
