@@ -565,8 +565,7 @@ sed -i 's|/doc/valgrind||' docs/Makefile.in
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
    --libdir=/usr/lib64 \
-   --disable-static \
-   --datadir=/usr/share/doc/valgrind-3.13.0
+   --disable-static 
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
@@ -689,7 +688,7 @@ ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" \
    PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr \
    --libdir=/usr/lib64 --sysconfdir=/etc --disable-static \
    --localstatedir=/var --bindir=/usr/bin --sbindir=/usr/sbin \
-   --datadir=/usr/share/doc --disable-docbook-docs
+   --disable-docbook-docs
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
@@ -958,7 +957,7 @@ CXX="g++ ${BUILD64}" USE_ARCH=64 \
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr \
 --libdir=/usr/lib64 --sysconfdir=/etc --disable-static \
 --localstatedir=/var --bindir=/usr/bin --sbindir=/usr/sbin \
---datadir=/usr/share/doc --disable-docbook-docs
+--disable-docbook-docs
     
 #Deactivate building of the help subdir because it will fail
 sed -i 's/HELP_DIR/#HELP_DIR/' Makefile Makefile.in
