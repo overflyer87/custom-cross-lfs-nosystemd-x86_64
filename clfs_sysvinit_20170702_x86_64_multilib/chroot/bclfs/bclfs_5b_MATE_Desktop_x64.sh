@@ -751,6 +751,8 @@ CC="gcc ${BUILD64}" \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make prefix=/usr libdir=/usr/lib64 -f unix/Makefile generic
 as_root make prefix=/usr libdir=/usr/lib64 -f unix/Makefile install
 
+as_root mv /usr/local/bin/*zip* /usr/bin/
+
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf unzip
