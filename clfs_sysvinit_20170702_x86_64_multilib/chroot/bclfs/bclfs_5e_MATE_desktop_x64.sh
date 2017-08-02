@@ -366,3 +366,58 @@ as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf glib
+
+#caja
+wget https://github.com/mate-desktop/caja/archive/v1.19.0.tar.gz -O \
+    caja-1.19.0.tar.gz
+    
+mkdir caja && tar xf caja-*.tar.* -C caja --strip-components 1
+cd caja
+
+ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
+    --libdir=/usr/lib64 \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --bindir=/usr/bin \
+    --sbindir=/usr/sbin 
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf caja
+
+#caja-extensions
+wget https://github.com/mate-desktop/caja-extensions/archive/v1.18.1.tar.gz -O \
+    caja-extensions-1.18.1.tar.gz
+
+mkdir caja-extensions && tar xf caja-extensions-*.tar.* -C caja-extensions --strip-components 1
+cd caja-extensions
+
+ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
+    --libdir=/usr/lib64 \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --bindir=/usr/bin \
+    --sbindir=/usr/sbin 
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf caja-extensions
+
+#Start X at login
+cat >> /home/overflyer/.bash_profile << "EOF"
+if [ -z "$DISPLAY" ] && [ -n "$XDG_VTNR" ] && [ "$XDG_VTNR" -eq 1 ]; then
+  exec startx
+fi
+EOF
