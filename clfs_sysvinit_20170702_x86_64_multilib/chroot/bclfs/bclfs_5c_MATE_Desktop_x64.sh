@@ -595,7 +595,7 @@ CC="gcc ${BUILD64}"   CXX="g++ ${BUILD64}" USE_ARCH=64    \
   PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr    \
   --libdir=/usr/lib64 --sysconfdir=/etc --disable-static    \
   --localstatedir=/var --bindir=/usr/bin \
-  --sbindir=/usr/sbin --datadir=/usr/share/doc \
+  --sbindir=/usr/sbin \
   --with-x --enable-tools \
   --enable-dependency-tracking \
   --disable-gtk-doc --x-libraries=/usr/lib64 \
@@ -1418,7 +1418,7 @@ CPPFLAGS="-I/usr/include" LDFLAGS="-L/usr/lib64"  \
 PYTHON="/usr/bin/python2" PYTHONPATH="/usr/lib64/python2.7" \
 PYTHONHOME="/usr/lib64/python2.7" PYTHON_INCLUDES="/usr/include/python2.7" \
 ACLOCAL_FLAG="/usr/share/aclocal/" LIBSOUP_LIBS=/usr/lib64   \
-ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
 USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
     --libdir=/usr/lib64 \
     --sysconfdir=/etc \
