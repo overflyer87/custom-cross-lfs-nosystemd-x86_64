@@ -415,6 +415,55 @@ cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf caja-extensions
 
+#mate-applets
+wget https://github.com/mate-desktop/mate-applets/archive/v1.19.0.tar.gz -O \
+    mate-applets-1.19.0.tar.gz
+
+mkdir mate-applets && tar xf mate-applets-*.tar.* -C mate-applets --strip-components 1
+cd mate-applets
+
+ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
+    --libdir=/usr/lib64 \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --bindir=/usr/bin \
+    --sbindir=/usr/sbin 
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf mate-applets
+
+#mate-themes
+wget https://github.com/mate-desktop/mate-themes/archive/v3.22.13.tar.gz -O \
+    mate-themes-3.22.13.tar.gz
+
+mkdir mate-themes && tar xf mate-themes-*.tar.* -C mate-themes --strip-components 1
+cd mate-themes
+
+ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
+    --libdir=/usr/lib64 \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --bindir=/usr/bin \
+    --sbindir=/usr/sbin 
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf mate-themes
+
+
 #Start X at login
 cat >> /home/overflyer/.bash_profile << "EOF"
 if [ -z "$DISPLAY" ] && [ -n "$XDG_VTNR" ] && [ "$XDG_VTNR" -eq 1 ]; then
