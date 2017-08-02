@@ -215,127 +215,154 @@ cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf matend
 
-#mozjs38
-wget https://ftp.osuosl.org/pub/blfs/conglomeration/mozjs/mozjs-38.2.1.rc0.tar.bz2 -O \
-    mozjs-38.2.1.rc0.tar.bz2
+##mozjs38
+#wget https://ftp.osuosl.org/pub/blfs/conglomeration/mozjs/mozjs-38.2.1.rc0.tar.bz2 -O \
+#    mozjs-38.2.1.rc0.tar.bz2
+#
+#wget http://www.linuxfromscratch.org/patches/blfs/svn/js38-38.2.1-upstream_fixes-2.patch -O \
+#    js38-38.2.1-upstream_fixes-2.patch
+#
+#mkdir mozjs && tar xvjf mozjs-38*.tar.* -C mozjs --strip-components 1
+#cd mozjs
+#
+#patch -Np1 -i ../js38-38.2.1-upstream_fixes-2.patch
+#
+#cd js/src && autoconf2.13
+#
+#as_root cp /usr/bin/python* _virtualenv/bin/
+#
+#CPPFLAGS="-I/usr/include" LDFLAGS="-L/usr/lib64"  \
+#PYTHON="/usr/bin/python2" PYTHONPATH="/usr/lib64/python2.7" \
+#PYTHONHOME="/usr/lib64/python2.7" PYTHON_INCLUDES="/usr/include/python2.7" \
+#CC="gcc ${BUILD64}" USE_ARCH=64 \
+#CXX="g++ ${BUILD64}" \
+#PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+#    --with-intl-api     \
+#            --with-system-zlib  \
+#            --with-system-ffi   \
+#            --with-system-nspr  \
+#            --with-system-icu   \
+#            --enable-threadsafe \
+#            --enable-readline  \
+#            --libdir=/usr/lib64
+#            
+#PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+#CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+#
+#as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+#
+#cd ${CLFSSOURCES}/xc/mate
+#checkBuiltPackage
+#rm -rf mozjs
+#
+##polkit+js88+git (blfs special package)
+#wget http://anduin.linuxfromscratch.org/BLFS/polkit/polkit-0.113+git_2919920+js38.tar.xz -O \
+#    polkit-0.113+git_2919920+js38.tar.xz
+#
+#mkdir polkitjsgit && tar xf polkit-0.113+git_2919920+js38.tar.* -C polkitjsgit --strip-components 1
+#cd polkitjsgit
+#
+#as_root groupadd -fg 27 polkitd &&
+#as_root useradd -c "PolicyKit Daemon Owner" -d /etc/polkit-1 -u 27 \
+#        -g polkitd -s /bin/false polkitd
+#
+#CC="gcc ${BUILD64}" USE_ARCH=64 \
+#CXX="g++ ${BUILD64}" \
+#PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+#    --libdir=/usr/lib64 \
+#    --sysconfdir=/etc \
+#    --localstatedir=/var             \
+#    --disable-static                 \
+#    --enable-libsystemd-login=no     \
+#    --with-authfw=shadow 
+#
+#PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+#CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+#
+#as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+#
+#as_root cat > /etc/pam.d/polkit-1 << "EOF"
+## Begin /etc/pam.d/polkit-1
+#
+#auth     include        system-auth
+#account  include        system-account
+#password include        system-password
+#session  include        system-session
+#
+## End /etc/pam.d/polkit-1
+#EOF
+#
+#cd ${CLFSSOURCES}/xc/mate
+#checkBuiltPackage
+#rm -rf polkitjsgit
+#
+##polkit-gnome
+#wget http://ftp.gnome.org/pub/gnome/sources/polkit-gnome/0.105/polkit-gnome-0.105.tar.xz -O \
+#    polkit-gnome-0.105.tar.xz
+#
+#mkdir polkit-gnome && tar xf polkit-gnome-*.tar.* -C polkit-gnome --strip-components 1
+#cd polkit-gnome
+#
+#CC="gcc ${BUILD64}" USE_ARCH=64 CXX="g++ ${BUILD64}" \
+#PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+#    --libdir=/usr/lib64 \
+#    --sysconfdir=/etc \
+#    --disable-static
+#
+#PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+#CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+#
+#as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+#
+#cd ${CLFSSOURCES}/xc/mate
+#checkBuiltPackage
+#rm -rf polkit-gnome
+#
+##accountsservice
+#wget https://www.freedesktop.org/software/accountsservice/accountsservice-0.6.45.tar.xz -O \
+#    accountsservice-0.6.45.tar.xz
+#   
+#mkdir accountsservice && tar xf accountsservice-*.tar.* -C accountsservice --strip-components 1
+#cd accountsservice
+#
+#CC="gcc ${BUILD64}" USE_ARCH=64 CXX="g++ ${BUILD64}" \
+#PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+#    --libdir=/usr/lib64 \
+#    --sysconfdir=/etc \
+#    --disable-static
+#
+#PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+#CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+#
+#as_root make PREFIX=/usr LIBDIR=/usr/lib64 install#
+#
+#cd ${CLFSSOURCES}/xc/mate
+#checkBuiltPackage
+#rm -rf accountsservice
+#
+##mate-polkit
+#
+#
+#
+#
+#
+#
 
-wget http://www.linuxfromscratch.org/patches/blfs/svn/js38-38.2.1-upstream_fixes-2.patch -O \
-    js38-38.2.1-upstream_fixes-2.patch
+#Glib
+wget http://ftp.gnome.org/pub/gnome/sources/glib/2.52/glib-2.52.3.tar.xz -O \
+  glib-2.52.3.tar.xz
 
-mkdir mozjs && tar xvjf mozjs-38*.tar.* -C mozjs --strip-components 1
-cd mozjs
+mkdir glib && tar xf glib-*.tar.* -C glib --strip-components 1
+cd glib
 
-patch -Np1 -i ../js38-38.2.1-upstream_fixes-2.patch
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
+    --prefix=/usr \
+    --with-pcre=system \
+    --libdir=/usr/lib64
 
-cd js/src && autoconf2.13
-
-as_root cp /usr/bin/python* _virtualenv/bin/
-
-CPPFLAGS="-I/usr/include" LDFLAGS="-L/usr/lib64"  \
-PYTHON="/usr/bin/python2" PYTHONPATH="/usr/lib64/python2.7" \
-PYTHONHOME="/usr/lib64/python2.7" PYTHON_INCLUDES="/usr/include/python2.7" \
-CC="gcc ${BUILD64}" USE_ARCH=64 \
-CXX="g++ ${BUILD64}" \
-PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
-    --with-intl-api     \
-            --with-system-zlib  \
-            --with-system-ffi   \
-            --with-system-nspr  \
-            --with-system-icu   \
-            --enable-threadsafe \
-            --enable-readline  \
-            --libdir=/usr/lib64
-            
-PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
-CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
-
+make PREFIX=/usr LIBDIR=/usr/lib64
 as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf mozjs
-
-#polkit+js88+git (blfs special package)
-wget http://anduin.linuxfromscratch.org/BLFS/polkit/polkit-0.113+git_2919920+js38.tar.xz -O \
-    polkit-0.113+git_2919920+js38.tar.xz
-
-mkdir polkitjsgit && tar xf polkit-0.113+git_2919920+js38.tar.* -C polkitjsgit --strip-components 1
-cd polkitjsgit
-
-as_root groupadd -fg 27 polkitd &&
-as_root useradd -c "PolicyKit Daemon Owner" -d /etc/polkit-1 -u 27 \
-        -g polkitd -s /bin/false polkitd
-
-CC="gcc ${BUILD64}" USE_ARCH=64 \
-CXX="g++ ${BUILD64}" \
-PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
-    --libdir=/usr/lib64 \
-    --sysconfdir=/etc \
-    --localstatedir=/var             \
-    --disable-static                 \
-    --enable-libsystemd-login=no     \
-    --with-authfw=shadow 
-
-PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
-CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
-
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
-
-cat > /etc/pam.d/polkit-1 << "EOF"
-# Begin /etc/pam.d/polkit-1
-
-auth     include        system-auth
-account  include        system-account
-password include        system-password
-session  include        system-session
-
-# End /etc/pam.d/polkit-1
-EOF
-
-cd ${CLFSSOURCES}/xc/mate
-checkBuiltPackage
-rm -rf polkitjsgit
-
-#polkit-gnome
-wget http://ftp.gnome.org/pub/gnome/sources/polkit-gnome/0.105/polkit-gnome-0.105.tar.xz -O \
-    polkit-gnome-0.105.tar.xz
-
-mkdir polkit-gnome && tar xf polkit-gnome-*.tar.* -C polkit-gnome --strip-components 1
-cd polkit-gnome
-
-CC="gcc ${BUILD64}" USE_ARCH=64 CXX="g++ ${BUILD64}" \
-PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
-    --libdir=/usr/lib64 \
-    --sysconfdir=/etc \
-    --disable-static
-
-PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
-CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
-
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
-
-cd ${CLFSSOURCES}/xc/mate
-checkBuiltPackage
-rm -rf polkit-gnome
-
-#accountsservice
-wget https://www.freedesktop.org/software/accountsservice/accountsservice-0.6.45.tar.xz -O \
-    accountsservice-0.6.45.tar.xz
-    
-mkdir accountsservice && tar xf accountsservice-*.tar.* -C accountsservice --strip-components 1
-cd accountsservice
-
-CC="gcc ${BUILD64}" USE_ARCH=64 CXX="g++ ${BUILD64}" \
-PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
-    --libdir=/usr/lib64 \
-    --sysconfdir=/etc \
-    --disable-static
-
-PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
-CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
-
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
-
-cd ${CLFSSOURCES}/xc/mate
-checkBuiltPackage
-rm -rf accountsservice
+rm -rf glib
