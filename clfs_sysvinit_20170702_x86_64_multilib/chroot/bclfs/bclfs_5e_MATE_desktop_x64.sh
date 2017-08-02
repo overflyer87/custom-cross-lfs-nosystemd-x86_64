@@ -685,9 +685,160 @@ CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
 as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
 
+as_root mkdir /usr/share/engrampa
+as_root cp -rv data/* /usr/share/engrampa/
+
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf engrampa
 
+#eom
+wget https://github.com/mate-desktop/eom/archive/v1.19.0.tar.gz -O \
+    eom-1.19.0.tar.gz
+    
+mkdir eom && tar xf eom-*.tar.* -C eom --strip-components 1
+cd eom
+
+ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
+    --libdir=/usr/lib64 \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --bindir=/usr/bin \
+    --sbindir=/usr/sbin 
+
+sed -i 's/HELP_DIR/#HELP_DIR/' Makefile Makefile.in
+sed -i 's/help/#help/' Makefile Makefile.in Makefile.am
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+as_root mkdir /usr/share/eom
+as_root cp -rv data/* /usr/share/eom/
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf eom
+
+#mate-calc
+wget https://github.com/mate-desktop/mate-calc/archive/v1.18.0.tar.gz -O \
+    mate-calc-1.18.0.tar.gz
+
+mkdir mate-calc && tar xf mate-calc-*.tar.* -C mate-calc --strip-components 1
+cd mate-calc
+
+ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
+    --libdir=/usr/lib64 \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --bindir=/usr/bin \
+    --sbindir=/usr/sbin 
+
+sed -i 's/HELP_DIR/#HELP_DIR/' Makefile Makefile.in
+sed -i 's/help/#help/' Makefile Makefile.in Makefile.am
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+as_root mkdir /usr/share/mate-calc
+as_root cp -rv data/* /usr/share/mate-calc/
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf mate-calc
+
+#OpenJPEG
+wget http://downloads.sourceforge.net/openjpeg.mirror/openjpeg-1.5.2.tar.gz -O \
+    openjpeg-1.5.2.tar.gz
+    
+mkdir openjpeg && tar xf openjpeg-*.tar.* -C openjpeg --strip-components 1
+cd openjpeg
+
+autoreconf -f -i
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
+    --libdir=/usr/lib64 \
+    --sysconfdir=/etc \
+    --disable-static
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf openjpeg
+
+#poppler-glib (PDF support for atril)
+wget http://poppler.freedesktop.org/poppler-0.56.0.tar.xz -O \
+    poppler-0.56.0.tar.xz
+    
+wget http://poppler.freedesktop.org/poppler-data-0.4.7.tar.gz -O \
+    Poppler-data-0.4.7.tar.gz
+
+mkdir poppler && tar xf poppler-*.tar.* -C poppler --strip-components 1
+cd poppler
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
+    --libdir=/usr/lib64 \
+    --sysconfdir=/etc \
+    --disable-static            \
+    --enable-build-type=release \
+    --enable-cmyk               \
+    --enable-xpdf-headers       \
+    --with-testdatadir=$PWD/testfile
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+mkdir poppler-data
+tar -xf ../Poppler-data-*.tar.gz -C poppler-data --strip-components 1 
+cd poppler-data
+
+as_root make LIBDIR=/usr/lib64 prefix=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf poppler
+
+#atril
+wget https://github.com/mate-desktop/atril/archive/v1.19.0.tar.gz -O \
+    atril-1.19.0.tar.gz
+
+mkdir atril && tar xf atril-*.tar.* -C atril --strip-components 1
+cd atril
+
+ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
+    --libdir=/usr/lib64 \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --bindir=/usr/bin \
+    --sbindir=/usr/sbin 
+
+sed -i 's/HELP_DIR/#HELP_DIR/' Makefile Makefile.in
+sed -i 's/help/#help/' Makefile Makefile.in Makefile.am
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+as_root mkdir /usr/share/atril
+as_root cp -rv data/* /usr/share/atril
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf eom
 
 
