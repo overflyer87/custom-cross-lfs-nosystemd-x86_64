@@ -280,7 +280,8 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
     --libdir=/usr/lib64 \
     --disable-static \
     --sysconfdir=/etc \
-    --with-pam-dir=/lib64/security
+    --with-pam-dir=/lib64/security \
+    --disable-doc
     
 #Let's fix an annoying problem with docbook.xsl
 #Delete all lines in Makefile and docs/Makefile.am
