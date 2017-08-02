@@ -75,7 +75,7 @@ cd mate
 
 #We will only do 64-bit builds in this script
 #We compiled Xorg with 32-bit libraries
-#THat should suffice
+#That should suffice
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" 
 USE_ARCH=64 
