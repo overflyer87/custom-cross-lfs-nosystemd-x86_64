@@ -478,10 +478,136 @@ cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf mate-themes
 
-
 #Start X at login
 cat >> /home/overflyer/.bash_profile << "EOF"
 if [ -z "$DISPLAY" ] && [ -n "$XDG_VTNR" ] && [ "$XDG_VTNR" -eq 1 ]; then
   exec startx
 fi
 EOF
+
+#gtksourceview
+wget http://ftp.gnome.org/pub/gnome/sources/gtksourceview/3.24/gtksourceview-3.24.3.tar.xz -O \
+    gtksourceview-3.24.3.tar.xz
+
+mkdir gtksourceview && tar xf gtksourceview-*.tar.* -C gtksourceview --strip-components 1
+cd gtksourceview
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
+    --libdir=/usr/lib64 \
+    --sysconfdir=/etc 
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf gtksourceview
+
+#libpeas
+wget http://ftp.gnome.org/pub/gnome/sources/libpeas/1.20/libpeas-1.20.0.tar.xz -O \
+    libpeas-1.20.0.tar.xz
+    
+mkdir libpeas && tar xf libpeas-*.tar.* -C libpeas --strip-components 1
+cd libpeas
+
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
+    --libdir=/usr/lib64 \
+    --sysconfdir=/etc 
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf libpeas
+
+
+#pluma
+wget https://github.com/mate-desktop/pluma/archive/v1.19.1.tar.gz -O \
+    pluma-1.19.1.tar.gz
+    
+mkdir pluma && tar xf pluma-*.tar.* -C pluma --strip-components 1
+cd pluma
+
+ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
+    --libdir=/usr/lib64 \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --bindir=/usr/bin \
+    --sbindir=/usr/sbin 
+    
+sed -i 's/HELP_DIR/#HELP_DIR/' Makefile Makefile.in
+sed -i 's/help/#help/' Makefile Makefile.in Makefile.am
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf pluma
+
+#upower-glib
+wget http://upower.freedesktop.org/releases/upower-0.99.5.tar.xz -O \
+    upower-0.99.5.tar.xz
+
+mkdir upower && tar xf upower-*.tar.* -C upower --strip-components 1
+cd upower
+
+ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
+    --libdir=/usr/lib64 \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --bindir=/usr/bin \
+    --sbindir=/usr/sbin \
+    --enable-deprecated \
+    --disable-gtk-doc \
+    --disable-gtk-doc-pdf \
+    --disable-gtk-doc-html \
+    --disable-man-pages 
+
+sed -i 's/http\:\/\/docbook.sourceforge.net\/release\/xsl\/current\/manpages\/docbook.xsl/\/usr\/share\/xml\/docbook\/xsl-stylesheets-1.79.1\/html\/docbook.xsl/' doc/man/Makefile*
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf upower
+
+#mate-power-manager
+wget https://github.com/mate-desktop/mate-power-manager/archive/v1.18.0.tar.gz -O \
+    mate-power-manager-1.18.0.tar.gz
+    
+mkdir matepm && tar xf mate-power-manager-*.tar.* -C matepm --strip-components 1
+cd matepm
+
+ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
+    --libdir=/usr/lib64 \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --bindir=/usr/bin \
+    --sbindir=/usr/sbin 
+    
+sed -i 's/HELP_DIR/#HELP_DIR/' Makefile Makefile.in
+sed -i 's/help/#help/' Makefile Makefile.in Makefile.am
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf matepm
