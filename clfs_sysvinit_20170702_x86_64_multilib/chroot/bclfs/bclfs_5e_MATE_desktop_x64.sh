@@ -428,7 +428,22 @@ USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
     --sysconfdir=/etc \
     --localstatedir=/var \
     --bindir=/usr/bin \
-    --sbindir=/usr/sbin 
+    --sbindir=/usr/sbin \
+    --disable-stickynotes \
+    --disable-battstat
+    
+sed -i 's/HELP_DIR/#HELP_DIR/' Makefile Makefile.in
+sed -i 's/help/#help/' Makefile Makefile.in Makefile.am
+sed -i 's/docs/#docs/' Makefile Makefile.in Makefile.am
+sed -i 's/help/#help/' */Makefile*
+sed -i 's/docs/#docs/' */Makefile*
+sed -i 's/docs/#docs/' geyes/Makefile*
+sed -i 's/docs/#docs/' stickynotes/Makefile*
+sed -i 's/docs/#docs/' trashapplet/Makefile*
+sed -i 's/docs/#docs/' multiload/Makefile*
+sed -i 's/docs/#docs/' mateweather/Makefile*
+sed -i 's/docs/#docs/' accessx-status/Makefile*
+sed -i 's/docs/#docs/' invest-applet/Makefile*
 
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
