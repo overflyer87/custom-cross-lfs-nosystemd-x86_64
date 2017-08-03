@@ -376,11 +376,44 @@ EOF
 
 cd ${CLFSSOURCES}
 
+ln -sfv /etc/rc.d/init.d/functions /lib/init-functions
+ln -sfv /etc/rc.d/init.d/functions /lib64/init-functions
+
+#lsb-release
+wget http://sourceforge.net/projects/lsb/files/lsb_release/1.4/lsb-release-1.4.tar.gz -O \
+    lsb-release-1.4.tar.gz
+    
+mkdir lsbrel && tar xf lsb-release-*.tar.* -C lsbrel --strip-components 1
+cd lsbrel
+
+sed -i "s|n/a|unavailable|" lsb_release
+
+./help2man -N --include ./lsb_release.examples \
+              --alt_version_key=program_version ./lsb_release > lsb_release.1
+
+install -v -m 644 lsb_release.1 /usr/share/man/man1/lsb_release.1 &&
+install -v -m 755 lsb_release /usr/bin/lsb_release
+
+echo 8.0 > /etc/clfs-release
+
+cat > /etc/lsb-release << "EOF"
+DISTRIB_ID="Cross Linux From Scratch"
+DISTRIB_RELEASE="SYSVINIT-20170702-x86_64"
+DISTRIB_CODENAME="overflyer"
+DISTRIB_DESCRIPTION="Cross Linux From Scratch"
+EOF
+
+
+cd ${CLFSSOURCES} 
+checkBuiltPackage
+rm -rf lsbrel
+
 echo " "
 
-echo "Bootloader is installed, debugging sysmbols are strippes"
+echo "Bootloader is installed, debugging sysmbols are stripped"
 echo "AND" 
 echo "basic configuration files have been created"
+echo "lsb release was installed and init-functions symlink has been created"
 echo"LET'S BUILD THE KERNEL"
 echo " "
 echo "For that execute Script #10"
@@ -391,6 +424,8 @@ echo "http://www.linuxfromscratch.org/~krejzi/basic-kernel.txt"
 echo "And if you installed UEFI bootloaders"
 echo "Also according to this"
 echo "http://www.linuxfromscratch.org/hints/downloads/files/lfs-uefi-20170207.txt"
+echo "Register yourself as an Cross LFS user on"
+echo "http://www.linuxfromscratch.org/cgi-bin/lfscounter.php. Choose clfs-svn"
 echo " "
 
 
