@@ -184,6 +184,9 @@ CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
 as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
 
+as_root mkdir /usr/share/mate-control-center
+as_root cp -rv data/* /usr/share/mate-control-center
+
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf matecc
@@ -210,6 +213,9 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
 as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+as_root mkdir /usr/share/mate-notification-daemon
+as_root cp -rv data/* /usr/share/mate-notification-daemon
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -386,6 +392,9 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
 as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+as_root mkdir /usr/share/caja
+as_root cp -rv data/* /usr/share/caja
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
