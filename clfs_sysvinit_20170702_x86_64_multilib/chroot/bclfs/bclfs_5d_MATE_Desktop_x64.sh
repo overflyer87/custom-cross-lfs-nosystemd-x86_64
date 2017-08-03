@@ -124,9 +124,9 @@ USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
     
 #Deactivate building of baobab because it will fail
 #Because itstool will throw error
-#Babobab can show size of directory trees in percentage
+#Baobab can show size of directory trees in percentage
 #Let's see later if this tool was essential...hope not
-sed -i 's/baobab/#baobab' Makefile*
+sed -i 's/baobab/#baobab/' Makefile*
    
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
@@ -208,6 +208,9 @@ sed -i 's/help/#help/' Makefile Makefile.in Makefile.am
   
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+as_root mkdir /usr/share/mate-terminal
+as_root cp -rv data/* /usr/share/mate-terminal
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
@@ -637,6 +640,9 @@ USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 
+as_root mkdir /usr/share/mate-setting-daemon
+as_root cp -rv data/* /usr/share/mate-setting-daemon
+
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf matesetd
@@ -661,6 +667,9 @@ USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 
+as_root mkdir /usr/share/mate-media
+as_root cp -rv data/* /usr/share/mate-media
+
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf matemedia
@@ -684,6 +693,9 @@ USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+as_root mkdir /usr/share/mate-screensaver
+as_root cp -rv data/* /usr/share/mate-screensaver
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
