@@ -343,33 +343,17 @@ ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" \
    --localstatedir=/var --bindir=/usr/bin --sbindir=/usr/sbin \
    --disable-docbook-docs
 
-#Fix the same docbook.xsl problem
-#That occured when building gnome-keyring
-
-export XSLTPROC_XSL=/usr/share/xml/docbook/xsl-stylesheets-1.79.1/html/docbook.xsl
-
-sed -i 's/http\:\/\/docbook.sourceforge.net\/release\/xsl\/current\/manpages\/docbook.xsl/\/usr\/share\/xml\/docbook\/xsl-stylesheets-1.79.1\/html\/docbook.xsl/' doc/man/Makefile*
+sed -i 's/HELP_DIR/#HELP_DIR/' Makefile Makefile.in
+sed -i 's/help/#help/' Makefile*
+sed -i 's/doc/#doc/' Makefile*
 
 XSLTPROC_XSL=/usr/share/xml/docbook/xsl-stylesheets-1.79.1/html/docbook.xsl \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-cd egg
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
-cd ../data
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
-cd ../m4
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
-cd ../po
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
-cd ../capplet
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
-cd ../tools
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
-cd ../mate-session
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
-cd ..
+as_root mkdir /usr/share/mate-session-manager
+as_root cp -rv data/* /usr/share/mate-session-manager
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -1086,6 +1070,7 @@ CC="gcc ${BUILD64}" \
             --enable-core-docs   \
             --with-distro=none   \
             --with-systemdsystemunitdir=no \
+            --disable-systemd \
             --enable-python \
             --enable-gtk3   \
             --enable-gtk2 
@@ -1433,6 +1418,9 @@ sed -i 's/help/#help/' Makefile Makefile.in Makefile.am
    
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+as_root mkdir /usr/share/mate-panel
+as_root cp -rv data/* /usr/share/mate-panel
   
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
