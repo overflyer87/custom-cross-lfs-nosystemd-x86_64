@@ -693,7 +693,9 @@ ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cp macros/*.m4 /usr/share/aclocal 
+as_root cp macros/*.m4 /usr/share/aclocal 
+as_root mkdir /usr/share/mate-common
+as_root cp -rv data/* /usr/share/mate-common
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -967,6 +969,9 @@ sed -i 's/help/#help/' Makefile Makefile.in Makefile.am
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+as_root mkdir /usr/share/mate-desktop
+as_root cp -rv data/* /usr/share/mate-desktop
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
