@@ -46,7 +46,7 @@ export CLFS_TARGET="x86_64-unknown-linux-gnu"
 export CLFS_TARGET32="i686-pc-linux-gnu"
 export BUILD32="-m32"
 export BUILD64="-m64"
-MAKEFLAGS="-j$(nproc)"
+export MAKEFLAGS="-j$(nproc)"
 
 echo " "
 echo "Lets start building the Cross Compile Tools"
