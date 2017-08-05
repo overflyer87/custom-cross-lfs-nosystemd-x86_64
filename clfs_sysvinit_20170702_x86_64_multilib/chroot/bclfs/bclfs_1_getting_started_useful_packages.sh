@@ -62,15 +62,17 @@ cd openssl
 
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH32} \
 USE_ARCH=32 make CC="gcc ${BUILD32} ./config linux-x86 --openssldir=/etc/ssl \
-  --prefix=/usr shared \
-  --libdir=/usr/lib 
+  --prefix=/usr \
+  shared \
+  --libdir=/lib \
+  zlib-dynamic
   
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH32} \
-USE_ARCH=32 make CC="gcc ${BUILD32}" PREFIX=/usr LIBDIR=/usr/lib
+USE_ARCH=32 make CC="gcc ${BUILD32}" PREFIX=/usr LIBDIR=/lib
 
 sed -i 's# libcrypto.a##;s# libssl.a##;/INSTALL_LIBS/s#libcrypto.a##' Makefile
 
-make PREFIX=/usr LIBDIR=/usr/lib install
+make PREFIX=/usr LIBDIR=/lib install
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
@@ -82,15 +84,17 @@ cd openssl
 
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} \
 USE_ARCH=64 make CC="gcc ${BUILD64} ./config linux-x86_64 --openssldir=/etc/ssl \
-  --prefix=/usr shared \
-  --libdir=/usr/lib64
+  --prefix=/usr \
+  shared \
+  --libdir=/lib64 \
+  zlib-dynamic
   
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} \
-USE_ARCH=64 make PREFIX=/usr LIBDIR=/usr/lib64 CC="gcc ${BUILD64}" 
+USE_ARCH=64 make PREFIX=/usr LIBDIR=/lib64 CC="gcc ${BUILD64}" 
 
 sed -i 's# libcrypto.a##;s# libssl.a##;/INSTALL_LIBS/s#libcrypto.a##' Makefile
 
-make PREFIX=/usr LIBDIR=/usr/lib64 install 
+make PREFIX=/usr LIBDIR=/lib64 install 
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
