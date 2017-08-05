@@ -224,151 +224,151 @@ checkBuiltPackage
 rm -rf expat
 
 #Python2.7.6 32-bit
-wget https://www.python.org/ftp/python/2.7.13/Python-2.7.13.tar.xz -O \
-  Python-2.7.13.tar.xz
-  
-wget https://www.python.org/ftp/python/doc/2.7.13/python-2.7.13-docs-html.tar.bz2 -O \
-  python-2.7.13-docs-html.tar.bz2
-
-mkdir Python-2 && tar xf Python-2.7.13.tar.* -C Python-2 --strip-components 1
-cd Python-2
-
-USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" LDFLAGS="-L/usr/lib" ./configure \
-            --prefix=/usr       \
-            --enable-shared     \
-            --with-system-expat \
-            --with-system-ffi   \
-            --enable-unicode=ucs4 \
-            --libdir=/usr/lib &&
-
-make LIBDIR=/usr/lib PREFIX=/usr 
-as_root make LIBDIR=/usr/lib PREFIX=/usr install
-
-as_root chmod -v 755 /usr/lib/libpython2.7.so.1.0
-
-as_root ln -sfv python2.7-32 /usr/bin/python2-32 &&
-as_root ln -sfv python2-32 /usr/bin/python-32 &&
-as_root ln -sfv multiarch_wrapper /usr/bin/python &&
-as_root ln -sfv multiarch_wrapper /usr/bin/python2 &&
-as_root ln -sfv multiarch_wrapper /usr/bin/python2.7 &&
-
-as_root install -v -dm755 /usr/share/doc/python-2.7.13 &&
-
-as_root tar --strip-components=1                     \
-    --no-same-owner                          \
-    --directory /usr/share/doc/python-2.7.13 \
-    -xvf ../python-2.7.*.tar.* &&
-
-as_root find /usr/share/doc/python-2.7.13 -type d -exec chmod 0755 {} \; &&
-as_root find /usr/share/doc/python-2.7.13 -type f -exec chmod 0644 {} \;
-            
-cd ${CLFSSOURCES}
-checkBuiltPackage
-rm -rf Python-2
-
-#Python 3 32-bit
-wget https://www.python.org/ftp/python/3.6.0/Python-3.6.0.tar.xz -O \
-  Python-3.6.0.tar.xz
-
-wget https://docs.python.org/3.6/archives/python-3.6.0-docs-html.tar.bz2 -O \
-  python-360-docs.tar.bz2
-  
-mkdir Python-3 && tar xf Python-3.6*.tar.xz -C Python-3 --strip-components 1
-cd Python-3
-
-USE_ARCH=32 CXX="/usr/bin/g++ ${BUILD32}" \
-    CC="/usr/bin/gcc ${BUILD32}" \
-    PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" ./configure \
-            --prefix=/usr       \
-            --enable-shared     \
-            --with-system-expat \
-            --with-system-ffi   \
-            --libdir=/usr/lib \
-            --with-ensurepip=yes &&
-
-make PREFIX=/usr LIBDIR=/usr/lib &&
-as_root make install PREFIX=/usr LIBDIR=/usr/lib 
-
-as_root chmod -v 755 /usr/lib/libpython3.6m.so
-as_root chmod -v 755 /usr/lib/libpython3.so
-
-install -v -dm755 /usr/share/doc/python-3.6.0/html &&
-tar --strip-components=1 \
-    --no-same-owner \
-    --no-same-permissions \
-    -C /usr/share/doc/python-3.6.0/html \
-    -xvf ../python-360-docs.tar.bz2
-
-ln -svfn python-3.6.0 /usr/share/doc/python-3
-
-as_root ln -sfv python2.7-32 /usr/bin/python3-32 &&
-as_root ln -sfv multiarch_wrapper /usr/bin/python &&
-as_root ln -sfv multiarch_wrapper /usr/bin/python &&
-as_root ln -sfv multiarch_wrapper /usr/bin/python3.6 &&
-
-cd ${CLFSSOURCES}
-checkBuiltPackage
-rm -rf Python-3
-
-cd ${CLFSSOURCES}/xc
-
-#xcb-proto 32-bit
-wget http://xcb.freedesktop.org/dist/xcb-proto-1.12.tar.bz2 -O \
-  xcb-proto-1.12.tar.bz2
-wget http://www.linuxfromscratch.org/patches/blfs/svn/xcb-proto-1.12-python3-1.patch -O \
-  xcb-proto-1.12-python3-1.patch
-wget http://www.linuxfromscratch.org/patches/blfs/svn/xcb-proto-1.12-schema-1.patch -O \
-  xcb-proto-1.12-schema-1.patch
-
-mkdir xcb-proto && tar xf xcb-proto-1.12.tar.* -C xcb-proto --strip-components 1
-cd xcb-proto
-
-patch -Np1 -i ../xcb-proto-1.12-schema-1.patch
-patch -Np1 -i ../xcb-proto-1.12-python3-1.patch
-
-CXX="/usr/bin/g++ ${BUILD32}" \
-CC="/usr/bin/gcc ${BUILD32}" \
-USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" ./configure $XORG_CONFIG32 && 
-
-make check
-checkBuiltPackage
-
-make PREFIX=/usr LIBDIR=/usr/lib
-as_root make PREFIX=/usr LIBDIR=/usr/lib install
+#wget https://www.python.org/ftp/python/2.7.13/Python-2.7.13.tar.xz -O \
+#  Python-2.7.13.tar.xz
+#  
+#wget https://www.python.org/ftp/python/doc/2.7.13/python-2.7.13-docs-html.tar.bz2 -O \
+#  python-2.7.13-docs-html.tar.bz2
+#
+#mkdir Python-2 && tar xf Python-2.7.13.tar.* -C Python-2 --strip-components 1
+#cd Python-2
+#
+#USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
+#CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" LDFLAGS="-L/usr/lib" ./configure \
+#            --prefix=/usr       \
+#            --enable-shared     \
+#            --with-system-expat \
+#            --with-system-ffi   \
+#            --enable-unicode=ucs4 \
+#            --libdir=/usr/lib &&
+#
+#make LIBDIR=/usr/lib PREFIX=/usr 
+#as_root make LIBDIR=/usr/lib PREFIX=/usr install
+#
+#as_root chmod -v 755 /usr/lib/libpython2.7.so.1.0
+#
+#as_root ln -sfv python2.7-32 /usr/bin/python2-32 &&
+#as_root ln -sfv python2-32 /usr/bin/python-32 &&
+#as_root ln -sfv multiarch_wrapper /usr/bin/python &&
+#as_root ln -sfv multiarch_wrapper /usr/bin/python2 &&
+#as_root ln -sfv multiarch_wrapper /usr/bin/python2.7 &&
+#
+#as_root install -v -dm755 /usr/share/doc/python-2.7.13 &&
+#
+#as_root tar --strip-components=1                     \
+#    --no-same-owner                          \
+#    --directory /usr/share/doc/python-2.7.13 \
+#    -xvf ../python-2.7.*.tar.* &&
+#
+#as_root find /usr/share/doc/python-2.7.13 -type d -exec chmod 0755 {} \; &&
+#as_root find /usr/share/doc/python-2.7.13 -type f -exec chmod 0644 {} \;
+#            
+#cd ${CLFSSOURCES}
+#checkBuiltPackage
+#rm -rf Python-2
+#
+##Python 3 32-bit
+#wget https://www.python.org/ftp/python/3.6.0/Python-3.6.0.tar.xz -O \
+# Python-3.6.0.tar.xz
+#
+#wget https://docs.python.org/3.6/archives/python-3.6.0-docs-html.tar.bz2 -O \
+#  python-360-docs.tar.bz2
+#
+#mkdir Python-3 && tar xf Python-3.6*.tar.xz -C Python-3 --strip-components 1
+#cd Python-3
+#
+#USE_ARCH=32 CXX="/usr/bin/g++ ${BUILD32}" \
+#    CC="/usr/bin/gcc ${BUILD32}" \
+#    PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" ./configure \
+#            --prefix=/usr       \
+#            --enable-shared     \
+#            --with-system-expat \
+#            --with-system-ffi   \
+#            --libdir=/usr/lib \
+#            --with-ensurepip=yes &&
+#
+#make PREFIX=/usr LIBDIR=/usr/lib &&
+#as_root make install PREFIX=/usr LIBDIR=/usr/lib 
+#
+#as_root chmod -v 755 /usr/lib/libpython3.6m.so
+#as_root chmod -v 755 /usr/lib/libpython3.so
+#
+#install -v -dm755 /usr/share/doc/python-3.6.0/html &&
+#tar --strip-components=1 \
+#    --no-same-owner \
+#    --no-same-permissions \
+#    -C /usr/share/doc/python-3.6.0/html \
+#    -xvf ../python-360-docs.tar.bz2
+#
+#ln -svfn python-3.6.0 /usr/share/doc/python-3
+#
+#as_root ln -sfv python2.7-32 /usr/bin/python3-32 &&
+#as_root ln -sfv multiarch_wrapper /usr/bin/python &&
+#as_root ln -sfv multiarch_wrapper /usr/bin/python &&
+#as_root ln -sfv multiarch_wrapper /usr/bin/python3.6 &&
+#
+#cd ${CLFSSOURCES}
+#checkBuiltPackage
+#rm -rf Python-3
 
 cd ${CLFSSOURCES}/xc
-checkBuiltPackage
-rm -rf xcb-proto
 
+##xcb-proto 32-bit
+#wget http://xcb.freedesktop.org/dist/xcb-proto-1.12.tar.bz2 -O \
+#  xcb-proto-1.12.tar.bz2
+#wget http://www.linuxfromscratch.org/patches/blfs/svn/xcb-proto-1.12-python3-1.patch -O \
+#  xcb-proto-1.12-python3-1.patch
+#wget http://www.linuxfromscratch.org/patches/blfs/svn/xcb-proto-1.12-schema-1.patch -O \
+#  xcb-proto-1.12-schema-1.patch
+#
+#mkdir xcb-proto && tar xf xcb-proto-1.12.tar.* -C xcb-proto --strip-components 1
+#cd xcb-proto
+#
+#patch -Np1 -i ../xcb-proto-1.12-schema-1.patch
+#patch -Np1 -i ../xcb-proto-1.12-python3-1.patch
+#
+#CXX="/usr/bin/g++ ${BUILD32}" \
+#CC="/usr/bin/gcc ${BUILD32}" \
+#USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" ./configure $XORG_CONFIG32 && 
+#
+#make check
+#checkBuiltPackage
+#
+#make PREFIX=/usr LIBDIR=/usr/lib
+#as_root make PREFIX=/usr LIBDIR=/usr/lib install
+#
+#cd ${CLFSSOURCES}/xc
+#checkBuiltPackage
+#rm -rf xcb-proto
+#
 #libxcb 32-bit
-wget http://xcb.freedesktop.org/dist/libxcb-1.12.tar.bz2 -O \
-  libxcb-1.12.tar.bz2
-
-wget http://www.linuxfromscratch.org/patches/blfs/svn/libxcb-1.12-python3-1.patch -O \
-  libxcb-1.12-python3-1.patch
-
-mkdir libxcb && tar xf libxcb-*.tar.* -C libxcb --strip-components 1
-cd libxcb
-
-patch -Np1 -i ../libxcb-1.12-python3-1.patch
-
-sed -i "s/pthread-stubs//" configure
-
-USE_ARCH=32 CXX="g++ ${BUILD32}" CC="gcc ${BUILD32}" \
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" ./configure $XORG_CONFIG32    \
-            --enable-xinput   \
-            --without-doxygen \
-            --libdir=/usr/lib \
-            --without-doxygen \
-            --docdir='${datadir}'/doc/libxcb-1.12 &&
-            
-make PREFIX=/usr LIBDIR=/usr/lib
-as_root make PREFIX=/usr LIBDIR=/usr/lib install
-
-cd ${CLFSSOURCES}/xc
-checkBuiltPackage
-rm -rf libxcb
+#wget http://xcb.freedesktop.org/dist/libxcb-1.12.tar.bz2 -O \
+#  libxcb-1.12.tar.bz2
+#
+#wget http://www.linuxfromscratch.org/patches/blfs/svn/libxcb-1.12-python3-1.patch -O \
+#  libxcb-1.12-python3-1.patch
+#
+#mkdir libxcb && tar xf libxcb-*.tar.* -C libxcb --strip-components 1
+#cd libxcb
+#
+#patch -Np1 -i ../libxcb-1.12-python3-1.patch
+#
+#sed -i "s/pthread-stubs//" configure
+#
+#USE_ARCH=32 CXX="g++ ${BUILD32}" CC="gcc ${BUILD32}" \
+#PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" ./configure $XORG_CONFIG32    \
+#            --enable-xinput   \
+#            --without-doxygen \
+#            --libdir=/usr/lib \
+#            --without-doxygen \
+#            --docdir='${datadir}'/doc/libxcb-1.12 &&
+#            
+#make PREFIX=/usr LIBDIR=/usr/lib
+#as_root make PREFIX=/usr LIBDIR=/usr/lib install
+#
+#cd ${CLFSSOURCES}/xc
+#checkBuiltPackage
+#rm -rf libxcb
 
 #fontconfig 32-bit
 wget http://www.freedesktop.org/software/fontconfig/release/fontconfig-2.12.4.tar.bz2 -O \
