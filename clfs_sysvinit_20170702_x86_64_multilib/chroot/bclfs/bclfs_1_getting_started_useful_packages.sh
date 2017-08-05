@@ -60,10 +60,17 @@ cd ${CLFSSOURCES}
 mkdir openssl && tar xf openssl-*.tar.* -C openssl --strip-components 1
 cd openssl
 
-./Configure linux-x86 --openssldir=/etc/ssl --prefix=/usr shared
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH32} \
-USE_ARCH=32 make CC="gcc ${BUILD32}" PERL=/usr/bin/perl-32
-USE_ARCH=32 make PERL=/usr/bin/perl-32 MANDIR=/usr/share/man install
+USE_ARCH=32 make CC="gcc ${BUILD32} ./config linux-x86 --openssldir=/etc/ssl \
+  --prefix=/usr shared \
+  --libdir=/usr/lib 
+  
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH32} \
+USE_ARCH=32 make CC="gcc ${BUILD32}" PREFIX=/usr LIBDIR=/usr/lib
+
+sed -i 's# libcrypto.a##;s# libssl.a##;/INSTALL_LIBS/s#libcrypto.a##' Makefile
+
+make PREFIX=/usr LIBDIR=/usr/lib install
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
@@ -73,17 +80,17 @@ rm -rf openssl
 mkdir openssl && tar xf openssl-*.tar.* -C openssl --strip-components 1
 cd openssl
 
-./Configure linux-x86_64 --openssldir=/etc/ssl --prefix=/usr shared
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
-USE_ARCH=64 LIBDIR=lib64 make CC="gcc ${BUILD64}" PERL=/usr/bin/perl-64
-USE_ARCH=64 LIBDIR=lib64 make PERL=/usr/bin/perl-64 MANDIR=/usr/share/man install
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} \
+USE_ARCH=64 make CC="gcc ${BUILD64} ./config linux-x86_64 --openssldir=/etc/ssl \
+  --prefix=/usr shared \
+  --libdir=/usr/lib64
+  
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} \
+USE_ARCH=64 make PREFIX=/usr LIBDIR=/usr/lib64 CC="gcc ${BUILD64}" 
 
-mkdir /etc/ssl/certs
-cp -v -r certs /etc/ssl &&
-install -v -d -m755 /usr/share/doc/openssl-1.1.0f &&
-cp -v -r doc/{HOWTO,README,*.{txt,html,gif}} \
-    /usr/share/doc/openssl-1.1.0f
+sed -i 's# libcrypto.a##;s# libssl.a##;/INSTALL_LIBS/s#libcrypto.a##' Makefile
 
+make PREFIX=/usr LIBDIR=/usr/lib64 install 
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
