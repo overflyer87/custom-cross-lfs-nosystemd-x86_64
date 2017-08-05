@@ -229,7 +229,7 @@ rm -rf openssh
 wget http://downloads.sourceforge.net/project/gptfdisk/gptfdisk/1.0.1/gptfdisk-1.0.1.tar.gz -O \
   gptfdisk-1.0.1.tar.gz
 
-wget http://www.linuxfromscratch.org/patches/blfs/svn/gptfdisk-1.0.1-convenience-1.patch -O \
+wget http://www.linuxfromscratch.org/patches/blfs/svn/gptfdisk-1.0.3-convenience-1.patch -O \
   GPTfdisk-1.0.1-convenience-1.patch 
 
 mkdir gptfdisk && tar xf gptfdisk-*.tar.* -C gptfdisk --strip-components 1
