@@ -45,7 +45,6 @@ CLFSROOTDEV=/dev/sda4
 CLFSHOMEDEV=/dev/sda5
 MAKEFLAGS='j8'
 BUILD32="-m32"
-BUILD64="-m64"
 CLFS_TARGET32="i686-pc-linux-gnu"
 PKG_CONFIG_PATH=/usr/lib/pkgconfig
 PKG_CONFIG_PATH32=/usr/lib/pkgconfig
@@ -62,7 +61,6 @@ export CLFSROOTDEV=/dev/sda4
 export CLFSHOMEDEV=/dev/sda5
 export MAKEFLAGS=j8
 export BUILD32="-m32"
-export BUILD64="-m64"
 export CLFS_TARGET32="i686-pc-linux-gnu"
 export PKG_CONFIG_PATH=/usr/lib/pkgconfig
 export PKG_CONFIG_PATH32=/usr/lib/pkgconfig
@@ -314,7 +312,6 @@ python2 setup.py build
 as_root python2 setup.py install --optimize=1
 python2 setup.py build
 as_root python2 setup.py install --optimize=1
-
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
