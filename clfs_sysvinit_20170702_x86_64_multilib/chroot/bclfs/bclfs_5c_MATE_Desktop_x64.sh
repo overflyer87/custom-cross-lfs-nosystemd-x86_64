@@ -15,25 +15,6 @@ done
 
 }
 
-function as_root()
-{
-  if   [ $EUID = 0 ];        then $*
-  elif [ -x /usr/bin/sudo ]; then sudo $*
-  else                            su -c \\"$*\\"
-  fi
-}
-
-export -f as_root
-
-function buildSingleXLib64() {
-  PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
-  USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64
-  make PREFIX=/usr LIBDIR=/usr/lib64
-  as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
-}
-
-export -f buildSingleXLib64
-
 #Building the final CLFS System
 CLFS=/
 CLFSHOME=/home
@@ -95,7 +76,7 @@ cd libgpgerror
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr --libdir=/usr/lib64
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -113,7 +94,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
 make check
 checkBuiltPackage
 
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -134,7 +115,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
 make check
 checkBuiltPackage
 
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -157,7 +138,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
 make check
 checkBuiltPackage
 
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -178,7 +159,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
 make check
 checkBuiltPackage
 
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -199,7 +180,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 make check
 checkBuiltPackage
 
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -220,7 +201,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 make check
 checkBuiltPackage
 
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -239,7 +220,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
     
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -263,7 +244,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 make -k check
 checkBuiltPackage
 
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -271,8 +252,8 @@ rm -r gcr
 
 #libgnome-keyring (for gnome-keyring-1) FINALLY FOUND IT
 wget https://github.com/GNOME/libgnome-keyring/archive/3.12.0.tar.gz -O \
-	libgnome-keyring-3.12.0.tar.gz
-	
+  libgnome-keyring-3.12.0.tar.gz
+  
 mkdir libgnome-keyring && tar xf libgnome-keyring-*.tar.* -C libgnome-keyring  --strip-components 1
 cd libgnome-keyring
 
@@ -286,13 +267,13 @@ ACLOCAL_FLAGS=/usr/share/aclocal  sh autogen.sh
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
 USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} \
 ACLOCAL_FLAGS=/usr/share/aclocal ./configure --prefix=/usr \
-	--libdir=/usr/lib64 \
-	--disable-static    
+  --libdir=/usr/lib64 \
+  --disable-static    
 
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -334,7 +315,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 make check
 checkBuiltPackage
 
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -353,7 +334,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
             --disable-static &&
             
 make PREFIX=/usr LIBDIR=/usr/lib4
-as_root make PREFIX=/usr LIBDIR=/usr/lib4 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib4 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -380,10 +361,10 @@ sed -i 's/doc/#doc/' Makefile*
 XSLTPROC_XSL=/usr/share/xml/docbook/xsl-stylesheets-1.79.1/html/docbook.xsl \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-as_root mkdir /usr/share/mate-session-manager
-as_root cp -rv data/* /usr/share/mate-session-manager
+sudo mkdir /usr/share/mate-session-manager
+sudo cp -rv data/* /usr/share/mate-session-manager
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -405,10 +386,10 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 make check
 checkBuiltPackage
 
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
-as_root chmod   -v   755 /usr/lib64/lib{hogweed,nettle}.so &&
-as_root install -v -m755 -d /usr/share/doc/nettle-3.3 &&
-as_root install -v -m644 nettle.html /usr/share/doc/nettle-3.3
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo chmod   -v   755 /usr/lib64/lib{hogweed,nettle}.so &&
+sudo install -v -m755 -d /usr/share/doc/nettle-3.3 &&
+sudo install -v -m644 nettle.html /usr/share/doc/nettle-3.3
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -435,7 +416,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 make check
 checkBuiltPackage
 
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -456,7 +437,7 @@ CC="gcc ${BUILD64}" \
    --libdir=/usr/lib64 --disable-static 
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -475,7 +456,7 @@ CC="gcc ${BUILD64}" \
    --libdir=/usr/lib64 --disable-static 
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -504,7 +485,7 @@ bin/ctest -O cmake-3.8.2-test.log
 checkBuiltPackage
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -523,7 +504,7 @@ CC="gcc ${BUILD64}" \
    --libdir=/usr/lib64 --disable-static 
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -546,7 +527,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 make -k check 
 checkBuiltPackage
 
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -564,15 +545,15 @@ CC="gcc ${BUILD64}" \
    PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
    --libdir=/usr/lib64 --disable-static 
 
-as_root ln -sfv /usr/bin/python3 /usr/bin/python
+sudo ln -sfv /usr/bin/python3 /usr/bin/python
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 make check 
 checkBuiltPackage
 
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
-as_root unlink /usr/bin/python
-as_root ldconfig
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo unlink /usr/bin/python
+sudo ldconfig
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -593,7 +574,7 @@ cd libmateweather
    --enable-dependency-tracking
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -619,7 +600,7 @@ CC="gcc ${BUILD64}"   CXX="g++ ${BUILD64}" USE_ARCH=64    \
   --includedir=/usr/include/  
   
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
   
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -649,31 +630,31 @@ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" LDFLAGS="-L/usr/lib64" ./configure \
             --libdir=/usr/lib64 &&
 
 make LIBDIR=/usr/lib64 PREFIX=/usr 
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-as_root chmod -v 755 /usr/lib64/libpython2.7.so.1.0
+sudo chmod -v 755 /usr/lib64/libpython2.7.so.1.0
 
-as_root mv -v /usr/bin/python{,-64} &&
-as_root mv -v /usr/bin/python2{,-64} &&
-as_root mv -v /usr/bin/python2.7{,-64} &&
-as_root ln -sfv python2.7-64 /usr/bin/python2-64 &&
-as_root ln -sfv python2-64 /usr/bin/python-64 &&
-as_root ln -sfv multiarch_wrapper /usr/bin/python &&
-as_root ln -sfv multiarch_wrapper /usr/bin/python2 &&
-as_root ln -sfv multiarch_wrapper /usr/bin/python2.7 &&
+sudo mv -v /usr/bin/python{,-64} &&
+sudo mv -v /usr/bin/python2{,-64} &&
+sudo mv -v /usr/bin/python2.7{,-64} &&
+sudo ln -sfv python2.7-64 /usr/bin/python2-64 &&
+sudo ln -sfv python2-64 /usr/bin/python-64 &&
+sudo ln -sfv multiarch_wrapper /usr/bin/python &&
+sudo ln -sfv multiarch_wrapper /usr/bin/python2 &&
+sudo ln -sfv multiarch_wrapper /usr/bin/python2.7 &&
 #Deactivate renaming header according to cblfs
 #mate-menu will not find since Python.h includes pyconfig.h not pyconfig-64.h
-#as_root mv -v /usr/include/python2.7/pyconfig{,-64}.h
+#sudo mv -v /usr/include/python2.7/pyconfig{,-64}.h
 
-as_root install -v -dm755 /usr/share/doc/python-2.7.13 &&
+sudo install -v -dm755 /usr/share/doc/python-2.7.13 &&
 
 tar --strip-components=1                     \
     --no-same-owner                          \
     --directory /usr/share/doc/python-2.7.13 \
     -xvf ../python-2.7.*.tar.* &&
 
-as_root find /usr/share/doc/python-2.7.13 -type d -exec chmod 0755 {} \; &&
-as_root find /usr/share/doc/python-2.7.13 -type f -exec chmod 0644 {} \;
+sudo find /usr/share/doc/python-2.7.13 -type d -exec chmod 0755 {} \; &&
+sudo find /usr/share/doc/python-2.7.13 -type f -exec chmod 0644 {} \;
             
 cd ${CLFSSOURCES}
 checkBuiltPackage
@@ -696,7 +677,7 @@ LIBSOUP_LIBS=/usr/lib64 \
 #YOU NEED PYTHON 2.7 FOR PYTHON BINDING!!!
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
   
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -715,7 +696,7 @@ CC="gcc ${BUILD64}" \
    --libdir=/usr/lib64 --disable-static 
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 pgrep -l notification-da &&
 notify-send -i info Information "Hi ${USER}, This is a Test"
@@ -735,7 +716,7 @@ sed -i 's/CC = cc#/CC = gcc#/' unix/Makefile
 
 CC="gcc ${BUILD64}" \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64 -f unix/Makefile generic_gcc
-as_root make PREFIX=/usr MANDIR=/usr/share/man/man1 LIBDIR=/usr/lib64 -f unix/Makefile install
+sudo make PREFIX=/usr MANDIR=/usr/share/man/man1 LIBDIR=/usr/lib64 -f unix/Makefile install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -762,10 +743,10 @@ CC="gcc ${BUILD64}" \
    --libdir=/usr/lib64 --disable-static --program-suffix=2.13 
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-as_root install -v -m644 autoconf213.info /usr/share/info &&
-as_root install-info --info-dir=/usr/share/info autoconf213.info
+sudo install -v -m644 autoconf213.info /usr/share/info &&
+sudo install-info --info-dir=/usr/share/info autoconf213.info
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -802,16 +783,16 @@ rm -rf autoconf
 #    --enable-readline   
 #
 #PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-#as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+#sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 #
-#as_root pushd /usr/include/mozjs-38 &&
+#sudo pushd /usr/include/mozjs-38 &&
 #for link in `find . -type l`; do
 #    header=`readlink $link`
-#    as_root rm -f $link
-#    as_root cp -pv $header $link
-#    as_root chmod 644 $link
+#    sudo rm -f $link
+#    sudo cp -pv $header $link
+#    sudo chmod 644 $link
 #done &&
-#as_root popd
+#sudo popd
 #
 #cd ${CLFSSOURCES}/xc/mate
 #checkBuiltPackage
@@ -822,7 +803,7 @@ rm -rf autoconf
 
 #js17
 wget wget http://ftp.mozilla.org/pub/mozilla.org/js/mozjs17.0.0.tar.gz -O \
-	mozjs17.0.0.tar.gz
+  mozjs17.0.0.tar.gz
 
 mkdir mozjs && tar xf mozjs*.tar.* -C mozjs --strip-components 1
 cd mozjs
@@ -832,20 +813,20 @@ sed -i 's/(defined\((@TEMPLATE_FILE)\))/\1/' config/milestone.pl
 
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
-	--libdir=/usr/lib64 \
-	--enable-readline   \
-	--enable-threadsafe \ 
-	--with-system-ffi   \
-	--with-system-nspr  
+  --libdir=/usr/lib64 \
+  --enable-readline   \
+  --enable-threadsafe \ 
+  --with-system-ffi   \
+  --with-system-nspr  
 
 sed -i 's/value\[0\] == /\*value\[0\] == /' shell/jsoptparse.cpp
 
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} make PREFIX=/usr LIBDIR=/usr/lib64
 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-as_root find /usr/include/js-17.0/            \
+sudo find /usr/include/js-17.0/            \
      /usr/lib64/libmozjs-17.0.a         \
      /usr/lib64/pkgconfig/mozjs-17.0.pc \
      -type f -exec chmod -v 644 {} \;
@@ -856,13 +837,13 @@ rm -rf mozjs
 
 #polkit 113
 wget http://www.freedesktop.org/software/polkit/releases/polkit-0.113.tar.gz -O \
-	polkit-0.113.tar.gz
-	
+  polkit-0.113.tar.gz
+  
 mkdir polkit && tar xf polkit*.tar.gz -C polkit --strip-components 1
 cd polkit
 
-as_root groupadd -fg 28 polkitd &&
-as_root useradd -c "PolicyKit Daemon Owner" -d /etc/polkit-1 -u 28 \
+sudo groupadd -fg 28 polkitd &&
+sudo useradd -c "PolicyKit Daemon Owner" -d /etc/polkit-1 -u 28 \
         -g polkitd -s /bin/false polkitd
 
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
@@ -879,18 +860,18 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} \
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} make PREFIX=/usr LIBDIR=/usr/lib64
 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-as_root chown root:root /usr/lib/polkit-1/polkit-agent-helper-1
-as_root chown root:root /usr/bin/pkexec
-as_root chmod 4755 /usr/lib/polkit-1/polkit-agent-helper-1
-as_root chmod 4755 /usr/bin/pkexec
-as_root chown -Rv polkitd /etc/polkit-1/rules.d
-as_root chown -Rv polkitd /usr/share/polkit-1/rules.d
-as_root chmod 700 /etc/polkit-1/rules.d
-as_root chmod 700 /usr/share/polkit-1/rules.d
+sudo chown root:root /usr/lib/polkit-1/polkit-agent-helper-1
+sudo chown root:root /usr/bin/pkexec
+sudo chmod 4755 /usr/lib/polkit-1/polkit-agent-helper-1
+sudo chmod 4755 /usr/bin/pkexec
+sudo chown -Rv polkitd /etc/polkit-1/rules.d
+sudo chown -Rv polkitd /usr/share/polkit-1/rules.d
+sudo chmod 700 /etc/polkit-1/rules.d
+sudo chmod 700 /usr/share/polkit-1/rules.d
 
-as_root cat > /etc/pam.d/polkit-1 << "EOF"
+sudo cat > /etc/pam.d/polkit-1 << "EOF"
 # Begin /etc/pam.d/polkit-1
 
 auth     include        system-auth
@@ -920,7 +901,7 @@ CC="gcc ${BUILD64}" \
             --disable-static
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -941,7 +922,7 @@ CC="gcc ${BUILD64}" \
             --disable-static
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -965,7 +946,7 @@ CC="gcc ${BUILD64}" \
             --disable-gtk-doc
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -984,7 +965,7 @@ CC="gcc ${BUILD64}" \
   --libdir=/usr/lib64 --disable-static
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make docdir=/usr/share/doc/libdaemon-0.14 LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make docdir=/usr/share/doc/libdaemon-0.14 LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -1006,7 +987,7 @@ CC="gcc ${BUILD64}" \
   --sysconfdir=/etc --libdir=/usr/lib64
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cat > ~/.gtkrc-2.0 << "EOF"
 include "/usr/share/themes/Glider/gtk-2.0/gtkrc"
@@ -1039,7 +1020,7 @@ CC="gcc ${BUILD64}" \
   --libdir=/usr/lib64 --disable-static
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -1053,12 +1034,12 @@ mkdir pycairo && tar xf pycairo-*.tar.* -C pycairo --strip-components 1
 cd pycairo
 
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} LIBDIR=/usr/lib64 PREFIX=/usr python2 setup.py build  
-as_root python2 setup.py install --optimize=1
+sudo python2 setup.py install --optimize=1
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} LIBDIR=/usr/lib64 PREFIX=/usr python3 setup.py build
-as_root python3 setup.py install --optimize=1
+sudo python3 setup.py install --optimize=1
 
-as_root mv /usr/lib/pkgconfig/pycairo.pc /usr/lib64/pkgconfig/pycairo.pc
-as_root mv /usr/lib/pkgconfig/py3cairo.pc /usr/lib64/pkgconfig/py3cairo.pc
+sudo mv /usr/lib/pkgconfig/pycairo.pc /usr/lib64/pkgconfig/pycairo.pc
+sudo mv /usr/lib/pkgconfig/py3cairo.pc /usr/lib64/pkgconfig/py3cairo.pc
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -1082,7 +1063,7 @@ CC="gcc ${BUILD64}" \
   --libdir=/usr/lib64 --disable-introspection --disable-docs
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -1105,7 +1086,7 @@ CC="gcc ${BUILD64}" \
 make PREFIX=/usr LIBDIR=/usr/lib64 &&
 popd
 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 -C python2 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 -C python2 install
 
 mkdir python3 &&
 pushd python3 &&
@@ -1117,7 +1098,7 @@ CC="gcc ${BUILD64}" \
 make PREFIX=/usr LIBDIR=/usr/lib64 &&
 popd
 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 -C python3 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 -C python3 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -1138,7 +1119,7 @@ PYTHON=/usr/bin/python2     \
 make PREFIX=/usr LIBDIR=/usr/lib64 &&
 popd
 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 -C python2 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 -C python2 install
 
 mkdir python3 &&
 pushd python3 &&
@@ -1147,7 +1128,7 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64}  ../configure --prefix=/usr --libdir=/usr/l
 make PREFIX=/usr LIBDIR=/usr/lib64 &&
 popd
 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 -C python3 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 -C python3 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -1163,11 +1144,11 @@ cd avahi
 wget https://github.com/lathiat/avahi/releases/download/v0.7/avahi-0.7.tar.gz -O \
     avahi-0.7.tar.gz
 
-as_root groupadd -fg 84 avahi 
-as_root useradd -c "Avahi Daemon Owner" -d /var/run/avahi-daemon -u 84 \
+sudo groupadd -fg 84 avahi 
+sudo useradd -c "Avahi Daemon Owner" -d /var/run/avahi-daemon -u 84 \
         -g avahi -s /bin/false avahi
 
-as_root groupadd -fg 86 netdev
+sudo groupadd -fg 86 netdev
 
 CC="gcc ${BUILD64}" \
   CXX="g++ ${BUILD64}" USE_ARCH=64 \
@@ -1190,10 +1171,10 @@ CC="gcc ${BUILD64}" \
             --enable-gtk2 
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/bootscripts
-as_root make install-avahi
+sudo make install-avahi
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -1206,7 +1187,7 @@ wget http://anduin.linuxfromscratch.org/BLFS/blfs-bootscripts/blfs-bootscripts-2
 mkdir blfs-bootscripts && tar xf blfs-bootscripts-*.tar.* -C blfs-bootscripts --strip-components 1
 cd blfs-bootscripts
 
-as_root make install-avahi
+sudo make install-avahi
 cd ${CLFSSOURCES}/xc/mate
 
 #GeoCLue
@@ -1223,7 +1204,7 @@ CC="gcc ${BUILD64}" \
   --disable-3g-source
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -1245,19 +1226,19 @@ CC="gcc ${BUILD64}" \
   --libdir=/usr/lib64
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-as_root ln -svfn aspell-0.60 /usr/lib64/aspell 
-as_root install -v -m755 -d /usr/share/doc/aspell-0.60.6.1/aspell{,-dev}.html
+sudo ln -svfn aspell-0.60 /usr/lib64/aspell 
+sudo install -v -m755 -d /usr/share/doc/aspell-0.60.6.1/aspell{,-dev}.html
 
-as_root install -v -m644 manual/aspell.html/* \
+sudo install -v -m644 manual/aspell.html/* \
     /usr/share/doc/aspell-0.60.6.1/aspell.html
 
-as_root install -v -m644 manual/aspell-dev.html/* \
+sudo install -v -m644 manual/aspell-dev.html/* \
     /usr/share/doc/aspell-0.60.6.1/aspell-dev.html
 
-as_root install -v -m 755 scripts/ispell /usr/bin/
-as_root install -v -m 755 scripts/spell /usr/bin/
+sudo install -v -m 755 scripts/ispell /usr/bin/
+sudo install -v -m 755 scripts/spell /usr/bin/
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -1276,7 +1257,7 @@ CC="gcc ${BUILD64}" \
   --libdir=/usr/lib64
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -1295,7 +1276,7 @@ CC="gcc ${BUILD64}" \
   --libdir=/usr/lib64 --disable-gtk-doc --disable-manpages
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -1319,7 +1300,7 @@ CC="gcc ${BUILD64}" \
   --enable-swap-16bit-csp \
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -1340,7 +1321,7 @@ CC="gcc ${BUILD64}" \
   --docdir=/usr/share/doc/ruby-2.4.1
   
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install 
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install 
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -1359,7 +1340,7 @@ CC="gcc ${BUILD64}" \
    --libdir=/usr/lib64 --disable-static 
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -1378,7 +1359,7 @@ CC="gcc ${BUILD64}" \
    --libdir=/usr/lib64 --disable-static 
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -1449,13 +1430,13 @@ cd yelp-xsl
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr --libdir=/usr/lib64
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 
-as_root install -vdm755 /usr/share/gtk-doc/html/webkit{2,dom}gtk-4.0 &&
-as_root install -vm644  ../Documentation/webkit2gtk-4.0/html/*   \
+sudo install -vdm755 /usr/share/gtk-doc/html/webkit{2,dom}gtk-4.0 &&
+sudo install -vm644  ../Documentation/webkit2gtk-4.0/html/*   \
                 /usr/share/gtk-doc/html/webkit2gtk-4.0       &&
-as_root install -vm644  ../Documentation/webkitdomgtk-4.0/html/* \
+sudo install -vm644  ../Documentation/webkitdomgtk-4.0/html/* \
                 /usr/share/gtk-doc/html/webkitdomgtk-4.0
 
 cd ${CLFSSOURCES}/xc/mate
@@ -1475,10 +1456,10 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
   --disable-gtk-doc
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
-as_root update-desktop-database
-as_root libtool --finish /usr/lib64/yelp/web-extensions
-as_root libtool --finish /usr/lib64/
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo update-desktop-database
+sudo libtool --finish /usr/lib64/yelp/web-extensions
+sudo libtool --finish /usr/lib64/
 ldconfig
 
 cd ${CLFSSOURCES}/xc/mate
@@ -1499,7 +1480,7 @@ ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" \
    --localstatedir=/var --bindir=/usr/bin --sbindir=/usr/sbin 
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -1531,10 +1512,10 @@ sed -i 's/HELP_DIR/#HELP_DIR/' Makefile Makefile.in
 sed -i 's/help/#help/' Makefile Makefile.in Makefile.am
    
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-as_root mkdir /usr/share/mate-panel
-as_root cp -rv data/* /usr/share/mate-panel
+sudo mkdir /usr/share/mate-panel
+sudo cp -rv data/* /usr/share/mate-panel
   
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
