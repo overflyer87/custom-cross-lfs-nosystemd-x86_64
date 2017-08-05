@@ -62,7 +62,7 @@ cd openssl
 
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH32} \
 USE_ARCH=32 make CC="gcc ${BUILD32}" \
-./config linux-x86 
+./config linux-x86 \
   --openssldir=/etc/ssl \
   --prefix=/usr \
   --libdir=/lib \
