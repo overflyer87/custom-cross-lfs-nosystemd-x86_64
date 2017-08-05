@@ -45,7 +45,6 @@ CLFSROOTDEV=/dev/sda4
 CLFSHOMEDEV=/dev/sda5
 MAKEFLAGS='j8'
 BUILD32="-m32"
-BUILD64="-m64"
 CLFS_TARGET32="i686-pc-linux-gnu"
 PKG_CONFIG_PATH32=/usr/lib/pkgconfig
 PKG_CONFIG_PATH=/usr/lib/pkgconfig
@@ -62,7 +61,6 @@ export CLFSROOTDEV=/dev/sda4
 export CLFSHOMEDEV=/dev/sda5
 export MAKEFLAGS=j8
 export BUILD32="-m32"
-export BUILD64="-m64"
 export CLFS_TARGET32="i686-pc-linux-gnu"
 export PKG_CONFIG_PATH32=/usr/lib/pkgconfig
 export PKG_CONFIG_PATH=/usr/lib/pkgconfig
@@ -79,78 +77,80 @@ XORG_CONFIG32="--prefix=$XORG_PREFIX --sysconfdir=/etc --localstatedir=/var \
   --libdir=$XORG_PREFIX/lib"
 
 #Add this point you COULD install Linux-PAM
+#If you did not already
+#Uncomment Apps because I think it is more likely you want 32-bit libraries
 
 #Xorg Apps
-cat > app-7.md5 << "EOF"
-25dab02f8e40d5b71ce29a07dc901b8c  iceauth-1.0.7.tar.bz2
-c4a3664e08e5a47c120ff9263ee2f20c  luit-1.1.1.tar.bz2
-18c429148c96c2079edda922a2b67632  mkfontdir-1.0.7.tar.bz2
-9bdd6ebfa62b1bbd474906ac86a40fd8  mkfontscale-1.1.2.tar.bz2
-e475167a892b589da23edf8edf8c942d  sessreg-1.1.1.tar.bz2
-2c47a1b8e268df73963c4eb2316b1a89  setxkbmap-1.3.1.tar.bz2
-3a93d9f0859de5d8b65a68a125d48f6a  smproxy-1.0.6.tar.bz2
-f0b24e4d8beb622a419e8431e1c03cd7  x11perf-1.6.0.tar.bz2
-f3f76cb10f69b571c43893ea6a634aa4  xauth-1.0.10.tar.bz2
-0066f23f69ca3ef62dcaeb74a87fdc48  xbacklight-1.2.1.tar.bz2
-9956d751ea3ae4538c3ebd07f70736a0  xcmsdb-1.0.5.tar.bz2
-b58a87e6cd7145c70346adad551dba48  xcursorgen-1.0.6.tar.bz2
-8809037bd48599af55dad81c508b6b39  xdpyinfo-1.3.2.tar.bz2
-fceddaeb08e32e027d12a71490665866  xdriinfo-1.0.5.tar.bz2
-249bdde90f01c0d861af52dc8fec379e  xev-1.2.2.tar.bz2
-90b4305157c2b966d5180e2ee61262be  xgamma-1.0.6.tar.bz2
-f5d490738b148cb7f2fe760f40f92516  xhost-1.0.7.tar.bz2
-6a889412eff2e3c1c6bb19146f6fe84c  xinput-1.6.2.tar.bz2
-cc22b232bc78a303371983e1b48794ab  xkbcomp-1.4.0.tar.bz2
-c747faf1f78f5a5962419f8bdd066501  xkbevd-1.1.4.tar.bz2
-502b14843f610af977dffc6cbf2102d5  xkbutils-1.0.4.tar.bz2
-0ae6bc2a8d3af68e9c76b1a6ca5f7a78  xkill-1.0.4.tar.bz2
-5dcb6e6c4b28c8d7aeb45257f5a72a7d  xlsatoms-1.1.2.tar.bz2
-9fbf6b174a5138a61738a42e707ad8f5  xlsclients-1.1.3.tar.bz2
-2dd5ae46fa18abc9331bc26250a25005  xmessage-1.0.4.tar.bz2
-723f02d3a5f98450554556205f0a9497  xmodmap-1.0.9.tar.bz2
-6101f04731ffd40803df80eca274ec4b  xpr-1.0.4.tar.bz2
-fae3d2fda07684027a643ca783d595cc  xprop-1.2.2.tar.bz2
-ebffac98021b8f1dc71da0c1918e9b57  xrandr-1.5.0.tar.bz2
-b54c7e3e53b4f332d41ed435433fbda0  xrdb-1.1.0.tar.bz2
-a896382bc53ef3e149eaf9b13bc81d42  xrefresh-1.0.5.tar.bz2
-dcd227388b57487d543cab2fd7a602d7  xset-1.2.3.tar.bz2
-7211b31ec70631829ebae9460999aa0b  xsetroot-1.1.1.tar.bz2
-558360176b718dee3c39bc0648c0d10c  xvinfo-1.1.3.tar.bz2
-6b5d48464c5f366e91efd08b62b12d94  xwd-1.0.6.tar.bz2
-b777bafb674555e48fd8437618270931  xwininfo-1.1.3.tar.bz2
-3025b152b4f13fdffd0c46d0be587be6  xwud-1.0.4.tar.bz2
-EOF
+#cat > app-7.md5 << "EOF"
+#25dab02f8e40d5b71ce29a07dc901b8c  iceauth-1.0.7.tar.bz2
+#c4a3664e08e5a47c120ff9263ee2f20c  luit-1.1.1.tar.bz2
+#18c429148c96c2079edda922a2b67632  mkfontdir-1.0.7.tar.bz2
+#9bdd6ebfa62b1bbd474906ac86a40fd8  mkfontscale-1.1.2.tar.bz2
+#e475167a892b589da23edf8edf8c942d  sessreg-1.1.1.tar.bz2
+#2c47a1b8e268df73963c4eb2316b1a89  setxkbmap-1.3.1.tar.bz2
+#3a93d9f0859de5d8b65a68a125d48f6a  smproxy-1.0.6.tar.bz2
+#f0b24e4d8beb622a419e8431e1c03cd7  x11perf-1.6.0.tar.bz2
+#f3f76cb10f69b571c43893ea6a634aa4  xauth-1.0.10.tar.bz2
+#0066f23f69ca3ef62dcaeb74a87fdc48  xbacklight-1.2.1.tar.bz2
+#9956d751ea3ae4538c3ebd07f70736a0  xcmsdb-1.0.5.tar.bz2
+#b58a87e6cd7145c70346adad551dba48  xcursorgen-1.0.6.tar.bz2
+#8809037bd48599af55dad81c508b6b39  xdpyinfo-1.3.2.tar.bz2
+#fceddaeb08e32e027d12a71490665866  xdriinfo-1.0.5.tar.bz2
+#249bdde90f01c0d861af52dc8fec379e  xev-1.2.2.tar.bz2
+#90b4305157c2b966d5180e2ee61262be  xgamma-1.0.6.tar.bz2
+#f5d490738b148cb7f2fe760f40f92516  xhost-1.0.7.tar.bz2
+#6a889412eff2e3c1c6bb19146f6fe84c  xinput-1.6.2.tar.bz2
+#cc22b232bc78a303371983e1b48794ab  xkbcomp-1.4.0.tar.bz2
+#c747faf1f78f5a5962419f8bdd066501  xkbevd-1.1.4.tar.bz2
+#502b14843f610af977dffc6cbf2102d5  xkbutils-1.0.4.tar.bz2
+#0ae6bc2a8d3af68e9c76b1a6ca5f7a78  xkill-1.0.4.tar.bz2
+#5dcb6e6c4b28c8d7aeb45257f5a72a7d  xlsatoms-1.1.2.tar.bz2
+#9fbf6b174a5138a61738a42e707ad8f5  xlsclients-1.1.3.tar.bz2
+#2dd5ae46fa18abc9331bc26250a25005  xmessage-1.0.4.tar.bz2
+#723f02d3a5f98450554556205f0a9497  xmodmap-1.0.9.tar.bz2
+#6101f04731ffd40803df80eca274ec4b  xpr-1.0.4.tar.bz2
+#fae3d2fda07684027a643ca783d595cc  xprop-1.2.2.tar.bz2
+#ebffac98021b8f1dc71da0c1918e9b57  xrandr-1.5.0.tar.bz2
+#b54c7e3e53b4f332d41ed435433fbda0  xrdb-1.1.0.tar.bz2
+#a896382bc53ef3e149eaf9b13bc81d42  xrefresh-1.0.5.tar.bz2
+#dcd227388b57487d543cab2fd7a602d7  xset-1.2.3.tar.bz2
+#7211b31ec70631829ebae9460999aa0b  xsetroot-1.1.1.tar.bz2
+#558360176b718dee3c39bc0648c0d10c  xvinfo-1.1.3.tar.bz2
+#6b5d48464c5f366e91efd08b62b12d94  xwd-1.0.6.tar.bz2
+#b777bafb674555e48fd8437618270931  xwininfo-1.1.3.tar.bz2
+#3025b152b4f13fdffd0c46d0be587be6  xwud-1.0.4.tar.bz2
+#EOF
+#
+#mkdir app
+#cd app
+#
+#grep -v '^#' ../app-7.md5 | awk '{print $2}' | wget -i- -c \
+#    -B https://www.x.org/pub/individual/app/ &&
+#md5sum -c ../app-7.md5
+#
+#PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
+#USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}"
+#
+#for package in $(grep -v '^#' ../app-7.md5 | awk '{print $2}')
+#do
+#  packagedir=${package%.tar.bz2}
+#  tar -xf $package
+#  pushd $packagedir
+#     case $packagedir in
+#       luit-[0-9]* )
+#         sed -i -e "/D_XOPEN/s/5/6/" configure
+#       ;;
+#esac
+#
+#    ./configure $XORG_CONFIG32
+#     make PREFIX=/usr LIBDIR=/usr/lib
+#     as_root make PREFIX=/usr LIBDIR=/usr/lib install
+#  popd
+#  rm -rf $packagedir
+#done
+#as_root rm -f $XORG_PREFIX/bin/xkeystone
 
-mkdir app
-cd app
-
-grep -v '^#' ../app-7.md5 | awk '{print $2}' | wget -i- -c \
-    -B https://www.x.org/pub/individual/app/ &&
-md5sum -c ../app-7.md5
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-USE_ARCH=32 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}"
-
-for package in $(grep -v '^#' ../app-7.md5 | awk '{print $2}')
-do
-  packagedir=${package%.tar.bz2}
-  tar -xf $package
-  pushd $packagedir
-     case $packagedir in
-       luit-[0-9]* )
-         sed -i -e "/D_XOPEN/s/5/6/" configure
-       ;;
-     esac
-
-    ./configure $XORG_CONFIG32
-     make PREFIX=/usr LIBDIR=/usr/lib
-     as_root make PREFIX=/usr LIBDIR=/usr/lib install
-  popd
-  rm -rf $packagedir
-done
-as_root rm -f $XORG_PREFIX/bin/xkeystone
-
-export PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}"
 
 cd ${CLFSSOURCES}/xc
 
@@ -379,7 +379,7 @@ as_root make PREFIX=/usr        \
      SHARED=yes                 \
      install install-lib        &&
 
-as_root chmod -v 755 /usr/lib64/libpci.so
+as_root chmod -v 755 /usr/lib/libpci.so
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
@@ -473,90 +473,93 @@ rm -rf xf86vidfbdev
 
 #THE PROPRIETARY NVIDIA DRIVER INSTALLATION CAN BE FOUND IN THE X64 SCRIPT
 
-#twm 32-bit
-wget https://www.x.org/pub/individual/app/twm-1.0.9.tar.bz2 -O \
-  twm-1.0.9.tar.bz2
-  
-mkdir twm && tar xf twm-*.tar.* -C twm --strip-components 1
-cd twm
+#I uncommented the applications, because I find it most likely
+#that on a multilib system you want the 32-bit libraries if needed
 
-sed -i -e '/^rcdir =/s,^\(rcdir = \).*,\1/etc/X11/app-defaults,' src/Makefile.in
-
-buildSingleXLib32
-
-cd ${CLFSSOURCES}/xc
-checkBuiltPackage
-rm -rf twm
-
-USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
-CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}"
-
+##twm 32-bit
+#wget https://www.x.org/pub/individual/app/twm-1.0.9.tar.bz2 -O \
+#  twm-1.0.9.tar.bz2
+#  
+#mkdir twm && tar xf twm-*.tar.* -C twm --strip-components 1
+#cd twm
+#
+#sed -i -e '/^rcdir =/s,^\(rcdir = \).*,\1/etc/X11/app-defaults,' src/Makefile.in
+#
+#buildSingleXLib32
+#
+#cd ${CLFSSOURCES}/xc
+#checkBuiltPackage
+#rm -rf twm
+#
+#USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
+#CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}"
+#
 #xterm 32-bit
-wget ftp://invisible-island.net/xterm/xterm-330.tgz -O \
-  xterm-330.tgz
-  
-mkdir xterm && tar xf xterm-*.tgz -C xterm --strip-components 1
-cd xterm
-
-sed -i '/v0/{n;s/new:/new:kb=^?:/}' termcap &&
-printf '\tkbs=\\177,\n' >> terminfo &&
-
-USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" \
-TERMINFO=/usr/share/terminfo ./configure $XORG_CONFIG32     \
-    --with-app-defaults=/etc/X11/app-defaults &&
-
-make PREFIX=/usr LIBDIR=/usr/lib
-as_root make PREFIX=/usr LIBDIR=/usr/lib install 
-as_root make PREFIX=/usr LIBDIR=/usr/lib install-ti
-
-as_root cat >> /etc/X11/app-defaults/XTerm << "EOF"
-*VT100*locale: true
-*VT100*faceName: Monospace
-*VT100*faceSize: 10
-*backarrowKeyIsErase: true
-*ptyInitialErase: true
-EOF
-
-cd ${CLFSSOURCES}/xc
-checkBuiltPackage
-rm -rf xterm
-
-#xclock 32-bit
-wget https://www.x.org/pub/individual/app/xclock-1.0.7.tar.bz2 -O \
-  xclock-1.0.7.tar.bz2
-
-mkdir xclock && tar xf xclock-*.tar.* -C xclock --strip-components 1
-cd xclock
-
-buildSingleXLib32
-
-cd ${CLFSSOURCES}/xc
-checkBuiltPackage
-rm -rf xclock
-
-#xinit 32-bit
-wget https://www.x.org/pub/individual/app/xinit-1.0.7.tar.bz2 -O \
-  xinit-1.0.7.tar.bz2
-
-mkdir xinit && tar xf xinit-*.tar.* -C xinit --strip-components 1
-cd xinit
-
-sed -e '/$serverargs $vtarg/ s/serverargs/: #&/' \
-    -i startx.cpp
-
-USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
-CC="gcc ${BUILD32}" \
-CXX="g++ ${BUILD32}" ./configure $XORG_CONFIG32 \
-    --with-xinitdir=/etc/X11/app-defaults &&
-    
-make PREFIX=/usr LIBDIR=/usr/lib
-as_root make PREFIX=/usr LIBDIR=/usr/lib install
-as_root ldconfig
-
-cd ${CLFSSOURCES}/xc
-checkBuiltPackage
-rm -rf xinit
+#wget ftp://invisible-island.net/xterm/xterm-330.tgz -O \
+#  xterm-330.tgz
+#  
+#mkdir xterm && tar xf xterm-*.tgz -C xterm --strip-components 1
+#cd xterm
+#
+#sed -i '/v0/{n;s/new:/new:kb=^?:/}' termcap &&
+#printf '\tkbs=\\177,\n' >> terminfo &&
+#
+#USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
+#CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" \
+#TERMINFO=/usr/share/terminfo ./configure $XORG_CONFIG32     \
+#    --with-app-defaults=/etc/X11/app-defaults &&
+#
+#make PREFIX=/usr LIBDIR=/usr/lib
+#as_root make PREFIX=/usr LIBDIR=/usr/lib install 
+#as_root make PREFIX=/usr LIBDIR=/usr/lib install-ti
+#
+#as_root cat >> /etc/X11/app-defaults/XTerm << "EOF"
+#*VT100*locale: true
+#*VT100*faceName: Monospace
+#*VT100*faceSize: 10
+#*backarrowKeyIsErase: true
+#*ptyInitialErase: true
+#EOF
+#
+#cd ${CLFSSOURCES}/xc
+#checkBuiltPackage
+#rm -rf xterm
+#
+##xclock 32-bit
+#wget https://www.x.org/pub/individual/app/xclock-1.0.7.tar.bz2 -O \
+#  xclock-1.0.7.tar.bz2
+#
+#mkdir xclock && tar xf xclock-*.tar.* -C xclock --strip-components 1
+#cd xclock
+#
+#buildSingleXLib32
+#
+#cd ${CLFSSOURCES}/xc
+#checkBuiltPackage
+#rm -rf xclock
+#
+##xinit 32-bit
+#wget https://www.x.org/pub/individual/app/xinit-1.0.7.tar.bz2 -O \
+#  xinit-1.0.7.tar.bz2
+#
+#mkdir xinit && tar xf xinit-*.tar.* -C xinit --strip-components 1
+#cd xinit
+#
+#sed -e '/$serverargs $vtarg/ s/serverargs/: #&/' \
+#    -i startx.cpp
+#
+#USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
+#CC="gcc ${BUILD32}" \
+#CXX="g++ ${BUILD32}" ./configure $XORG_CONFIG32 \
+#    --with-xinitdir=/etc/X11/app-defaults &&
+#    
+#make PREFIX=/usr LIBDIR=/usr/lib
+#as_root make PREFIX=/usr LIBDIR=/usr/lib install
+#as_root ldconfig
+#
+#cd ${CLFSSOURCES}/xc
+#checkBuiltPackage
+#rm -rf xinit
 
 #DejaVu Fonts
 #These are architecture independent and are installed in the 64-bit version of the script
