@@ -362,7 +362,7 @@ EOF
 
 cat > /etc/profile.d/i18n.sh << "EOF"
 # Set up i18n variables
-export LANG=<ll>_<CC>.<charmap><@modifiers>
+export LANG=en_US.UTF-8
 EOF
 
 cat > /etc/bashrc << "EOF"
