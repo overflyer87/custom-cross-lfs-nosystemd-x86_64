@@ -884,3 +884,61 @@ sudo gsettings set com.solus-project.brisk-menu hot-key 'Super_L'
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf brisk-menu
+
+#INSTALL A DISPLAY MANAGER
+
+#lxdm
+wget http://downloads.sourceforge.net/lxdm/lxdm-0.5.3.tar.xz -O \
+  lxdm-0.5.3.tar.xz
+  
+mkdir lxdm && tar xf lxdm-*.tar.* -C lxdm --strip-components 1
+cd lxdm
+
+cat > pam/lxdm << "EOF"
+# Begin /etc/pam.d/lxdm
+
+auth     requisite      pam_nologin.so
+auth     required       pam_env.so
+auth     include        system-auth
+
+account  include        system-account
+
+password include        system-password
+
+session  required       pam_limits.so
+session  include        system-session
+
+# End /etc/pam.d/lxdm
+EOF
+
+sed -i 's:sysconfig/i18n:profile.d/i18n.sh:g' data/lxdm.in &&
+sed -i 's:/etc/xprofile:/etc/profile:g' data/Xsession &&
+sed -e 's/^bg/#&/'        \
+    -e '/reset=1/ s/# //' \
+    -e 's/logou$/logout/' \
+    -e "/arg=/a arg=$XORG_PREFIX/bin/X" \
+    -i data/lxdm.conf.in
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
+    --libdir=/usr/lib64 \
+    --sysconfdir=/etc \
+    --with-pam \
+    --with-systemdsystemunitdir=no
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/blfs-bootscripts
+sudo make install-lxdm
+
+sudo /etc/rc.d/init.d/lxdm start
+sudo cp -v /etc/inittab{,-orig} &&
+sudo sed -i '/initdefault/ s/3/5/' /etc/inittab
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf lxdm
+
