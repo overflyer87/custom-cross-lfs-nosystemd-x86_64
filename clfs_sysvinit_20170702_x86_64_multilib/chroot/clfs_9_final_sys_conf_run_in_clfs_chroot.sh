@@ -175,9 +175,6 @@ ln -sfv /etc/rc.d/init.d/functions /lib/init-functions
 ln -sfv /etc/rc.d/init.d/functions /lib64/init-functions
 
 #lsb-release
-wget http://sourceforge.net/projects/lsb/files/lsb_release/1.4/lsb-release-1.4.tar.gz -O \
-    lsb-release-1.4.tar.gz
-    
 mkdir lsbrel && tar xf lsb-release-*.tar.* -C lsbrel --strip-components 1
 cd lsbrel
 
@@ -192,10 +189,10 @@ install -v -m 755 lsb_release /usr/bin/lsb_release
 echo 8.0 > /etc/clfs-release
 
 cat > /etc/lsb-release << "EOF"
-DISTRIB_ID="Cross Linux From Scratch"
+DISTRIB_ID="CrossLFS"
 DISTRIB_RELEASE="SYSVINIT-20170702-x86_64"
 DISTRIB_CODENAME="overflyer"
-DISTRIB_DESCRIPTION="Cross Linux From Scratch"
+DISTRIB_DESCRIPTION="CrossLFS"
 EOF
 
 cd ${CLFSSOURCES} 
@@ -486,9 +483,7 @@ dircolors -p > /etc/dircolors
 #on Bash shell scripts
 #http://www.caliban.org/bash/index.shtml
 
-
 echo " "
-
 echo "Bootloader is installed, debugging sysmbols are stripped"
 echo "AND" 
 echo "basic configuration files have been created"
