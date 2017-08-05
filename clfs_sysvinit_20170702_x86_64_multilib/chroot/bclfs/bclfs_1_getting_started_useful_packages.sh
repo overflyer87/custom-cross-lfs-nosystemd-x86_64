@@ -13,7 +13,6 @@ while read -n1 -r -p "[Y/N]   " && [[ $REPLY != q ]]; do
     *) echo " Try again. Type y or n";;
   esac
 done
-
 }
 
 #Building the final CLFS System
@@ -62,7 +61,7 @@ cd openssl
 
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH32} USE_ARCH=32 make CC="gcc ${BUILD32}" 
 
-./config linux-x86 \
+./Configure linux-x86 \
   --openssldir=/etc/ssl \
   --prefix=/usr \
   --libdir=/lib \
@@ -86,7 +85,7 @@ cd openssl
 
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} USE_ARCH=64 make CC="gcc ${BUILD64}" 
 
-./config linux-x86_64 \
+./Configure linux-x86_64 \
   --openssldir=/etc/ssl \
   --prefix=/usr \
   --libdir=/lib64 \
