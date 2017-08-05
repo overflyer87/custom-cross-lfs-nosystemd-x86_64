@@ -610,17 +610,9 @@ EndSection
 EOF
 
 as_root usermod -a -G video overflyer
+as_root usermod -a -G audio overflyer
 
-as_root cat > /etc/X11/xorg.conf.d/xkb-defaults.conf << "EOF"
-Section "InputClass"
-    Identifier "XKB Defaults"
-    MatchIsKeyboard "yes"
-    Option "XkbLayout" "fr"
-    Option "XkbOptions" "terminate:ctrl_alt_bksp"
-EndSection
-EOF
-
-as_root cp /etc/X11/xinit/xinitrc ~/.xinitrc
+as_root cp -v ${CLFSSOURCES}/.xinitrc /home/overflyer/
 
 #I will not install Xorg legacy
 #If you want to
