@@ -850,4 +850,29 @@ cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf eom
 
+#Brisk-Menu
+git clone https://github.com/solus-project/brisk-menu 
+cd brisk-menu
 
+ACLOCAL_FLAG=/usr/local/share \
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} autoreconf
+
+ACLOCAL_FLAG=/usr/local/share \
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr  \
+            --sysconfdir=/etc     \
+            --libdir=/usr/lib64   
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+as_root glib-compile-schemas /usr/share/glib-2.0/schemas/
+gsettings set com.solus-project.brisk-menu hot-key 'Super_L'
+as_root gsettings set com.solus-project.brisk-menu hot-key 'Super_L'
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf brisk-menu
