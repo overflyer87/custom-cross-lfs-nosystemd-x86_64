@@ -61,10 +61,12 @@ mkdir openssl && tar xf openssl-*.tar.* -C openssl --strip-components 1
 cd openssl
 
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH32} \
-USE_ARCH=32 make CC="gcc ${BUILD32}" ./config --openssldir=/etc/ssl \
+USE_ARCH=32 make CC="gcc ${BUILD32}" \
+./config linux-x86 
+  --openssldir=/etc/ssl \
   --prefix=/usr \
-  shared \
   --libdir=/lib \
+  shared \
   zlib-dynamic
   
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH32} \
@@ -83,10 +85,12 @@ mkdir openssl && tar xf openssl-*.tar.* -C openssl --strip-components 1
 cd openssl
 
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} \
-USE_ARCH=64 make CC="gcc ${BUILD64}" ./config --openssldir=/etc/ssl \
+USE_ARCH=64 make CC="gcc ${BUILD64}" \
+./config linux-x86_64 \
+  --openssldir=/etc/ssl \
   --prefix=/usr \
-  shared \
   --libdir=/lib64 \
+  shared \
   zlib-dynamic
   
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} \
