@@ -462,8 +462,8 @@ cd ${CLFSSOURCES}
 #checkBuiltPackage
 rm -rf goofiboot
 
-#Exiting....
-#Next script will: Strip Debugging symbols
+cp -v ${CLFSSOURCES}/intel-ucode.img /boot/efi/
+echo " " 
 
 efibootmgr
 
@@ -478,6 +478,9 @@ echo "IF YOU WANT TO. IT IS OPTIONAL!"
 echo "Otherwise skip Script #8 after you chrooted back in"
 echo "and execute Script #9 instead"
 echo " "
+
+#Exiting....
+#Next script will: Strip Debugging symbols
 
 exit
 exit
