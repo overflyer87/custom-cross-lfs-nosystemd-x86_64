@@ -278,7 +278,6 @@ sed -e '/#DEFAULT_ED/ a DEFAULT_EDITOR:vi'       \
 sed -e '/#PERSIST/    a PERSISTENT_COOKIES:TRUE' \
     -i /etc/lynx/lynx.cfg
 
-
 cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf lynx
