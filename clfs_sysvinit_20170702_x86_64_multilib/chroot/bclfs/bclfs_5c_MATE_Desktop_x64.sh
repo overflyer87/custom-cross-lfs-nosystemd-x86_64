@@ -649,7 +649,6 @@ cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf Python-2
 
-
 #mate-menus
 wget https://github.com/mate-desktop/mate-menus/archive/v1.18.0.tar.gz -O \
     mate-menus-1.18.0.tar.gz
@@ -790,6 +789,91 @@ rm -rf autoconf
 #
 ##Polkit-0.113+git_2919920+js38 
 #
+
+#js17
+wget wget http://ftp.mozilla.org/pub/mozilla.org/js/mozjs17.0.0.tar.gz -O \
+	mozjs17.0.0.tar.gz
+
+mkdir mozjs && tar xf mozjs*.tar.* -C mozjs --strip-components 1
+cd mozjs
+cd js/src
+
+sed -i 's/(defined\((@TEMPLATE_FILE)\))/\1/' config/milestone.pl
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+	--libdir=/usr/lib64 \
+	--enable-readline   \
+	--enable-threadsafe \ 
+	--with-system-ffi   \
+	--with-system-nspr  
+
+sed -i 's/value\[0\] == /\*value\[0\] == /' shell/jsoptparse.cpp
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} make PREFIX=/usr LIBDIR=/usr/lib64
+
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+as_root find /usr/include/js-17.0/            \
+     /usr/lib64/libmozjs-17.0.a         \
+     /usr/lib64/pkgconfig/mozjs-17.0.pc \
+     -type f -exec chmod -v 644 {} \;
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf mozjs
+
+#polkit 113
+wget http://www.freedesktop.org/software/polkit/releases/polkit-0.113.tar.gz -O \
+	polkit-0.113.tar.gz
+	
+mkdir polkit && tar xf polkit*.tar.gz -C polkit --strip-components 1
+cd polkit
+
+as_root groupadd -fg 28 polkitd &&
+as_root useradd -c "PolicyKit Daemon Owner" -d /etc/polkit-1 -u 28 \
+        -g polkitd -s /bin/false polkitd
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} \
+./configure --prefix=/usr        \
+            --sysconfdir=/etc    \
+            --libdir=/usr/lib64  \
+            --localstatedir=/var \
+            --disable-static     \
+            --disable-man-pages  \
+            --disable-gtk-doc    \
+            --enable-systemd-logind=no 
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} make PREFIX=/usr LIBDIR=/usr/lib64
+
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+as_root chown root:root /usr/lib/polkit-1/polkit-agent-helper-1
+as_root chown root:root /usr/bin/pkexec
+as_root chmod 4755 /usr/lib/polkit-1/polkit-agent-helper-1
+as_root chmod 4755 /usr/bin/pkexec
+as_root chown -Rv polkitd /etc/polkit-1/rules.d
+as_root chown -Rv polkitd /usr/share/polkit-1/rules.d
+as_root chmod 700 /etc/polkit-1/rules.d
+as_root chmod 700 /usr/share/polkit-1/rules.d
+
+as_root cat > /etc/pam.d/polkit-1 << "EOF"
+# Begin /etc/pam.d/polkit-1
+
+auth     include        system-auth
+account  include        system-account
+password include        system-password
+session  include        system-session
+
+# End /etc/pam.d/polkit-1
+EOF
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf polkit
 
 #libqmi (recommended for ModemManager)
 wget http://www.freedesktop.org/software/libqmi/libqmi-1.18.0.tar.xz -O \
