@@ -15,25 +15,6 @@ done
 
 }
 
-function as_root()
-{
-  if   [ $EUID = 0 ];        then $*
-  elif [ -x /usr/bin/sudo ]; then sudo $*
-  else                            su -c \\"$*\\"
-  fi
-}
-
-export -f as_root
-
-function buildSingleXLib64() {
-  PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
-  USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64
-  make PREFIX=/usr LIBDIR=/usr/lib64
-  as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
-}
-
-export -f buildSingleXLib64
-
 #Building the final CLFS System
 CLFS=/
 CLFSHOME=/home
@@ -111,11 +92,11 @@ make check > check.log
 grep -E '^Total|expected' check.log
 checkBuiltPackage
 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install 
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install 
 
 cd ${CLFSSOURCES}/xc/mate
-as_root updatedb
-as_root locate libxml | grep /usr/lib64/python2.7/
+sudo updatedb
+sudo locate libxml | grep /usr/lib64/python2.7/
 echo "Did locate libxml \| grep /usr/lib64/python2.7/ find the libxml python modules?"
 echo ""
 
@@ -154,11 +135,11 @@ make check > check.log
 grep -E '^Total|expected' check.log
 checkBuiltPackage
 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install 
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install 
 
 cd ${CLFSSOURCES}/xc/mate
-as_root updatedb
-as_root locate libxml | grep /usr/lib64/python3.6/
+sudo updatedb
+sudo locate libxml | grep /usr/lib64/python3.6/
 echo "Did locate libxml | grep /usr/lib64/python3.6/ find the libxml python modules?"
 echo ""
 
@@ -178,7 +159,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
    --libdir=/usr/lib64 \
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 ldconfig
 
@@ -212,7 +193,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
    --disable-gtk-doc
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 tar -xf ../dconf-editor-3.22.3.tar.xz &&
 cd dconf-editor-3.22.3 &&
@@ -222,7 +203,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
    --sysconfdir=/etc
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -239,7 +220,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
    --libdir=/usr/lib64 
     
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -257,7 +238,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
    --disable-static
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -275,7 +256,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
    --disable-static 
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -294,7 +275,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
    --enable-vala
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -314,7 +295,7 @@ make check
 checkBuiltPackage
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -336,7 +317,7 @@ make check
 checkBuiltPackage
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -359,8 +340,8 @@ make LIBS=-lm check
 checkBuiltPackage
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
-as_root install -v -m644 doc/Vorbis* /usr/share/doc/libvorbis-1.3.5
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo install -v -m644 doc/Vorbis* /usr/share/doc/libvorbis-1.3.5
 
 ldconfig 
 
@@ -383,10 +364,10 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 make check
 checkBuiltPackage
 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-as_root install -v -d -m755 /usr/share/doc/alsa-lib-1.1.4.1/html/search &&
-as_root install -v -m644 doc/doxygen/html/*.* \
+sudo install -v -d -m755 /usr/share/doc/alsa-lib-1.1.4.1/html/search &&
+sudo install -v -m644 doc/doxygen/html/*.* \
                 /usr/share/doc/alsa-lib-1.1.4.1/html 
 
 
@@ -438,7 +419,7 @@ rm -rf /usr/bin/gst-* /usr/{lib,libexec}/gstreamer-1.0
 make check
 checkBuiltPackage
 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 ldconfig
 
@@ -464,7 +445,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 make check
 checkBuiltPackage
 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -488,7 +469,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 make check
 checkBuiltPackage
 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -507,7 +488,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
    --disable-oss 
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -525,7 +506,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
    --disable-static \
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -548,7 +529,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
             -DSQLITE_ENABLE_DBSTAT_VTAB=1" &&
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -568,7 +549,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
    --disable-static 
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -587,7 +568,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
    --disable-umockdev
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -607,7 +588,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
    --disable-static 
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make -j1 PREFIX=/usr LIBDIR=/usr/lib64
-as_root make -j1 PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make -j1 PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -625,7 +606,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
    --disable-static 
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -649,7 +630,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
    $([ $(uname -m) = x86_64 ] && echo --enable-64bit)
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -667,9 +648,9 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
    --disable-static 
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-as_root install -v -m644 -D doc/startup-notification.txt \
+sudo install -v -m644 -D doc/startup-notification.txt \
     /usr/share/doc/startup-notification-0.12/startup-notification.txt
 
 cd ${CLFSSOURCES}/xc/mate
@@ -691,11 +672,11 @@ ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" \
    --disable-docbook-docs
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-as_root cp macros/*.m4 /usr/share/aclocal 
-as_root mkdir /usr/share/mate-common
-as_root cp -rv data/* /usr/share/mate-common
+sudo cp macros/*.m4 /usr/share/aclocal 
+sudo mkdir /usr/share/mate-common
+sudo cp -rv data/* /usr/share/mate-common
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -722,18 +703,18 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
    --sysconfdir=/etc
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 docdir=/usr/share/doc install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 docdir=/usr/share/doc install
 
-as_root install-catalog --remove /etc/sgml/sgml-ent.cat \
+sudo install-catalog --remove /etc/sgml/sgml-ent.cat \
     /usr/share/sgml/sgml-iso-entities-8879.1986/catalog &&
 
-as_root install-catalog --remove /etc/sgml/sgml-docbook.cat \
+sudo install-catalog --remove /etc/sgml/sgml-docbook.cat \
     /etc/sgml/sgml-ent.cat
 
-as_root install-catalog --add /etc/sgml/sgml-ent.cat \
+sudo install-catalog --add /etc/sgml/sgml-ent.cat \
     /usr/share/sgml/sgml-iso-entities-8879.1986/catalog &&
 
-as_root install-catalog --add /etc/sgml/sgml-docbook.cat \
+sudo install-catalog --add /etc/sgml/sgml-docbook.cat \
     /etc/sgml/sgml-ent.cat
 
 cd ${CLFSSOURCES}/xc/mate
@@ -751,9 +732,9 @@ sed -i 's/CC = cc#/CC = gcc#/' unix/Makefile
 
 CC="gcc ${BUILD64}" \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make prefix=/usr libdir=/usr/lib64 -f unix/Makefile generic
-as_root make prefix=/usr libdir=/usr/lib64 -f unix/Makefile install
+sudo make prefix=/usr libdir=/usr/lib64 -f unix/Makefile install
 
-as_root mv /usr/local/bin/*zip* /usr/bin/
+sudo mv /usr/local/bin/*zip* /usr/bin/
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -765,24 +746,24 @@ wget http://www.docbook.org/xml/4.5/docbook-xml-4.5.zip -O \
 
 unzip docbook-xml-*.zip
 
-as_root install -v -d -m755 /usr/share/xml/docbook/xml-dtd-4.5 &&
-as_root install -v -d -m755 /etc/xml &&
-as_root chown -R root:root . &&
-as_root cp -v -af docbook.cat *.dtd ent/ *.mod \
+sudo install -v -d -m755 /usr/share/xml/docbook/xml-dtd-4.5 &&
+sudo install -v -d -m755 /etc/xml &&
+sudo chown -R root:root . &&
+sudo cp -v -af docbook.cat *.dtd ent/ *.mod \
     /usr/share/xml/docbook/xml-dtd-4.5
 
 if [ ! -e /etc/xml/docbook ]; then
-    as_root xmlcatalog --noout --create /etc/xml/docbook
+    sudo xmlcatalog --noout --create /etc/xml/docbook
 fi &&
-as_root xmlcatalog --noout --add "public" \
+sudo xmlcatalog --noout --add "public" \
     "-//OASIS//DTD DocBook XML V4.5//EN" \
     "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" \
     /etc/xml/docbook &&
-as_root xmlcatalog --noout --add "public" \
+sudo xmlcatalog --noout --add "public" \
     "-//OASIS//DTD DocBook XML CALS Table Model V4.5//EN" \
     "file:///usr/share/xml/docbook/xml-dtd-4.5/calstblx.dtd" \
     /etc/xml/docbook &&
-as_root xmlcatalog --noout --add "public" \
+sudo xmlcatalog --noout --add "public" \
     "-//OASIS//DTD XML Exchange Table Model 19990315//EN" \
     "file:///usr/share/xml/docbook/xml-dtd-4.5/soextblx.dtd" \
     /etc/xml/docbook &&
@@ -790,31 +771,31 @@ as_rootxmlcatalog --noout --add "public" \
     "-//OASIS//ELEMENTS DocBook XML Information Pool V4.5//EN" \
     "file:///usr/share/xml/docbook/xml-dtd-4.5/dbpoolx.mod" \
     /etc/xml/docbook &&
-as_root xmlcatalog --noout --add "public" \
+sudo xmlcatalog --noout --add "public" \
     "-//OASIS//ELEMENTS DocBook XML Document Hierarchy V4.5//EN" \
     "file:///usr/share/xml/docbook/xml-dtd-4.5/dbhierx.mod" \
     /etc/xml/docbook &&
-as_root xmlcatalog --noout --add "public" \
+sudo xmlcatalog --noout --add "public" \
     "-//OASIS//ELEMENTS DocBook XML HTML Tables V4.5//EN" \
     "file:///usr/share/xml/docbook/xml-dtd-4.5/htmltblx.mod" \
     /etc/xml/docbook &&
-as_root xmlcatalog --noout --add "public" \
+sudo xmlcatalog --noout --add "public" \
     "-//OASIS//ENTITIES DocBook XML Notations V4.5//EN" \
     "file:///usr/share/xml/docbook/xml-dtd-4.5/dbnotnx.mod" \
     /etc/xml/docbook &&
-as_root xmlcatalog --noout --add "public" \
+sudo xmlcatalog --noout --add "public" \
     "-//OASIS//ENTITIES DocBook XML Character Entities V4.5//EN" \
     "file:///usr/share/xml/docbook/xml-dtd-4.5/dbcentx.mod" \
     /etc/xml/docbook &&
-as_root xmlcatalog --noout --add "public" \
+sudo xmlcatalog --noout --add "public" \
     "-//OASIS//ENTITIES DocBook XML Additional General Entities V4.5//EN" \
     "file:///usr/share/xml/docbook/xml-dtd-4.5/dbgenent.mod" \
     /etc/xml/docbook &&
-as_root xmlcatalog --noout --add "rewriteSystem" \
+sudo xmlcatalog --noout --add "rewriteSystem" \
     "http://www.oasis-open.org/docbook/xml/4.5" \
     "file:///usr/share/xml/docbook/xml-dtd-4.5" \
     /etc/xml/docbook &&
-as_root xmlcatalog --noout --add "rewriteURI" \
+sudo xmlcatalog --noout --add "rewriteURI" \
     "http://www.oasis-open.org/docbook/xml/4.5" \
     "file:///usr/share/xml/docbook/xml-dtd-4.5" \
     /etc/xml/docbook
@@ -822,42 +803,42 @@ as_root xmlcatalog --noout --add "rewriteURI" \
 if [ ! -e /etc/xml/catalog ]; then
     xmlcatalog --noout --create /etc/xml/catalog
 fi &&
-as_root xmlcatalog --noout --add "delegatePublic" \
+sudo xmlcatalog --noout --add "delegatePublic" \
     "-//OASIS//ENTITIES DocBook XML" \
     "file:///etc/xml/docbook" \
     /etc/xml/catalog &&
-as_root xmlcatalog --noout --add "delegatePublic" \
+sudo xmlcatalog --noout --add "delegatePublic" \
     "-//OASIS//DTD DocBook XML" \
     "file:///etc/xml/docbook" \
     /etc/xml/catalog &&
-as_root xmlcatalog --noout --add "delegateSystem" \
+sudo xmlcatalog --noout --add "delegateSystem" \
     "http://www.oasis-open.org/docbook/" \
     "file:///etc/xml/docbook" \
     /etc/xml/catalog &&
-as_root xmlcatalog --noout --add "delegateURI" \
+sudo xmlcatalog --noout --add "delegateURI" \
     "http://www.oasis-open.org/docbook/" \
     "file:///etc/xml/docbook" \
     /etc/xml/catalog
 
 for DTDVERSION in 4.1.2 4.2 4.3 4.4
 do
-  as_root xmlcatalog --noout --add "public" \
+  sudo xmlcatalog --noout --add "public" \
     "-//OASIS//DTD DocBook XML V$DTDVERSION//EN" \
     "http://www.oasis-open.org/docbook/xml/$DTDVERSION/docbookx.dtd" \
     /etc/xml/docbook
-  as_root xmlcatalog --noout --add "rewriteSystem" \
+  sudo xmlcatalog --noout --add "rewriteSystem" \
     "http://www.oasis-open.org/docbook/xml/$DTDVERSION" \
     "file:///usr/share/xml/docbook/xml-dtd-4.5" \
     /etc/xml/docbook
-  as_root xmlcatalog --noout --add "rewriteURI" \
+  sudo xmlcatalog --noout --add "rewriteURI" \
     "http://www.oasis-open.org/docbook/xml/$DTDVERSION" \
     "file:///usr/share/xml/docbook/xml-dtd-4.5" \
     /etc/xml/docbook
-  as_root xmlcatalog --noout --add "delegateSystem" \
+  sudo xmlcatalog --noout --add "delegateSystem" \
     "http://www.oasis-open.org/docbook/xml/$DTDVERSION/" \
     "file:///etc/xml/docbook" \
     /etc/xml/catalog
-  as_root xmlcatalog --noout --add "delegateURI" \
+  sudo xmlcatalog --noout --add "delegateURI" \
     "http://www.oasis-open.org/docbook/xml/$DTDVERSION/" \
     "file:///etc/xml/docbook" \
     /etc/xml/catalog
@@ -873,27 +854,27 @@ wget http://downloads.sourceforge.net/docbook/docbook-xsl-1.79.1.tar.bz2 -O \
 mkdir docbook-xsl && tar xf docbook-xsl-*.tar.* -C docbook-xsl --strip-components 1
 cd docbook-xsl
 
-as_root install -v -m755 -d /usr/share/xml/docbook/xsl-stylesheets-1.79.1 &&
+sudo install -v -m755 -d /usr/share/xml/docbook/xsl-stylesheets-1.79.1 &&
 
-as_root cp -v -R VERSION assembly common eclipse epub epub3 extensions fo        \
+sudo cp -v -R VERSION assembly common eclipse epub epub3 extensions fo        \
          highlighting html htmlhelp images javahelp lib manpages params  \
          profiling roundtrip slides template tests tools webhelp website \
          xhtml xhtml-1_1 xhtml5                                          \
     /usr/share/xml/docbook/xsl-stylesheets-1.79.1 &&
 
-as_root ln -s VERSION /usr/share/xml/docbook/xsl-stylesheets-1.79.1/VERSION.xsl &&
+sudo ln -s VERSION /usr/share/xml/docbook/xsl-stylesheets-1.79.1/VERSION.xsl &&
 
-as_root install -v -m644 -D README \
+sudo install -v -m644 -D README \
                     /usr/share/doc/docbook-xsl-1.79.1/README.txt &&
-as_root install -v -m644    RELEASE-NOTES* NEWS* \
+sudo install -v -m644    RELEASE-NOTES* NEWS* \
                     /usr/share/doc/docbook-xsl-1.79.1
 
-as_root xmlcatalog --noout --add "rewriteSystem" \
+sudo xmlcatalog --noout --add "rewriteSystem" \
            "http://docbook.sourceforge.net/release/xsl/<version>" \
            "/usr/share/xml/docbook/xsl-stylesheets-<version>" \
     /etc/xml/catalog &&
 
-as_root xmlcatalog --noout --add "rewriteURI" \
+sudo xmlcatalog --noout --add "rewriteURI" \
            "http://docbook.sourceforge.net/release/xsl/<version>" \
            "/usr/share/xml/docbook/xsl-stylesheets-<version>" \
     /etc/xml/catalog
@@ -901,7 +882,7 @@ as_root xmlcatalog --noout --add "rewriteURI" \
 cp ${CLFSSOURCES}/docbook-xml-xsl.tar.* .
 mkdir xml && tar xf docbook-xml-xsl.tar.* -C xml --strip-components 1
 
-as_root cp -rv xml /etc/
+sudo cp -rv xml /etc/
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -924,7 +905,7 @@ sed -i 's/python \- \&/python3 \- \&/' configure
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr 
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr 
-as_root make PREFIX=/usr install
+sudo make PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -941,7 +922,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
     --libdir=/usr/lib64
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -968,10 +949,10 @@ sed -i 's/HELP_DIR/#HELP_DIR/' Makefile Makefile.in
 sed -i 's/help/#help/' Makefile Makefile.in Makefile.am
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-as_root mkdir /usr/share/mate-desktop
-as_root cp -rv data/* /usr/share/mate-desktop
+sudo mkdir /usr/share/mate-desktop
+sudo cp -rv data/* /usr/share/mate-desktop
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
