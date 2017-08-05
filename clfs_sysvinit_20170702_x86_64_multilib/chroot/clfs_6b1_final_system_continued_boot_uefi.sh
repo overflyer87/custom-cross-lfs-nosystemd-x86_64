@@ -450,6 +450,11 @@ linux   /vmlinuz-clfs-4.12.4
 initrd  /intel-ucode.img
 EOF
 
+cat > /boot/efi/loader/loader.conf << "EOF"
+default clfs-uefi
+timeout 5
+EOF
+
 cd /boot/efi/loader/entries/
 echo options root=PARTUUID=`echo $fs_uuid` rw >> clfs-uefi.conf
 
@@ -460,8 +465,13 @@ rm -rf goofiboot
 #Exiting....
 #Next script will: Strip Debugging symbols
 
+efibootmgr
+
 echo " "
 echo "UEFI bootloader goofiboot has been installed.."
+echo "If you want to use you host distro's bootloader"
+echo "e.g. GRUB; locate it and delete it using: "
+echo "efibootmr -b <numberofbootloadertodelete> -B"
 echo "Exit, chroot back in with Script #7"
 echo "Execute Script #8 to strip debugging symbols"
 echo "IF YOU WANT TO. IT IS OPTIONAL!"
