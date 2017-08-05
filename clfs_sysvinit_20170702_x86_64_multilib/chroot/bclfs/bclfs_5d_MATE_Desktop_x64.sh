@@ -15,25 +15,6 @@ done
 
 }
 
-function as_root()
-{
-  if   [ $EUID = 0 ];        then $*
-  elif [ -x /usr/bin/sudo ]; then sudo $*
-  else                            su -c \\"$*\\"
-  fi
-}
-
-export -f as_root
-
-function buildSingleXLib64() {
-  PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
-  USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64
-  make PREFIX=/usr LIBDIR=/usr/lib64
-  as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
-}
-
-export -f buildSingleXLib64
-
 #Building the final CLFS System
 CLFS=/
 CLFSHOME=/home
@@ -96,7 +77,7 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
     --libdir=/usr/lib64
     
 make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -129,7 +110,7 @@ USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
 sed -i 's/baobab/#baobab/' Makefile*
    
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -155,7 +136,7 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
             --libdir=/usr/lib64 &&
             
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
      
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -177,7 +158,7 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
     --disable-gtk-doc
     
 make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -207,10 +188,10 @@ sed -i 's/HELP_DIR/#HELP_DIR/' Makefile Makefile.in
 sed -i 's/help/#help/' Makefile Makefile.in Makefile.am
   
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-as_root mkdir /usr/share/mate-terminal
-as_root cp -rv data/* /usr/share/mate-terminal
+sudo mkdir /usr/share/mate-terminal
+sudo cp -rv data/* /usr/share/mate-terminal
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
@@ -229,7 +210,7 @@ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr --libdir=/usr/lib64
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -247,7 +228,7 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr --libdir=/usr/lib
     --disable-static
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
@@ -272,7 +253,7 @@ USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
     --disable-static --enable-shared &&
   
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -287,7 +268,7 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr --libdir=/usr/l
     --disable-static
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make -j1 LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
@@ -305,7 +286,7 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr --libdir=/usr/lib
     --disable-static --disable-thorough-tests
     
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -323,7 +304,7 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr --libdir=/usr/lib
     --disable-static 
     
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -339,8 +320,8 @@ cd libcap
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} make PREFIX=/usr LIBDIR=/usr/lib64 -C pam_cap
 
-as_root install -v -m755 pam_cap/pam_cap.so /lib64/security &&
-as_root install -v -m644 pam_cap/capability.conf /etc/security
+sudo install -v -m755 pam_cap/pam_cap.so /lib64/security &&
+sudo install -v -m644 pam_cap/capability.conf /etc/security
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -360,7 +341,7 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr    \
             --libdir=/usr/lib64
             
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -380,7 +361,7 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr    \
             --libdir=/usr/lib64
             
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install       
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install       
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -404,9 +385,9 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} cmake -DCMAKE_INSTALL_PREFIX=/usr      \
       -DLIB_DIR=/usr/lib64 .. &&
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install       
-as_root install -vdm755 /usr/share/doc/libical-2.0.0/html &&
-as_root cp -vr apidocs/html/* /usr/share/doc/libical-2.0.0/html
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install       
+sudo install -vdm755 /usr/share/doc/libical-2.0.0/html &&
+sudo cp -vr apidocs/html/* /usr/share/doc/libical-2.0.0/html
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -435,13 +416,13 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr    \
             --libdir=/usr/lib64
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install    
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install    
 
-as_root ln -svf ../libexec/bluetooth/bluetoothd /usr/sbin
-as_root install -v -dm755 /etc/bluetooth &&
-as_root install -v -m644 src/main.conf /etc/bluetooth/main.conf
+sudo ln -svf ../libexec/bluetooth/bluetoothd /usr/sbin
+sudo install -v -dm755 /etc/bluetooth &&
+sudo install -v -m644 src/main.conf /etc/bluetooth/main.conf
 
-as_root cat > /etc/bluetooth/rfcomm.conf << "EOF"
+sudo cat > /etc/bluetooth/rfcomm.conf << "EOF"
 # Start rfcomm.conf
 # Set up the RFCOMM configuration of the Bluetooth subsystem in the Linux kernel.
 # Use one line per command
@@ -451,7 +432,7 @@ as_root cat > /etc/bluetooth/rfcomm.conf << "EOF"
 # End of rfcomm.conf
 EOF
 
-as_root cat > /etc/bluetooth/uart.conf << "EOF"
+sudo cat > /etc/bluetooth/uart.conf << "EOF"
 # Start uart.conf
 # Attach serial devices via UART HCI to BlueZ stack
 # Use one line per device
@@ -462,7 +443,7 @@ EOF
 
 cd ${CLFSSOURCES}/blfs-bootscripts
 
-as_root make install-bluetooth
+sudo make install-bluetooth
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
@@ -484,8 +465,8 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
             --libdir=/usr/lib64
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install    
-as_root ln -s gconf.xml.defaults /etc/gconf/gconf.xml.system
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install    
+sudo ln -s gconf.xml.defaults /etc/gconf/gconf.xml.system
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -505,7 +486,7 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
             --libdir=/usr/lib64
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install    
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install    
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -535,12 +516,12 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 make check
 checkBuiltPackage
 
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install    
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install    
 
-as_root rm /etc/dbus-1/system.d/pulseaudio-system.conf
+sudo rm /etc/dbus-1/system.d/pulseaudio-system.conf
 ás_root install -dm755 /etc/pulse
-as_root cp -v src/default.pa /etc/pulse
-as_root sed -i '/load-module module-console-kit/s/^/#/' /etc/pulse/default.pa
+sudo cp -v src/default.pa /etc/pulse
+sudo sed -i '/load-module module-console-kit/s/^/#/' /etc/pulse/default.pa
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -553,7 +534,7 @@ wget https://github.com/mate-desktop/libmatemixer/archive/v1.18.0.tar.gz -O \
 mkdir libmatemixer && tar xf libmatemixer-*.tar.* -C libmatemixer --strip-components 1
 cd libmatemixer
 
-as_root cp -rv /usr/share/aclocal/*.m4 m4/
+sudo cp -rv /usr/share/aclocal/*.m4 m4/
 
 ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
 USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
@@ -564,7 +545,7 @@ USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
     --sbindir=/usr/sbin --disable-gtk-doc
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -596,21 +577,21 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} make -j1 BUILD_OPT=1 \
   
 cd ../dist
 
-as_root install -v -m755 Linux*/lib/*.so              /usr/lib64              &&
-as_root install -v -m644 Linux*/lib/{*.chk,libcrmf.a} /usr/lib64              &&
+sudo install -v -m755 Linux*/lib/*.so              /usr/lib64              &&
+sudo install -v -m644 Linux*/lib/{*.chk,libcrmf.a} /usr/lib64              &&
 
-as_root install -v -m755 -d                           /usr/include/nss      &&
-as_root cp -v -RL {public,private}/nss/*              /usr/include/nss      &&
-as_root chmod -v 644                                  /usr/include/nss/*    &&
+sudo install -v -m755 -d                           /usr/include/nss      &&
+sudo cp -v -RL {public,private}/nss/*              /usr/include/nss      &&
+sudo chmod -v 644                                  /usr/include/nss/*    &&
 
-as_root install -v -m755 Linux*/bin/{certutil,nss-config,pk12util} /usr/bin &&
+sudo install -v -m755 Linux*/bin/{certutil,nss-config,pk12util} /usr/bin &&
 
-as_root install -v -m644 Linux*/lib/pkgconfig/nss.pc  /usr/lib64/pkgconfig
+sudo install -v -m644 Linux*/lib/pkgconfig/nss.pc  /usr/lib64/pkgconfig
 
 if [ -e /usr/lib64/libp11-kit.so ]; then
-  as_root readlink /usr/lib64/libnssckbi.so ||
-  as_root rm -v /usr/lib64/libnssckbi.so    &&
-  as_root ln -sfv ./pkcs11/p11-kit-trust.so /usr/lib64/libnssckbi.so
+  sudo readlink /usr/lib64/libnssckbi.so ||
+  sudo rm -v /usr/lib64/libnssckbi.so    &&
+  sudo ln -sfv ./pkcs11/p11-kit-trust.so /usr/lib64/libnssckbi.so
 fi
 
 cd ${CLFSSOURCES}/make-ca.sh-*
@@ -626,7 +607,7 @@ wget https://github.com/mate-desktop/mate-settings-daemon/archive/v1.18.1.tar.gz
 mkdir matesetd && tar xf mate-settings-daemon-*.tar.* -C matesetd --strip-components 1
 cd matesetd
 
-as_root cp -rv /usr/share/aclocal/*.m4 m4/
+sudo cp -rv /usr/share/aclocal/*.m4 m4/
 
 ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
 USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
@@ -638,10 +619,10 @@ USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
     --enable-pulse
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-as_root mkdir /usr/share/mate-setting-daemon
-as_root cp -rv data/* /usr/share/mate-setting-daemon
+sudo mkdir /usr/share/mate-setting-daemon
+sudo cp -rv data/* /usr/share/mate-setting-daemon
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -654,7 +635,7 @@ wget https://github.com/mate-desktop/mate-media/archive/v1.19.0.tar.gz -O \
 mkdir matemedia && tar xf mate-media-*.tar.* -C matemedia --strip-components 1
 cd matemedia
 
-as_root cp -rv /usr/share/aclocal/*.m4 m4/
+sudo cp -rv /usr/share/aclocal/*.m4 m4/
 
 ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
 USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
@@ -665,10 +646,10 @@ USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
     --sbindir=/usr/sbin 
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-as_root mkdir /usr/share/mate-media
-as_root cp -rv data/* /usr/share/mate-media
+sudo mkdir /usr/share/mate-media
+sudo cp -rv data/* /usr/share/mate-media
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -681,7 +662,7 @@ wget https://github.com/mate-desktop/mate-screensaver/archive/v1.18.1.tar.gz -O 
 mkdir mate-screensaver && tar xf mate-screensaver-*.tar.* -C mate-screensaver --strip-components 1
 cd mate-screensaver
 
-as_root cp -rv /usr/share/aclocal/*.m4 m4/
+sudo cp -rv /usr/share/aclocal/*.m4 m4/
 
 ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
 USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
@@ -692,10 +673,10 @@ USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
     --sbindir=/usr/sbin 
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-as_root mkdir /usr/share/mate-screensaver
-as_root cp -rv data/* /usr/share/mate-screensaver
+sudo mkdir /usr/share/mate-screensaver
+sudo cp -rv data/* /usr/share/mate-screensaver
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -719,9 +700,8 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
             --enable-swap-16bit-csp 
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf libwebp
-
