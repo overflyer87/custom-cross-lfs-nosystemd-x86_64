@@ -405,3 +405,11 @@ cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf sudo 
 
+#Add the final regular user
+groupadd users
+groupadd storage
+groupadd power
+useradd -g users -G wheel,storage,power -m -s /bin/bash overflyer
+passwd overflyer
+visudo
+
