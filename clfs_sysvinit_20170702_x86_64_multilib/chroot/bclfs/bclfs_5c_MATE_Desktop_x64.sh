@@ -269,6 +269,36 @@ cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -r gcr
 
+#libgnome-keyring (for gnome-keyring-1) FINALLY FOUND IT
+wget https://github.com/GNOME/libgnome-keyring/archive/3.12.0.tar.gz -O \
+	libgnome-keyring-3.12.0.tar.gz
+	
+mkdir libgnome-keyring && tar xf libgnome-keyring-*.tar.* -C libgnome-keyring  --strip-components 1
+cd libgnome-keyring
+
+autoreconf
+intltoolize --force 
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} \
+ACLOCAL_FLAGS=/usr/share/aclocal  sh autogen.sh
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} \
+ACLOCAL_FLAGS=/usr/share/aclocal ./configure --prefix=/usr \
+	--libdir=/usr/lib64 \
+	--disable-static    
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf libgnome-keyring
+
+
 #gnome-keyring
 wget http://ftp.gnome.org/pub/gnome/sources/gnome-keyring/3.20/gnome-keyring-3.20.1.tar.xz -O \
     gnome-keyring-3.20.1.tar.xz
