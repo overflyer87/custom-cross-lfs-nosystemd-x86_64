@@ -819,6 +819,10 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
   --with-system-ffi   \
   --with-system-nspr  
 
+#Iso C++ can't compare pointer to Integer
+#First element of array is seen as pointer
+#So to make it a real value I just ficed it
+#by derefferencing the pointer and compare THAT to '\0' (NULL)
 sed -i 's/value\[0\] == /\*value\[0\] == /' shell/jsoptparse.cpp
 
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 
@@ -842,8 +846,8 @@ wget http://www.freedesktop.org/software/polkit/releases/polkit-0.113.tar.gz -O 
 mkdir polkit && tar xf polkit*.tar.gz -C polkit --strip-components 1
 cd polkit
 
-sudo groupadd -fg 28 polkitd &&
-sudo useradd -c "PolicyKit Daemon Owner" -d /etc/polkit-1 -u 28 \
+sudo groupadd -fg 27 polkitd &&
+sudo useradd -c "PolicyKit Daemon Owner" -d /etc/polkit-1 -u 27 \
         -g polkitd -s /bin/false polkitd
 
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
