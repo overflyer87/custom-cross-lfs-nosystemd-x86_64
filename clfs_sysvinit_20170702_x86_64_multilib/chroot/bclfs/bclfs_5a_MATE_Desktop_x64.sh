@@ -15,26 +15,6 @@ done
 
 }
 
-function as_root()
-{
-  if   [ $EUID = 0 ];        then $*
-  elif [ -x /usr/bin/sudo ]; then sudo $*
-  else                            su -c \\"$*\\"
-  fi
-}
-
-export -f as_root
-
-function buildSingleXLib64() {
-  PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
-  USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64
-  make PREFIX=/usr LIBDIR=/usr/lib64
-  as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
-}
-
-
-export -f buildSingleXLib64
-
 #Building the final CLFS System
 CLFS=/
 CLFSHOME=/home
@@ -112,13 +92,12 @@ useradd -c "D-Bus Message Daemon User" -d /var/run/dbus \
             --disable-systemd \
             --without-systemdsystemunitdir
             
-
 make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install 
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install 
 
-as_root mkdir /var/run/dbus
+sudo mkdir /var/run/dbus
  
-as_root dbus-uuidgen --ensure
+sudo dbus-uuidgen --ensure
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -143,10 +122,10 @@ cd pcre
             --libdir=/usr/lib64
 
 make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install 
-as_root mv -v /usr/lib64/libpcre.so.* /lib64 &&
-as_root ln -sfv ../../../../lib64/$(readlink /usr/lib64/libpcre.so) /usr/lib64/libpcre.so
-as_root ldconfig
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install 
+sudo mv -v /usr/lib64/libpcre.so.* /lib64 &&
+sudo ln -sfv ../../../../lib64/$(readlink /usr/lib64/libpcre.so) /usr/lib64/libpcre.so
+sudo ldconfig
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -165,7 +144,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
     --libdir=/usr/lib64
 
 make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -183,9 +162,9 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
     --libdir=/usr/lib64
 
 make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-as_root update-desktop-database /usr/share/applications
+sudo update-desktop-database /usr/share/applications
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -205,7 +184,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
      --enable-shared && 
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -226,7 +205,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
      --sysconfdir=/etc
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -247,7 +226,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
      --sysconfdir=/etc
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -268,7 +247,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
      --sysconfdir=/etc
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -282,7 +261,7 @@ mkdir cython && tar xf Cython-*.tar.* -C cython --strip-components 1
 cd cython
 
 python3 setup.py build
-as_root python3 setup.py install
+sudo python3 setup.py install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -302,7 +281,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
      --libdir=/usr/lib64 
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -324,9 +303,9 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
      --docdir=/usr/share/doc/libjpeg-turbo-1.5.2
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
 
-ldconfig
+sudo ldconfig
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -348,7 +327,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
      --disable-static
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -368,7 +347,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
      --disable-static
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make install
+sudo make install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -391,9 +370,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
      --enable-tee
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make install
-
-ldconfig
+sudo make install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -424,7 +401,7 @@ CC="gcc ${BUILD64}" ./configure \
 --libdir=/usr/lib64
 
 PREFIX=/usr LIBDIR=/usr/lib64 make
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 mv -v /usr/bin/freetype-config{,-64}
 ln -sf multiarch_wrapper /usr/bin/freetype-config
@@ -433,7 +410,6 @@ cp -v -R docs/* /usr/share/doc/freetype-2.4.12
 
 install -v -m755 -d /usr/share/doc/freetype-2.8
 cp -v -R docs/*     /usr/share/doc/freetype-2.8
-
 
 cd ${CLFSSOURCES} 
 #checkBuiltPackage
@@ -447,7 +423,7 @@ LIBDIR=/usr/lib64 USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
 CXX="g++ ${BUILD64}" CC="gcc ${BUILD64}" \
 ./configure --prefix=/usr --libdir=/usr/lib64
 PREFIX=/usr LIBDIR=/usr/lib64 make 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES} 
 #checkBuiltPackage
@@ -476,7 +452,7 @@ CC="gcc ${BUILD64}" ./configure \
 --libdir=/usr/lib64
 
 PREFIX=/usr LIBDIR=/usr/lib64 make
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 mv -v /usr/bin/freetype-config{,-64}
 ln -sf multiarch_wrapper /usr/bin/freetype-config
@@ -508,9 +484,9 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
      --sysconfdir=/etc
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make install
+sudo make install
 
-ldconfig
+sudo ldconfig
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -527,7 +503,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
      --prefix=/usr \
      --libdir=/usr/lib64 
 
-as_root make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -544,7 +520,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
      --prefix=/usr \
      --libdir=/usr/lib64 
 
-as_root make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -591,7 +567,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
 make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64
 make -k check
 checkBuiltPackage
-as_root make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
 
 mkdir -vp ~/.config/gtk-3.0
 cat > ~/.config/gtk-3.0/settings.ini << "EOF"
@@ -608,7 +584,7 @@ gtk-xft-rgba = rgb
 gtk-cursor-theme-name = Adwaita
 EOF
 
-ldconfig
+sudo ldconfig
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
