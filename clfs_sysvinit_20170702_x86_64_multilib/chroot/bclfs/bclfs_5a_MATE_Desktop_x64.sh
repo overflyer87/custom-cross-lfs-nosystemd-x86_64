@@ -95,9 +95,30 @@ useradd -c "D-Bus Message Daemon User" -d /var/run/dbus \
 make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install 
 
+
+sudo mkdir /etc/dbus-1/
+sudo mkdir /usr/share/dbus-1/
 sudo mkdir /var/run/dbus
  
 sudo dbus-uuidgen --ensure
+
+sudo cat > /etc/dbus-1/session-local.conf << "EOF"
+<!DOCTYPE busconfig PUBLIC
+ "-//freedesktop//DTD D-BUS Bus Configuration 1.0//EN"
+ "http://www.freedesktop.org/standards/dbus/1.0/busconfig.dtd">
+<busconfig>
+
+  <!-- Search for .service files in /usr/local -->
+  <servicedir>/usr/local/share/dbus-1/services</servicedir>
+
+</busconfig>
+EOF
+
+cd ${CLFSSOURCES}/blfs-bootscripts
+sudo make install-dbus
+
+#More info ondbus:
+#http://www.linuxfromscratch.org/hints/downloads/files/execute-session-scripts-using-kdm.txt
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
