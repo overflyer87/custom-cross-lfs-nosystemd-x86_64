@@ -483,6 +483,24 @@ dircolors -p > /etc/dircolors
 #on Bash shell scripts
 #http://www.caliban.org/bash/index.shtml
 
+cat > /etc/sysconfig/console << "EOF"
+# Begin /etc/sysconfig/console
+
+UNICODE="1"
+KEYMAP="de-latin1"
+
+# End /etc/sysconfig/console
+EOF
+
+cat > /etc/vconsole.conf << "EOF"
+# Begin /etc/vconsole.conf
+
+UNICODE="1"
+KEYMAP="de-latin1"
+
+# End /etc/vconsole.conf
+EOF
+
 echo " "
 echo "Bootloader is installed, debugging sysmbols are stripped"
 echo "AND" 
