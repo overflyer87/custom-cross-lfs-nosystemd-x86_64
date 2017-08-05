@@ -15,25 +15,6 @@ done
 
 }
 
-function as_root()
-{
-  if   [ $EUID = 0 ];        then $*
-  elif [ -x /usr/bin/sudo ]; then sudo $*
-  else                            su -c \\"$*\\"
-  fi
-}
-
-export -f as_root
-
-function buildSingleXLib64() {
-  PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
-  USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64
-  make PREFIX=/usr LIBDIR=/usr/lib64
-  as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
-}
-
-export -f buildSingleXLib64
-
 #Building the final CLFS System
 CLFS=/
 CLFSHOME=/home
@@ -101,7 +82,7 @@ USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -131,7 +112,7 @@ sed -i 's/help/#help/' Makefile Makefile.in Makefile.am
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -155,7 +136,7 @@ USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -182,10 +163,10 @@ sed -i 's/help/#help/' Makefile Makefile.in Makefile.am
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-as_root mkdir /usr/share/mate-control-center
-as_root cp -rv data/* /usr/share/mate-control-center
+sudo mkdir /usr/share/mate-control-center
+sudo cp -rv data/* /usr/share/mate-control-center
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -212,10 +193,10 @@ sed -i 's/help/#help/' Makefile Makefile.in Makefile.am
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-as_root mkdir /usr/share/mate-notification-daemon
-as_root cp -rv data/* /usr/share/mate-notification-daemon
+sudo mkdir /usr/share/mate-notification-daemon
+sudo cp -rv data/* /usr/share/mate-notification-daemon
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -235,7 +216,7 @@ rm -rf matend
 #
 #cd js/src && autoconf2.13
 #
-#as_root cp /usr/bin/python* _virtualenv/bin/
+#sudo cp /usr/bin/python* _virtualenv/bin/
 #
 #CPPFLAGS="-I/usr/include" LDFLAGS="-L/usr/lib64"  \
 #PYTHON="/usr/bin/python2" PYTHONPATH="/usr/lib64/python2.7" \
@@ -255,7 +236,7 @@ rm -rf matend
 #PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
 #CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 #
-#as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+#sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 #
 #cd ${CLFSSOURCES}/xc/mate
 #checkBuiltPackage
@@ -268,8 +249,8 @@ rm -rf matend
 #mkdir polkitjsgit && tar xf polkit-0.113+git_2919920+js38.tar.* -C polkitjsgit --strip-components 1
 #cd polkitjsgit
 #
-#as_root groupadd -fg 27 polkitd &&
-#as_root useradd -c "PolicyKit Daemon Owner" -d /etc/polkit-1 -u 27 \
+#sudo groupadd -fg 27 polkitd &&
+#sudo useradd -c "PolicyKit Daemon Owner" -d /etc/polkit-1 -u 27 \
 #        -g polkitd -s /bin/false polkitd
 #
 #CC="gcc ${BUILD64}" USE_ARCH=64 \
@@ -285,9 +266,9 @@ rm -rf matend
 #PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
 #CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 #
-#as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+#sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 #
-#as_root cat > /etc/pam.d/polkit-1 << "EOF"
+#sudo cat > /etc/pam.d/polkit-1 << "EOF"
 ## Begin /etc/pam.d/polkit-1
 #
 #auth     include        system-auth
@@ -318,7 +299,7 @@ rm -rf matend
 #PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
 #CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 #
-#as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+#sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 #
 #cd ${CLFSSOURCES}/xc/mate
 #checkBuiltPackage
@@ -340,7 +321,7 @@ rm -rf matend
 #PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
 #CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 #
-#as_root make PREFIX=/usr LIBDIR=/usr/lib64 install#
+#sudo make PREFIX=/usr LIBDIR=/usr/lib64 install#
 #
 #cd ${CLFSSOURCES}/xc/mate
 #checkBuiltPackage
@@ -367,7 +348,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
     --libdir=/usr/lib64
 
 make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -391,10 +372,10 @@ USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-as_root mkdir /usr/share/caja
-as_root cp -rv data/* /usr/share/caja
+sudo mkdir /usr/share/caja
+sudo cp -rv data/* /usr/share/caja
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -418,7 +399,7 @@ USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -457,7 +438,7 @@ sed -i 's/docs/#docs/' invest-applet/Makefile*
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -481,7 +462,7 @@ USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -509,7 +490,7 @@ USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -531,7 +512,7 @@ USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -559,7 +540,7 @@ sed -i 's/help/#help/' Makefile Makefile.in Makefile.am
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -590,7 +571,7 @@ sed -i 's/http\:\/\/docbook.sourceforge.net\/release\/xsl\/current\/manpages\/do
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -617,7 +598,7 @@ sed -i 's/help/#help/' Makefile Makefile.in Makefile.am
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -641,7 +622,7 @@ USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -665,7 +646,7 @@ USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -692,10 +673,10 @@ sed -i 's/help/#help/' Makefile Makefile.in Makefile.am
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-as_root mkdir /usr/share/engrampa
-as_root cp -rv data/* /usr/share/engrampa/
+sudo mkdir /usr/share/engrampa
+sudo cp -rv data/* /usr/share/engrampa/
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -722,10 +703,10 @@ sed -i 's/help/#help/' Makefile Makefile.in Makefile.am
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-as_root mkdir /usr/share/eom
-as_root cp -rv data/* /usr/share/eom/
+sudo mkdir /usr/share/eom
+sudo cp -rv data/* /usr/share/eom/
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -752,10 +733,10 @@ sed -i 's/help/#help/' Makefile Makefile.in Makefile.am
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-as_root mkdir /usr/share/mate-calc
-as_root cp -rv data/* /usr/share/mate-calc/
+sudo mkdir /usr/share/mate-calc
+sudo cp -rv data/* /usr/share/mate-calc/
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -779,7 +760,7 @@ USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -808,13 +789,13 @@ USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 mkdir poppler-data
 tar -xf ../Poppler-data-*.tar.gz -C poppler-data --strip-components 1 
 cd poppler-data
 
-as_root make LIBDIR=/usr/lib64 prefix=/usr install
+sudo make LIBDIR=/usr/lib64 prefix=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -841,10 +822,10 @@ sed -i 's/help/#help/' Makefile Makefile.in Makefile.am
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-as_root mkdir /usr/share/atril
-as_root cp -rv data/* /usr/share/atril
+sudo mkdir /usr/share/atril
+sudo cp -rv data/* /usr/share/atril
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -867,11 +848,11 @@ USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr  \
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-as_root glib-compile-schemas /usr/share/glib-2.0/schemas/
+sudo glib-compile-schemas /usr/share/glib-2.0/schemas/
 gsettings set com.solus-project.brisk-menu hot-key 'Super_L'
-as_root gsettings set com.solus-project.brisk-menu hot-key 'Super_L'
+sudo gsettings set com.solus-project.brisk-menu hot-key 'Super_L'
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
