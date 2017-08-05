@@ -44,7 +44,6 @@ CLFSROOTDEV=/dev/sda4
 CLFSHOMEDEV=/dev/sda5
 MAKEFLAGS='j8'
 BUILD32="-m32"
-BUILD64="-m64"
 CLFS_TARGET32="i686-pc-linux-gnu"
 PKG_CONFIG_PATH32=/usr/lib/pkgconfig
 PKG_CONFIG_PATH=/usr/lib/pkgconfig
@@ -61,7 +60,6 @@ export CLFSROOTDEV=/dev/sda4
 export CLFSHOMEDEV=/dev/sda5
 export MAKEFLAGS=j8
 export BUILD32="-m32"
-export BUILD64="-m64"
 export CLFS_TARGET32="i686-pc-linux-gnu"
 export PKG_CONFIG_PATH32=/usr/lib/pkgconfig
 export PKG_CONFIG_PATH=/usr/lib/pkgconfig
@@ -235,8 +233,6 @@ wget https://www.python.org/ftp/python/doc/2.7.13/python-2.7.13-docs-html.tar.bz
 mkdir Python-2 && tar xf Python-2.7.13.tar.* -C Python-2 --strip-components 1
 cd Python-2
 
-patch -Np0 -i python2713-lib64-patch.patch
-
 USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" LDFLAGS="-L/usr/lib" ./configure \
             --prefix=/usr       \
@@ -271,7 +267,7 @@ cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf Python-2
 
-#Python 3 64-bit
+#Python 3 32-bit
 wget https://www.python.org/ftp/python/3.6.0/Python-3.6.0.tar.xz -O \
   Python-3.6.0.tar.xz
 
@@ -288,7 +284,7 @@ USE_ARCH=32 CXX="/usr/bin/g++ ${BUILD32}" \
             --enable-shared     \
             --with-system-expat \
             --with-system-ffi   \
-            --libdir=/usr/lib64 \
+            --libdir=/usr/lib \
             --with-ensurepip=yes &&
 
 make PREFIX=/usr LIBDIR=/usr/lib &&
