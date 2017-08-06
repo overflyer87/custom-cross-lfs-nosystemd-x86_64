@@ -79,8 +79,7 @@ rm -rf expat
 wget https://www.python.org/ftp/python/3.6.1/Python-3.6.1.tar.xz -O \
   Python-3.6.1.tar.xz
 
-#link is down as of 2017-08-04 :(
-#wget http://pkgs.fedoraproject.org/cgit/rpms/python3.git/plain/00102-lib64.patch -O \
+#wget http://pkgs.fedoraproject.org/rpms/python3/raw/master/f/00102-lib64.patch -O \
 #python360-multilib.patch
   
 wget https://docs.python.org/3.6/archives/python-3.6.0-docs-html.tar.bz2 -O \
@@ -89,7 +88,7 @@ wget https://docs.python.org/3.6/archives/python-3.6.0-docs-html.tar.bz2 -O \
 mkdir Python-3 && tar xf Python-3.6*.tar.xz -C Python-3 --strip-components 1
 cd Python-3
 
-patch -Np0 -i ../python360-multilib.patch
+patch -Np1 -i ../python360-multilib.patch
 
 checkBuiltPackage
 
