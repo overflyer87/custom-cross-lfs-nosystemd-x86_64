@@ -95,6 +95,13 @@ useradd -c "D-Bus Message Daemon User" -d /var/run/dbus \
 make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install 
 
+sudo mkdir /lib/lsb
+sudo mkdir /lib64/lsb
+sudo ln -sfv /etc/rc.d/init.d/functions /lib/lsb/init-functions
+sudo ln -sfv /etc/rc.d/init.d/functions /lib64/lsb/init-functions
+
+sed -i 's/\/lib\/lsb\/init-functions/\/lib64\/lsb\/init-functions/' /etc/rc.d/init.d/*
+sed -i 's/loadproc/start_daemon/' /etc/rc.d/init.d/functions
 
 sudo mkdir /etc/dbus-1/
 sudo mkdir /usr/share/dbus-1/
@@ -108,14 +115,16 @@ sudo cat > /etc/dbus-1/session-local.conf << "EOF"
  "http://www.freedesktop.org/standards/dbus/1.0/busconfig.dtd">
 <busconfig>
 
-  <!-- Search for .service files in /usr/local -->
-  <servicedir>/usr/local/share/dbus-1/services</servicedir>
+  <!-- Search for .service files in /usr/share -->
+  <servicedir>/usr/share/dbus-1/services</servicedir>
 
 </busconfig>
 EOF
 
 cd ${CLFSSOURCES}/blfs-bootscripts
 sudo make install-dbus
+
+sudo /etc/rc.d/init.d/dbus start
 
 #More info ondbus:
 #http://www.linuxfromscratch.org/hints/downloads/files/execute-session-scripts-using-kdm.txt
