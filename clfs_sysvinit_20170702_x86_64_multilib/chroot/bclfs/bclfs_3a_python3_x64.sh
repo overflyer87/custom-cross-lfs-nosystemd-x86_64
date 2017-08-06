@@ -15,24 +15,6 @@ done
 
 }
 
-function as_root()
-{
-  if   [ $EUID = 0 ];        then $*
-  elif [ -x /usr/bin/sudo ]; then sudo $*
-  else                            su -c \\"$*\\"
-  fi
-}
-
-export -f as_root
-
-function buildSingleXLib64() {
- ./configure $XORG_CONFIG64
-  make
-  as_root make install
-}
-
-export -f buildSingleXLib64
-
 #Building the final CLFS System
 CLFS=/
 CLFSHOME=/home
@@ -84,10 +66,10 @@ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" ./configure \
   --enable-shared &&
   
 make LIBDIR=/usr/lib64 PREFIX=/usr 
-as_root make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
   
-install -v -m755 -d /usr/share/doc/expat-2.1.0
-install -v -m644 doc/*.{html,png,css} /usr/share/doc/expat-2.1.0
+sudo install -v -m755 -d /usr/share/doc/expat-2.1.0
+sudo install -v -m644 doc/*.{html,png,css} /usr/share/doc/expat-2.1.0
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
@@ -121,11 +103,11 @@ USE_ARCH=64 CXX="/usr/bin/g++ ${BUILD64}" \
             --with-ensurepip=yes &&
 
 make PREFIX=/usr LIBDIR=/usr/lib64 PLATLIBDIR=/usr/lib64 platlibdir=/usr/lib64 &&
-as_root make install PREFIX=/usr LIBDIR=/usr/lib64 PLATLIBDIR=/usr/lib64 \
+sudo make install PREFIX=/usr LIBDIR=/usr/lib64 PLATLIBDIR=/usr/lib64 \
   platlibdir=/usr/lib64
 
-as_root chmod -v 755 /usr/lib64/libpython3.6m.so
-as_root chmod -v 755 /usr/lib64/libpython3.so
+sudo chmod -v 755 /usr/lib64/libpython3.6m.so
+sudo chmod -v 755 /usr/lib64/libpython3.so
 
 sudo install -v -dm755 /usr/share/doc/python-3.6.0/html &&
 sudo tar --strip-components=1 \
@@ -133,6 +115,8 @@ sudo tar --strip-components=1 \
     --no-same-permissions \
     -C /usr/share/doc/python-3.6.0/html \
     -xvf ../python-360-docs.tar.bz2
+
+sudo ln -svfn python-3.6.0 /usr/share/doc/python-3
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
