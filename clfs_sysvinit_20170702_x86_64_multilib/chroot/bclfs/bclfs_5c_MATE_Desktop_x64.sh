@@ -250,6 +250,30 @@ cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -r gcr
 
+#gnome-common
+wget http://ftp.gnome.org/pub/GNOME/sources/gnome-common/3.18/gnome-common-3.18.0.tar.xz -O \
+    gnome-common-3.18.0.tar.xz
+
+mkdir gnome-common && tar xf gnome-common-*.tar.* -C gnome-common --strip-components 1
+cd gnome-common
+
+ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
+    --libdir=/usr/lib64 \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --bindir=/usr/bin \
+    --sbindir=/usr/sbin 
+    
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf gnome-common
+
 #libgnome-keyring (for gnome-keyring-1) FINALLY FOUND IT
 wget https://github.com/GNOME/libgnome-keyring/archive/3.12.0.tar.gz -O \
   libgnome-keyring-3.12.0.tar.gz
@@ -278,7 +302,6 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf libgnome-keyring
-
 
 #gnome-keyring
 wget http://ftp.gnome.org/pub/gnome/sources/gnome-keyring/3.20/gnome-keyring-3.20.1.tar.xz -O \
@@ -790,7 +813,7 @@ rm -rf mozjs
 wget http://www.freedesktop.org/software/polkit/releases/polkit-0.113.tar.gz -O \
   polkit-0.113.tar.gz
   
-mkdir polkit && tar xf polkit*.tar.gz -C polkit --strip-components 1
+mkdir polkit && tar xf polkit-*.tar.* -C polkit --strip-components 1
 cd polkit
 
 sudo groupadd -fg 27 polkitd &&
@@ -798,8 +821,7 @@ sudo useradd -c "PolicyKit Daemon Owner" -d /etc/polkit-1 -u 27 \
         -g polkitd -s /bin/false polkitd
 
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
-PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} \
-./configure --prefix=/usr        \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
             --sysconfdir=/etc    \
             --libdir=/usr/lib64  \
             --localstatedir=/var \
@@ -838,8 +860,65 @@ checkBuiltPackage
 rm -rf polkit
 
 #accountservice
+wget http://www.freedesktop.org/software/accountsservice/accountsservice-0.6.45.tar.xz -O \
+  accountsservice-0.6.45.tar.xz
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} 
+
+mkdir accountsservice && tar xf accountsservice-*.tar.* -C accountsservice --strip-components 1
+cd accountsservice
+
+./configure --prefix=/usr \
+            --sysconfdir=/etc    \
+            --libdir=/usr/lib64  \
+            --localstatedir=/var \
+            --enable-admin-group=adm \
+            --disable-static \
+            --with-systemdunitdir=no \
+            --disable-systemd \
+            --disable-docbook-docs \
+            --disable-gtk-doc
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} make PREFIX=/usr LIBDIR=/usr/lib64
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf accountsservice
 
 #mate-polkit
+wget https://github.com/mate-desktop/mate-polkit/archive/v1.18.1.tar.gz -O \
+  mate-polkit-1.18.1.tar.gz
+
+mkdir mate-polkit && tar xf mate-polkit-*.tar.* -C mate-polkit --strip-components 1
+cd mate-polkit
+
+ACLOCAL_FLAG="/usr/share/aclocal/" LIBSOUP_LIBS=/usr/lib64   \
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr \
+    --libdir=/usr/lib64 \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --bindir=/usr/bin \
+    --sbindir=/usr/sbin \
+    --disable-gtk-doc 
+    
+#Deactivate building of the help subdir because it will fail
+sed -i 's/HELP_DIR/#HELP_DIR/' Makefile Makefile.in
+sed -i 's/help/#help/' Makefile Makefile.in Makefile.am
+   
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+sudo mkdir /usr/share/mate-panel
+sudo cp -rv data/* /usr/share/mate-panel
+  
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf mate-polkit
 
 #libqmi (recommended for ModemManager)
 wget http://www.freedesktop.org/software/libqmi/libqmi-1.18.0.tar.xz -O \
@@ -1455,12 +1534,13 @@ PYTHON="/usr/bin/python2" PYTHONPATH="/usr/lib64/python2.7" \
 PYTHONHOME="/usr/lib64/python2.7" PYTHON_INCLUDES="/usr/include/python2.7" \
 ACLOCAL_FLAG="/usr/share/aclocal/" LIBSOUP_LIBS=/usr/lib64   \
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
-USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr \
     --libdir=/usr/lib64 \
     --sysconfdir=/etc \
     --localstatedir=/var \
     --bindir=/usr/bin \
-    --sbindir=/usr/sbin --disable-gtk-doc &&
+    --sbindir=/usr/sbin \
+    --disable-gtk-doc 
     
 #Deactivate building of the help subdir because it will fail
 sed -i 's/HELP_DIR/#HELP_DIR/' Makefile Makefile.in
