@@ -29,6 +29,7 @@ BUILD64="-m64"
 CLFS_TARGET32="i686-pc-linux-gnu"
 PKG_CONFIG_PATH=/usr/lib64/pkgconfig
 PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
+XORG_PREFIX=/usr
 
 export CLFS=/
 export CLFSUSER=clfs
@@ -45,6 +46,7 @@ export BUILD64="-m64"
 export CLFS_TARGET32="i686-pc-linux-gnu"
 export PKG_CONFIG_PATH=/usr/lib64/pkgconfig
 export PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
+export XORG_PREFIX=/usr
 
 cd ${CLFSSOURCES}
 cd ${CLFSSOURCES}/xc/mate
@@ -78,7 +80,7 @@ USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
     --bindir=/usr/bin \
     --sbindir=/usr/sbin 
     
-PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" CC="gcc ${BUILD64}" USE_ARCH=64 \
 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
@@ -100,7 +102,7 @@ useradd -c "PolicyKit Daemon Owner" -d /etc/polkit-1 -u 27 \
 
  
 ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
-USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
+USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" sh autogen.sh --prefix=/usr\
     --libdir=/usr/lib64 \
     --sysconfdir=/etc \
     --localstatedir=/var \
@@ -127,7 +129,7 @@ mkdir marco && tar xf marco-*.tar.* -C marco --strip-components 1
 cd marco
 
 ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
-USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
+USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" sh autogen.sh --prefix=/usr\
     --libdir=/usr/lib64 \
     --sysconfdir=/etc \
     --localstatedir=/var \
@@ -151,7 +153,7 @@ mkdir matecc && tar xf mate-control-center-*.tar.* -C matecc --strip-components 
 cd matecc
 
 ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
-USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
+USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" sh autogen.sh --prefix=/usr \
     --libdir=/usr/lib64 \
     --sysconfdir=/etc \
     --localstatedir=/var \
@@ -181,7 +183,7 @@ mkdir matend && tar xf mate-notification-daemon-*.tar.* -C matend --strip-compon
 cd matend
 
 ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
-USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
+USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" sh autogen.sh --prefix=/usr \
     --libdir=/usr/lib64 \
     --sysconfdir=/etc \
     --localstatedir=/var \
@@ -340,11 +342,12 @@ rm -rf matend
 wget http://ftp.gnome.org/pub/gnome/sources/glib/2.52/glib-2.52.3.tar.xz -O \
   glib-2.52.3.tar.xz
 
-mkdir glib && tar xf glib-*.tar.* -C glib --strip-components 1
+mkdir glib && tar xf glib-2.52.3.tar.xz -C glib --strip-components 1
 cd glib
 
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
-    --prefix=/usr \
+CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" \
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
     --with-pcre=system \
     --libdir=/usr/lib64
 
@@ -363,14 +366,14 @@ mkdir caja && tar xf caja-*.tar.* -C caja --strip-components 1
 cd caja
 
 ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
-USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
+USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" sh autogen.sh --prefix=/usr\
     --libdir=/usr/lib64 \
     --sysconfdir=/etc \
     --localstatedir=/var \
     --bindir=/usr/bin \
     --sbindir=/usr/sbin 
 
-PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" CC="gcc ${BUILD64}" USE_ARCH=64 \
 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
@@ -638,12 +641,16 @@ mkdir mate-user-share && tar xf mate-user-share-*.tar.* -C mate-user-share --str
 cd mate-user-share
 
 ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
-USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr \
     --libdir=/usr/lib64 \
     --sysconfdir=/etc \
     --localstatedir=/var \
     --bindir=/usr/bin \
     --sbindir=/usr/sbin 
+
+sed -i 's/HELP_DIR/#HELP_DIR/' Makefile Makefile.in
+sed -i 's/help/#help/' Makefile Makefile.in Makefile.am
+sed -i 's/docs/#docs/' Makefile Makefile.in Makefile.am
 
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
@@ -662,7 +669,7 @@ mkdir python-caja && tar xf python-caja-*.tar.* -C python-caja --strip-component
 cd python-caja
 
 ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
-USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr \
     --libdir=/usr/lib64 \
     --sysconfdir=/etc \
     --localstatedir=/var \
@@ -686,7 +693,7 @@ mkdir engrampa && tar xf engrampa-*.tar.* -C engrampa --strip-components 1
 cd engrampa
 
 ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
-USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr \
     --libdir=/usr/lib64 \
     --sysconfdir=/etc \
     --localstatedir=/var \
@@ -716,7 +723,7 @@ mkdir eom && tar xf eom-*.tar.* -C eom --strip-components 1
 cd eom
 
 ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
-USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr \
     --libdir=/usr/lib64 \
     --sysconfdir=/etc \
     --localstatedir=/var \
@@ -746,7 +753,7 @@ mkdir mate-calc && tar xf mate-calc-*.tar.* -C mate-calc --strip-components 1
 cd mate-calc
 
 ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
-USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr \
     --libdir=/usr/lib64 \
     --sysconfdir=/etc \
     --localstatedir=/var \
@@ -778,7 +785,7 @@ cd openjpeg
 autoreconf -f -i
 
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
-USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
     --libdir=/usr/lib64 \
     --sysconfdir=/etc \
     --disable-static
@@ -803,7 +810,7 @@ mkdir poppler && tar xf poppler-*.tar.* -C poppler --strip-components 1
 cd poppler
 
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
-USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
     --libdir=/usr/lib64 \
     --sysconfdir=/etc \
     --disable-static            \
@@ -835,7 +842,7 @@ mkdir atril && tar xf atril-*.tar.* -C atril --strip-components 1
 cd atril
 
 ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
-USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr \
     --libdir=/usr/lib64 \
     --sysconfdir=/etc \
     --localstatedir=/var \
@@ -867,7 +874,7 @@ USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} autoreconf
 
 ACLOCAL_FLAG=/usr/local/share \
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
-USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr  \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr \
             --sysconfdir=/etc     \
             --libdir=/usr/lib64   
 
@@ -919,7 +926,7 @@ sed -e 's/^bg/#&/'        \
     -i data/lxdm.conf.in
 
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
-USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
     --libdir=/usr/lib64 \
     --sysconfdir=/etc \
     --with-pam \
@@ -934,7 +941,7 @@ cd ${CLFSSOURCES}/blfs-bootscripts
 sudo make install-lxdm
 
 sudo /etc/rc.d/init.d/lxdm start
-sudo cp -v /etc/inittab{,-orig} &&
+sudo cp -v /etc/inittab{,-orig} 
 sudo sed -i '/initdefault/ s/3/5/' /etc/inittab
 
 cd ${CLFSSOURCES}/xc/mate
