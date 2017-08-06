@@ -92,6 +92,10 @@ patch -Np1 -i ../python360-multilib.patch
 
 checkBuiltPackage
 
+############################################################################
+#  Let's see later if adding /usr/lib64 to ld.so.conf is really neccessary #
+############################################################################
+
 USE_ARCH=64 CXX="/usr/bin/g++ ${BUILD64}" \
     CC="/usr/bin/gcc ${BUILD64}" \
     LD_LIBRARY_PATH=/usr/lib64 \
