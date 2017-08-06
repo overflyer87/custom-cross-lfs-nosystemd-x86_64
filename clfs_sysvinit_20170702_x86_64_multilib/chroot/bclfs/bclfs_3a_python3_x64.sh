@@ -93,6 +93,9 @@ patch -Np1 -i ../python360-multilib.patch
 
 USE_ARCH=64 CXX="/usr/bin/g++ ${BUILD64}" \
     CC="/usr/bin/gcc ${BUILD64}" \
+    LD_LIBRARY_PATH=/usr/lib64 \
+    LD_LIB_PATH=/usr/lib64 \
+    LIBRARY_PATH=/usr/lib64 \
     PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
             --prefix=/usr       \
             --enable-shared     \
@@ -100,7 +103,8 @@ USE_ARCH=64 CXX="/usr/bin/g++ ${BUILD64}" \
             --with-system-ffi   \
             --libdir=/usr/lib64 \
             --with-custom-platlibdir=/usr/lib64 \
-            --with-ensurepip=yes &&
+            --with-ensurepip=yes \
+            LDFLAGS="-Wl,-rpath /usr/lib64"
 
 make PREFIX=/usr LIBDIR=/usr/lib64 PLATLIBDIR=/usr/lib64 platlibdir=/usr/lib64 &&
 sudo make install PREFIX=/usr LIBDIR=/usr/lib64 PLATLIBDIR=/usr/lib64 \
