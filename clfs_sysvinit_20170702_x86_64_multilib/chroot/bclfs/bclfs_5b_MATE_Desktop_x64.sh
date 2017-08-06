@@ -66,62 +66,6 @@ export CC="gcc ${BUILD64}"
 
 #We left off installing gtk3
 
-
-#Python2.7.6 64-bit
-wget https://www.python.org/ftp/python/2.7.13/Python-2.7.13.tar.xz -O \
-  Python-2.7.13.tar.xz
-  
-wget https://www.python.org/ftp/python/doc/2.7.13/python-2.7.13-docs-html.tar.bz2 -O \
-  python-2.7.13-docs-html.tar.bz2
-  
-mkdir Python-2 && tar xf Python-2.7.13.tar.* -C Python-2 --strip-components 1
-cd Python-2
-
-cp ${CLFSSOURCES}/python2713-lib64-patch.patch ${CLFSSOURCES}/xc/mate/Python-2
-
-patch -Np0 -i python2713-lib64-patch.patch
-
-USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
-CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" LDFLAGS="-L/usr/lib64" ./configure \
-            --prefix=/usr       \
-            --enable-shared     \
-            --with-system-expat \
-            --with-system-ffi   \
-            --enable-unicode=ucs4 \
-            --libdir=/usr/lib64 &&
-
-make LIBDIR=/usr/lib64 PREFIX=/usr 
-sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
-
-sudo chmod -v 755 /usr/lib64/libpython2.7.so.1.0
-
-sudo mv -v /usr/bin/python{,-64} &&
-sudo mv -v /usr/bin/python2{,-64} &&
-sudo mv -v /usr/bin/python2.7{,-64} &&
-sudo ln -sfv python2.7-64 /usr/bin/python2-64 &&
-sudo ln -sfv python2-64 /usr/bin/python-64 &&
-sudo ln -sfv multiarch_wrapper /usr/bin/python &&
-sudo ln -sfv multiarch_wrapper /usr/bin/python2 &&
-sudo ln -sfv multiarch_wrapper /usr/bin/python2.7 &&
-#Deactivate renaming header according to cblfs
-#mate-menu will not find since Python.h includes pyconfig.h not pyconfig-64.h
-#sudo mv -v /usr/include/python2.7/pyconfig{,-64}.h
-
-sudo install -v -dm755 /usr/share/doc/python-2.7.13 &&
-
-tar --strip-components=1                     \
-    --no-same-owner                          \
-    --directory /usr/share/doc/python-2.7.13 \
-    -xvf ../python-2.7.*.tar.* &&
-
-sudo find /usr/share/doc/python-2.7.13 -type d -exec chmod 0755 {} \; &&
-sudo find /usr/share/doc/python-2.7.13 -type f -exec chmod 0644 {} \;
-            
-cd ${CLFSSOURCES}
-checkBuiltPackage
-rm -rf Python-2
-
-
 #libxml2 WITH ITS PYTHON 2 MODULE
 wget http://xmlsoft.org/sources/libxml2-2.9.4.tar.gz -O \
     libxml2-2.9.4.tar.gz
