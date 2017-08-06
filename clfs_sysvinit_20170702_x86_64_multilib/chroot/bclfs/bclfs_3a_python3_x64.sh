@@ -129,6 +129,9 @@ sudo tar --strip-components=1 \
 
 sudo ln -svfn python-3.6.0 /usr/share/doc/python-3
 
+sudo cp -rv /usr/lib/python3.6/ /usr/lib64/
+sudo rm -rf /usr/lib/python3.6/
+
 cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf Python-3
