@@ -104,13 +104,6 @@ checkBuiltPackage
 rm -rf libxml2
 
 #libxml2 WITH ITS PYTHON 3 MODULE
-wget http://xmlsoft.org/sources/libxml2-2.9.4.tar.gz -O \
-    libxml2-2.9.4.tar.gz
-
-#Download testsuite. WE NEED IT to build the Python module!
-wget http://www.w3.org/XML/Test/xmlts20130923.tar.gz -O \
-    xmlts20130923.tar.gz
-
 mkdir libxml2 && tar xf libxml2-*.tar.* -C libxml2 --strip-components 1
 cd libxml2
 
