@@ -101,6 +101,7 @@ USE_ARCH=64 CXX="/usr/bin/g++ ${BUILD64}" \
     PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
             --prefix=/usr       \
             --enable-shared     \
+            --disable-static    \
             --with-system-expat \
             --with-system-ffi   \
             --libdir=/usr/lib64 \
@@ -114,7 +115,7 @@ LD_LIB_PATH=/usr/lib64 \
 LIBRARY_PATH=/usr/lib64 make PREFIX=/usr LIBDIR=/usr/lib64 PLATLIBDIR=/usr/lib64 \
   platlibdir=/usr/lib64
 
-sudo make install PREFIX=/usr LIBDIR=/usr/lib64 PLATLIBDIR=/usr/lib64 \
+sudo make altinstall PREFIX=/usr LIBDIR=/usr/lib64 PLATLIBDIR=/usr/lib64 \
   platlibdir=/usr/lib64
 
 sudo chmod -v 755 /usr/lib64/libpython3.6m.so
