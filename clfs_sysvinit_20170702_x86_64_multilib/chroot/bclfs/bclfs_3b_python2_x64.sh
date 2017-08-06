@@ -85,9 +85,11 @@ wget https://www.python.org/ftp/python/doc/2.7.13/python-2.7.13-docs-html.tar.bz
 mkdir Python-2 && tar xf Python-2.7.13.tar.* -C Python-2 --strip-components 1
 cd Python-2
 
-cp ${CLFSSOURCES}/python2713-lib64-patch.patch ${CLFSSOURCES}/xc/mate/Python-2
+cp ${CLFSSOURCES}/python2713-lib64-patch.patch ${CLFSSOURCES}/Python-2
 
 patch -Np0 -i python2713-lib64-patch.patch
+
+checkBuiltPackage
 
 LD_LIBRARY_PATH=/usr/lib64 \
 LD_LIB_PATH=/usr/lib64 \
@@ -102,7 +104,12 @@ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" LDFLAGS="-L/usr/lib64" ./configure \
             --libdir=/usr/lib64 \
             LDFLAGS="-Wl,-rpath /usr/lib64"
 
-make LIBDIR=/usr/lib64 PREFIX=/usr 
+
+LD_LIBRARY_PATH=/usr/lib64 \
+LD_LIB_PATH=/usr/lib64 \
+LIBRARY_PATH=/usr/lib64 \
+LDFLAGS="-Wl,-rpath /usr/lib64" make LIBDIR=/usr/lib64 PREFIX=/usr 
+
 sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 sudo chmod -v 755 /usr/lib64/libpython2.7.so.1.0
