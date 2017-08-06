@@ -89,6 +89,9 @@ cp ${CLFSSOURCES}/python2713-lib64-patch.patch ${CLFSSOURCES}/xc/mate/Python-2
 
 patch -Np0 -i python2713-lib64-patch.patch
 
+LD_LIBRARY_PATH=/usr/lib64 \
+LD_LIB_PATH=/usr/lib64 \
+LIBRARY_PATH=/usr/lib64 \
 USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" LDFLAGS="-L/usr/lib64" ./configure \
             --prefix=/usr       \
@@ -96,7 +99,8 @@ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" LDFLAGS="-L/usr/lib64" ./configure \
             --with-system-expat \
             --with-system-ffi   \
             --enable-unicode=ucs4 \
-            --libdir=/usr/lib64 &&
+            --libdir=/usr/lib64 \
+            LDFLAGS="-Wl,-rpath /usr/lib64"
 
 make LIBDIR=/usr/lib64 PREFIX=/usr 
 sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
