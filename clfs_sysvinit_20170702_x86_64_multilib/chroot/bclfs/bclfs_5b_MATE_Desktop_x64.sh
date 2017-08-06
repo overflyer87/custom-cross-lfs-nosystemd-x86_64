@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function checkBuiltPackage() {
-
+echo ""
 echo "Did everything build fine?: [Y/N]"
 while read -n1 -r -p "[Y/N]   " && [[ $REPLY != q ]]; do
   case $REPLY in
@@ -12,7 +12,7 @@ while read -n1 -r -p "[Y/N]   " && [[ $REPLY != q ]]; do
     *) echo " Try again. Type y or n";;
   esac
 done
-
+echo ""
 }
 
 #Building the final CLFS System
@@ -726,9 +726,6 @@ CC="gcc ${BUILD64}" \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make prefix=/usr libdir=/usr/lib64 -f unix/Makefile generic
 sudo make prefix=/usr libdir=/usr/lib64 -f unix/Makefile install
 
-sudo cp -v /usr/local/bin/unzip /usr/bin/
-sudo rm -f/usr/local/bin/unzip
-
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf unzip
@@ -739,11 +736,10 @@ wget http://www.docbook.org/xml/4.5/docbook-xml-4.5.zip -O \
 
 unzip docbook-xml-*.zip
 
-sudo install -v -d -m755 /usr/share/xml/docbook/xml-dtd-4.5 &&
-sudo install -v -d -m755 /etc/xml &&
-sudo chown -R root:root . &&
-sudo cp -v -af docbook.cat *.dtd ent/ *.mod \
-    /usr/share/xml/docbook/xml-dtd-4.5
+sudo install -v -d -m755 /usr/share/xml/docbook/xml-dtd-4.5
+sudo install -v -d -m755 /etc/xml
+sudo chown -R root:root .
+sudo cp -v -af docbook.cat *.dtd ent/ *.mod /usr/share/xml/docbook/xml-dtd-4.5
 
 if [ ! -e /etc/xml/docbook ]; then
     sudo xmlcatalog --noout --create /etc/xml/docbook
@@ -760,7 +756,7 @@ sudo xmlcatalog --noout --add "public" \
     "-//OASIS//DTD XML Exchange Table Model 19990315//EN" \
     "file:///usr/share/xml/docbook/xml-dtd-4.5/soextblx.dtd" \
     /etc/xml/docbook &&
-as_rootxmlcatalog --noout --add "public" \
+sudo xmlcatalog --noout --add "public" \
     "-//OASIS//ELEMENTS DocBook XML Information Pool V4.5//EN" \
     "file:///usr/share/xml/docbook/xml-dtd-4.5/dbpoolx.mod" \
     /etc/xml/docbook &&
@@ -794,7 +790,7 @@ sudo xmlcatalog --noout --add "rewriteURI" \
     /etc/xml/docbook
 
 if [ ! -e /etc/xml/catalog ]; then
-    xmlcatalog --noout --create /etc/xml/catalog
+    sudo xmlcatalog --noout --create /etc/xml/catalog
 fi &&
 sudo xmlcatalog --noout --add "delegatePublic" \
     "-//OASIS//ENTITIES DocBook XML" \
