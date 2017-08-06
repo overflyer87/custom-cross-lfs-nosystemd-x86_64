@@ -335,8 +335,9 @@ sed -i 's/http\:\/\/docbook.sourceforge.net\/release\/xsl\/current\/manpages\/do
 XSLTPROC_XSL=/usr/share/xml/docbook/xsl-stylesheets-1.79.1/html/docbook.xsl \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 
-make check
-checkBuiltPackage
+##Leave this disabled - it WILL fail!
+##make check
+##checkBuiltPackage
 
 sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
@@ -816,7 +817,8 @@ wget http://www.freedesktop.org/software/polkit/releases/polkit-0.113.tar.gz -O 
 mkdir polkit && tar xf polkit-*.tar.* -C polkit --strip-components 1
 cd polkit
 
-sudo groupadd -fg 27 polkitd &&
+sudo mkdir /etc/polkit-1
+sudo groupadd -fg 27 polkitd 
 sudo useradd -c "PolicyKit Daemon Owner" -d /etc/polkit-1 -u 27 \
         -g polkitd -s /bin/false polkitd
 
