@@ -626,6 +626,10 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
+echo " "
+echo "checking if /usr/include/pratom.h was installed..."
+ls /usr/include | grep pratom.h
+echo "... should be shown in output one line above. Mozjs 17.0.0 will fail otherwise."
 rm -rf nspr
 
 #startup-notification
