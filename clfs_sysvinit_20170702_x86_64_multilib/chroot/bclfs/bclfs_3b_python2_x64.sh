@@ -110,7 +110,7 @@ LD_LIB_PATH=/usr/lib64 \
 LIBRARY_PATH=/usr/lib64 \
 LDFLAGS="-Wl,-rpath /usr/lib64" make LIBDIR=/usr/lib64 PREFIX=/usr 
 
-sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr altinstall
 
 sudo chmod -v 755 /usr/lib64/libpython2.7.so.1.0
 
