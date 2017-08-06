@@ -90,7 +90,9 @@ wget https://docs.python.org/3.6/archives/python-3.6.0-docs-html.tar.bz2 -O \
 mkdir Python-3 && tar xf Python-3.6*.tar.xz -C Python-3 --strip-components 1
 cd Python-3
 
-patch -Np1 -i ../python360-multilib.patch
+patch -Np0 -i ../python360-multilib.patch
+
+checkBuiltPackage
 
 USE_ARCH=64 CXX="/usr/bin/g++ ${BUILD64}" \
     CC="/usr/bin/gcc ${BUILD64}" \
