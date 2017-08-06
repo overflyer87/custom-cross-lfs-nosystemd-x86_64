@@ -94,10 +94,9 @@ wget https://github.com/GNOME/zenity/archive/ZENITY_3_24_2.tar.gz -O \
 mkdir zenity && tar xf zenity-*.tar.* -C zenity --strip-components 1
 cd zenity
 
-#We don't need to do that, polkit installation took care of that
-#groupadd -fg 27 polkitd &&
-#useradd -c "PolicyKit Daemon Owner" -d /etc/polkit-1 -u 27 \
-#        -g polkitd -s /bin/false polkitd
+groupadd -fg 27 polkitd &&
+useradd -c "PolicyKit Daemon Owner" -d /etc/polkit-1 -u 27 \
+        -g polkitd -s /bin/false polkitd
 
  
 ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
