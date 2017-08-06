@@ -67,6 +67,16 @@ export USE_ARCH=64
 export CXX="g++ ${BUILD64}" 
 export CC="gcc ${BUILD64}"
 
+#Create important, persistent ${CLFSSOURCES}/blfs-bootscripts folder
+cd ${CLFSSOURCES}
+wget http://anduin.linuxfromscratch.org/BLFS/blfs-bootscripts/blfs-bootscripts-20170731.tar.xz -O \
+  blfs-bootscripts-20170731.tar.xz
+
+mkdir blfs-bootscripts && tar xf blfs-bootscripts-20170731.tar.xz -C blfs-bootscripts --strip-components -1
+
+#Let's start building MATE
+cd ${CLFSSOURCES}/xc/mate
+
 #dbus
 wget http://dbus.freedesktop.org/releases/dbus/dbus-1.10.20.tar.gz -O \
   dbus-1.10.20.tar.gz
