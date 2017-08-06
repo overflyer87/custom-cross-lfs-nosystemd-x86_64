@@ -837,6 +837,10 @@ cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf polkit
 
+#accountservice
+
+#mate-polkit
+
 #libqmi (recommended for ModemManager)
 wget http://www.freedesktop.org/software/libqmi/libqmi-1.18.0.tar.xz -O \
     libqmi-1.18.0.tar.xz
