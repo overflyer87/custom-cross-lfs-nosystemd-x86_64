@@ -111,8 +111,9 @@ USE_ARCH=64 CXX="/usr/bin/g++ ${BUILD64}" \
 LDFLAGS="-Wl,-rpath /usr/lib64" \
 LD_LIBRARY_PATH=/usr/lib64 \
 LD_LIB_PATH=/usr/lib64 \
-LIBRARY_PATH=/usr/lib64 \
-make PREFIX=/usr LIBDIR=/usr/lib64 PLATLIBDIR=/usr/lib64 platlibdir=/usr/lib64 &&
+LIBRARY_PATH=/usr/lib64 make PREFIX=/usr LIBDIR=/usr/lib64 PLATLIBDIR=/usr/lib64 \
+  platlibdir=/usr/lib64
+
 sudo make install PREFIX=/usr LIBDIR=/usr/lib64 PLATLIBDIR=/usr/lib64 \
   platlibdir=/usr/lib64
 
