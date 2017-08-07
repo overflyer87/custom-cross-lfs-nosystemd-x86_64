@@ -281,7 +281,7 @@ sudo chown -Rv polkitd /usr/share/polkit-1/rules.d
 sudo chmod 700 /etc/polkit-1/rules.d
 sudo chmod 700 /usr/share/polkit-1/rules.d
 
-sudo bahs -c 'cat > /etc/pam.d/polkit-1 << "EOF"
+sudo bash -c 'cat > /etc/pam.d/polkit-1 << "EOF"
 # Begin /etc/pam.d/polkit-1
 
 auth     include        system-auth
@@ -492,7 +492,7 @@ checkBuiltPackage
 rm -rf mate-themes
 
 #Start X at login
-cat >> /home/overflyer/.bash_profile << "EOF"
+cat >> ~/.bash_profile << "EOF"
 # Begin ~/.bash_profile
 # Written for Beyond Linux From Scratch
 # by James Robertson <jameswrobertson@earthlink.net>
