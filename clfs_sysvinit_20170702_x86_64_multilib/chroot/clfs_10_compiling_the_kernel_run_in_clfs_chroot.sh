@@ -8,7 +8,6 @@
 #
 #http://www.linuxfromscratch.org/~krejzi/basic-kernel.txt 
 #http://www.linuxfromscratch.org/hints/downloads/files/lfs-uefi-20170207.txt
-
 #=====================
 
 #Building the final CLFS System
@@ -59,17 +58,10 @@ cp ${CLFSSOURCES}/mykernel.conf ${CLFSSOURCES}/linux/.config
 make
 make modules_install
 make firmware_install
-cp -v arch/x86_64/boot/bzImage /boot/efi/vmlinuz-clfs-4.12.4
-cp -v System.map /boot/efi/System.map-4.12.4
-cp -v .config /boot/efi/config-4.12.4
+cp -v arch/x86_64/boot/bzImage /boot/efi/vmlinuz-clfs-4.12.5
+cp -v System.map /boot/efi/System.map-4.12.5
+cp -v .config /boot/efi/config-4.12.5
 
 cd ${CLFSSOURCES}
 #checkBuiltPackage
-mv linux /lib/modules/CLFS-4.12.4_ORIGINAL
-
-mkdir -v /etc/modprobe.d
-
-cat > /etc/modprobe.d/blacklist-nouveau.conf << "EOF"
-blacklist nouveau
-EOF
 
