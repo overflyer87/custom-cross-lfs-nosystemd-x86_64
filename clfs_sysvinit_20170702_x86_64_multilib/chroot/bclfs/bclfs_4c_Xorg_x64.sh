@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function checkBuiltPackage() {
-
+echo " "
 echo "Did everything build fine?: [Y/N]"
 while read -n1 -r -p "[Y/N]   " && [[ $REPLY != q ]]; do
   case $REPLY in
@@ -12,7 +12,7 @@ while read -n1 -r -p "[Y/N]   " && [[ $REPLY != q ]]; do
     *) echo " Try again. Type y or n";;
   esac
 done
-
+echo " "
 }
 
 function as_root()
@@ -357,10 +357,10 @@ checkBuiltPackage
 as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
 as_root mkdir -pv /etc/X11/xorg.conf.d
 
-as_root cat >> /etc/sysconfig/createfiles << "EOF"
+sudo bash -c 'cat >> /etc/sysconfig/createfiles << "EOF"
 /tmp/.ICE-unix dir 1777 root root
 /tmp/.X11-unix dir 1777 root root
-EOF
+EOF'
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -522,13 +522,13 @@ make PREFIX=/usr LIBDIR=/usr/lib64
 as_root make PREFIX=/usr LIBDIR=/usr/lib64 install 
 as_root make PREFIX=/usr LIBDIR=/usr/lib64 install-ti
 
-as_root cat >> /etc/X11/app-defaults/XTerm << "EOF"
+sudo bash -c 'cat >> /etc/X11/app-defaults/XTerm << "EOF"
 *VT100*locale: true
 *VT100*faceName: Monospace
 *VT100*faceSize: 10
 *backarrowKeyIsErase: true
 *ptyInitialErase: true
-EOF
+EOF'
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -589,15 +589,14 @@ cp -v ttf/* /usr/share/fonts/TTF
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf dejavu-fonts
-
-as_root cat > /etc/X11/xorg.conf.d/xkb-defaults.conf << "EOF"
+sudo bash -c 'cat > /etc/X11/xorg.conf.d/xkb-defaults.conf << "EOF"
 Section "InputClass"
     Identifier "XKB Defaults"
     MatchIsKeyboard "yes"
     Option "XkbLayout" "de-latin1"
     Option "XkbOptions" "terminate:ctrl_alt_bksp"
 EndSection
-EOF
+EOF'
 
 as_root usermod -a -G video overflyer
 as_root usermod -a -G audio overflyer
