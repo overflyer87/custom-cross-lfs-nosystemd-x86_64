@@ -471,7 +471,7 @@ cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf xf86vidfbdev
 
-#THE PROPRIETARY NVIDIA DRIVER INSTALLATION CAN BE FOUND IN THE X64 SCRIPT
+#THE PROPRIETARY NVIDIA DRIVER INSTALLATION CAN BE FOUND IN THE 4d X64 SCRIPT
 
 #I uncommented the applications, because I find it most likely
 #that on a multilib system you want the 32-bit libraries if needed
