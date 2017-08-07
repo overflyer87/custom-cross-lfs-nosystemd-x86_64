@@ -836,11 +836,31 @@ include "/usr/share/themes/Clearlooks/gtk-2.0/gtkrc"
 gtk-icon-theme-name = "elementary"
 EOF
 
-ldconfig
+sudo ldconfig
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf gtk2
+
+#Pixman 64-bit
+wget http://cairographics.org/releases/pixman-0.34.0.tar.gz -O \
+  pixman-0.34.0.tar.gz
+  
+mkdir pixman && tar xf pixman-*.tar.* -C pixman --strip-components 1
+cd pixman
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+USE_ARCH=64 CC="gcc ${BUILD64}" \
+CXX="g++ ${BUILD64}" ./configure --prefix=/usr \
+  --disable-static \
+  --libdir=/usr/lib64 
+  
+make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc
+checkBuiltPackage
+rm -rf pixman
 
 #libglade
 wget http://ftp.gnome.org/pub/gnome/sources/libglade/2.6/libglade-2.6.4.tar.bz2 -O \
@@ -950,7 +970,7 @@ cd dbus-python
 
 mkdir python2 &&
 pushd python2 &&
-PYTHON=/usr/bin/python2     \
+PYTHON=/usr/bin/python2.7     \
  PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ../configure --prefix=/usr \
  --libdir=/usr/lib64 --docdir=/usr/share/doc/dbus-python-1.2.4 &&
 make PREFIX=/usr LIBDIR=/usr/lib64 &&
@@ -960,7 +980,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 -C python2 install
 
 mkdir python3 &&
 pushd python3 &&
-PYTHON=/usr/bin/python3 \
+PYTHON=/usr/bin/python3.6 \
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64}  ../configure --prefix=/usr --libdir=/usr/lib64 &&
 make PREFIX=/usr LIBDIR=/usr/lib64 &&
 popd
@@ -1243,7 +1263,6 @@ LIBS_PATH=-L./usr/lib64 INC_PATH=-I./usr/include/ \
       USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} \
       LIBRARY_PATH=/usr/lib64 make
       
-
 LIBS_PATH=-L./usr/lib64 INC_PATH=-I./usr/include/ \
       LD_LIB_PATH=/usr/lib64 LD_LIBRARY_PATH=/usr/lib64 \
       CFLAGS=-Wno-expansion-to-defined  \
