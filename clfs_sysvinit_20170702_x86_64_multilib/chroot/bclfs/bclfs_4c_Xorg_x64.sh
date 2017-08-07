@@ -15,22 +15,12 @@ done
 echo " "
 }
 
-function as_root()
-{
-  if   [ $EUID = 0 ];        then $*
-  elif [ -x /usr/bin/sudo ]; then sudo $*
-  else                            su -c \\"$*\\"
-  fi
-}
-
-export -f as_root
-
 function buildSingleXLib64() {
   PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
   USE_ARCH=64 CC="gcc ${BUILD64}" \
   CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64
   make PREFIX=/usr LIBDIR=/usr/lib64
-  as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+  sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 }
 
 export -f buildSingleXLib64
@@ -152,12 +142,12 @@ do
     CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64 &&
     
      make PREFIX=/usr LIBDIR=/usr/lib64
-     as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+     sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
   popd
   rm -rf $packagedir
 done
 
-as_root rm -f $XORG_PREFIX/bin/xkeystone
+sudo rm -f $XORG_PREFIX/bin/xkeystone
 
 cd ${CLFSSOURCES}/xc
 
@@ -206,9 +196,9 @@ do
   CC="gcc ${BUILD64}" \
   CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64 &&
   make PREFIX=/usr &&
-  as_root make PREFIX=/usr install
+  sudo make PREFIX=/usr install
   popd
-  as_root rm -rf $packagedir
+  sudo rm -rf $packagedir
 done
 
 install -v -d -m755 /usr/share/fonts
@@ -232,7 +222,7 @@ make PREFIX=/usr LIBDIR=/usr/lib64
 
 make PREFIX=/usr LIBDIR=/usr/lib64 test
 checkBuiltPackage
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
@@ -261,7 +251,7 @@ make PREFIX=/usr LIBDIR=/usr/lib64
 
 make PREFIX=/usr LIBDIR=/usr/lib64 check
 checkBuiltPackage
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
@@ -284,7 +274,7 @@ CC="gcc ${BUILD64}" \
 CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64 \
     --with-xkb-rules-symlink=xorg &&
 make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -302,7 +292,7 @@ USE_ARCH=64 CC="gcc ${BUILD64}" \
 CXX="g++ ${BUILD64}" ./configure --prefix=/usr \
     --libdir=/usr/lib64 &&
 make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -322,7 +312,7 @@ CXX="g++ ${BUILD64}" ./configure --prefix=/usr \
   --libdir=/usr/lib64 &&
   
 make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -351,11 +341,11 @@ CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64 \
            --with-xkb-output=/var/lib/xkb &&
            
 make PREFIX=/usr LIBDIR=/usr/lib64
-as_root ldconfig
+sudo ldconfig
 make check
 checkBuiltPackage
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
-as_root mkdir -pv /etc/X11/xorg.conf.d
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo mkdir -pv /etc/X11/xorg.conf.d
 
 sudo bash -c 'cat >> /etc/sysconfig/createfiles << "EOF"
 /tmp/.ICE-unix dir 1777 root root
@@ -387,13 +377,13 @@ CXX="g++ ${BUILD64}" make PREFIX=/usr \
      LIBDIR=/usr/lib64          \
      SHARED=yes
 
-as_root make PREFIX=/usr        \
+sudo make PREFIX=/usr        \
      SHAREDIR=/usr/share/hwdata \
      LIBDIR=/usr/lib64          \
      SHARED=yes                 \
      install install-lib        &&
 
-as_root chmod -v 755 /usr/lib64/libpci.so
+sudo chmod -v 755 /usr/lib64/libpci.so
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
@@ -416,7 +406,7 @@ CXX="g++ ${BUILD64}" ./configure --prefix=/usr \
   --libdir=/usr/lib64 &&
   
 make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -467,7 +457,7 @@ CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64 \
             --with-udev-dir=/lib64/udev &&
             
 make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -519,8 +509,8 @@ TERMINFO=/usr/share/terminfo \
     --with-app-defaults=/etc/X11/app-defaults &&
 
 make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install-ti
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install 
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install-ti
 
 sudo bash -c 'cat >> /etc/X11/app-defaults/XTerm << "EOF"
 *VT100*locale: true
@@ -563,8 +553,8 @@ CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64 \
     --with-xinitdir=/etc/X11/app-defaults &&
     
 make PREFIX=/usr LIBDIR=/usr/lib64 
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
-as_root ldconfig
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo ldconfig
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -598,10 +588,10 @@ Section "InputClass"
 EndSection
 EOF'
 
-as_root usermod -a -G video overflyer
-as_root usermod -a -G audio overflyer
+sudo usermod -a -G video overflyer
+sudo usermod -a -G audio overflyer
 
-as_root cp -v ${CLFSSOURCES}/.xinitrc /home/overflyer/
+sudo cp -v ${CLFSSOURCES}/.xinitrc /home/overflyer/
 
 #I will not install Xorg legacy
 #If you want to
