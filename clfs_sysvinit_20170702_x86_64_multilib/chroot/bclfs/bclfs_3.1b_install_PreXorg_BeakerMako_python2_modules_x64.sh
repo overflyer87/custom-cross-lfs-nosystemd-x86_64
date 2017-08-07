@@ -2,7 +2,7 @@
 
 function checkBuiltPackage() {
 echo " "
-echo "Did everything build fine?: [Y/N]"
+echo "Make sure you are able to continue... [Y/N]"
 while read -n1 -r -p "[Y/N]   " && [[ $REPLY != q ]]; do
   case $REPLY in
     Y) break 1;;
@@ -62,8 +62,8 @@ cd pybeaker
 
 CXX="g++ ${BUILD64}" USE_ARCH=64 CC="gcc ${BUILD64}" PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" 
 
-as_root python2.7 setup.py build
-as_root python2.7 setup.py install --verbose --prefix=/usr/lib64 --install-lib=/usr/lib64/python2.7/site-packages --optimize=1
+python2.7 setup.py build
+sudo python2.7 setup.py install --verbose --prefix=/usr/lib64 --install-lib=/usr/lib64/python2.7/site-packages --optimize=1
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -80,14 +80,14 @@ cd pyMarkupSafe
 
 CXX="g++ ${BUILD64}" USE_ARCH=64 CC="gcc ${BUILD64}" PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" 
 
-as_root python2.7 setup.py build
-as_root python2.7 setup.py install --verbose --prefix=/usr/lib64 --install-lib=/usr/lib64/python2.7/site-packages --optimize=1
+python2.7 setup.py build
+sudo python2.7 setup.py install --verbose --prefix=/usr/lib64 --install-lib=/usr/lib64/python2.7/site-packages --optimize=1
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf pyMarkupSafe
 
-#Python 3.6 Mako modules
+#Python 2.7 Mako modules
 #64-bit
 wget https://pypi.python.org/packages/source/M/Mako/Mako-1.0.4.tar.gz -O \
   Mako-1.0.4.tar.gz
@@ -96,8 +96,9 @@ mkdir pymako && tar xf Mako-*.tar.* -C pymako --strip-components 1
 cd pymako
 
 CXX="g++ ${BUILD64}" USE_ARCH=64 CC="gcc ${BUILD64}" PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" 
-as_root python2.7 setup.py build
-as_root python2.7 setup.py install --verbose --prefix=/usr/lib64 --install-lib=/usr/lib64/python2.7/site-packages --optimize=1
+
+python2.7 setup.py build
+sudo python2.7 setup.py install --verbose --prefix=/usr/lib64 --install-lib=/usr/lib64/python2.7/site-packages --optimize=1
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
