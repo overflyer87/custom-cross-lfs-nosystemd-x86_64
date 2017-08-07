@@ -1,8 +1,8 @@
 #!/bin/bash
 
 function checkBuiltPackage() {
-
-echo "Did everything build fine?: [Y/N]"
+echo " "
+echo "Make sure you are able to continue... [Y/N]"
 while read -n1 -r -p "[Y/N]   " && [[ $REPLY != q ]]; do
   case $REPLY in
     Y) break 1;;
@@ -12,7 +12,7 @@ while read -n1 -r -p "[Y/N]   " && [[ $REPLY != q ]]; do
     *) echo " Try again. Type y or n";;
   esac
 done
-
+echo " "
 }
 
 #Building the final CLFS System
@@ -189,15 +189,15 @@ rm -rf blueman
 gsettings set org.blueman.plugins.powermanager auto-power-on true
 sudo gsettings set org.blueman.plugins.powermanager auto-power-on true
 
-sudo cat >> /etc/bluetooth/main.conf << "EOF"
+sudo bash -c 'cat >> /etc/bluetooth/main.conf << "EOF"
 [Policy]
 AutoEnable=true
-EOF
+EOF'
 
-sudo cat > /etc/udev/ruled.d/10-local.rules << "EOF"
+sudo bash -c 'cat > /etc/udev/ruled.d/10-local.rules << "EOF"
 # Set bluetooth power up
 ACTION=="add", KERNEL=="hci[0-9]*", RUN+="/usr/bin/hciconfig %k up"
-EOF
+EOF'
 
 
 #blueberry
@@ -809,7 +809,7 @@ sudo ln -svnf ../cups/doc-2.2.4 /usr/share/doc/cups-2.2.4
 sudo echo "ServerName /var/run/cups/cups.sock" > /etc/cups/client.conf
 sudo gtk-update-icon-cache
 
-sudo cat > /etc/pam.d/cups << "EOF"
+sudo bash -c 'cat > /etc/pam.d/cups << "EOF"
 # Begin /etc/pam.d/cups
 
 auth    include system-auth
@@ -817,7 +817,7 @@ account include system-account
 session include system-session
 
 # End /etc/pam.d/cups
-EOF
+EOF'
 
 cd ${CLFSSOURCES/}/blfs-bootscripts
 sudo make install-cups
@@ -882,7 +882,7 @@ sudo install -v -m644    doc/{README.NFS,kernel.txt} \
                     /usr/share/doc/fuse-3.1.0
 sudo cp -Rv doc/html /usr/share/doc/fuse-3.1.0
 
-sudo cat > /etc/fuse.conf << "EOF"
+sudo bash -c 'cat > /etc/fuse.conf << "EOF"
 # Set the maximum number of FUSE mounts allowed to non-root users.
 # The default is 1000.
 #
@@ -892,7 +892,7 @@ sudo cat > /etc/fuse.conf << "EOF"
 # mount options.
 #
 #user_allow_other
-EOF
+EOF'
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
