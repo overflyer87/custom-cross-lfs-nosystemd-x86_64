@@ -1,8 +1,8 @@
 #!/bin/bash
 
 function checkBuiltPackage() {
-
-echo "Did everything build fine?: [Y/N]"
+echo " "
+echo "Make sure you are able to continue... [Y/N]"
 while read -n1 -r -p "[Y/N]   " && [[ $REPLY != q ]]; do
   case $REPLY in
     Y) break 1;;
@@ -12,8 +12,9 @@ while read -n1 -r -p "[Y/N]   " && [[ $REPLY != q ]]; do
     *) echo " Try again. Type y or n";;
   esac
 done
-
+echo " "
 }
+
 
 #Building the final CLFS System
 CLFS=/
@@ -171,7 +172,7 @@ CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 sudo install -v -dm 755 /etc/mysql &&
-sudo cat > /etc/mysql/my.cnf << "EOF"
+sudo bash -c 'cat > /etc/mysql/my.cnf << "EOF"
 # Begin /etc/mysql/my.cnf
 
 # The following options will be passed to all MySQL clients
@@ -240,7 +241,7 @@ write_buffer = 2M
 interactive-timeout
 
 # End /etc/mysql/my.cnf
-EOF
+EOF'
 
 sudo mysql_install_db --basedir=/usr --datadir=/srv/mysql --user=mysql &&
 sudo chown -R mysql:mysql /srv/mysql
@@ -629,10 +630,10 @@ wget https://pypi.python.org/packages/60/db/645aa9af249f059cc3a368b118de33889219
 mkdir pycrypto && tar xf pycrypto-*.tar.* -C pycrypto --strip-components 1
 cd pycrypto
 
-sudo python2-64 setup.py build 
-sudo python2-64 setup.py install --verbose --prefix=/usr/lib64 --install-lib=/usr/lib64/python2.7/site-packages --optimize=1
+sudo python2.7 setup.py build 
+sudo python2.7 setup.py install --verbose --prefix=/usr/lib64 --install-lib=/usr/lib64/python2.7/site-packages --optimize=1
 sudo python3.6 setup.py build
-sudo python3 setup.py install --verbose --prefix=/usr/lib64 --install-lib=/usr/lib64/python3.6/site-packages --optimize=1
+sudo python3.6 setup.py install --verbose --prefix=/usr/lib64 --install-lib=/usr/lib64/python3.6/site-packages --optimize=1
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -754,17 +755,17 @@ echo "^samba4.rpc.echo.*on.*ncacn_np.*with.*object.*nt4_dc" >> selftest/knownfai
 
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
 USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr  \
-            --sysconfdir=/etc     \
-            --localstatedir=/var  \
-            --libdir=/usr/lib64   \
-            --with-piddir=/run/samba           \
-   			--with-pammodulesdir=/lib64/security \
-    		--enable-fhs                       \
-    		--without-ad-dc                    \
-    		--without-systemd                  \
-    		--enable-selftest     \
-    		--without-ldap        \
-    		--without-ads
+        --sysconfdir=/etc     \
+        --localstatedir=/var  \
+        --libdir=/usr/lib64   \
+        --with-piddir=/run/samba           \
+        --with-pammodulesdir=/lib64/security \
+    	--enable-fhs                       \
+    	--without-ad-dc                    \
+    	--without-systemd                  \
+    	--enable-selftest     \
+    	--without-ldap        \
+    	--without-ads
 
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
@@ -789,12 +790,13 @@ sudo install -v -m755    examples/LDAP/{get*,ol*} \
                     /etc/openldap/schema
 
 sudo ln -v -sf /usr/bin/smbspool /usr/lib/cups/backend/smb
-sudo cat > /etc/samba/smb.con << "EOF"
+
+sudo bash -c 'cat > /etc/samba/smb.con << "EOF"
 [global]
 workgroup = WORKGROUP
 dos charset = cp850
 unix charset = UTF-8
-EOF
+EOF'
 
 sudo groupadd -g 99 nogroup &&
 sudo useradd -c "Unprivileged Nobody" -d /dev/null -g nogroup \
@@ -1003,7 +1005,7 @@ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
 USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr  \
             --sysconfdir=/etc     \
             --libdir=/usr/lib64   
-			--localstatedir=/var           \
+	    --localstatedir=/var           \
             --with-nmtui                   \
             --disable-ppp                  \
             --disable-json-validation      \
@@ -1020,21 +1022,21 @@ CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-sudo cat >> /etc/NetworkManager/NetworkManager.conf << "EOF"
+sudo bash -c 'cat >> /etc/NetworkManager/NetworkManager.conf << "EOF"
 [main]
 plugins=keyfile
-EOF
+EOF'
 
 sudo groupadd -fg 86 netdev 
 sudo /usr/sbin/usermod -a -G netdev overflyer
 
-sudo cat > /usr/share/polkit-1/rules.d/org.freedesktop.NetworkManager.rules << "EOF"
+sudo bash -c 'cat > /usr/share/polkit-1/rules.d/org.freedesktop.NetworkManager.rules << "EOF"
 polkit.addRule(function(action, subject) {
     if (action.id.indexOf("org.freedesktop.NetworkManager.") == 0 && subject.isInGroup("netdev")) {
         return polkit.Result.YES;
     }
 });
-EOF
+EOF'
 
 cd ${CLFSSOURCES}/blfs-bootscripts
 sudo make install-networkmanager
