@@ -1,7 +1,7 @@
 !/bin/bash
 
 function checkBuiltPackage() {
-
+echo " "
 echo "Did everything build fine?: [Y/N]"
 while read -n1 -r -p "[Y/N]   " && [[ $REPLY != q ]]; do
   case $REPLY in
@@ -12,7 +12,7 @@ while read -n1 -r -p "[Y/N]   " && [[ $REPLY != q ]]; do
     *) echo " Try again. Type y or n";;
   esac
 done
-
+echo " "
 }
 
 CLFS=/
@@ -49,20 +49,20 @@ export PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 #EXPERIMENTAL Script for using openRC with CLFS
 
 #Sysvinit
-mkdir sysvinit && tar xf sysvinit*.tar.* -C sysvinit --strip-components 1
-cd sysvinit
-
-sed -i -e 's/\ sulogin[^ ]*//' -e 's/pidof\.8//' -e '/ln .*pidof/d' \
-    -e '/utmpdump/d' -e '/mountpoint/d' -e '/mesg/d' src/Makefile
-
-make -C src clobber
-make -C src CC="gcc ${BUILD64}"
-
-make -C src install
-
-cd ${CLFSSOURCES} 
-checkBuiltPackage
-rm -rf sysvinit
+#mkdir sysvinit && tar xf sysvinit*.tar.* -C sysvinit --strip-components 1
+#cd sysvinit
+#
+#sed -i -e 's/\ sulogin[^ ]*//' -e 's/pidof\.8//' -e '/ln .*pidof/d' \
+#    -e '/utmpdump/d' -e '/mountpoint/d' -e '/mesg/d' src/Makefile
+#
+#make -C src clobber
+#make -C src CC="gcc ${BUILD64}"
+#
+#make -C src install
+#
+#cd ${CLFSSOURCES} 
+#checkBuiltPackage
+#rm -rf sysvinit
 
 #Openrc-sysvinit
 mkdir openrc-sysvinit && tar xf sysvinit*.tar.* -C openrc-sysvinit --strip-components 1
@@ -93,7 +93,7 @@ sed -i 's:0444:0644:' mk/sys.mk
 
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} \
 BRANDING='CLFS-20170702-x86_64-multilib' \ 
-#MKPAM=pam \
+MKPAM=pam \
 MKSELINUX=no \
 MKTERMCAP=ncurses \
 PKG_PREFIX="" \
@@ -144,3 +144,48 @@ ldconfig
 cd ${CLFSSOURCES} 
 checkBuiltPackage
 rm -rf openrc
+
+cat > /etc/openrc/inittab << "EOF"
+# /etc/inittab:  This file describes how the INIT process should set up
+#                the system in a certain run-level.
+
+# Default runlevel.
+id:3:initdefault:
+
+# System initialization, mount local filesystems, etc.
+si::sysinit:/usr/bin/openrc sysinit
+
+# Further system initialization, brings up the boot runlevel.
+rc::bootwait:/usr/bin/openrc boot
+
+l0:0:wait:/usr/bin/openrc shutdown
+l0s:0:wait:/usr/bin/halt -dhip
+l1:S1:wait:/usr/bin/openrc single
+l2:2:wait:/usr/bin/openrc nonetwork
+l3:3:wait:/usr/bin/openrc default
+l4:4:wait:/usr/bin/openrc default
+l5:5:wait:/usr/bin/openrc default
+l6:6:wait:/usr/bin/openrc reboot
+l6r:6:wait:/usr/bin/reboot -d
+#z6:6:respawn:/usr/bin/sulogin
+
+# new-style single-user
+su0:S:wait:/usr/bin/openrc single
+su1:S:wait:/usr/bin/sulogin
+
+# TERMINALS
+c1:12345:respawn:/usr/bin/agetty 38400 tty1 linux
+c2:2345:respawn:/usr/bin/agetty 38400 tty2 linux
+c3:2345:respawn:/usr/bin/agetty 38400 tty3 linux
+c4:2345:respawn:/usr/bin/agetty 38400 tty4 linux
+c5:2345:respawn:/usr/bin/agetty 38400 tty5 linux
+c6:2345:respawn:/usr/bin/agetty 38400 tty6 linux
+
+# SERIAL CONSOLES
+#s0:12345:respawn:/usr/bin/agetty 9600 ttyS0 vt100
+#s1:12345:respawn:/usr/bin/agetty 9600 ttyS1 vt100
+
+# What to do at the "Three Finger Salute".
+ca:12345:ctrlaltdel:/usr/bin/shutdown -r now
+
+EOF
