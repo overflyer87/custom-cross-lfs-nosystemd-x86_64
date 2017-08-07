@@ -487,7 +487,7 @@ checkBuiltPackage
 rm -rf xf86vidfbdev
 
 #twm 64-bit
-wget https://www.x.org/pub/individual/app/twm-1.0.9.tar.bz2 -O \
+wget https://fossies.org/linux/misc/xterm-330.tar.bz2 -O \
   twm-1.0.9.tar.bz2
   
 mkdir twm && tar xf twm-*.tar.* -C twm --strip-components 1
