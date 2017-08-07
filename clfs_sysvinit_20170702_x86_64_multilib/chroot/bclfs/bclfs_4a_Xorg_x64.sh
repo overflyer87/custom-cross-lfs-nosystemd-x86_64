@@ -15,20 +15,10 @@ done
 
 }
 
-function as_root()
-{
-  if   [ $EUID = 0 ];        then $*
-  elif [ -x /usr/bin/sudo ]; then sudo $*
-  else                            su -c \\"$*\\"
-  fi
-}
-
-export -f as_root
-
 function buildSingleXLib64() {
  ./configure $XORG_CONFIG64
   make
-  as_root make install
+  sudo make install
 }
 
 export -f buildSingleXLib64
@@ -79,13 +69,13 @@ XORG_PREFIX="/usr"
 XORG_CONFIG64="--prefix=$XORG_PREFIX --sysconfdir=/etc --localstatedir=/var \
   --libdir=$XORG_PREFIX/lib64"
 
-cat > /etc/profile.d/xorg.sh << EOF
+sudo bash -c 'cat > /etc/profile.d/xorg.sh << EOF
 export XORG_PREFIX="/usr"
 export XORG_CONFIG32="--prefix=$XORG_PREFIX --sysconfdir=/etc --localstatedir=/var \
   --libdir=$XORG_PREFIX/lib"
 export XORG_CONFIG64="--prefix=$XORG_PREFIX --sysconfdir=/etc --localstatedir=/var \
   --libdir=$XORG_PREFIX/lib64"
-EOF
+EOF'
 
 chmod 644 /etc/profile.d/xorg.sh
 
@@ -99,7 +89,7 @@ cd util-macros
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
 USE_ARCH=64 CC="gcc ${BUILD64}" \ 
 CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64 &&
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -154,7 +144,7 @@ do
   pushd $packagedir  
   PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
   USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64 &&
-  as_root make install
+  sudo make install
   checkBuiltPackage
   popd
   rm -rf $packagedir
@@ -225,7 +215,7 @@ USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure $XORG_CONFIG64 &&
 make check
 checkBuiltPackage
 make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -254,7 +244,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure $XORG_CONFIG64    \
             --docdir='${datadir}'/doc/libxcb-1.12 &&
             
 make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -278,7 +268,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
             --libdir=/usr/lib64
 
 make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
