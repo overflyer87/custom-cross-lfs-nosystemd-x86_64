@@ -2,7 +2,7 @@
 
 function checkBuiltPackage() {
 echo " "
-echo "Did everything build fine?: [Y/N]"
+echo "Make sure you are able to continue... [Y/N]"
 while read -n1 -r -p "[Y/N]   " && [[ $REPLY != q ]]; do
   case $REPLY in
     Y) break 1;;
