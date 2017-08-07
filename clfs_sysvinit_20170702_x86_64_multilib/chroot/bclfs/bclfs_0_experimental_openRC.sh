@@ -112,8 +112,7 @@ CC="gcc ${BUILD64}" make install
 
 install -m644 /etc/openrc
 install -m644 support/sysvinit/inittab /etc/openrc/inittab
-install -m644 /etc/logrotate.d/openrc
-install -Dm0644 openrc.logrotate /etc/logrotate.d/openrc
+install -dm644 /etc/logrotate.d
 
 cat > /etc/logrotate.d/openrc << "EOF"
 /var/log/rc.log {
@@ -129,18 +128,20 @@ EOF
      -e 's/#rc_logger="NO"/rc_logger="YES"/' \
      -i "${pkgdir}/etc/rc.conf"
 
-install -d /usr/lib/rc/cache
+install -d /usr/lib64/rc/cache
 
 install -m755 -d /usr/share/licenses/openrc
 install -m644 LICENSE AUTHORS /usr/share/licenses/openrc/
-install -m644 -d /etc/conf.d
-cp -r conf.d/* /etc/conf.d/
-install -m644 -d /etc/init.d
-cp -r init.d/* /etc/init.d/
-install -m644 -d /etc/local.d
-cp -r local.d/* /etc/local.d/
-cp etc/* /etc/
+install -m644 -d /etc/openrc/conf.d
+cp -r conf.d/* /etc/openrc/conf.d/
+install -m644 -d /etc/openrc/init.d
+cp -r init.d/* /etc/openrc/init.d/
+install -m644 -d /etc/openrc/local.d
+cp -r local.d/* /etc/openrc/local.d/
+cp etc/* /etc/openrc/
 rm /etc/Makefile
+
+mv /usr/lib/pkgconfig/openrc.pc /usr/lib64/pkgconfig/
 
 ldconfig
 
