@@ -486,16 +486,6 @@ cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf xf86vidfbdev
 
-#NVIDIA PROPRIETARY DRIVER
-wget http://us.download.nvidia.com/XFree86/Linux-x86_64/384.59/NVIDIA-Linux-x86_64-384.59.run -O \
-  NVIDIA-Linux-x86_64-384.59.run
-
-as_root chmod +x NVIDIA-Linux-x86_64-384.59.run
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" CC="gcc" CXX="g++"
-as_root ./NVIDIA-Linux-x86_64-384.59.run --kernel-source-path=/lib/modules/CLFS-4.12.4_ORIGINAL
-
-checkBuiltPackage
-
 #twm 64-bit
 wget https://www.x.org/pub/individual/app/twm-1.0.9.tar.bz2 -O \
   twm-1.0.9.tar.bz2
