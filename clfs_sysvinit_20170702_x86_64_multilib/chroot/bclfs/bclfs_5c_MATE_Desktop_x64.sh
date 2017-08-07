@@ -723,55 +723,6 @@ cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf autoconf
 
-#Uncommenting mozjs, polkit+git+mozjs and modemmanager
-#Mozjs fails compiling, cannot get it to detect python right
-#Either says python environment is not sane or if python2.7
-#module _collections not foun
-#however python2 works fine and imports the module
-#
-##js38
-#wget https://ftp.osuosl.org/pub/blfs/conglomeration/mozjs/mozjs-38.2.1.rc0.tar.bz2 -O \
-#    mozjs-38.2.1.rc0.tar.bz2
-#
-#mkdir mozjs && tar xf mozjs*.tar.* -C mozjs --strip-components 1
-#cd mozjs
-#
-#cd js/src &&
-#autoconf2.13 &&
-#
-#CC="gcc ${BUILD64}" \
-#  CXX="g++ ${BUILD64}" USE_ARCH=64 \
-#  PYTHON=/usr/bin/python2-64 \
-#  PYTHONPATH=/usr/lib64/python2.7 \
-#  PYTHONHOME=/usr/lib64/python2.7 ./configure --prefix=/usr \
-#    --with-intl-api     \
-#    --libdir=/usr/lib64 \
-#    --with-system-zlib  \
-#    --with-system-ffi   \
-#    --with-system-nspr  \
-#    --with-system-icu   \
-#    --enable-threadsafe \
-#    --enable-readline   
-#
-#PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-#sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
-#
-#sudo pushd /usr/include/mozjs-38 &&
-#for link in `find . -type l`; do
-#    header=`readlink $link`
-#    sudo rm -f $link
-#    sudo cp -pv $header $link
-#    sudo chmod 644 $link
-#done &&
-#sudo popd
-#
-#cd ${CLFSSOURCES}/xc/mate
-#checkBuiltPackage
-#rm -rf mozjs
-#
-##Polkit-0.113+git_2919920+js38 
-#
-
 #libqmi (recommended for ModemManager)
 wget http://www.freedesktop.org/software/libqmi/libqmi-1.18.0.tar.xz -O \
     libqmi-1.18.0.tar.xz
@@ -919,13 +870,13 @@ wget https://github.com/pygobject/pycairo/releases/download/v1.14.0/pycairo-1.14
 mkdir pycairo && tar xf pycairo-*.tar.* -C pycairo --strip-components 1
 cd pycairo
 
-PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} LIBDIR=/usr/lib64 PREFIX=/usr python2 setup.py build  
-sudo python2 setup.py install --optimize=1
-PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} LIBDIR=/usr/lib64 PREFIX=/usr python3 setup.py build
-sudo python3 setup.py install --optimize=1
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} LIBDIR=/usr/lib64 PREFIX=/usr python2.7 setup.py build  
+sudo python2.7 setup.py install --verbose --prefix=/usr/lib64 --install-lib=/usr/lib64/python2.7/site-packages --optimize=1
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} LIBDIR=/usr/lib64 PREFIX=/usr python3.6 setup.py build
+sudo python3.6 setup.py install --verbose --prefix=/usr/lib64 --install-lib=/usr/lib64/python3.6/site-packages --optimize=1
 
-sudo mv /usr/lib/pkgconfig/pycairo.pc /usr/lib64/pkgconfig/pycairo.pc
-sudo mv /usr/lib/pkgconfig/py3cairo.pc /usr/lib64/pkgconfig/py3cairo.pc
+sudo mv -v /usr/lib/pkgconfig/pycairo.pc /usr/lib64/pkgconfig/pycairo.pc
+sudo mv -v /usr/lib/pkgconfig/py3cairo.pc /usr/lib64/pkgconfig/py3cairo.pc
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -968,7 +919,7 @@ pushd python2 &&
 CC="gcc ${BUILD64}" \
   CXX="g++ ${BUILD64}" USE_ARCH=64 \
   PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ../configure --prefix=/usr \
-    --with-python=/usr/bin/python2-64 --libdir=/usr/lib64 &&
+    --with-python=/usr/bin/python2.7 --libdir=/usr/lib64 &&
 make PREFIX=/usr LIBDIR=/usr/lib64 &&
 popd
 
@@ -980,7 +931,7 @@ pushd python3 &&
 CC="gcc ${BUILD64}" \
   CXX="g++ ${BUILD64}" USE_ARCH=64 \
   PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ../configure --prefix=/usr \
-    --with-python=/usr/bin/python3 --libdir=/usr/lib64 &&
+    --with-python=/usr/bin/python3.6 --libdir=/usr/lib64 &&
 make PREFIX=/usr LIBDIR=/usr/lib64 &&
 popd
 
@@ -1382,7 +1333,7 @@ cd mate-panel
 cp -rv /usr/share/aclocal/*.m4 m4/
 
 CPPFLAGS="-I/usr/include" LDFLAGS="-L/usr/lib64"  \
-PYTHON="/usr/bin/python2" PYTHONPATH="/usr/lib64/python2.7" \
+PYTHON="/usr/bin/python2.7" PYTHONPATH="/usr/lib64/python2.7" \
 PYTHONHOME="/usr/lib64/python2.7" PYTHON_INCLUDES="/usr/include/python2.7" \
 ACLOCAL_FLAG="/usr/share/aclocal/" LIBSOUP_LIBS=/usr/lib64   \
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
