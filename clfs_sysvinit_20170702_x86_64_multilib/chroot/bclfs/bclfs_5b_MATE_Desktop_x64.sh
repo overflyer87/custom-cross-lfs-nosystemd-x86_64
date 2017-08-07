@@ -148,7 +148,7 @@ cd libxslt
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
    --disable-static \
-   --libdir=/usr/lib64 \
+   --libdir=/usr/lib64 
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
@@ -363,7 +363,7 @@ sudo install -v -m644 doc/doxygen/html/*.* \
                 /usr/share/doc/alsa-lib-1.1.4.1/html 
 
 
-cat > /etc/asound.conf << "EOF"
+sudo bash -c 'cat > /etc/asound.conf << "EOF"
 pcm.!default {
   type hw
   card 0
@@ -373,9 +373,9 @@ ctl.!default {
   type hw           
   card 0
 }
-EOF
+EOF'
 
-cat > /usr/share/alsa/alsa.conf << "EOF"
+sudo bahs -c 'cat > /usr/share/alsa/alsa.conf << "EOF"
 pcm.!default {
   type hw
   card 0
@@ -385,7 +385,7 @@ ctl.!default {
   type hw           
   card 0
 }
-EOF
+EOF'
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -849,11 +849,11 @@ cd docbook-xsl
 
 sudo install -v -m755 -d /usr/share/xml/docbook/xsl-stylesheets-1.79.1 &&
 
-sudo cp -v -R VERSION assembly common eclipse epub epub3 extensions fo        \
+sudo cp -v -R VERSION assembly common eclipse epub epub3 extensions fo  \
          highlighting html htmlhelp images javahelp lib manpages params  \
          profiling roundtrip slides template tests tools webhelp website \
          xhtml xhtml-1_1 xhtml5                                          \
-    /usr/share/xml/docbook/xsl-stylesheets-1.79.1 &&
+         /usr/share/xml/docbook/xsl-stylesheets-1.79.1 
 
 sudo ln -s VERSION /usr/share/xml/docbook/xsl-stylesheets-1.79.1/VERSION.xsl &&
 
@@ -894,8 +894,8 @@ mkdir itstool && tar xf itstool-*.tar.* -C itstool --strip-components 1
 cd itstool
 
 #Temporary Fix! TODO: FIX!!!!
-sudo ln -sfv /usr/lib64/python3.6 /usr/lib
-#TODO: FIX!!!
+#sudo ln -sfv /usr/lib64/python3.6 /usr/lib
+#TODO: FIX!!! -UPDATE:Might be fixed now
 
 sed -i 's/python \- \&/python3 \- \&/' configure
 
@@ -904,7 +904,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr 
 sudo make PREFIX=/usr install
 
-sudo unlink /usr/lib/python3.6
+#sudo unlink /usr/lib/python3.6
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
