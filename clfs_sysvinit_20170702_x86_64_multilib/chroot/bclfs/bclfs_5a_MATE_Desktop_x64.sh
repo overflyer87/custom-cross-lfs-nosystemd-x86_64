@@ -120,7 +120,7 @@ sudo mkdir /var/run/dbus
  
 sudo dbus-uuidgen --ensure
 
-sudo cat > /etc/dbus-1/session-local.conf << "EOF"
+sudo bash -c 'cat > /etc/dbus-1/session-local.conf << "EOF"
 <!DOCTYPE busconfig PUBLIC
  "-//freedesktop//DTD D-BUS Bus Configuration 1.0//EN"
  "http://www.freedesktop.org/standards/dbus/1.0/busconfig.dtd">
@@ -130,7 +130,7 @@ sudo cat > /etc/dbus-1/session-local.conf << "EOF"
   <servicedir>/usr/share/dbus-1/services</servicedir>
 
 </busconfig>
-EOF
+EOF'
 
 cd ${CLFSSOURCES}/blfs-bootscripts
 sudo make install-dbus
@@ -388,7 +388,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
      --disable-static
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-sudo make install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -411,7 +411,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
      --enable-tee
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-sudo make install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -423,7 +423,7 @@ rm -rf cairo
 
 cd ${CLFSSOURCES}
 
-#freeype 64-bit
+#freetype 64-bit
 mkdir freetype && tar xf freetype-*.tar.* -C freetype --strip-components 1
 cd freetype
 
@@ -444,13 +444,13 @@ CC="gcc ${BUILD64}" ./configure \
 PREFIX=/usr LIBDIR=/usr/lib64 make
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-mv -v /usr/bin/freetype-config{,-64}
-ln -sf multiarch_wrapper /usr/bin/freetype-config
-install -v -m755 -d /usr/share/doc/freetype-2.4.12
-cp -v -R docs/* /usr/share/doc/freetype-2.4.12
+sudo mv -v /usr/bin/freetype-config{,-64}
+sudo ln -sf multiarch_wrapper /usr/bin/freetype-config
+sudo install -v -m755 -d /usr/share/doc/freetype-2.4.12
+sudo cp -v -R docs/* /usr/share/doc/freetype-2.4.12
 
-install -v -m755 -d /usr/share/doc/freetype-2.8
-cp -v -R docs/*     /usr/share/doc/freetype-2.8
+sudo install -v -m755 -d /usr/share/doc/freetype-2.8
+sudo cp -v -R docs/*     /usr/share/doc/freetype-2.8
 
 cd ${CLFSSOURCES} 
 #checkBuiltPackage
@@ -495,13 +495,13 @@ CC="gcc ${BUILD64}" ./configure \
 PREFIX=/usr LIBDIR=/usr/lib64 make
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-mv -v /usr/bin/freetype-config{,-64}
-ln -sf multiarch_wrapper /usr/bin/freetype-config
-install -v -m755 -d /usr/share/doc/freetype-2.4.12
-cp -v -R docs/* /usr/share/doc/freetype-2.4.12
+sudo mv -v /usr/bin/freetype-config{,-64}
+sudo ln -sf multiarch_wrapper /usr/bin/freetype-config
+sudo install -v -m755 -d /usr/share/doc/freetype-2.4.12
+sudo cp -v -R docs/* /usr/share/doc/freetype-2.4.12
 
-install -v -m755 -d /usr/share/doc/freetype-2.8
-cp -v -R docs/*     /usr/share/doc/freetype-2.8
+sudo install -v -m755 -d /usr/share/doc/freetype-2.8
+sudo cp -v -R docs/*     /usr/share/doc/freetype-2.8
 
 cd ${CLFSSOURCES} 
 #checkBuiltPackage
@@ -525,7 +525,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
      --sysconfdir=/etc
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-sudo make install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 sudo ldconfig
 
@@ -580,8 +580,10 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
      --with-x11
 
 make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64
+
 make -k check
 checkBuiltPackage
+
 make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
 
 ldconfig
@@ -606,8 +608,10 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
      --disable-wayland-backend 
 
 make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64
+
 make -k check
 checkBuiltPackage
+
 sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
 
 mkdir -vp ~/.config/gtk-3.0
