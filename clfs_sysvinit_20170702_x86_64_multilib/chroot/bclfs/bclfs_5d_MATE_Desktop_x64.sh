@@ -422,7 +422,7 @@ sudo ln -svf ../libexec/bluetooth/bluetoothd /usr/sbin
 sudo install -v -dm755 /etc/bluetooth &&
 sudo install -v -m644 src/main.conf /etc/bluetooth/main.conf
 
-sudo cat > /etc/bluetooth/rfcomm.conf << "EOF"
+sudo bash -c 'cat > /etc/bluetooth/rfcomm.conf << "EOF"
 # Start rfcomm.conf
 # Set up the RFCOMM configuration of the Bluetooth subsystem in the Linux kernel.
 # Use one line per command
@@ -430,16 +430,16 @@ sudo cat > /etc/bluetooth/rfcomm.conf << "EOF"
 
 
 # End of rfcomm.conf
-EOF
+EOF'
 
-sudo cat > /etc/bluetooth/uart.conf << "EOF"
+sudo bash -c 'cat > /etc/bluetooth/uart.conf << "EOF"
 # Start uart.conf
 # Attach serial devices via UART HCI to BlueZ stack
 # Use one line per device
 # See the hciattach man page for options
 
 # End of uart.conf
-EOF
+EOF'
 
 cd ${CLFSSOURCES}/blfs-bootscripts
 
