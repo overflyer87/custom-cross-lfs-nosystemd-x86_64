@@ -110,7 +110,7 @@ SYSCONFDIR=/etc/openrc \
 CC="gcc ${BUILD64}" make &&
 CC="gcc ${BUILD64}" make install
 
-install -m644 /etc/openrc
+install -dm644 /etc/openrc
 install -m644 support/sysvinit/inittab /etc/openrc/inittab
 install -dm644 /etc/logrotate.d
 
