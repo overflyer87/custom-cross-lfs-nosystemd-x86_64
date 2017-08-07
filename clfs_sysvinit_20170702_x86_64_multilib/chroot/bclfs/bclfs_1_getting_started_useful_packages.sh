@@ -1,8 +1,8 @@
 #!/bin/bash
 
 function checkBuiltPackage() {
-
-echo "Did everything build fine?: [Y/N]"
+echo " "
+echo "Make sure you are able to continue... [Y/N]"
 while read -n1 -r -p "[Y/N]   " && [[ $REPLY != q ]]; do
   case $REPLY in
     Y) break 1;;
@@ -12,6 +12,7 @@ while read -n1 -r -p "[Y/N]   " && [[ $REPLY != q ]]; do
     *) echo " Try again. Type y or n";;
   esac
 done
+echo " "
 }
 
 #Building the final CLFS System
