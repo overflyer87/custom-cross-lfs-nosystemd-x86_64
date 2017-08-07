@@ -15,21 +15,11 @@ done
 echo " "
 }
 
-function as_root()
-{
-  if   [ $EUID = 0 ];        then $*
-  elif [ -x /usr/bin/sudo ]; then sudo $*
-  else                            su -c \\"$*\\"
-  fi
-}
-
-export -f as_root
-
 function buildSingleXLib64() {
   PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
   USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64
   make PREFIX=/usr LIBDIR=/usr/lib64
-  as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+  sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 }
 
 export -f buildSingleXLib64
@@ -168,11 +158,11 @@ do
   make PREFIX=/usr LIBDIR=/usr/lib64
   #make check 2>&1 | tee ../$packagedir-make_check.log
   #grep -A9 summary *make_check.log
-  as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+  sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
   checkBuiltPackage
   popd
   rm -rf $packagedir
-  as_root /sbin/ldconfig
+  sudo /sbin/ldconfig
 done
 
 cd ${CLFSSOURCES}/xc
@@ -271,7 +261,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
       --libdir=/usr/lib64 &&
       
 make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
@@ -300,7 +290,7 @@ CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64 \
             --docdir=/usr/share/doc/libvdpau-1.1.1 &&
 
 make PREFIX=/usr LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
@@ -337,8 +327,8 @@ unset GLL_DRV
 
 make PREFIX=/usr LIBDIR=/usr/lib64
 make -C xdemos DEMOS_PREFIX=$XORG_PREFIX LIBDIR=/usr/lib64
-as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
-as_root make -C xdemos DEMOS_PREFIX=$XORG_PREFIX LIBDIR=/usr/lib64 install
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make -C xdemos DEMOS_PREFIX=$XORG_PREFIX LIBDIR=/usr/lib64 install
 
 install -v -dm755 /usr/share/doc/mesa-17.1.4 &&
 cp -rfv docs/* /usr/share/doc/mesa-17.1.4
@@ -365,7 +355,8 @@ echo "Xorg Apps will follow now and accept Linux-PAM as ooptional dep"
 echo "If you want that answer next question with No"
 echo "And after Linux-PAM is install, sudo and shadow and cracklib are rebuilt"
 echo "start thies script again with"
-echo "bash \<\(sed -n \'\<linenumber\>\,\$\p\' \<scriptname.sh\>\)"
+echo "bash <(sed -n '<linenumber>,\$p' <scriptname.sh>)"
+echo "Remove that one backslash befor the prompt/dollar sign though though!"
 echo "Also you must run cblfs_1 script for installing libpng!!! Required Dep!"
 echo " "
 
