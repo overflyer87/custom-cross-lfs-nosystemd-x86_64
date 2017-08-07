@@ -309,7 +309,8 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
 USE_ARCH=64 CC="gcc ${BUILD64}" \
 CXX="g++ ${BUILD64}" ./configure --prefix=/usr \
   --disable-static \
-  --libdir=/usr/lib64 &&
+  --libdir=/usr/lib64 \
+  --disable-gtk
   
 make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
