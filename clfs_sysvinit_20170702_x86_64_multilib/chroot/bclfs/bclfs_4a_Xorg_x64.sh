@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function checkBuiltPackage() {
-
+echo " "
 echo "Did everything build fine?: [Y/N]"
 while read -n1 -r -p "[Y/N]   " && [[ $REPLY != q ]]; do
   case $REPLY in
@@ -12,7 +12,7 @@ while read -n1 -r -p "[Y/N]   " && [[ $REPLY != q ]]; do
     *) echo " Try again. Type y or n";;
   esac
 done
-
+echo " "
 }
 
 function buildSingleXLib64() {
@@ -68,6 +68,13 @@ export XORG_CONFIG64="--prefix=$XORG_PREFIX --sysconfdir=/etc --localstatedir=/v
 XORG_PREFIX="/usr"
 XORG_CONFIG64="--prefix=$XORG_PREFIX --sysconfdir=/etc --localstatedir=/var \
   --libdir=$XORG_PREFIX/lib64"
+  
+#Down there you see one way to create a file as sudo using cat << EOF ... EOF
+#Here is an alternative if this ever shouldn't work
+#cat << EOF | sudo tee -a /etc/something.conf
+#...
+#...
+#EOF
 
 sudo bash -c 'cat > /etc/profile.d/xorg.sh << EOF
 export XORG_PREFIX="/usr"
