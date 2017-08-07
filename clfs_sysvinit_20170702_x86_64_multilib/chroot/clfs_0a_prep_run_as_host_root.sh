@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function checkSanity() {
-
+echo " "
 echo "Does your system fullfil the requirements to build CLFS?: [Y/N]"
 while read -n1 -r -p "[Y/N]   " && [[ $REPLY != q ]]; do
   case $REPLY in
@@ -12,7 +12,7 @@ while read -n1 -r -p "[Y/N]   " && [[ $REPLY != q ]]; do
     *) echo " Try again. Type y or n";;
   esac
 done
-
+echo " "
 }
 
 #=======================
@@ -115,7 +115,7 @@ cp sources/* ${CLFSSOURCES}
 
 wget http://ftp.gnu.org/gnu/binutils/binutils-2.28.tar.bz2 -P ${CLFSSOURCES}
 wget ftp://gcc.gnu.org/pub/gcc/releases/gcc-7.1.0/gcc-7.1.0.tar.bz2 -P ${CLFSSOURCES}
-wget https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.12.3.tar.xz -P ${CLFSSOURCES}
+wget https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.12.5.tar.xz -P ${CLFSSOURCES}
 
 echo " "
 echo "source packages have been copied"
