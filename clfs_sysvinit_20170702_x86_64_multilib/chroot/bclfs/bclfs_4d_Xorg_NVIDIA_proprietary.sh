@@ -91,7 +91,6 @@ as_root ./NVIDIA-Linux-x86_64-384.59.run --kernel-source-path=/lib/modules/CLFS-
 
 checkBuiltPackage
 
-
 mv linux /lib/modules/CLFS-4.12.4_ORIGINAL
 
 mkdir -v /etc/modprobe.d
