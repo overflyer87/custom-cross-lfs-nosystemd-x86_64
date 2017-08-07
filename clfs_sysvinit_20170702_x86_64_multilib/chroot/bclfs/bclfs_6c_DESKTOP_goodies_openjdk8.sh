@@ -17,16 +17,6 @@ done
 
 }
 
-function as_root()
-{
-  if   [ $EUID = 0 ];        then $*
-  elif [ -x /usr/bin/sudo ]; then sudo $*
-  else                            su -c \\"$*\\"
-  fi
-}
-
-export -f as_root
-
 function buildSingleXLib64() {
   PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
   USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64
@@ -84,6 +74,7 @@ export PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"
 export USE_ARCH=64 
 export CXX="g++ ${BUILD64}" 
 export CC="gcc ${BUILD64}"
+
 #JAVA 8
 wget http://anduin.linuxfromscratch.org/BLFS/OpenJDK/OpenJDK-1.8.0.141/OpenJDK-1.8.0.141-x86_64-bin.tar.xz -O \
 	OpenJDK-1.8.0.141-x86_64-bin.tar.xz
@@ -99,7 +90,7 @@ sudo mv -v * /opt/OpenJDK-1.8.0.141-bin         &&
 sudo chown -R root:root /opt/OpenJDK-1.8.0.141-bin
 sudo ln -sfn OpenJDK-1.8.0.141-bin /opt/jdk
 
-sudo cat > /etc/profile.d/openjdk.sh << "EOF"
+sudo bash -c 'cat > /etc/profile.d/openjdk.sh << "EOF"
 # Begin /etc/profile.d/openjdk.sh
 
 # Set JAVA_HOME directory
@@ -131,15 +122,15 @@ export JAVA_HOME
 unset AUTO_CLASSPATH_DIR dir jar
 
 # End /etc/profile.d/openjdk.sh
-EOF
+EOF'
 
-sudo cat >> /etc/man_db.conf << "EOF" &&
+sudo bash -c 'cat >> /etc/man_db.conf << "EOF" &&
 # Begin Java addition
 MANDATORY_MANPATH     /opt/jdk/man
 MANPATH_MAP           /opt/jdk/bin     /opt/jdk/man
 MANDB_MAP             /opt/jdk/man     /var/cache/man/jdk
 # End Java addition
-EOF
+EOF'
 
 sudo mkdir -p /var/cache/man
 sudo mandb -c /opt/jdk/man
@@ -151,7 +142,7 @@ cd jdk8
 
 mv ../OpenJDK .
 
-cat > subprojects.md5 << EOF &&
+cat > subprojects.md5 << EOF 
 4061c0f2dc553cf92847e4a39a03ea4e  corba.tar.bz2
 269a0fde90b9ab5ca19fa82bdb3d6485  hotspot.tar.bz2
 a1dfcd15119dd10db6e91dc2019f14e7  jaxp.tar.bz2
@@ -191,6 +182,7 @@ USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh ./configure --prefix=/usr  \
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
 USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} make PREFIX=/usr \
 	LIBDIR=/usr/lib64 DEBUG_BINARIES=true SCTP_WERROR= all JOBS=4 
+	
 find build/*/images/j2sdk-image -iname \*.diz -delete
 
 sudo cp -RT build/*/images/j2sdk-image /opt/OpenJDK-1.8.0.141 &&
@@ -199,7 +191,7 @@ sudo ln -v -nsf OpenJDK-1.8.0.141 /opt/jdk
 
 sudo mkdir -pv /usr/share/applications 
 
-sudo cat > /usr/share/applications/openjdk-8-policytool.desktop << "EOF" 
+sudo bash -c 'cat > /usr/share/applications/openjdk-8-policytool.desktop << "EOF" 
 [Desktop Entry]
 Name=OpenJDK Java Policy Tool
 Name[pt_BR]=OpenJDK Java - Ferramenta de Política
@@ -210,7 +202,7 @@ Terminal=false
 Type=Application
 Icon=javaws
 Categories=Settings;
-EOF
+EOF'
 
 sudo install -v -Dm0644 javaws.png /usr/share/pixmaps/javaws.png
 
