@@ -15,26 +15,6 @@ done
 
 }
 
-function as_root()
-{
-  if   [ $EUID = 0 ];        then $*
-  elif [ -x /usr/bin/sudo ]; then sudo $*
-  else                            su -c \\"$*\\"
-  fi
-}
-
-export -f as_root
-
-function buildSingleXLib64() {
-  PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
-  USE_ARCH=64 CC="gcc ${BUILD64}" \
-  CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64
-  make PREFIX=/usr LIBDIR=/usr/lib64
-  as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
-}
-
-export -f buildSingleXLib64
-
 #Building the final CLFS System
 CLFS=/
 CLFSHOME=/home
@@ -85,14 +65,13 @@ XORG_CONFIG64="--prefix=$XORG_PREFIX --sysconfdir=/etc --localstatedir=/var \
 wget http://us.download.nvidia.com/XFree86/Linux-x86_64/384.59/NVIDIA-Linux-x86_64-384.59.run -O \
   NVIDIA-Linux-x86_64-384.59.run
 
-as_root chmod +x NVIDIA-Linux-x86_64-384.59.run
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" CC="gcc" CXX="g++"
-as_root ./NVIDIA-Linux-x86_64-384.59.run --kernel-source-path=/lib/modules/CLFS-4.12.5_ORIGINAL
+sudo chmod +x NVIDIA-Linux-x86_64-384.59.run
+sudo bash -c 'PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" CC="gcc" CXX="g++" ./NVIDIA-Linux-x86_64-384.59.run --kernel-source-path=/lib/modules/CLFS-4.12.5_ORIGINAL'
 
 checkBuiltPackage
 
-mkdir -v /etc/modprobe.d
+sudo mkdir -v /etc/modprobe.d
 
-cat > /etc/modprobe.d/blacklist-nouveau.conf << "EOF"
+sudo bash -c 'cat > /etc/modprobe.d/blacklist-nouveau.conf << "EOF"
 blacklist nouveau
-EOF
+EOF'
