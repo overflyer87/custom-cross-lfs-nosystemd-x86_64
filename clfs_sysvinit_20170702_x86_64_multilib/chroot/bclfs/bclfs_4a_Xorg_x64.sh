@@ -152,7 +152,7 @@ do
   PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
   USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64 &&
   sudo make install
-  checkBuiltPackage
+  #checkBuiltPackage
   popd
   rm -rf $packagedir
 done
