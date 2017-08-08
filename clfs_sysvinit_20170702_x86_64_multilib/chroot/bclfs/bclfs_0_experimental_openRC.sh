@@ -50,21 +50,21 @@ cd ${CLFSSOURCES}
 
 #EXPERIMENTAL Script for using openRC with CLFS
 
-#Sysvinit
-#mkdir sysvinit && tar xf sysvinit*.tar.* -C sysvinit --strip-components 1
-#cd sysvinit
-#
-#sed -i -e 's/\ sulogin[^ ]*//' -e 's/pidof\.8//' -e '/ln .*pidof/d' \
-#    -e '/utmpdump/d' -e '/mountpoint/d' -e '/mesg/d' src/Makefile
-#
-#make -C src clobber
-#make -C src CC="gcc ${BUILD64}"
-#
-#make -C src install
-#
-#cd ${CLFSSOURCES} 
-#checkBuiltPackage
-#rm -rf sysvinit
+Sysvinit
+mkdir sysvinit && tar xf sysvinit*.tar.* -C sysvinit --strip-components 1
+cd sysvinit
+
+sed -i -e 's/\ sulogin[^ ]*//' -e 's/pidof\.8//' -e '/ln .*pidof/d' \
+    -e '/utmpdump/d' -e '/mountpoint/d' -e '/mesg/d' src/Makefile
+
+make -C src clobber
+make -C src CC="gcc ${BUILD64}"
+
+make -C src install
+
+cd ${CLFSSOURCES} 
+checkBuiltPackage
+rm -rf sysvinit
 
 #Openrc-sysvinit
 mkdir openrc-sysvinit && tar xf sysvinit*.tar.* -C openrc-sysvinit --strip-components 1
