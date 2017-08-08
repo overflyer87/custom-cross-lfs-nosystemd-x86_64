@@ -159,7 +159,7 @@ do
   #make check 2>&1 | tee ../$packagedir-make_check.log
   #grep -A9 summary *make_check.log
   sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
-  checkBuiltPackage
+  #checkBuiltPackage
   popd
   rm -rf $packagedir
   sudo /sbin/ldconfig
@@ -237,7 +237,6 @@ rm -rf xcb-util-wm
 wget http://xcb.freedesktop.org/dist/xcb-util-cursor-0.1.3.tar.bz2 -O \
   xcb-util-cursor-0.1.3.tar.bz2
 
-
 mkdir xcb-util-cursor && tar xf xcb-util-cursor-*.tar.* -C xcb-util-cursor --strip-components 1
 cd xcb-util-cursor
 
@@ -258,7 +257,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
   USE_ARCH=64 CC="gcc ${BUILD64}" \
   CXX="g++ ${BUILD64}" ./configure --prefix=/usr \
       --enable-udev  \
-      --libdir=/usr/lib64 &&
+      --libdir=/usr/lib64 
       
 make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
