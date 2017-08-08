@@ -153,7 +153,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-ldconfig
+sudo ldconfig
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -375,7 +375,7 @@ ctl.!default {
 }
 EOF'
 
-sudo bahs -c 'cat > /usr/share/alsa/alsa.conf << "EOF"
+sudo bash -c 'cat > /usr/share/alsa/alsa.conf << "EOF"
 pcm.!default {
   type hw
   card 0
@@ -872,19 +872,20 @@ sudo xmlcatalog --noout --add "rewriteURI" \
            "/usr/share/xml/docbook/xsl-stylesheets-<version>" \
     /etc/xml/catalog
 
-cp ${CLFSSOURCES}/docbook-xml-xsl.tar.* .
-mkdir xml && tar xf docbook-xml-xsl.tar.* -C xml --strip-components 1
-
-sudo cp -rv xml /etc/
+#cp ${CLFSSOURCES}/docbook-xml-xsl.tar.* .
+#mkdir xml && tar xf docbook-xml-xsl.tar.* -C xml --strip-components 1
+#sudo cp -rv xml /etc/
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-echo " "
-echo "For me xmlcatalog --noout --add was failing"
-echo "With \"add command failed\""
-echo "I cheated and copied /etc/xml/* over to clfs from my host distro"
-echo " "
+#echo " "
+#echo "For me xmlcatalog --noout --add was failing"
+#echo "With \"add command failed\""
+#echo "I cheated and copied /etc/xml/* over to clfs from my host distro"
+#echo " "
 rm -rf docbook-xsl
+
+sudo chown -Rv overflyer ${CLFSSOURCES}
 
 #itstool
 wget http://files.itstool.org/itstool/itstool-2.0.2.tar.bz2 -O \
@@ -897,7 +898,7 @@ cd itstool
 #sudo ln -sfv /usr/lib64/python3.6 /usr/lib
 #TODO: FIX!!! -UPDATE:Might be fixed now
 
-sed -i 's/python \- \&/python3 \- \&/' configure
+sed -i 's/python \- \&/python3.6 \- \&/' configure
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr 
 
