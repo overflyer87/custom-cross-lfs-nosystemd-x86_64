@@ -81,6 +81,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
    --disable-static \
    --with-history   \
    --libdir=/usr/lib64 \
+   --with-python=/usr/bin/python2.7 \
    --with-icu \
    --with-threads
 
@@ -95,8 +96,8 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 sudo updatedb
-sudo locate libxml | grep /usr/lib64/python2.7/
-echo "Did locate libxml \| grep /usr/lib64/python2.7/ find the libxml python modules?"
+sudo bash -c 'locate libxml2 | grep python2.7'
+echo "Did locate libxml | grep python2.7 find the libxml2 python2 modules?"
 echo ""
 
 cd ${CLFSSOURCES}/xc/mate
@@ -116,7 +117,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
    --disable-static \
    --with-history   \
    --libdir=/usr/lib64 \
-   --with-python=/usr/bin/python3 \
+   --with-python=/usr/bin/python3.6 \
    --with-icu \
    --with-threads
 
@@ -131,8 +132,8 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 sudo updatedb
-sudo locate libxml | grep /usr/lib64/python3.6/
-echo "Did locate libxml | grep /usr/lib64/python3.6/ find the libxml python modules?"
+sudo bash -c 'locate libxml2 | grep python3.6/'
+echo "Did locate libxml | grep python3.6 find the libxml2 python3 modules?"
 echo ""
 
 cd ${CLFSSOURCES}/xc/mate
