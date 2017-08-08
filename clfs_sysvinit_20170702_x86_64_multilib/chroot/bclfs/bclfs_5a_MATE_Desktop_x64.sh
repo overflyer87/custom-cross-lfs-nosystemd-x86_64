@@ -73,7 +73,7 @@ cd ${CLFSSOURCES}
 wget http://anduin.linuxfromscratch.org/BLFS/blfs-bootscripts/blfs-bootscripts-20170731.tar.xz -O \
   blfs-bootscripts-20170731.tar.xz
 
-mkdir blfs-bootscripts && tar xf blfs-bootscripts-20170731.tar.xz -C blfs-bootscripts --strip-components -1
+mkdir blfs-bootscripts && tar xf blfs-bootscripts-20170731.tar.xz -C blfs-bootscripts --strip-components 1
 
 #Let's start building MATE
 cd ${CLFSSOURCES}/xc/mate
@@ -113,6 +113,7 @@ sudo ln -sfv /etc/rc.d/init.d/functions /lib64/lsb/init-functions
 
 sed -i 's/\/lib\/lsb\/init-functions/\/lib64\/lsb\/init-functions/' /etc/rc.d/init.d/*
 sed -i 's/loadproc/start_daemon/' /etc/rc.d/init.d/functions
+sed -i 's/load_msg_info/echo/' /etc/rc.d/init.d/functions
 
 sudo mkdir /etc/dbus-1/
 sudo mkdir /usr/share/dbus-1/
@@ -125,10 +126,8 @@ sudo bash -c 'cat > /etc/dbus-1/session-local.conf << "EOF"
  "-//freedesktop//DTD D-BUS Bus Configuration 1.0//EN"
  "http://www.freedesktop.org/standards/dbus/1.0/busconfig.dtd">
 <busconfig>
-
   <!-- Search for .service files in /usr/share -->
   <servicedir>/usr/share/dbus-1/services</servicedir>
-
 </busconfig>
 EOF'
 
@@ -581,12 +580,12 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
 
 make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64
 
-make -k check
-checkBuiltPackage
+#make -k check
+#checkBuiltPackage
 
-make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
 
-ldconfig
+sudo ldconfig
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
