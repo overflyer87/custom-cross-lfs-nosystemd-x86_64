@@ -143,6 +143,7 @@ do
     
      make PREFIX=/usr LIBDIR=/usr/lib64
      sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+     #checkBuiltPackage
   popd
   rm -rf $packagedir
 done
@@ -198,7 +199,7 @@ do
   make PREFIX=/usr &&
   sudo make PREFIX=/usr install
   popd
-  sudo rm -rf $packagedir
+  rm -rf $packagedir
 done
 
 install -v -d -m755 /usr/share/fonts
@@ -251,6 +252,7 @@ make PREFIX=/usr LIBDIR=/usr/lib64
 
 make PREFIX=/usr LIBDIR=/usr/lib64 check
 checkBuiltPackage
+
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}
@@ -265,8 +267,6 @@ wget http://xorg.freedesktop.org/archive/individual/data/xkeyboard-config/xkeybo
   
 mkdir xkeyboard-config && tar xf xkeyboard-config-*.tar.* -C xkeyboard-config --strip-components 1
 cd xkeyboard-config
-
-nano /usr/bin/intltool-update
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
 USE_ARCH=64 \
@@ -343,8 +343,10 @@ CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64 \
            
 make PREFIX=/usr LIBDIR=/usr/lib64
 sudo ldconfig
+
 make check
 checkBuiltPackage
+
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 sudo mkdir -pv /etc/X11/xorg.conf.d
 
@@ -455,7 +457,7 @@ CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64 \
             --disable-tests         \
             --libdir=/usr/lib64     \
             --disable-documentation \
-            --with-udev-dir=/lib64/udev &&
+            --with-udev-dir=/lib64/udev 
             
 make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
@@ -568,14 +570,14 @@ wget https://netcologne.dl.sourceforge.net/project/dejavu/dejavu/2.37/dejavu-fon
 mkdir dejavu-fonts && tar xf dejavu-fonts-*.tar.* -C dejavu-fonts --strip-components 1
 cd dejavu-fonts
 
-mkdir /etc/fonts
-mkdir /etc/fonts/conf.d
-mkdir /etc/fonts/conf.avail
-mkdir -pv /usr/share/fonts/TTF
+sudo mkdir /etc/fonts
+sudo mkdir /etc/fonts/conf.d
+sudo mkdir /etc/fonts/conf.avail
+sudo mkdir -pv /usr/share/fonts/TTF
 
-cp -v fontconfig/* /etc/fonts/conf.avail
-cp -v fontconfig/* /etc/fonts/conf.d
-cp -v ttf/* /usr/share/fonts/TTF
+sudo cp -v fontconfig/* /etc/fonts/conf.avail
+sudo cp -v fontconfig/* /etc/fonts/conf.d
+sudo cp -v ttf/* /usr/share/fonts/TTF
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
