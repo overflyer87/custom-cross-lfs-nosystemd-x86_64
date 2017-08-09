@@ -15,7 +15,6 @@ done
 echo " "
 }
 
-
 #Building the final CLFS System
 CLFS=/
 CLFSHOME=/home
@@ -556,8 +555,8 @@ checkBuiltPackage
 rm -rf gksu
 
 #Gparted
-wget http://downloads.sourceforge.net/gparted/gparted-0.28.1.tar.gz -O \
-	gparted-0.28.1.tar.gz
+wget http://downloads.sourceforge.net/gparted/gparted-0.29.0.tar.gz -O \
+	gparted-0.29.0.tar.gz
 	
 mkdir gparted && tar xf gparted-*.tar.* -C gparted --strip-components 1
 cd gparted
