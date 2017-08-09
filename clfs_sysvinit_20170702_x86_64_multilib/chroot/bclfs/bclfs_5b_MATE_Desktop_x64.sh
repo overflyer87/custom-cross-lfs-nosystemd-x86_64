@@ -895,18 +895,15 @@ wget http://files.itstool.org/itstool/itstool-2.0.2.tar.bz2 -O \
 mkdir itstool && tar xf itstool-*.tar.* -C itstool --strip-components 1
 cd itstool
 
-#Temporary Fix! TODO: FIX!!!!
-#sudo ln -sfv /usr/lib64/python3.6 /usr/lib
-#TODO: FIX!!! -UPDATE:Might be fixed now
-
 sed -i 's/python \- \&/python3.6 \- \&/' configure
 
+export PYTHON=/usr/bin/python3.6
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr 
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr 
 sudo make PREFIX=/usr install
 
-#sudo unlink /usr/lib/python3.6
+unset PYTHON
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
