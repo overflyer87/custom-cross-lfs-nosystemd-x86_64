@@ -569,7 +569,7 @@ CC="gcc ${BUILD64}" \
    PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
    --libdir=/usr/lib64 --disable-static 
 
-sudo ln -sfv /usr/bin/python3 /usr/bin/python
+sudo ln -sfv /usr/bin/python3.6 /usr/bin/python
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 make check 
@@ -687,7 +687,9 @@ sed -i 's/CC = cc#/CC = gcc#/' unix/Makefile
 
 CC="gcc ${BUILD64}" \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64 -f unix/Makefile generic_gcc
-sudo make PREFIX=/usr MANDIR=/usr/share/man/man1 LIBDIR=/usr/lib64 -f unix/Makefile install
+sudo make prefix=/usr MANDIR=/usr/share/man/man1 LIBDIR=/usr/lib64 -f unix/Makefile install
+
+sudo mv /usr/local/bin/* /usr/bin/
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -730,6 +732,8 @@ wget http://www.freedesktop.org/software/libqmi/libqmi-1.18.0.tar.xz -O \
 mkdir libqmi && tar xf libqmi-*.tar.* -C libqmi --strip-components 1
 cd libqmi
 
+sudo ln -sfv /usr/bin/python3.6 /usr/bin/python
+
 CC="gcc ${BUILD64}" \
   CXX="g++ ${BUILD64}" USE_ARCH=64 \
    PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr  \
@@ -739,6 +743,8 @@ CC="gcc ${BUILD64}" \
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+sudo unlink sudo ln -sfv /usr/bin/python
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -751,6 +757,8 @@ wget http://www.freedesktop.org/software/libmbim/libmbim-1.14.0.tar.xz -O \
 mkdir libmbim && tar xf libmbim-*.tar.* -C libmbim --strip-components 1
 cd libmbim
 
+sudo ln -sfv /usr/bin/python3.6 /usr/bin/python
+
 CC="gcc ${BUILD64}" \
   CXX="g++ ${BUILD64}" USE_ARCH=64 \
    PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr  \
@@ -760,6 +768,8 @@ CC="gcc ${BUILD64}" \
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+sudo unlink sudo ln -sfv /usr/bin/python
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -831,10 +841,10 @@ include "/usr/share/themes/Glider/gtk-2.0/gtkrc"
 gtk-icon-theme-name = "hicolor"
 EOF
 
-cat > /etc/gtk-2.0/gtkrc << "EOF"
+sudo bash -c 'cat > /etc/gtk-2.0/gtkrc << "EOF"
 include "/usr/share/themes/Clearlooks/gtk-2.0/gtkrc"
 gtk-icon-theme-name = "elementary"
-EOF
+EOF'
 
 sudo ldconfig
 
