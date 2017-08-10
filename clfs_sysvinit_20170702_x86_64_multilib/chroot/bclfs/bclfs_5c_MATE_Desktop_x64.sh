@@ -1007,11 +1007,13 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 -C python2 install
 
 mkdir python3 &&
 pushd python3 &&
+sudo ln -sfv /usr/bin/python3.6m-config /usr/bin/python-config
 PYTHON=/usr/bin/python3.6 \
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64}  ../configure --prefix=/usr --libdir=/usr/lib64 &&
 make PREFIX=/usr LIBDIR=/usr/lib64 &&
 popd
 
+sudo unlink /usr/bin/python-config
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 -C python3 install
 
 cd ${CLFSSOURCES}/xc/mate
