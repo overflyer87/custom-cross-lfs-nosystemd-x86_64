@@ -744,7 +744,7 @@ unzip docbook-xml-*.zip
 sudo install -v -d -m755 /usr/share/xml/docbook/xml-dtd-4.5
 sudo install -v -d -m755 /etc/xml
 sudo chown -R root:root .
-sudo cp -v -af docbook.cat *.dtd ent/ *.mod /usr/share/xml/docbook/xml-dtd-4.5
+sudo cp -v -af catalog.xml docbook.cat *.dtd ent/ *.mod /usr/share/xml/docbook/xml-dtd-4.5
 
 if [ ! -e /etc/xml/docbook ]; then
     sudo xmlcatalog --noout --create /etc/xml/docbook
@@ -916,9 +916,11 @@ wget http://ftp.gnome.org/pub/gnome/sources/gtk-doc/1.25/gtk-doc-1.25.tar.xz -O 
 mkdir gtk-doc && tar xf gtk-doc-*.tar.* -C gtk-doc --strip-components 1
 cd gtk-doc
 
+PYTHON=/usr/bin/python2.7 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
-    --libdir=/usr/lib64
-
+    --libdir=/usr/lib64 --enable-shared --disable-static \
+    --with-xml-catalog=/etc/xml --sysconfdir=/etc --datarootdir=/usr/share
+    
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
@@ -940,11 +942,11 @@ CXX="g++ ${BUILD64}" USE_ARCH=64 \
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr \
 --libdir=/usr/lib64 --sysconfdir=/etc --disable-static \
 --localstatedir=/var --bindir=/usr/bin --sbindir=/usr/sbin \
---disable-docbook-docs
+--disable-gtk-doc
     
 #Deactivate building of the help subdir because it will fail
-sed -i 's/HELP_DIR/#HELP_DIR/' Makefile Makefile.in
-sed -i 's/help/#help/' Makefile Makefile.in Makefile.am
+#sed -i 's/HELP_DIR/#HELP_DIR/' Makefile Makefile.in
+#sed -i 's/help/#help/' Makefile Makefile.in Makefile.am
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
