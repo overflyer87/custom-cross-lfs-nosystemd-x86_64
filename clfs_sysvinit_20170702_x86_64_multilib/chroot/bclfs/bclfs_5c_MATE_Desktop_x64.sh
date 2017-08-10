@@ -926,13 +926,25 @@ cd pygobject
 
 patch -Np1 -i ../Pygobject-2.28.6-fixes-1.patch
 
-CC="gcc ${BUILD64}" \
-  CXX="g++ ${BUILD64}" USE_ARCH=64 \
-  PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+export PYTHON=/usr/bin/python2.7
+export PYTHONPATH=/usr/lib64/python2.7
+export PYTHONHOME=/usr/lib64/python2.7
+export PYTHON_INCLUDES="/usr/include/python2.7"
+export CPPFLAGS="-I"${PYTHON_INCLUDES}""
+
+PYTHON=/usr/bin/python2.7 \
+PYTHONPATH=/usr/lib64/python2.7 \
+PYTHONHOME=/usr/lib64/python2.7 \
+PYTHON_INCLUDES="/usr/include/python2.7" \
+CPPFLAGS="-I"${PYTHON_INCLUDES}"" CC="gcc ${BUILD64}" \
+CXX="g++ ${BUILD64}" USE_ARCH=64 \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
   --libdir=/usr/lib64 --disable-introspection --disable-docs
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+unset PYTHON PYTHONHOME PYTHONPATH PYTHON_INCLUDES CPPFLAGS
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
