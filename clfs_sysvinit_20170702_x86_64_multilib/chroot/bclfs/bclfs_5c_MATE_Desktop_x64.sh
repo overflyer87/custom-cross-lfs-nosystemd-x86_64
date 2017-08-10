@@ -901,12 +901,14 @@ mkdir pycairo && tar xf pycairo-*.tar.* -C pycairo --strip-components 1
 cd pycairo
 
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} LIBDIR=/usr/lib64 PREFIX=/usr python2.7 setup.py build  
-sudo python2.7 setup.py install --verbose --prefix=/usr/lib64 --install-lib=/usr/lib64/python2.7/site-packages --optimize=1
-PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} LIBDIR=/usr/lib64 PREFIX=/usr python3.6 setup.py build
-sudo python3.6 setup.py install --verbose --prefix=/usr/lib64 --install-lib=/usr/lib64/python3.6/site-packages --optimize=1
+sudo bash -c 'PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} python2.7 setup.py install --verbose --prefix=/usr/lib64 \
+  --install-lib=/usr/lib64/python2.7/site-packages --optimize=1'
 
-sudo mv -v /usr/lib/pkgconfig/pycairo.pc /usr/lib64/pkgconfig/pycairo.pc
-sudo mv -v /usr/lib/pkgconfig/py3cairo.pc /usr/lib64/pkgconfig/py3cairo.pc
+checkBuiltPackage
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} LIBDIR=/usr/lib64 PREFIX=/usr python3.6 setup.py build
+sudo bash -c 'PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} python3.6 setup.py install --verbose --prefix=/usr/lib64 \
+  --install-lib=/usr/lib64/python3.6/site-packages --optimize=1'
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -916,7 +918,7 @@ rm -rf pycairo
 wget http://ftp.gnome.org/pub/gnome/sources/pygobject/2.28/pygobject-2.28.6.tar.xz -O \
     pygobject-2.28.6.tar.xz
 
-wget http://www.linuxfromscratch.org/patches/blfs/svn/Pygobject-2.28.6-fixes-1.patch -O \
+wget http://www.linuxfromscratch.org/patches/blfs/svn/pygobject-2.28.6-fixes-1.patch -O \
     Pygobject-2.28.6-fixes-1.patch
 
 mkdir pygobject && tar xf pygobject-2*.tar.* -C pygobject --strip-components 1
