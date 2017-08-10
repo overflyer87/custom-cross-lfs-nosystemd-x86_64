@@ -910,6 +910,9 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} LIBDIR=/usr/lib64 PREFIX=/usr python3.6 set
 sudo bash -c 'PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} python3.6 setup.py install --verbose --prefix=/usr/lib64 \
   --install-lib=/usr/lib64/python3.6/site-packages --optimize=1'
 
+sudo mv -v /usr/lib64/lib/pkgconfig/* /usr/lib64/pkgconfig/ 
+sudo rm -rf /usr/lib64/lib
+
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf pycairo
