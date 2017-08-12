@@ -117,7 +117,7 @@ unset AUTO_CLASSPATH_DIR dir jar
 # End /etc/profile.d/openjdk.sh
 EOF'
 
-sudo bash -c 'cat >> /etc/man_db.conf << "EOF" &&
+sudo bash -c 'cat >> /etc/man_db.conf << "EOF" 
 # Begin Java addition
 MANDATORY_MANPATH     /opt/jdk/man
 MANPATH_MAP           /opt/jdk/bin     /opt/jdk/man
@@ -176,7 +176,7 @@ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
 USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} make PREFIX=/usr \
 	LIBDIR=/usr/lib64 DEBUG_BINARIES=true SCTP_WERROR= all JOBS=4 
 	
-find build/*/images/j2sdk-image -iname \*.diz -delete
+sudo find build/*/images/j2sdk-image -iname \*.diz -delete
 
 sudo cp -RT build/*/images/j2sdk-image /opt/OpenJDK-1.8.0.141 &&
 sudo chown -R root:root /opt/OpenJDK-1.8.0.141
@@ -207,7 +207,7 @@ sudo openssl x509 -in root.crt -text -fingerprint -setalias "CAcert Class 1 root
         > /etc/ssl/local/CAcert_Class_1_root.pem
 wget http://www.cacert.org/certs/root.crt
 
-sudo /usr/sbin/make-ca.sh
+sudo /usr/sbin/make-ca.sh --force
 sudo ln -sfv /etc/ssl/java/cacerts /opt/jdk/jre/lib/security/cacerts
 
 cd /opt/jdk
