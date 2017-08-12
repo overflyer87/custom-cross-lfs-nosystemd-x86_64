@@ -3,7 +3,7 @@
 #!/bin/bash
 
 function checkBuiltPackage() {
-
+echo " "
 echo "Did everything build fine?: [Y/N]"
 while read -n1 -r -p "[Y/N]   " && [[ $REPLY != q ]]; do
   case $REPLY in
@@ -14,17 +14,8 @@ while read -n1 -r -p "[Y/N]   " && [[ $REPLY != q ]]; do
     *) echo " Try again. Type y or n";;
   esac
 done
-
+echo " "
 }
-
-function buildSingleXLib64() {
-  PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
-  USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64
-  make PREFIX=/usr LIBDIR=/usr/lib64
-  as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
-}
-
-export -f buildSingleXLib64
 
 #Building the final CLFS System
 CLFS=/
@@ -85,10 +76,12 @@ wget http://hg.openjdk.java.net/jdk8u/jdk8u/archive/jdk8u141-b15.tar.bz2 -O \
 mkdir OpenJDK && tar xf OpenJDK-*.tar.* -C OpenJDK --strip-components 1
 cd OpenJDK
 
-sudo install -vdm755 /opt/OpenJDK-1.8.0.141-bin &&
-sudo mv -v * /opt/OpenJDK-1.8.0.141-bin         &&
+sudo install -vdm755 /opt/OpenJDK-1.8.0.141-bin 
+sudo mv -v * /opt/OpenJDK-1.8.0.141-bin         
 sudo chown -R root:root /opt/OpenJDK-1.8.0.141-bin
-sudo ln -sfn OpenJDK-1.8.0.141-bin /opt/jdk
+sudo ln -svfn OpenJDK-1.8.0.141-bin /opt/jdk
+
+checkBuiltPackage
 
 sudo bash -c 'cat > /etc/profile.d/openjdk.sh << "EOF"
 # Begin /etc/profile.d/openjdk.sh
