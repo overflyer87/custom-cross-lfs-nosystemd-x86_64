@@ -66,7 +66,7 @@ wget http://us.download.nvidia.com/XFree86/Linux-x86_64/384.59/NVIDIA-Linux-x86_
   NVIDIA-Linux-x86_64-384.59.run
 
 sudo chmod +x NVIDIA-Linux-x86_64-384.59.run
-sudo bash -c 'PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" CC="gcc" CXX="g++" ./NVIDIA-Linux-x86_64-384.59.run --kernel-source-path=/lib/modules/CLFS-4.12.5_ORIGINAL'
+sudo bash -c 'PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" CC="gcc" CXX="g++" ./NVIDIA-Linux-x86_64-384.59.run --kernel-source-path=/lib/modules/CLFS-4.12.6_ORIGINAL'
 
 checkBuiltPackage
 
