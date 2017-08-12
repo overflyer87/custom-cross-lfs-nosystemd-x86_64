@@ -1,7 +1,5 @@
 #!/bin/bash
 
-#!/bin/bash
-
 function checkBuiltPackage() {
 echo " "
 echo "Did everything build fine?: [Y/N]"
