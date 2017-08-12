@@ -519,7 +519,7 @@ checkBuiltPackage
 sudo make LIBDIR=/usr/lib64 PREFIX=/usr install    
 
 sudo rm /etc/dbus-1/system.d/pulseaudio-system.conf
-ás_root install -dm755 /etc/pulse
+sudo install -dm755 /etc/pulse
 sudo cp -v src/default.pa /etc/pulse
 sudo sed -i '/load-module module-console-kit/s/^/#/' /etc/pulse/default.pa
 
