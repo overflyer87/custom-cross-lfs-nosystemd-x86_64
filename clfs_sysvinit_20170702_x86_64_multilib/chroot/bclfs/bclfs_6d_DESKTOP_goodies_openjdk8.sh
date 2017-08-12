@@ -75,9 +75,9 @@ mkdir OpenJDK && tar xf OpenJDK-*.tar.* -C OpenJDK --strip-components 1
 cd OpenJDK
 
 sudo install -vdm755 /opt/OpenJDK-1.8.0.141-bin 
-sudo mv -v * /opt/OpenJDK-1.8.0.141-bin         
+sudo cp -rv * /opt/OpenJDK-1.8.0.141-bin         
 sudo chown -R root:root /opt/OpenJDK-1.8.0.141-bin
-sudo ln -svfn OpenJDK-1.8.0.141-bin /opt/jdk
+sudo ln -v -nfs /opt/OpenJDK-1.8.0.141-bin /opt/jdk
 
 checkBuiltPackage
 
