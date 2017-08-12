@@ -61,53 +61,6 @@ export PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"
 export USE_ARCH=64 
 export CXX="g++ ${BUILD64}" 
 export CC="gcc ${BUILD64}"
-#libogg
-wget http://downloads.xiph.org/releases/ogg/libogg-1.3.2.tar.xz -O \
-    libogg-1.3.2.tar.xz
-
-mkdir libogg && tar xf libogg-*.tar.* -C libogg --strip-components 1
-cd libogg
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
-   --libdir=/usr/lib64 \
-   --disable-static \
-   --docdir=/usr/share/doc/libogg-1.3.2
-
-make check
-checkBuiltPackage
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
-
-cd ${CLFSSOURCES}/xc/mate
-checkBuiltPackage
-rm -rf libogg
-
-#libvorbis
-wget http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.5.tar.xz -O \
-    libvorbis-1.3.5.tar.xz
-
-mkdir libvorbis && tar xf libvorbis-*.tar.* -C libvorbis --strip-components 1
-cd libvorbis
-
-sed -i '/components.png \\/{n;d}' doc/Makefile.in
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
-   --libdir=/usr/lib64 \
-   --disable-static 
-
-make LIBS=-lm check
-checkBuiltPackage
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
-sudo install -v -m644 doc/Vorbis* /usr/share/doc/libvorbis-1.3.5
-
-sudo ldconfig 
-
-cd ${CLFSSOURCES}/xc/mate
-checkBuiltPackage
-rm -rf libvorbis
 
 #alsa-lib
 wget ftp://ftp.alsa-project.org/pub/lib/alsa-lib-1.1.4.1.tar.bz2 -O \
