@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function checkBuiltPackage() {
-
+echo " "
 echo "Did everything build fine?: [Y/N]"
 while read -n1 -r -p "[Y/N]   " && [[ $REPLY != q ]]; do
   case $REPLY in
@@ -12,27 +12,8 @@ while read -n1 -r -p "[Y/N]   " && [[ $REPLY != q ]]; do
     *) echo " Try again. Type y or n";;
   esac
 done
-
+echo " "
 }
-
-function as_root()
-{
-  if   [ $EUID = 0 ];        then $*
-  elif [ -x /usr/bin/sudo ]; then sudo $*
-  else                            su -c \\"$*\\"
-  fi
-}
-
-export -f as_root
-
-function buildSingleXLib64() {
-  PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
-  USE_ARCH=64 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64
-  make PREFIX=/usr LIBDIR=/usr/lib64
-  as_root make PREFIX=/usr LIBDIR=/usr/lib64 install
-}
-
-export -f buildSingleXLib64
 
 #Building the final CLFS System
 CLFS=/
@@ -70,8 +51,6 @@ cd ${CLFSSOURCES}
 cd ${CLFSSOURCES}/xc/mate
 
 #We will only do 64-bit builds in this script
-#We compiled Xorg with 32-bit libraries
-#That should suffice
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" 
 USE_ARCH=64 
@@ -93,8 +72,8 @@ wget http://download.kde.org/stable/qtwebkit-2.3/2.3.4/src/qtwebkit-2.3.4.tar.gz
 export QT4PREFIX=/opt/qt4
 QT4PREFIX=/opt/qt4
 
-as_root mkdir -pv /opt/qt-4.8.7
-as_root ln -sfnv qt-4.8.7 /opt/qt4
+sudo mkdir -pv /opt/qt-4.8.7
+sudo ln -sfnv qt-4.8.7 /opt/qt4
 
 wget https://aur.archlinux.org/cgit/aur.git/plain/disable-sslv3.patch?h=lib32-qt4 -O \
 	disable-sslv3.patch
@@ -204,10 +183,10 @@ CC="gcc ${BUILD64}" USE_ARCH=64 \
 CXX="g++ ${BUILD64} -std=gnu++98" \
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} make PREFIX=${QT4PREFIX} install 
 
-as_root PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} make PREFIX=${QT4PREFIX} install 
+sudo PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} make PREFIX=${QT4PREFIX} install 
 
-as_root rm -rf $QT4PREFIX/tests
-as_root find $QT4PREFIX/lib64/pkgconfig -name "*.pc" -exec perl -pi -e "s, -L$PWD/?\S+,,g" {} \;
+sudo rm -rf $QT4PREFIX/tests
+sudo find $QT4PREFIX/lib64/pkgconfig -name "*.pc" -exec perl -pi -e "s, -L$PWD/?\S+,,g" {} \;
 
 sudo sed -r -e '/^QMAKE_PRL_BUILD_DIR/d' -e 's/(QMAKE_PRL_LIBS =).*/\1/' /opt/qt4/lib64/libQt*.prl
 
@@ -235,31 +214,31 @@ CXXFLAGS+=" -std=gnu++98" CXX="g++ -std=gnu++98 -m64" \
 PKG_CONFIG_PATH=/usr/lib64/pkgconfig/ Tools/Scripts/build-webkit --qt \
 	--makeargs="qmake"  --prefix=/opt/qt4$QT4PREFIX
 
-QTDIR=/opt/qt4 QT4PREFIX=/opt/qt4 PERL=/usr/bin/perl-64 CXXFLAGS+=" -std=gnu++98" CXX="g++ -std=gnu++98 -m64" PKG_CONFIG_PATH=/usr/lib64/pkgconfig as_root make -j9 -C WebKitBuild/Release install 
+QTDIR=/opt/qt4 QT4PREFIX=/opt/qt4 PERL=/usr/bin/perl-64 CXXFLAGS+=" -std=gnu++98" CXX="g++ -std=gnu++98 -m64" PKG_CONFIG_PATH=/usr/lib64/pkgconfig sudo make -j9 -C WebKitBuild/Release install 
 
 popd
 
 QT4BINDIR=$QT4PREFIX/bin
 export QT4BINDIR=$QT4PREFIX/bin
 
-as_root install -v -Dm644 src/gui/dialogs/images/qtlogo-64.png \
+sudo install -v -Dm644 src/gui/dialogs/images/qtlogo-64.png \
                   /usr/share/pixmaps/qt4logo.png       &&
 
-as_root install -v -Dm644 tools/assistant/tools/assistant/images/assistant-128.png \
+sudo install -v -Dm644 tools/assistant/tools/assistant/images/assistant-128.png \
                   /usr/share/pixmaps/assistant-qt4.png &&
 
-as_root install -v -Dm644 tools/designer/src/designer/images/designer.png \
+sudo install -v -Dm644 tools/designer/src/designer/images/designer.png \
                   /usr/share/pixmaps/designer-qt4.png  &&
 
-as_root install -v -Dm644 tools/linguist/linguist/images/icons/linguist-128-32.png \
+sudo install -v -Dm644 tools/linguist/linguist/images/icons/linguist-128-32.png \
                   /usr/share/pixmaps/linguist-qt4.png  &&
 
-as_root install -v -Dm644 tools/qdbus/qdbusviewer/images/qdbusviewer-128.png \
+sudo install -v -Dm644 tools/qdbus/qdbusviewer/images/qdbusviewer-128.png \
                   /usr/share/pixmaps/qdbusviewer-qt4.png &&
 
-as_root install -dm755 /usr/share/applications &&
+sudo install -dm755 /usr/share/applications &&
 
-as_root cat > /usr/share/applications/assistant-qt4.desktop << EOF
+sudo cat > /usr/share/applications/assistant-qt4.desktop << EOF
 [Desktop Entry]
 Name=Qt4 Assistant
 Comment=Shows Qt4 documentation and examples
@@ -271,7 +250,7 @@ Type=Application
 Categories=Qt;Development;Documentation;
 EOF
 
-as_root cat > /usr/share/applications/designer-qt4.desktop << EOF
+sudo cat > /usr/share/applications/designer-qt4.desktop << EOF
 [Desktop Entry]
 Name=Qt4 Designer
 Comment=Design GUIs for Qt4 applications
@@ -282,9 +261,9 @@ Terminal=false
 Encoding=UTF-8
 Type=Application
 Categories=Qt;Development;
-EOF
+EOF'
 
-as_root cat > /usr/share/applications/linguist-qt4.desktop << EOF
+sudo bash -c 'cat > /usr/share/applications/linguist-qt4.desktop << EOF
 [Desktop Entry]
 Name=Qt4 Linguist
 Comment=Add translations to Qt4 applications
@@ -297,7 +276,7 @@ Type=Application
 Categories=Qt;Development;
 EOF
 
-as_root cat > /usr/share/applications/qdbusviewer-qt4.desktop << EOF
+sudo cat > /usr/share/applications/qdbusviewer-qt4.desktop << EOF
 [Desktop Entry]
 Name=Qt4 QDbusViewer
 GenericName=D-Bus Debugger
@@ -310,7 +289,7 @@ Type=Application
 Categories=Qt;Development;Debugger;
 EOF
 
-as_root cat > /usr/share/applications/qtconfig-qt4.desktop << EOF
+sudo cat > /usr/share/applications/qtconfig-qt4.desktop << EOF
 [Desktop Entry]
 Name=Qt4 Config
 Comment=Configure Qt4 behavior, styles, fonts
@@ -323,14 +302,14 @@ Categories=Qt;Settings;
 EOF
 
 for file in moc uic rcc qmake lconvert lrelease lupdate; do
-  as_root ln -sfrvn $QT4BINDIR/$file /usr/bin/$file-qt4
+  sudo ln -sfrvn $QT4BINDIR/$file /usr/bin/$file-qt4
 done
 
-as_root export LD_LIBRARY_PATH=/lib:/lib64:/usr/lib/:/usr/lib64:/usr/local/lib/:/usr/local/lib64:/opt/qt4/lib64:/opt/jdk/lib
+sudo export LD_LIBRARY_PATH=/lib:/lib64:/usr/lib/:/usr/lib64:/usr/local/lib/:/usr/local/lib64:/opt/qt4/lib64:/opt/jdk/lib
 
-as_root ldconfig -v
+sudo ldconfig -v
 
-as_root cat > /etc/profile.d/qt4.sh << "EOF"
+sudo bash -c 'cat > /etc/profile.d/qt4.sh << "EOF"
 # Begin /etc/profile.d/qt4.sh
 
 QT4DIR=/opt/qt4
@@ -338,19 +317,19 @@ QTDIR=$QT4DIR
 export QT4DIR QTDIR
 
 # End /etc/profile.d/qt4.sh
-EOF
+EOF'
 
-as_root cat >> /etc/ld.so.conf << EOF
+sudo bash -c 'cat >> /etc/ld.so.conf << EOF
 # Begin Qt addition
 
 /opt/qt4/lib
 
 # End Qt addition
-EOF
+EOF'
 
-ldconfig
+sudo ldconfig
 
-as_root cat > /etc/profile.d/qt4.sh << "EOF"
+sudo bash -c 'cat > /etc/profile.d/qt4.sh << "EOF"
 # Begin /etc/profile.d/qt4.sh
 
 QT4DIR=/opt/qt4
@@ -362,20 +341,20 @@ pathappend $QT4DIR/lib/pkgconfig PKG_CONFIG_PATH
 export QT4DIR QTDIR
 
 # End /etc/profile.d/qt4.sh
-EOF
+EOF'
 
-as_root cat > /usr/bin/setqt4 << 'EOF'
+sudo bash -c 'cat > /usr/bin/setqt4 << 'EOF'
 if [ "x$QT5DIR" != "x/usr" ] && [ "x$QT5DIR" != "x" ]; then pathremove  $QT5DIR/bin; fi
 
 if [ "x$QT4DIR" != "x/usr" ]; then pathprepend $QT4DIR/bin; fi
 echo $PATH
-EOF
+EOF'
 
-as_root cat > /usr/bin/setqt5 << 'EOF'
+sudo bash -c 'cat > /usr/bin/setqt5 << 'EOF'
 if [ "x$QT4DIR" != "x/usr" ] && [ "x$QT4DIR" != "x" ]; then pathremove  $QT4DIR/bin; fi
 if [ "x$QT5DIR" != "x/usr" ]; then pathprepend $QT5DIR/bin; fi
 echo $PATH
-EOF
+EOF'
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
