@@ -76,8 +76,8 @@ checkBuiltPackage
 rm -rf expat
 
 #Python 3 64-bit
-wget https://www.python.org/ftp/python/3.6.1/Python-3.6.1.tar.xz -O \
-  Python-3.6.1.tar.xz
+wget https://www.python.org/ftp/python/3.6.2/Python-3.6.2.tar.xz -O \
+  Python-3.6.2.tar.xz
 
 #wget http://pkgs.fedoraproject.org/rpms/python3/raw/master/f/00102-lib64.patch -O \
 #python360-multilib.patch
