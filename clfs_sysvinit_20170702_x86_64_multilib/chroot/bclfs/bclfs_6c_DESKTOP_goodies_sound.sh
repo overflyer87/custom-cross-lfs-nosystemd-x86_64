@@ -185,9 +185,11 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
    --disable-alsaconf \
    --disable-bat   \
    --with-curses=ncursesw \
-   --with-asound-state-dir=no
+   --with-systemdsystemunitdir=no
    
 #Remove all signs of Manpage install in Makefile* and alsactl/Makefile*
+
+nano alsactl/Makefile
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
