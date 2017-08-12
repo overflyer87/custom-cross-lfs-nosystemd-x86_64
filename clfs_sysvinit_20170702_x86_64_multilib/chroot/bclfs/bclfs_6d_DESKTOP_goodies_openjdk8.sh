@@ -74,10 +74,11 @@ wget http://hg.openjdk.java.net/jdk8u/jdk8u/archive/jdk8u141-b15.tar.bz2 -O \
 mkdir OpenJDK && tar xf OpenJDK-*.tar.* -C OpenJDK --strip-components 1
 cd OpenJDK
 
-sudo install -vdm755 /opt/OpenJDK-1.8.0.141-bin 
-sudo cp -rv * /opt/OpenJDK-1.8.0.141-bin         
-sudo chown -R root:root /opt/OpenJDK-1.8.0.141-bin
-sudo ln -v -nfs /opt/OpenJDK-1.8.0.141-bin /opt/jdk
+sudo install -vdm755 /opt/OpenJDK-1.8.0.121-bin 
+sudo mv -v * /opt/OpenJDK-1.8.0.121-bin         
+sudo chown -R root:root /opt/OpenJDK-1.8.0.121-bin
+
+sudo ln -sfn OpenJDK-1.8.0.121-bin /opt/jdk
 
 checkBuiltPackage
 
