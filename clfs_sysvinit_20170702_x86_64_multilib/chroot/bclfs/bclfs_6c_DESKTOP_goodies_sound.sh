@@ -71,10 +71,12 @@ cd alsa-lib
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
    --libdir=/usr/lib64 
+   
+sed -i 's/self\-\>ob_type/Py\_TYPE\(self\)/' modules/mixer/simple/python.c
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 make check
-checkBuiltPackage
+checkBuiltPackae
 
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
