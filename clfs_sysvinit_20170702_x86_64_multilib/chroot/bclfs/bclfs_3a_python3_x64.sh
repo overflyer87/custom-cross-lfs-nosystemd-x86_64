@@ -132,7 +132,8 @@ sudo tar --strip-components=1 \
     -xvf ../python-360-docs.tar.bz2
 
 sudo ln -svfn python-3.6.0 /usr/share/doc/python-3
-
+sudo ln -svf /usr/lib64/libpython3.6m.so /usr/lib64/libpython3.6.so
+sudo ln -svf /usr/lib64/libpython3.6m.so.1.0 /usr/lib64/libpython3.6.so.1.0
 sudo cp -rv /usr/lib/python3.6/ /usr/lib64/
 sudo rm -rf /usr/lib/python3.6/
 
