@@ -217,12 +217,9 @@ cd js/src
 sed -i 's/(defined\((@TEMPLATE_FILE)\))/\1/' config/milestone.pl
 
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
-PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
-  --libdir=/usr/lib64 \
-  --enable-readline   \
-  --enable-threadsafe \ 
-  --with-system-ffi   \
-  --with-system-nspr  
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr --libdir=/usr/lib64 \
+  --enable-readline --enable-threadsafe \
+  --with-system-ffi --with-system-nspr  
 
 #Iso C++ can't compare pointer to Integer
 #First element of array is seen as pointer
