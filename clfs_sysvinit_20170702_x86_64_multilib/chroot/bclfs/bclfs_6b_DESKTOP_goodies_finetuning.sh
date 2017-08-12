@@ -941,7 +941,7 @@ checkBuiltPackage
 rm -rf iptables
 
 #slang
-wget http://www.jedsoft.org/releases/slang/slang-2.3.1.tar.bz2 -O 
+wget http://www.jedsoft.org/releases/slang/slang-2.3.1.tar.bz2 -O -
 	slang-2.3.1.tar.bz2
 
 mkdir slang && tar xf slang-*.tar.* -C slang --strip-components 1
