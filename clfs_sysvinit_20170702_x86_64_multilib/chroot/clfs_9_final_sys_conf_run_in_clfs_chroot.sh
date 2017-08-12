@@ -171,7 +171,9 @@ EOF
 
 cd ${CLFSSOURCES}
 
-ln -sfv /etc/rc.d/init.d/functions /lib/init-functions
+sed -i 's/\/lib\//\/lib64\//' /etc/rc.dinit.d/*
+sed -i 's/\/lib6464\//\/lib64\//' /etc/rc.dinit.d/*
+sed -i 's/loadproc/start_daemon/' /etc/rc.dinit.d/*
 ln -sfv /etc/rc.d/init.d/functions /lib64/init-functions
 
 #lsb-release
