@@ -115,6 +115,9 @@ unset AUTO_CLASSPATH_DIR dir jar
 # End /etc/profile.d/openjdk.sh
 EOF'
 
+ls /etc/profile.d | grep openjdk
+checkBuiltPackage
+
 sudo bash -c 'cat >> /etc/man_db.conf << "EOF" 
 # Begin Java addition
 MANDATORY_MANPATH     /opt/jdk/man
@@ -122,6 +125,9 @@ MANPATH_MAP           /opt/jdk/bin     /opt/jdk/man
 MANDB_MAP             /opt/jdk/man     /var/cache/man/jdk
 # End Java addition
 EOF'
+
+ls /etc/ | grep man
+checkBuiltPackage
 
 sudo mkdir -p /var/cache/man
 sudo mandb -c /opt/jdk/man
@@ -146,12 +152,12 @@ EOF
 for subproject in corba hotspot jaxp jaxws langtools jdk nashorn; do
   wget -c http://hg.openjdk.java.net/jdk8u/jdk8u/${subproject}/archive/jdk8u141-b15.tar.bz2 \
        -O ${subproject}.tar.bz2
-done &&
+done
 
-md5sum -c subprojects.md5 &&
+md5sum -c subprojects.md5 
 
 for subproject in corba hotspot jaxp jaxws langtools jdk nashorn; do
-  mkdir -pv ${subproject} &&
+  mkdir -pv ${subproject} 
   tar -xf ${subproject}.tar.bz2 --strip-components=1 -C ${subproject}
 done
 
