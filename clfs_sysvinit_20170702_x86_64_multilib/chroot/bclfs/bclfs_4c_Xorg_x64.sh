@@ -582,11 +582,12 @@ sudo cp -v ttf/* /usr/share/fonts/TTF
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf dejavu-fonts
+
 sudo bash -c 'cat > /etc/X11/xorg.conf.d/xkb-defaults.conf << "EOF"
 Section "InputClass"
     Identifier "XKB Defaults"
     MatchIsKeyboard "yes"
-    Option "XkbLayout" "de-latin1"
+    Option "XkbLayout" "de"
     Option "XkbOptions" "terminate:ctrl_alt_bksp"
 EndSection
 EOF'
