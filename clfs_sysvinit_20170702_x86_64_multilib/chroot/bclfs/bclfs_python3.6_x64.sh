@@ -120,6 +120,9 @@ LIBRARY_PATH=/usr/lib64 make PREFIX=/usr LIBDIR=/usr/lib64 PLATLIBDIR=/usr/lib64
 
 sudo make altinstall PREFIX=/usr LIBDIR=/usr/lib64 PLATLIBDIR=/usr/lib64 \
   platlibdir=/usr/lib64
+  
+sudo cp -rv /usr/lib/python3.6/ /usr/lib64/
+sudo rm -rf /usr/lib/python3.6/
 
 sudo chmod -v 755 /usr/lib64/libpython3.6m.so
 sudo chmod -v 755 /usr/lib64/libpython3.so
@@ -134,8 +137,7 @@ sudo tar --strip-components=1 \
 sudo ln -svfn python-3.6.0 /usr/share/doc/python-3
 sudo ln -svf /usr/lib64/libpython3.6m.so /usr/lib64/libpython3.6.so
 sudo ln -svf /usr/lib64/libpython3.6m.so.1.0 /usr/lib64/libpython3.6.so.1.0
-sudo cp -rv /usr/lib/python3.6/ /usr/lib64/
-sudo rm -rf /usr/lib/python3.6/
+sudo ln -sfv /usr/bin/python3.6 /usr/bin/python3
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
