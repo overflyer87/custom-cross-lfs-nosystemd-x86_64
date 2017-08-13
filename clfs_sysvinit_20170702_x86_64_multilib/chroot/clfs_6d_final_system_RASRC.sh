@@ -1003,7 +1003,7 @@ rm -rf nano
 
 
 echo " "
-echo "Next execute script 6b1 for UEFI boot or 6b2 for Legacy boot"
+echo "Next execute script #6d for UEFI boot. Legacy boot option will maybe never follow. Low priority!"
 echo " "
 
 exit
