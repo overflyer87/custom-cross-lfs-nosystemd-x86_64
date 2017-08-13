@@ -345,5 +345,5 @@ echo "With Script #3"
 echo " "
 
 cd ~
-sh clfs_3_temp_sys_run_as_host_clfs_user.sh
+sh clfs_3_temp_sys_RACU.sh
 
