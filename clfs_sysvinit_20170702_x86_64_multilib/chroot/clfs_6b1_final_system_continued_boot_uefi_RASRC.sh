@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function checkBuiltPackage() {
-
+echo " "
 echo "Did everything build fine?: [Y/N]"
 while read -n1 -r -p "[Y/N]   " && [[ $REPLY != q ]]; do
   case $REPLY in
@@ -12,7 +12,7 @@ while read -n1 -r -p "[Y/N]   " && [[ $REPLY != q ]]; do
     *) echo " Try again. Type y or n";;
   esac
 done
-
+echo " "
 }
 
 #Building the final CLFS System
@@ -56,14 +56,14 @@ echo ""
 echo "Let's check if your efivars are mounted or not"
 ls /sys/firmware/efi
 
-#checkBuiltPackage
+checkBuiltPackage
 
 echo ""
 echo "Alright let's mount the boot partition /dev/sda1 to /boot/efi"
 mkdir -pv /boot/efi
 mount -vt vfat /dev/sda1 /boot/efi
 
-#checkBuiltPackage
+checkBuiltPackage
 
 cd ${CLFSSOURCES}
 
@@ -99,7 +99,7 @@ ln -sfv multiarch_wrapper /usr/bin/libpng12-config
 ln -sfv multiarch_wrapper /usr/bin/libpng-config
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf libpng
 
 #libpng 64-bit
@@ -126,7 +126,7 @@ mkdir -v /usr/share/doc/libpng-1.6.29
 cp -v README libpng-manual.txt /usr/share/doc/libpng-1.6.29
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf libpng
 
 #which
@@ -142,7 +142,7 @@ PREFIX=/usr LIBDIR=/usr/lib64 make
 PREFIX=/usr LIBDIR=/usr/lib64 make install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf which
 
 #freeype 32-bit
@@ -169,7 +169,7 @@ PREFIX=/usr LIBDIR=/usr/lib make install
 mv -v /usr/bin/freetype-config{,-32}
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf freetype
 
 
@@ -203,7 +203,7 @@ cp -v -R docs/*     /usr/share/doc/freetype-2.8
 
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf freetype
 
 #harfbuzz 32-bit
@@ -217,7 +217,7 @@ PREFIX=/usr LIBDIR=/usr/lib make
 PREFIX=/usr LIBDIR=/usr/lib make install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf harfbuzz
 
 #harfbuzz 64-bit
@@ -231,7 +231,7 @@ PREFIX=/usr LIBDIR=/usr/lib64 make
 PREFIX=/usr LIBDIR=/usr/lib64 make install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf harfbuzz
 
 #freeype 32-bit
@@ -258,7 +258,7 @@ mv -v /usr/bin/freetype-config{,-32}
 
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf freetype
 
 #freeype 64-bit
@@ -291,7 +291,7 @@ install -v -m755 -d /usr/share/doc/freetype-2.8
 cp -v -R docs/*     /usr/share/doc/freetype-2.8
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf freetype
 
 #popt 64-bit
@@ -311,7 +311,7 @@ make usrlibdir=/usr/lib64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} install
 mv popt.pc /usr/lib64/pkgconfig
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf popt
 
 
@@ -331,7 +331,7 @@ make usrlibdir=/usr/lib install
 mv popt.pc /usr/lib/pkgconfig
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf popt
 
 #dosfstools
@@ -352,7 +352,7 @@ DOCDIR=/usr/share/doc make install
 
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf dosfstools
 
 PKG_CONFIG_PATH=""
@@ -398,7 +398,7 @@ install -v -D -m0644 src/efibootdump.8 \
 
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf efibootmgr
 
 #gnu-efi
@@ -411,7 +411,7 @@ ARCH=x86_64 make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf gnuefi
 
 #unicode font
@@ -459,7 +459,7 @@ cd /boot/efi/loader/entries/
 echo options root=PARTUUID=`echo $fs_uuid` rw >> clfs-uefi.conf
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage
+checkBuiltPackage
 rm -rf goofiboot
 
 cp -v ${CLFSSOURCES}/intel-ucode.img /boot/efi/
