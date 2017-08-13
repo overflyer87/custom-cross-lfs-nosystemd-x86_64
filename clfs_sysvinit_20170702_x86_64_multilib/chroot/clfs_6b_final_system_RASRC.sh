@@ -77,9 +77,12 @@ LDFLAGS="-Wl,-rpath-link,/usr/lib:/lib ${BUILD32}" \
 
 make
 make check
+
 checkBuiltPackage 
+
 make install
 mv -v /usr/include/gmp{,-32}.h
+
 cd ${CLFSSOURCES} 
 checkBuiltPackage 
 rm -rf gmp
@@ -390,7 +393,7 @@ mkdir binutils && tar xf binutils-*.tar.* -C binutils --strip-components 1
 cd binutils
 
 expect -c "spawn ls"
-#checkBuiltPackage 
+checkBuiltPackage 
 
 mkdir -v ../binutils-build
 cd ../binutils-build
@@ -413,7 +416,7 @@ checkBuiltPackage
 make tooldir=/usr install
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf binutils
 rm -rf binutils-build
 
@@ -443,9 +446,9 @@ LDFLAGS="-Wl,-rpath-link,/usr/lib64:/lib64:/usr/lib:/lib" \
     --disable-bootstrap
 
 make
-#ulimit -s 32768
-#make -k check
-#../gcc/contrib/test_summary
+ulimit -s 32768
+make -k check
+../gcc/contrib/test_summary
 checkBuiltPackage 
 
 make install
@@ -528,6 +531,10 @@ checkBuiltPackage
 rm -v multiarch_wrapper.c test{,-32,-64}
 
 cd ${CLFSSOURCES}
+
+echo " "
+echo "Run script #6c next"
+echo " "
 
 sh ${CLFS}/clfs_6c_final_system_RASRC.sh
 
