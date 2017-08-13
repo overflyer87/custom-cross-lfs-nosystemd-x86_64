@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function checkBuiltPackage () {
-
+echo " "
 echo "Did everything build fine?: [Y/N]"
 while read -n1 -r -p "[Y/N]   " && [[ $REPLY != q ]]; do
   case $REPLY in
@@ -12,7 +12,7 @@ while read -n1 -r -p "[Y/N]   " && [[ $REPLY != q ]]; do
     *) echo " Try again. Type y or n";;
   esac
 done
-
+echo " "
 }
 
 #Variables
@@ -710,5 +710,6 @@ echo "Execute Script #4"
 echo "Execute Script #5 inside CHROOT with BASH NOT SH!!!"
 echo " "
 
+exit
 exit
 exit
