@@ -15,7 +15,6 @@ done
 echo " "
 }
 
-
 #Building the final CLFS System
 CLFS=/
 CLFSHOME=/home
