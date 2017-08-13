@@ -296,7 +296,7 @@ echo "and maintenance easier for me ;)"
 echo "Execute script 6a2 next!"
 echo " "
 
-sh ${CLFS}/clfs_6a2_final_sys_run_in_clfs_chroot.sh
+sh ${CLFS}/clfs_6a2_final_system_RASRC.sh
 
 
 
