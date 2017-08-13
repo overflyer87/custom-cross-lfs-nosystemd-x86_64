@@ -293,7 +293,7 @@ echo " "
 echo "After adjusting it is a good point to take a breath..."
 echo "Smaller scripts makes seeing errors easier for you"
 echo "and maintenance easier for me ;)"
-echo "Execute script 6a2 next!"
+echo "Execute script 6b next!"
 echo " "
 
 sh ${CLFS}/clfs_6b_final_system_RASRC.sh
