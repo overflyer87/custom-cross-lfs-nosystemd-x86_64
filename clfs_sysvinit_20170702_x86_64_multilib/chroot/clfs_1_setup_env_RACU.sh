@@ -84,8 +84,3 @@ echo "Maybe execute env first and check if everything looks good"
 echo " "
 
 source ~/.bash_profile
-
-
-
-source ~/.bash_profile
-
