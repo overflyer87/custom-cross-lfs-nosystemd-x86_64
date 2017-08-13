@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function checkBuiltPackage () {
-
+echo " "
 echo "Did everything build fine?: [Y/N]"
 while read -n1 -r -p "[Y/N]   " && [[ $REPLY != q ]]; do
   case $REPLY in
@@ -12,7 +12,7 @@ while read -n1 -r -p "[Y/N]   " && [[ $REPLY != q ]]; do
     *) echo " Try again. Type y or n";;
   esac
 done
-
+echo " "
 }
 
 #Building the final CLFS System
@@ -529,5 +529,5 @@ rm -v multiarch_wrapper.c test{,-32,-64}
 
 cd ${CLFSSOURCES}
 
-sh ${CLFS}/clfs_6a3_final_sys_run_in_clfs_chroot.sh
+sh ${CLFS}/clfs_6a3_final_system_RASRC.sh
 
