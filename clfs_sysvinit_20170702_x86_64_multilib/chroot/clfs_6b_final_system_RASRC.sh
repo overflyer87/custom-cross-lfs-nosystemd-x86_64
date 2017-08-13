@@ -127,7 +127,7 @@ cat > /usr/include/gmp.h << "EOF"
 EOF
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf gmp
 
 #MPFR 32-bit
@@ -151,7 +151,7 @@ checkBuiltPackage
 make install && make install-html
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf mpfr
 
 #MPFR 64-bit
@@ -457,7 +457,7 @@ mv -v /usr/lib/libstdc++*gdb.py /usr/share/gdb/auto-load/usr/lib
 mv -v /usr/lib64/libstdc++*gdb.py /usr/share/gdb/auto-load/usr/lib64
 
 cd ${CLFSSOURCES} 
-#checkBuiltPackage 
+checkBuiltPackage 
 rm -rf gcc
 rm -rf gcc-build
 
