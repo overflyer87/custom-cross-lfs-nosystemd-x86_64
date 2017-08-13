@@ -114,26 +114,28 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr altinstall
 
 sudo chmod -v 755 /usr/lib64/libpython2.7.so.1.0
 
-sudo mv -v /usr/bin/python{,-64} &&
-sudo mv -v /usr/bin/python2{,-64} &&
-sudo mv -v /usr/bin/python2.7{,-64} &&
-sudo ln -sfv python2.7-64 /usr/bin/python2-64 &&
-sudo ln -sfv python2-64 /usr/bin/python-64 &&
-sudo ln -sfv multiarch_wrapper /usr/bin/python &&
-sudo ln -sfv multiarch_wrapper /usr/bin/python2 &&
-sudo ln -sfv multiarch_wrapper /usr/bin/python2.7 &&
+sudo ln -sfv /usr/bin7python2.7 /usr/bin/python2
+
+#sudo mv -v /usr/bin/python{,-64}
+sudo mv -v /usr/bin/python2{,-64}
+sudo mv -v /usr/bin/python2.7{,-64}
+sudo ln -sfv python2.7-64 /usr/bin/python2-64
+sudo ln -sfv python2-64 /usr/bin/python-64
+#sudo ln -sfv multiarch_wrapper /usr/bin/python
+sudo ln -sfv multiarch_wrapper /usr/bin/python2
+sudo ln -sfv multiarch_wrapper /usr/bin/python2.7 
 #Deactivate renaming header according to cblfs
 #mate-menu will not find since Python.h includes pyconfig.h not pyconfig-64.h
 #sudo mv -v /usr/include/python2.7/pyconfig{,-64}.h
 
-sudo install -v -dm755 /usr/share/doc/python-2.7.13 &&
+sudo install -v -dm755 /usr/share/doc/python-2.7.13 
 
 tar --strip-components=1                     \
     --no-same-owner                          \
     --directory /usr/share/doc/python-2.7.13 \
-    -xvf ../python-2.7.*.tar.* &&
+    -xvf ../python-2.7.*.tar.* 
 
-sudo find /usr/share/doc/python-2.7.13 -type d -exec chmod 0755 {} \; &&
+sudo find /usr/share/doc/python-2.7.13 -type d -exec chmod 0755 {} \; 
 sudo find /usr/share/doc/python-2.7.13 -type f -exec chmod 0644 {} \;
             
 cd ${CLFSSOURCES}
