@@ -529,5 +529,5 @@ rm -v multiarch_wrapper.c test{,-32,-64}
 
 cd ${CLFSSOURCES}
 
-sh ${CLFS}/clfs_6a3_final_system_RASRC.sh
+sh ${CLFS}/clfs_6c_final_system_RASRC.sh
 
