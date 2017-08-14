@@ -916,10 +916,10 @@ wget http://ftp.gnome.org/pub/gnome/sources/gtk-doc/1.25/gtk-doc-1.25.tar.xz -O 
 mkdir gtk-doc && tar xf gtk-doc-*.tar.* -C gtk-doc --strip-components 1
 cd gtk-doc
 
-PYTHON=/usr/bin/python2.7 
+PYTHON=/usr/bin/python2.7 \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
     --libdir=/usr/lib64 --enable-shared --disable-static \
-    --with-xml-catalog=/etc/xml --sysconfdir=/etc --datarootdir=/usr/share
+    --with-xml-catalog=/etc/xml/catalog --sysconfdir=/etc --datarootdir=/usr/share
     
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
