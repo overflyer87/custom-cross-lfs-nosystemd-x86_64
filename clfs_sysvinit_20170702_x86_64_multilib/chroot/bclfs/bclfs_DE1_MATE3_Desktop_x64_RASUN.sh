@@ -1299,7 +1299,7 @@ LIBS_PATH=-L./usr/lib64 INC_PATH=-I./usr/include/ \
       CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
       PREFIX=/usr LIBDIR=/usr/lib64 \
       USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} \
-      LIBRARY_PATH=/usr/lib64 make install
+      LIBRARY_PATH=/usr/lib64 sudo make install
             
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
