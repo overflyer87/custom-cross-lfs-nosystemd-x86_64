@@ -346,9 +346,6 @@ sed -i 's/help/#help/' Makefile Makefile.in Makefile.am
    
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
-
-sudo mkdir /usr/share/mate-panel
-sudo cp -rv data/* /usr/share/mate-panel
   
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
