@@ -1,20 +1,4 @@
 #!/bin/bash
-
-function checkBuiltPackage() {
-
-echo "Did everything build fine?: [Y/N]"
-while read -n1 -r -p "[Y/N]   " && [[ $REPLY != q ]]; do
-  case $REPLY in
-    Y) break 1;;
-    N) echo "$EXIT"
-       echo "Fix it!"
-       exit 1;;
-    *) echo " Try again. Type y or n";;
-  esac
-done
-
-}
-
 #Building the final CLFS System
 CLFS=/
 CLFSHOME=/home
@@ -67,8 +51,6 @@ wget http://us.download.nvidia.com/XFree86/Linux-x86_64/384.59/NVIDIA-Linux-x86_
 
 sudo chmod +x NVIDIA-Linux-x86_64-384.59.run
 sudo bash -c 'PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" CC="gcc" CXX="g++" ./NVIDIA-Linux-x86_64-384.59.run --kernel-source-path=/lib/modules/CLFS-4.12.7_ORIGINAL'
-
-checkBuiltPackage
 
 sudo mkdir -v /etc/modprobe.d
 
