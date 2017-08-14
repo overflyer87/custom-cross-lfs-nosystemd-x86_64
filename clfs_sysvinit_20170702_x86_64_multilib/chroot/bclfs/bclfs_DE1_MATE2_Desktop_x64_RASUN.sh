@@ -671,9 +671,7 @@ ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-sudo cp macros/*.m4 /usr/share/aclocal 
-sudo mkdir /usr/share/mate-common
-sudo cp -rv data/* /usr/share/mate-common
+sudo cp -rv macros/*.m4 /usr/share/aclocal 
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -951,8 +949,8 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-sudo mkdir /usr/share/mate-desktop
-sudo cp -rv data/* /usr/share/mate-desktop
+#sudo mkdir /usr/share/mate-desktop
+#sudo cp -rv data/* /usr/share/mate-desktop
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
