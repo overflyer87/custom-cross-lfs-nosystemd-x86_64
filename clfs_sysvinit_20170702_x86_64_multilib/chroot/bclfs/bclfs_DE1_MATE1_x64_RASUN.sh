@@ -387,7 +387,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
      --disable-static
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
