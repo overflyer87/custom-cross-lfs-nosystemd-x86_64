@@ -155,7 +155,7 @@ usermod -a -G audio overflyer
 cd ${CLFSSOURCES}/blfs-bootscripts
 sudo make install-alsa
 
-sudo /etc/rc.d/init.d/alsa/start
+sudo /etc/rc.d/init.d/alsa start
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
