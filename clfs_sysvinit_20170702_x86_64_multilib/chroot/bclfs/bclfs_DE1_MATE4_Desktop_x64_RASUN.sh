@@ -331,7 +331,7 @@ rm -rf libcap
 wget http://downloads.xiph.org/releases/speex/speex-1.2rc2.tar.gz -O \
     Speex-1.2rc2.tar.gz
 
-mkdir speex && tar xf speexdsp-*.tar.* -C speex --strip-components 1
+mkdir speex && tar xf Speex-*.tar.* -C speex --strip-components 1
 cd speex
 
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
@@ -347,7 +347,7 @@ cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf speex        
 
-#Speexdsp
+#speexdsp
 wget http://downloads.xiph.org/releases/speex/speexdsp-1.2rc3.tar.gz -O \
     speexdsp-1.2rc3.tar.gz
     
@@ -594,7 +594,7 @@ if [ -e /usr/lib64/libp11-kit.so ]; then
   sudo ln -sfv ./pkcs11/p11-kit-trust.so /usr/lib64/libnssckbi.so
 fi
 
-cd ${CLFSSOURCES}/make-ca.sh-*
+sh ${CLFSSOURCES}/make-ca.sh-* --force
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
@@ -683,7 +683,7 @@ checkBuiltPackage
 rm -rf mate-screensaver
 
 #libwebp
-wget http://downloads.webmproject.org/releases/webp/libwebp-0.6.0.tar.gz _O \
+wget http://downloads.webmproject.org/releases/webp/libwebp-0.6.0.tar.gz -O \
     libwebp-0.6.0.tar.gz
     
 mkdir libwebp && tar xf libwebp-*.tar.* -C libwebp --strip-components 1
