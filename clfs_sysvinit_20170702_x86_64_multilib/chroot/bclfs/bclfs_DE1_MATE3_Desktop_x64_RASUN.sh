@@ -453,7 +453,7 @@ wget http://ftp.gnome.org/pub/gnome/sources/gsettings-desktop-schemas/3.24/gsett
 mkdir gsetdeskschemas && tar xf gsettings-desktop-schemas-*.tar.* -C gsetdeskschemas --strip-components 1
 cd gsetdeskschemas
 
-sed -i -r 's:"(/system):"/org/gnome\1:g' schemas/*.i
+sed -i -r 's:"(/system):"/org/gnome\1:g' schemas/*.in
 
 CC="gcc ${BUILD64}" \
   CXX="g++ ${BUILD64}" USE_ARCH=64 \
