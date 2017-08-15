@@ -907,8 +907,9 @@ sudo bash -c 'PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} python2.7 setup.py install --
 checkBuiltPackage
 
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} LIBDIR=/usr/lib64 PREFIX=/usr python3.6 setup.py build
-sudo bash -c 'PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} python3.6 setup.py install --verbose --prefix=/usr/lib64 \
-  --install-lib=/usr/lib64/python3.6/site-packages --optimize=1'
+sudo bash -c 'export PKG_CONFIG_PATH64=/usr/lib64/pkgconfig && PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} \
+  python3.6 setup.py install --verbose --prefix=/usr/lib64 \
+   --install-lib=/usr/lib64/python3.6/site-packages --optimize=1'
 
 sudo mv -v /usr/lib64/lib/pkgconfig/* /usr/lib64/pkgconfig/ 
 sudo rm -rf /usr/lib64/lib
@@ -1057,7 +1058,8 @@ CC="gcc ${BUILD64}" \
             --enable-gtk2 
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+export PYTHON=/usr/bin/python2.7
+sudo make PYTHON=/usr/bin/python2.7 LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/blfs-bootscripts
 sudo make install-avahi
