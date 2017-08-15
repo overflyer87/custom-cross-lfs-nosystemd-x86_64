@@ -63,7 +63,7 @@ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" ./configure \
   --prefix=/usr \
   --libdir=/usr/lib64 \
   --disable-static \
-  --enable-shared &&
+  --enable-shared &&-3
   
 make LIBDIR=/usr/lib64 PREFIX=/usr 
 sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
@@ -137,6 +137,8 @@ tar --strip-components=1                     \
 
 sudo find /usr/share/doc/python-2.7.13 -type d -exec chmod 0755 {} \; 
 sudo find /usr/share/doc/python-2.7.13 -type f -exec chmod 0644 {} \;
+
+ln -sfv /usr/bin/python2.7-config /usr/bin/python2-config
             
 cd ${CLFSSOURCES}
 checkBuiltPackage
