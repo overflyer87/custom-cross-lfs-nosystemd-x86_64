@@ -383,9 +383,9 @@ unset SAVEPATH
 
 export PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin
 
-make -C tools install_dmsetup_dynamic 
-make -C udev  install                 
-make -C libdm install
+sudo make -C tools install_dmsetup_dynamic 
+sudo make -C udev  install                 
+sudo make -C libdm install
 
 sudo mv /usr/lib/pkgconfig/devmapper.pc ${PKG_CONFIG_PATH64}/
 sudo sudo mv /usr/lib/libdevmapper.so /usr/lib64/
