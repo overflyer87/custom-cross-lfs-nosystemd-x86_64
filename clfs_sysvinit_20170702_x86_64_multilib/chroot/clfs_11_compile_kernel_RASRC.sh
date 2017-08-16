@@ -61,7 +61,8 @@ make firmware_install
 cp -v arch/x86_64/boot/bzImage /boot/efi/vmlinuz-clfs-4.12.7
 cp -v System.map /boot/efi/System.map-4.12.7
 cp -v .config /boot/efi/config-4.12.7
-mv linux /lib/modules/CLFS-4.12.7_ORIGINAL
+cd ${CLFSSOURCES}
+mv ${CLFSSOURCES}/linux /lib/modules/CLFS-4.12.7_ORIGINAL
 
 cd ${CLFSSOURCES}
 #checkBuiltPackage
