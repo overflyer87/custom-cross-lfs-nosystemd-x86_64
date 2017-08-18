@@ -155,6 +155,7 @@ cp -r init.d/* /etc/init.d/
 install -m644 -d /etc/local.d
 cp -r local.d/* /etc/local.d/
 cp etc/* /etc/
+cp -rv sh /usr/lib64/rc/
 rm /etc/Makefile
 
 mv /usr/lib/pkgconfig/openrc.pc /usr/lib64/pkgconfig/
