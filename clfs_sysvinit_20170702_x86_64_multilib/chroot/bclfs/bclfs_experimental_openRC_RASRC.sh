@@ -148,13 +148,13 @@ install -d /usr/lib64/rc/cache
 
 install -m755 -d /usr/share/licenses/openrc
 install -m644 LICENSE AUTHORS /usr/share/licenses/openrc/
-install -m644 -d /etc/openrc/conf.d
-cp -r conf.d/* /etc/openrc/conf.d/
-install -m644 -d /etc/openrc/init.d
-cp -r init.d/* /etc/openrc/init.d/
-install -m644 -d /etc/openrc/local.d
-cp -r local.d/* /etc/openrc/local.d/
-cp etc/* /etc/openrc/
+install -m644 -d /etc/conf.d
+cp -r conf.d/* /etc/conf.d/
+install -m644 -d /etc/init.d
+cp -r init.d/* /etc/init.d/
+install -m644 -d /etc/local.d
+cp -r local.d/* /etc/local.d/
+cp etc/* /etc/
 rm /etc/Makefile
 
 mv /usr/lib/pkgconfig/openrc.pc /usr/lib64/pkgconfig/
