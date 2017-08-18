@@ -93,6 +93,9 @@ cd openrc
 sed -e "s|/sbin|/usr/bin|g" -i support/sysvinit/inittab
 sed -i 's:0444:0644:' mk/sys.mk
 
+install -dm644 /etc/openrc
+install -dm644 /etc/logrotate.d
+
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} \
 BRANDING='CLFS-20170702-x86_64-multilib' \ 
 MKPAM=pam \
@@ -107,12 +110,25 @@ LIBEXECDIR=/usr/lib64/openrc \
 BINDIR=/usr/bin \
 SBINDIR=/usr/bin \
 SYSCONFDIR=/etc/openrc \
-CC="gcc ${BUILD64}" make &&
-CC="gcc ${BUILD64}" make install
+CC="gcc ${BUILD64}" make 
 
-install -dm644 /etc/openrc
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} \
+BRANDING='CLFS-20170702-x86_64-multilib' \ 
+MKPAM=pam \
+MKSELINUX=no \
+MKTERMCAP=ncurses \
+PKG_PREFIX="" \
+PREFIX="/usr" \
+LIBDIR="/usr/lib64" \
+LIBMODE=0644 \
+SHLIBDIR=/usr/lib64 \
+LIBEXECDIR=/usr/lib64/openrc \
+BINDIR=/usr/bin \
+SBINDIR=/usr/bin \
+SYSCONFDIR=/etc/openrc \
+CC="gcc ${BUILD64}" sudo make install
+
 install -m644 support/sysvinit/inittab /etc/openrc/inittab
-install -dm644 /etc/logrotate.d
 
 cat > /etc/logrotate.d/openrc << "EOF"
 /var/log/rc.log {
