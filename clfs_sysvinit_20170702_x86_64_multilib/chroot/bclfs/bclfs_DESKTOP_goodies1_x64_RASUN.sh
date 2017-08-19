@@ -74,7 +74,7 @@ cd gtksourceview
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
 USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
     --libdir=/usr/lib64 \
-	--disable-gtk-doc
+    --disable-gtk-doc
     
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
@@ -84,6 +84,35 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf gtksourceview
+
+#Consolekit
+wget https://github.com/Consolekit2/ConsoleKit2/releases/download/1.0.2/ConsoleKit2-1.0.2.tar.bz2 -O \
+	ConsoleKit2-1.0.2.tar.bz2
+
+mkdir ConsoleKit2 && tar xf ConsoleKit2-*.tar.* -C ConsoleKit2 --strip-components 1
+cd ConsoleKit2
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" ./configure --prefix=/usr \
+	--sysconfdir=/etc    \
+        --localstatedir=/var \
+        --enable-udev-acl    \
+        --enable-pam-module  \
+        --enable-polkit      \
+        --with-xinitrc-dir=/etc/X11/app-defaults/xinitrc.d \
+        --docdir=/usr/share/doc/ConsoleKit-1.0.2           \
+        --with-systemdsystemunitdir=no \
+	--with-pam-module-dir=/lib64/security
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo mv -v /etc/X11/app-defaults/xinitrc.d/90-consolekit{,.sh}
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf ConsoleKit2
 
 #PyGObject
 wget http://ftp.gnome.org/pub/gnome/sources/pygobject/3.24/pygobject-3.24.1.tar.xz -O \
