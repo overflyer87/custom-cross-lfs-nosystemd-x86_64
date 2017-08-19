@@ -655,10 +655,7 @@ checkBuiltPackage
 rm -rf startup-notification
 
 #mate-common
-wget https://github.com/mate-desktop/mate-common/releases/download/v1.13.0/mate-common-1.13.0.tar.xz -O \
-    mate-common-1.13.0.tar.gz
-
-mkdir mate-common && tar xf mate-common-*.tar.* -C mate-common --strip-components 1
+git clone https://github.com/mate-desktop/mate-common
 cd mate-common
 
 ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" \
@@ -927,13 +924,8 @@ checkBuiltPackage
 rm -rf gtk-doc
 
 #mate-desktop
-wget https://github.com/mate-desktop/mate-desktop/archive/v1.18.0.tar.gz -O \
-    mate-desktop-1.18.0.tar.gz
-
-mkdir mate-desktop && tar xf mate-desktop-*.tar.* -C mate-desktop --strip-components 1
+git clone https://github.com/mate-desktop/mate-desktop
 cd mate-desktop
-
-cp -rv /usr/share/aclocal/*.m4 m4/
 
 ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" \
 CXX="g++ ${BUILD64}" USE_ARCH=64 \
@@ -948,9 +940,6 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr \
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
-
-#sudo mkdir /usr/share/mate-desktop
-#sudo cp -rv data/* /usr/share/mate-desktop
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
