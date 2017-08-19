@@ -365,10 +365,7 @@ checkBuiltPackage
 rm -rf dbus-glib
 
 #mate-session-manager
-wget https://github.com/mate-desktop/mate-session-manager/archive/v1.19.0.tar.gz -O \
-  mate-session-manager-1.19.0.tar.gz
-
-mkdir mate-session-manager && tar xf mate-session-manager-*.tar.* -C mate-session-manager --strip-components 1
+git clone https://github.com/mate-desktop/mate-session-manager
 cd mate-session-manager
 
 ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" \
@@ -584,10 +581,7 @@ checkBuiltPackage
 rm -rf libsoup
 
 #libmateweather
-wget https://github.com/mate-desktop/libmateweather/archive/v1.19.1.tar.gz -O \
-    libmateweather-v1.19.1.tar.gz
-
-mkdir libmateweather && tar xf libmateweather-*.tar.* -C libmateweather --strip-components 1
+git clone https://github.com/mate-desktop/libmateweather
 cd libmateweather
 
   ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" \
@@ -632,10 +626,7 @@ rm -rf libwnck
 
 
 #mate-menus
-wget https://github.com/mate-desktop/mate-menus/archive/v1.18.0.tar.gz -O \
-    mate-menus-1.18.0.tar.gz
-    
-mkdir mate-menus && tar xf mate-menus-*.tar.* -C mate-menus --strip-components 1
+git clone https://github.com/mate-desktop/mate-menus
 cd mate-menus
 
 LIBSOUP_LIBS=/usr/lib64 \
@@ -1064,6 +1055,10 @@ sudo make PYTHON=/usr/bin/python2.7 LIBDIR=/usr/lib64 PREFIX=/usr install
 cd ${CLFSSOURCES}/blfs-bootscripts
 sudo make install-avahi
 
+sed -i 's/loadproc/start_daemon/' /etc/rc.d/init.d/avahi
+sed -i 's/load_info_msg/echo/' /etc/rc.d/init.d/avahi
+sed -i 's/\/lib\//\/lib64\//' /etc/rc.d/init.d/avahi
+
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf avahi
@@ -1374,10 +1369,7 @@ checkBuiltPackage
 rm -rf yelp
 
 #mate-panel
-wget https://github.com/mate-desktop/mate-panel/archive/v1.19.2.tar.gz -O \
-    mate-panel-1.19.2.tar.gz
-    
-mkdir mate-panel && tar xf mate-panel-*.tar.* -C mate-panel --strip-components 1
+git clone https://github.com/mate-desktop/mate-panel
 cd mate-panel
 
 cp -rv /usr/share/aclocal/*.m4 m4/
@@ -1401,10 +1393,7 @@ sed -i 's/help/#help/' Makefile Makefile.in Makefile.am
    
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
-
-sudo mkdir /usr/share/mate-panel
-sudo cp -rv data/* /usr/share/mate-panel
-  
+ 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf mate-panel
