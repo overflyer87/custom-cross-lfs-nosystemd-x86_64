@@ -123,10 +123,7 @@ checkBuiltPackage
 rm -rf zenity
 
 #marco
-wget https://github.com/mate-desktop/marco/archive/v1.19.0.tar.gz -O \
-    marco-1.19.0.tar.gz
-    
-mkdir marco && tar xf marco-*.tar.* -C marco --strip-components 1
+git clone https://github.com/mate-desktop/marco
 cd marco
 
 ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
@@ -147,11 +144,8 @@ checkBuiltPackage
 rm -rf marco
 
 #mate-control-center
-wget https://github.com/mate-desktop/mate-control-center/archive/v1.19.0.tar.gz -O \
-    mate-control-center-1.19.0.tar.gz
-    
-mkdir matecc && tar xf mate-control-center-*.tar.* -C matecc --strip-components 1
-cd matecc
+git clone https://github.com/mate-desktop/mate-control-center
+cd mate-control-center
 
 ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
 USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" sh autogen.sh --prefix=/usr \
@@ -169,19 +163,13 @@ CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-sudo mkdir /usr/share/mate-control-center
-sudo cp -rv data/* /usr/share/mate-control-center
-
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf matecc
+rm -rf mate-control-center
 
 #mate-notification-daemon
-wget https://github.com/mate-desktop/mate-notification-daemon/archive/v1.18.0.tar.gz -O \
-    mate-notification-daemon-1.18.0.tar.gz
-    
-mkdir matend && tar xf mate-notification-daemon-*.tar.* -C matend --strip-components 1
-cd matend
+git clone https://github.com/mate-desktop/mate-notification-daemon
+cd mate-notification-daemon
 
 ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
 USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" sh autogen.sh --prefix=/usr \
@@ -199,12 +187,9 @@ CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-sudo mkdir /usr/share/mate-notification-daemon
-sudo cp -rv data/* /usr/share/mate-notification-daemon
-
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf matend
+rm -rf mate-notification-daemon
 
 #js17
 wget wget http://ftp.mozilla.org/pub/mozilla.org/js/mozjs17.0.0.tar.gz -O \
@@ -252,6 +237,11 @@ sudo mkdir /etc/polkit-1
 sudo groupadd -fg 27 polkitd 
 sudo useradd -c "PolicyKit Daemon Owner" -d /etc/polkit-1 -u 27 \
         -g polkitd -s /bin/false polkitd
+
+echo " "
+echo "Were polkitd group and user created successfully?"
+
+checkBuiltPackage
 
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
@@ -324,10 +314,7 @@ checkBuiltPackage
 rm -rf accountsservice
 
 #mate-polkit
-wget https://github.com/mate-desktop/mate-polkit/archive/v1.18.1.tar.gz -O \
-  mate-polkit-1.18.1.tar.gz
-
-mkdir mate-polkit && tar xf mate-polkit-*.tar.* -C mate-polkit --strip-components 1
+git clone https://github.com/mate-desktop/mate-polkit
 cd mate-polkit
 
 ACLOCAL_FLAG="/usr/share/aclocal/" LIBSOUP_LIBS=/usr/lib64   \
@@ -372,14 +359,11 @@ checkBuiltPackage
 rm -rf glib
 
 #caja
-wget https://github.com/mate-desktop/caja/archive/v1.19.0.tar.gz -O \
-    caja-1.19.0.tar.gz
-    
-mkdir caja && tar xf caja-*.tar.* -C caja --strip-components 1
+git clone https://github.com/mate-desktop/caja
 cd caja
 
 ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
-USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" sh autogen.sh --prefix=/usr\
+USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" sh autogen.sh --prefix=/usr \
     --libdir=/usr/lib64 \
     --sysconfdir=/etc \
     --localstatedir=/var \
@@ -399,14 +383,11 @@ checkBuiltPackage
 rm -rf caja
 
 #caja-extensions
-wget https://github.com/mate-desktop/caja-extensions/archive/v1.18.1.tar.gz -O \
-    caja-extensions-1.18.1.tar.gz
-
-mkdir caja-extensions && tar xf caja-extensions-*.tar.* -C caja-extensions --strip-components 1
+git clone https://github.com/mate-desktop/caja-extensions
 cd caja-extensions
 
 ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
-USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr \
     --libdir=/usr/lib64 \
     --sysconfdir=/etc \
     --localstatedir=/var \
@@ -423,10 +404,7 @@ checkBuiltPackage
 rm -rf caja-extensions
 
 #mate-applets
-wget https://github.com/mate-desktop/mate-applets/archive/v1.19.0.tar.gz -O \
-    mate-applets-1.19.0.tar.gz
-
-mkdir mate-applets && tar xf mate-applets-*.tar.* -C mate-applets --strip-components 1
+git clone https://github.com/mate-desktop/mate-applets
 cd mate-applets
 
 ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
@@ -462,10 +440,7 @@ checkBuiltPackage
 rm -rf mate-applets
 
 #mate-themes
-wget https://github.com/mate-desktop/mate-themes/archive/v3.22.13.tar.gz -O \
-    mate-themes-3.22.13.tar.gz
-
-mkdir mate-themes && tar xf mate-themes-*.tar.* -C mate-themes --strip-components 1
+git clone https://github.com/mate-desktop/mate-themes
 cd mate-themes
 
 ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
@@ -562,10 +537,7 @@ rm -rf libpeas
 
 
 #pluma
-wget https://github.com/mate-desktop/pluma/archive/v1.19.1.tar.gz -O \
-    pluma-1.19.1.tar.gz
-    
-mkdir pluma && tar xf pluma-*.tar.* -C pluma --strip-components 1
+git clone https://github.com/mate-desktop/pluma
 cd pluma
 
 ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
@@ -620,11 +592,8 @@ checkBuiltPackage
 rm -rf upower
 
 #mate-power-manager
-wget https://github.com/mate-desktop/mate-power-manager/archive/v1.18.0.tar.gz -O \
-    mate-power-manager-1.18.0.tar.gz
-    
-mkdir matepm && tar xf mate-power-manager-*.tar.* -C matepm --strip-components 1
-cd matepm
+git clone https://github.com/mate-desktop/mate-power-manager
+cd mate-power-manager
 
 ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
 USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
@@ -644,13 +613,10 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf matepm
+rm -rf mate-power-manager
 
 #mate-user-share
-wget https://github.com/mate-desktop/mate-power-manager/archive/v1.18.0.tar.gz -O \
-    mate-user-share-1.18.0.tar.gz
-    
-mkdir mate-user-share && tar xf mate-user-share-*.tar.* -C mate-user-share --strip-components 1
+git clone https://github.com/mate-desktop/mate-user-share
 cd mate-user-share
 
 ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
@@ -675,10 +641,7 @@ checkBuiltPackage
 rm -rf mate-user-share
     
 #python-caja
-wget https://github.com/mate-desktop/python-caja/archive/v1.18.1.tar.gz -O \
-    python-caja-1.18.1.tar.gz
-
-mkdir python-caja && tar xf python-caja-*.tar.* -C python-caja --strip-components 1
+git clone https://github.com/mate-desktop/python-caja
 cd python-caja
 
 ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
@@ -699,10 +662,7 @@ checkBuiltPackage
 rm -rf python-caja
     
 #engrampa
-wget https://github.com/mate-desktop/engrampa/archive/v1.19.0.tar.gz -O \
-    engrampa-1.19.0.tar.gz
-
-mkdir engrampa && tar xf engrampa-*.tar.* -C engrampa --strip-components 1
+git clone https://github.com/mate-desktop/engrampa
 cd engrampa
 
 ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
@@ -729,10 +689,7 @@ checkBuiltPackage
 rm -rf engrampa
 
 #eom
-wget https://github.com/mate-desktop/eom/archive/v1.19.0.tar.gz -O \
-    eom-1.19.0.tar.gz
-    
-mkdir eom && tar xf eom-*.tar.* -C eom --strip-components 1
+git clone https://github.com/mate-desktop/eom
 cd eom
 
 ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
@@ -759,10 +716,7 @@ checkBuiltPackage
 rm -rf eom
 
 #mate-calc
-wget https://github.com/mate-desktop/mate-calc/archive/v1.18.0.tar.gz -O \
-    mate-calc-1.18.0.tar.gz
-
-mkdir mate-calc && tar xf mate-calc-*.tar.* -C mate-calc --strip-components 1
+git clone https://github.com/mate-desktop/mate-calc
 cd mate-calc
 
 ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
@@ -848,10 +802,7 @@ checkBuiltPackage
 rm -rf poppler
 
 #atril
-wget https://github.com/mate-desktop/atril/archive/v1.19.0.tar.gz -O \
-    atril-1.19.0.tar.gz
-
-mkdir atril && tar xf atril-*.tar.* -C atril --strip-components 1
+git clone https://github.com/mate-desktop/atril
 cd atril
 
 ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
@@ -875,7 +826,7 @@ sudo cp -rv data/* /usr/share/atril
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf eom
+rm -rf atril
 
 #Brisk-Menu
 git clone https://github.com/solus-project/brisk-menu 
