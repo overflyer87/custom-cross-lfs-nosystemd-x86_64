@@ -480,7 +480,7 @@ checkBuiltPackage
 rm -rf xf86vidfbdev
 
 #twm 64-bit
-wget https://fossies.org/linux/misc/xterm-330.tar.bz2 -O \
+wget https://www.x.org/pub/individual/app/twm-1.0.9.tar.bz2 -O \
   twm-1.0.9.tar.bz2
   
 mkdir twm && tar xf twm-*.tar.* -C twm --strip-components 1
@@ -498,7 +498,7 @@ USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}"
 
 #xterm 64-bit
-wget ftp://invisible-island.net/xterm/xterm-330.tgz -O \
+wget https://fossies.org/linux/misc/xterm-330.tar.bz2 -O \
   xterm-330.tgz
   
 mkdir xterm && tar xf xterm-*.tgz -C xterm --strip-components 1
