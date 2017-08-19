@@ -858,51 +858,6 @@ cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf libnl
 
-#ConsoleKit
-#elogind
-wget https://github.com/wingo/elogind/archive/v219.12.tar.gz -O \
-	elogind-219.12.tar.gz
-
-mkdir elogind && tar xf elogind-*.tar.* -C elogind --strip-components 1
-cd elogind
-
-autoreconf -fi 
-intltoolize --force 
-
-CPPFLAGS="-I/usr/include" LD_LIBRARY_PATH="/usr/lib64" \
-LD_LIB_PATH="/usr/lib64" LIBRARY_PATH="/usr/lib64" \
-CC="gcc ${BUILD64} -lrt" CXX="g++ ${BUILD64}" \
-USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr  \
-            --sysconfdir=/etc     \
-            --localstatedir=/var  \
-            --libdir=/usr/lib64   \
-            --disable-static      \
-            --libexecdir=/usr/lib64   \
-            --enable-split-usr \
-            --disable-gtk-doc \
-            --disable-tests   \
-            --disable-gtk-pdf \
-            --disable-gtk-html \
-            --enable-pam \
-            --with-pamlibdir=/lib64/security \
-            --with-pamconfdir=/etc/pam.d \
-            --disable-static \
-            --enable-shared \
-            --disable-manpages
-
-CPPFLAGS="-I/usr/include" LD_LIBRARY_PATH="/usr/lib64" \
-LD_LIB_PATH="/usr/lib64" LIBRARY_PATH="/usr/lib64" \
-PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64} -lrt" USE_ARCH=64 \
-CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
-
-sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
-sudo mkdir -pv /run/systemd
-sudo chmod 755 /run/systemd
-
-cd ${CLFSSOURCES}/xc/mate
-checkBuiltPackage
-rm -rf elogind
-
 #Iptables
 wget http://www.netfilter.org/projects/iptables/files/iptables-1.6.1.tar.bz2 -O \
 	iptables-1.6.1.tar.bz2
