@@ -84,11 +84,8 @@ checkBuiltPackage
 rm -rf libgtop
 
 #mate-utils
-wget https://github.com/mate-desktop/mate-utils/archive/v1.18.2.tar.gz -O \
-    mate-utils-1.18.2.tar.gz    
-    
-mkdir mateutils && tar xf mate-utils-*.tar.* -C mateutils --strip-components 1
-cd mateutils
+git clone https://github.com/mate-desktop/mate-utils
+cd mate-utils
 
 cp -rv /usr/share/aclocal/*.m4 m4/
 
@@ -107,14 +104,14 @@ USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
 #Because itstool will throw error
 #Baobab can show size of directory trees in percentage
 #Let's see later if this tool was essential...hope not
-sed -i 's/baobab/#baobab/' Makefile*
+#sed -i 's/baobab/#baobab/' Makefile*
    
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf mateutils
+rm -rf mate-utils
 
 #PCRE2
 wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre2-10.23.tar.bz2 -O \
@@ -165,11 +162,8 @@ checkBuiltPackage
 rm -rf vte
 
 #mate-terminal
-wget https://github.com/mate-desktop/mate-terminal/archive/v1.18.1.tar.gz -O \
-    mate-terminal-1.18.1.tar.gz
-    
-mkdir mateterm && tar xf mate-terminal-*.tar.* -C mateterm --strip-components 1
-cd mateterm
+git clone https://github.com/mate-desktop/mate-terminal
+cd mate-terminal
 
 cp -rv /usr/share/aclocal/*.m4 m4/
 
@@ -190,12 +184,9 @@ sed -i 's/help/#help/' Makefile Makefile.in Makefile.am
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-sudo mkdir /usr/share/mate-terminal
-sudo cp -rv data/* /usr/share/mate-terminal
-
 cd ${CLFSSOURCES}
 checkBuiltPackage
-rm -rf mateterm
+rm -rf mate-terminal
 
 #iso-codes
 wget https://pkg-isocodes.alioth.debian.org/downloads/iso-codes-3.75.tar.xz
@@ -235,10 +226,7 @@ checkBuiltPackage
 rm -rf libxklavier
 
 #libmatekbd
-wget https://github.com/mate-desktop/libmatekbd/archive/v1.18.2.tar.gz -O \
-    libmatekbd-1.18.2.tar.gz
-
-mkdir libmatekbd && tar xf libmatekbd-*.tar.* -C libmatekbd --strip-components 1
+git clone https://github.com/mate-desktop/libmatekbd
 cd libmatekbd
 
 cp -rv /usr/share/aclocal/*.m4 m4/
@@ -428,7 +416,6 @@ sudo bash -c 'cat > /etc/bluetooth/rfcomm.conf << "EOF"
 # Use one line per command
 # See the rfcomm man page for options
 
-
 # End of rfcomm.conf
 EOF'
 
@@ -528,10 +515,7 @@ checkBuiltPackage
 rm -rf pulseaudio
 
 #libmatemixer
-wget https://github.com/mate-desktop/libmatemixer/archive/v1.18.0.tar.gz -O \
-    libmatemixer-1.18.0.tar.gz
-    
-mkdir libmatemixer && tar xf libmatemixer-*.tar.* -C libmatemixer --strip-components 1
+git clone https://github.com/mate-desktop/libmatemixer
 cd libmatemixer
 
 sudo cp -rv /usr/share/aclocal/*.m4 m4/
@@ -601,11 +585,8 @@ checkBuiltPackage
 rm -rf nss
 
 #mate-setting-daemon
-wget https://github.com/mate-desktop/mate-settings-daemon/archive/v1.18.1.tar.gz -O \
-    mate-settings-daemon-1.18.1.tar.gz
-
-mkdir matesetd && tar xf mate-settings-daemon-*.tar.* -C matesetd --strip-components 1
-cd matesetd
+git clone https://github.com/mate-desktop/mate-settings-daemon
+cd mate-settings-daemon
 
 sudo cp -rv /usr/share/aclocal/*.m4 m4/
 
@@ -621,19 +602,13 @@ USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-sudo mkdir /usr/share/mate-setting-daemon
-sudo cp -rv data/* /usr/share/mate-setting-daemon
-
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf matesetd
+rm -rf mate-settings-daemon
 
 #mate-media
-wget https://github.com/mate-desktop/mate-media/archive/v1.19.0.tar.gz -O \
-    mate-media-1.19.0.tar.gz
-
-mkdir matemedia && tar xf mate-media-*.tar.* -C matemedia --strip-components 1
-cd matemedia
+git clone https://github.com/mate-desktop/mate-media
+cd mate-media
 
 sudo cp -rv /usr/share/aclocal/*.m4 m4/
 
@@ -648,12 +623,9 @@ USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-sudo mkdir /usr/share/mate-media
-sudo cp -rv data/* /usr/share/mate-media
-
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf matemedia
+rm -rf mate-media
 
 #mate-screensaver
 wget https://github.com/mate-desktop/mate-screensaver/archive/v1.18.1.tar.gz -O \
