@@ -336,6 +336,11 @@ chmod -v 664 /var/log/{fail,last}log
 
 pwconv
 grpconv
+
+echo " "
+echo "At this point shadow installation is finished."
+echo "Please choose a password for your root user:"
+
 passwd root
 
 cd ${CLFSSOURCES} 
