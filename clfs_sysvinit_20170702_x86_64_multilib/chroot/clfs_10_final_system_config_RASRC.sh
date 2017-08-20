@@ -489,8 +489,7 @@ dircolors -p > /etc/dircolors
 cat > /etc/sysconfig/console << "EOF"
 # Begin /etc/sysconfig/console
 
-UNICODE="1"
-KEYMAP="de-latin1"
+KEYMAP="de"
 
 # End /etc/sysconfig/console
 EOF
@@ -498,8 +497,7 @@ EOF
 cat > /etc/vconsole.conf << "EOF"
 # Begin /etc/vconsole.conf
 
-UNICODE="1"
-KEYMAP="de-latin1"
+KEYMAP="de"
 
 # End /etc/vconsole.conf
 EOF
