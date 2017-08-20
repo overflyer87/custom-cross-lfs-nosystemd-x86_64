@@ -528,9 +528,12 @@ wget https://releases.pagure.org/volume_key/volume_key-0.3.9.tar.xz -O \
 mkdir volume_key && tar xf volume_key-*.tar.* -C volume_key --strip-components 1
 cd volume_key
 
+export PYTHON=/usr/bin/python3.6
+
 sed -i '/config.h/d' lib/libvolume_key.h
 autoreconf -fiv
 
+PYTHON=/usr/bin/python3.6 \
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
 USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
 	--libdir=/usr/lib64 \
@@ -540,6 +543,8 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+unset PYTHON
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
