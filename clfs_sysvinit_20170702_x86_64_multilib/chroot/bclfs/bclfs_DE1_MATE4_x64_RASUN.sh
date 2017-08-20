@@ -87,7 +87,12 @@ rm -rf libgtop
 git clone https://github.com/mate-desktop/mate-utils
 cd mate-utils
 
+intltool-prepare
+intltoolize --force
 cp -rv /usr/share/aclocal/*.m4 m4/
+
+echo "How did intltoolize perform? "
+checkBuiltPackage
 
 CPPFLAGS="-I/usr/include" LDFLAGS="-L/usr/lib64"  \
 PYTHON="/usr/bin/python2" PYTHONPATH="/usr/lib64/python2.7" \
@@ -103,8 +108,8 @@ USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
 #Deactivate building of baobab because it will fail
 #Because itstool will throw error
 #Baobab can show size of directory trees in percentage
-#Let's see later if this tool was essential...hope not
-#sed -i 's/baobab/#baobab/' Makefile*
+Let's see later if this tool was essential...hope not
+sed -i 's/baobab/#baobab/' Makefile*
    
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
