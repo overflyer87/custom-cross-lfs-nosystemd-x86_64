@@ -296,8 +296,8 @@ checkBuiltPackage
 rm -rf libvdpau
 
 #Mesa 64-bit
-wget https://mesa.freedesktop.org/archive/mesa-17.1.4.tar.xz -O \
-  Mesa-17.1.4.tar.xz
+wget https://mesa.freedesktop.org/archive/mesa-17.1.5.tar.xz -O \
+  Mesa-17.1.5.tar.xz
   
 wget http://www.linuxfromscratch.org/patches/blfs/svn/mesa-17.1.5-add_xdemos-1.patch -O \
     mesa-17.1.5-add_xdemos-1.patch
@@ -305,7 +305,10 @@ wget http://www.linuxfromscratch.org/patches/blfs/svn/mesa-17.1.5-add_xdemos-1.p
 mkdir Mesa && tar xf Mesa-*.tar.* -C Mesa --strip-components 1
 cd Mesa
 
-patch -Np1 -i ../mesa-17.1.4-add_xdemos-1.patch
+patch -Np1 -i ../mesa-*-add_xdemos-1.patch
+
+checkBuiltPackage
+
 GLL_DRV="i915,nouveau,svga,swrast"
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
