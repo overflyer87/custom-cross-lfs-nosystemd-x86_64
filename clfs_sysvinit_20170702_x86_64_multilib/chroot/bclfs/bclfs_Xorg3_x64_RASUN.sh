@@ -244,6 +244,8 @@ cd intltool
 
 patch -Np1 -i ../intltool-0.51.0-perl-5.22-compatibility.patch
 
+checkBuiltPackage
+
 USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" ./configure --prefix=/usr \
   --libdir=/usr/lib64
