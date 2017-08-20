@@ -513,13 +513,15 @@ cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf gtksourceview
 
+
+export PYTHON=/usr/bin/python3.6
+
 #libpeas
 wget http://ftp.gnome.org/pub/gnome/sources/libpeas/1.20/libpeas-1.20.0.tar.xz -O \
     libpeas-1.20.0.tar.xz
     
 mkdir libpeas && tar xf libpeas-*.tar.* -C libpeas --strip-components 1
 cd libpeas
-
 
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
 USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
@@ -540,6 +542,7 @@ rm -rf libpeas
 git clone https://github.com/mate-desktop/pluma
 cd pluma
 
+PYTHON=/usr/bin/python3.6 \
 ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
 USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
     --libdir=/usr/lib64 \
@@ -555,6 +558,8 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+unset PYTHON
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
