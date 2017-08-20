@@ -217,6 +217,9 @@ gobject-introspection-1.52.1.tar.xz
 mkdir gobject-introspection && tar xf gobject-introspection-*.tar.* -C gobject-introspection --strip-components 1
 cd gobject-introspection
 
+export PYTHON=/usr/bin/python2.7
+
+PYTHON=/usr/bin/python2.7 \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
      --prefix=/usr \
      --libdir=/usr/lib64 \
@@ -225,6 +228,8 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" install
+
+unset PYTHON
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
