@@ -44,6 +44,17 @@ XORG_PREFIX="/usr"
 XORG_CONFIG64="--prefix=$XORG_PREFIX --sysconfdir=/etc --localstatedir=/var \
   --libdir=$XORG_PREFIX/lib64"
 
+#Blacklist Modules that are not compatible
+#With the proprietary NVIDIA driver
+sudo mkdir -v /etc/modprobe.d
+
+sudo bash -c 'cat > /etc/modprobe.d/blacklist-nouveau.conf << "EOF"
+blacklist nouveau
+EOF'
+
+sudo bash -c 'cat > /etc/modprobe.d/blacklist-nvidiafb.conf << "EOF"
+blacklist nvidiafb
+EOF'
 
 #NVIDIA PROPRIETARY DRIVER
 wget http://us.download.nvidia.com/XFree86/Linux-x86_64/384.59/NVIDIA-Linux-x86_64-384.59.run -O \
@@ -52,8 +63,4 @@ wget http://us.download.nvidia.com/XFree86/Linux-x86_64/384.59/NVIDIA-Linux-x86_
 sudo chmod +x NVIDIA-Linux-x86_64-384.59.run
 sudo bash -c 'PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" CC="gcc" CXX="g++" ./NVIDIA-Linux-x86_64-384.59.run --kernel-source-path=/lib/modules/CLFS-4.12.8_ORIGINAL'
 
-sudo mkdir -v /etc/modprobe.d
 
-sudo bash -c 'cat > /etc/modprobe.d/blacklist-nouveau.conf << "EOF"
-blacklist nouveau
-EOF'
