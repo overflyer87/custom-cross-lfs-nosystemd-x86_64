@@ -730,6 +730,8 @@ cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf unzip
 
+sudo chown -Rv overflyer ${CLFSSOURCES}
+
 #docbook-xml
 wget http://www.docbook.org/xml/4.5/docbook-xml-4.5.zip -O \
     docbook-xml-4.5.zip
@@ -836,6 +838,8 @@ done
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 
+sudo chown -Rv overflyer ${CLFSSOURCES}
+
 #docbook-xsl
 wget http://downloads.sourceforge.net/docbook/docbook-xsl-1.79.1.tar.bz2 -O \
     docbook-xsl-1.79.1.tar.bz2
@@ -868,8 +872,9 @@ sudo xmlcatalog --noout --add "rewriteURI" \
            "/usr/share/xml/docbook/xsl-stylesheets-<version>" \
     /etc/xml/catalog
 
-cp ${CLFSSOURCES}/docbook-xml-xsl.tar.* .
-mkdir xml && tar xf docbook-xml-xsl.tar.* -C xml --strip-components 1
+sudo cp ${CLFSSOURCES}/docbook-xml-xsl.tar.* .
+sudo mkdir xml 
+sudo tar xf docbook-xml-xsl.tar.* -C xml --strip-components 1
 sudo cp -rv xml /etc/
 
 cd ${CLFSSOURCES}/xc/mate
