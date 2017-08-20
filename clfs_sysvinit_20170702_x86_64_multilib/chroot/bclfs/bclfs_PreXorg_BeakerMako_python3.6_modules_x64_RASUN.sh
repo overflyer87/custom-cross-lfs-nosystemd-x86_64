@@ -49,7 +49,7 @@ export PKG_CONFIG_PATH=/usr/lib64/pkgconfig
 export PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 export ACLOCAL="aclocal -I $XORG_PREFIX/share/aclocal"
 
-cd ${CLFSSOURCES}/xc
+cd ${CLFSSOURCES}
 
 #Build Python Module Beaker
 #required by Python Module Mako
@@ -65,7 +65,7 @@ CXX="g++ ${BUILD64}" USE_ARCH=64 CC="gcc ${BUILD64}" PKG_CONFIG_PATH="${PKG_CONF
 python3.6 setup.py build
 sudo python3.6 setup.py install --verbose --prefix=/usr/lib64 --install-lib=/usr/lib64/python3.6/site-packages --optimize=1
 
-cd ${CLFSSOURCES}/xc
+cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf pybeaker
 
@@ -83,7 +83,7 @@ CXX="g++ ${BUILD64}" USE_ARCH=64 CC="gcc ${BUILD64}" PKG_CONFIG_PATH="${PKG_CONF
 python3.6 setup.py build
 sudo python3.6 setup.py install --verbose --prefix=/usr/lib64 --install-lib=/usr/lib64/python3.6/site-packages --optimize=1
 
-cd ${CLFSSOURCES}/xc
+cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf pyMarkupSafe
 
@@ -99,7 +99,7 @@ CXX="g++ ${BUILD64}" USE_ARCH=64 CC="gcc ${BUILD64}" PKG_CONFIG_PATH="${PKG_CONF
 python3.6 setup.py build
 sudo python3.6 setup.py install --verbose --prefix=/usr/lib64 --install-lib=/usr/lib64/python3.6/site-packages --optimize=1
 
-cd ${CLFSSOURCES}/xc
+cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf pymako
 
