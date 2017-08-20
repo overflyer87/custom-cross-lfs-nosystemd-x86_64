@@ -138,7 +138,7 @@ tar --strip-components=1                     \
 sudo find /usr/share/doc/python-2.7.13 -type d -exec chmod 0755 {} \; 
 sudo find /usr/share/doc/python-2.7.13 -type f -exec chmod 0644 {} \;
 
-ln -sfv /usr/bin/python2.7-config /usr/bin/python2-config
+sudo ln -sfv /usr/bin/python2.7-config /usr/bin/python2-config
             
 cd ${CLFSSOURCES}
 checkBuiltPackage
