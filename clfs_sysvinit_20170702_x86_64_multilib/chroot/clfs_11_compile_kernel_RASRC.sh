@@ -54,7 +54,7 @@ mv ${CLFSSOURCES}/linux /lib/modules/CLFS-4.12.8_SOURCE
 # build/ and source/
 unlink /lib/modules/4.12.8-CLFS-SYSVINIT-SVN-x86_64/build
 unlink /lib/modules/4.12.8-CLFS-SYSVINIT-SVN-x86_64/source
-ln -sfv unlink /lib/modules/4.12.8-CLFS-SYSVINIT-SVN-x86_64/build /lib/modules/CLFS-4.12.8_SOURCE
-ln -sfv unlink /lib/modules/4.12.8-CLFS-SYSVINIT-SVN-x86_64/source /lib/modules/CLFS-4.12.8_SOURCE
+ln -sfv /lib/modules/4.12.8-CLFS-SYSVINIT-SVN-x86_64/build /lib/modules/CLFS-4.12.8_SOURCE
+ln -sfv /lib/modules/4.12.8-CLFS-SYSVINIT-SVN-x86_64/source /lib/modules/CLFS-4.12.8_SOURCE
 
 cd ${CLFSSOURCES}
