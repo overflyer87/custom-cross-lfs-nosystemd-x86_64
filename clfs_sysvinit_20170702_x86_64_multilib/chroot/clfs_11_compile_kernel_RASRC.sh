@@ -57,4 +57,7 @@ unlink /lib/modules/4.12.8-CLFS-SYSVINIT-SVN-x86_64/source
 ln -sfv /lib/modules/CLFS-4.12.8_SOURCE /lib/modules/4.12.8-CLFS-SYSVINIT-SVN-x86_64/build
 ln -sfv /lib/modules/CLFS-4.12.8_SOURCE /lib/modules/4.12.8-CLFS-SYSVINIT-SVN-x86_64/source
 
-cd ${CLFSSOURCES}
+echo " "
+echo "CONGRATS. You are done! Your very own CLFS is now bootable."
+echo "Please install bclfs_1 anmd bclfs_2 scripts before reboot NOW!"
+echo " "
