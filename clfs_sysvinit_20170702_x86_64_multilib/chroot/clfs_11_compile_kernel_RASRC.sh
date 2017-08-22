@@ -36,6 +36,9 @@ cd ${CLFSSOURCES}
 mkdir linux && tar xf linux-*.tar.* -C linux --strip-components 1
 cd linux
 
+rm -rf /lib/modules/4.12.8*
+rm -rf /lib/modules/*4.12.8*
+
 make mrproper
 cp ${CLFSSOURCES}/kernel.conf ${CLFSSOURCES}/linux/.config
 
