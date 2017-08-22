@@ -12,13 +12,7 @@
 
 #Building the final CLFS System
 CLFS=/
-CLFSHOME=/home
 CLFSSOURCES=/sources
-CLFSTOOLS=/tools
-CLFSCROSSTOOLS=/cross-tools
-CLFSFILESYSTEM=ext4
-CLFSROOTDEV=/dev/sda4
-CLFSHOMEDEV=/dev/sda5
 MAKEFLAGS="-j$(nproc)"
 BUILD32="-m32"
 BUILD64="-m64"
@@ -28,13 +22,7 @@ PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 
 export CLFS=/
 export CLFSUSER=clfs
-export CLFSHOME=/home
 export CLFSSOURCES=/sources
-export CLFSTOOLS=/tools
-export CLFSCROSSTOOLS=/cross-tools
-export CLFSFILESYSTEM=ext4
-export CLFSROOTDEV=/dev/sda4
-export CLFSHOMEDEV=/dev/sda5
 export MAKEFLAGS="-j$(nproc)"
 export BUILD32="-m32"
 export BUILD64="-m64"
@@ -44,8 +32,6 @@ export PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 
 cd ${CLFSSOURCES}
 
-mkdir /etc/modprobe.d
-
 #LINUX KERNEL
 mkdir linux && tar xf linux-*.tar.* -C linux --strip-components 1
 cd linux
@@ -53,8 +39,6 @@ cd linux
 make mrproper
 cp ${CLFSSOURCES}/kernel.conf ${CLFSSOURCES}/linux/.config
 
-#make defaultconfig
-#make menuconfig
 make
 make modules_install
 make firmware_install
@@ -62,8 +46,15 @@ cp -v arch/x86_64/boot/bzImage /boot/efi/vmlinuz-clfs-4.12.8
 cp -v System.map /boot/efi/System.map-4.12.8
 cp -v .config /boot/efi/config-4.12.8
 cd ${CLFSSOURCES}
-mv ${CLFSSOURCES}/linux /lib/modules/CLFS-4.12.8_ORIGINAL
+
+#Copy source folder to /lib/modules
+mv ${CLFSSOURCES}/linux /lib/modules/CLFS-4.12.8_SOURCE
+
+#Properly link the new kernel source folder path to subdirectories
+# build/ and source/
+unlink /lib/modules/4.12.8-CLFS-SYSVINIT-SVN-x86_64/build
+unlink /lib/modules/4.12.8-CLFS-SYSVINIT-SVN-x86_64/source
+ln -sfv unlink /lib/modules/4.12.8-CLFS-SYSVINIT-SVN-x86_64/build /lib/modules/CLFS-4.12.8_SOURCE
+ln -sfv unlink /lib/modules/4.12.8-CLFS-SYSVINIT-SVN-x86_64/source /lib/modules/CLFS-4.12.8_SOURCE
 
 cd ${CLFSSOURCES}
-#checkBuiltPackage
-
