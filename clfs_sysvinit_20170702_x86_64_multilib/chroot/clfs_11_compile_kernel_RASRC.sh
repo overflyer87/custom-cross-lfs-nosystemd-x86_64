@@ -42,9 +42,9 @@ rm -rf /lib/modules/*4.12.8*
 make mrproper
 cp ${CLFSSOURCES}/kernel.conf ${CLFSSOURCES}/linux/.config
 
-make
-make modules_install
-make firmware_install
+CC="gcc ${BUILD64}" USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make
+CC="gcc ${BUILD64}" USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make modules_install
+CC="gcc ${BUILD64}" USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make firmware_install
 cp -v arch/x86_64/boot/bzImage /boot/efi/vmlinuz-clfs-4.12.8
 cp -v System.map /boot/efi/System.map-4.12.8
 cp -v .config /boot/efi/config-4.12.8
