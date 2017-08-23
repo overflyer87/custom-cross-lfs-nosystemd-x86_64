@@ -38,6 +38,8 @@ cd linux
 
 rm -rf /lib/modules/4.12.8*
 rm -rf /lib/modules/*4.12.8*
+rm -rf /boot/efi/System.map-4.12.8
+rm -rf /boot/efi/vmlinuz-clfs-4.12.8
 
 make mrproper
 cp ${CLFSSOURCES}/kernel.conf ${CLFSSOURCES}/linux/.config
