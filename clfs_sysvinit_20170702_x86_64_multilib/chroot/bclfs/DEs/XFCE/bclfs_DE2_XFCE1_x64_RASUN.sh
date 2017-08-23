@@ -884,3 +884,224 @@ sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 i
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf gtk-xfce-engine
+
+#libwnk
+wget http://ftp.gnome.org/pub/gnome/sources/libwnck/2.30/libwnck-2.30.7.tar.xz -O \
+    libwnck-2.30.7.tar.xz
+
+mkdir libwnck && tar xf libwnck-*.tar.* -C libwnck --strip-components 1
+cd libwnck
+
+CC="gcc ${BUILD64}"   CXX="g++ ${BUILD64}" USE_ARCH=64    \
+  PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr    \
+  --libdir=/usr/lib64 --sysconfdir=/etc --disable-static \
+  --program-suffix=-1
+  
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make GETTEXT_PACKAGE=libwnck-1 LIBDIR=/usr/lib64 PREFIX=/usr
+sudo make GETTEXT_PACKAGE=libwnck-1 LIBDIR=/usr/lib64 PREFIX=/usr install
+  
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf libwnck
+
+#xfce4-panel
+wget http://archive.xfce.org/src/xfce/xfce4-panel/4.12/xfce4-panel-4.12.1.tar.bz2 -O \
+  xfce4-panel-4.12.1.tar.bz2
+  
+mkdir xfce4-panel && tar xf xfce4-panel-*.tar.* -C xfce4-panel --strip-components 1
+cd xfce4-panel
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64    \
+  PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr    \
+  --libdir=/usr/lib64 --sysconfdir=/etc --disable-static \
+  --disable-gtk-doc --enable-gtk3
+  
+make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf xfce4-panel
+
+
+#libcroco
+wget http://ftp.gnome.org/pub/gnome/sources/libcroco/0.6/libcroco-0.6.12.tar.xz -O \
+    libcroco-0.6.12.tar.xz
+
+mkdir libcroco && tar xf libcroco-*.tar.* -C libcroco --strip-components 1
+cd libcroco
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --disable-static
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf libcroco
+
+#Vala
+wget http://ftp.gnome.org/pub/gnome/sources/vala/0.36/vala-0.36.4.tar.xz -O \
+    vala-0.36.4.tar.xz
+
+mkdir vala && tar xf vala-*.tar.* -C vala --strip-components 1
+cd vala
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --disable-static 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf vala
+
+#librsvg
+wget http://ftp.gnome.org/pub/gnome/sources/librsvg/2.40/librsvg-2.40.17.tar.xz -O \
+    librsvg-2.40.17.tar.xz
+
+mkdir librsvg && tar xf librsvg-*.tar.* -C librsvg --strip-components 1
+cd librsvg
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --disable-static \
+   --enable-vala
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf librsvg
+
+#xfce4-xkb-plugin
+wget http://archive.xfce.org/src/panel-plugins/xfce4-xkb-plugin/0.7/xfce4-xkb-plugin-0.7.1.tar.bz2 -O \
+  xfce4-xkb-plugin-0.7.1.tar.bz2
+
+mkdir xfce4-xkb-plugin && tar xf xfce4-xkb-plugin-*.tar.* -C xfce4-xkb-plugin --strip-components 1
+cd xfce4-xkb-plugin
+
+sed -e 's|xfce4/panel-plugins|xfce4/panel/plugins|' \
+    -i panel-plugin/{Makefile.in,xkb-plugin.desktop.in.in} 
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64    \
+  PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr  \
+  --libdir=/usr/lib64 --libexecdir=/usr/lib64 --disable-static \
+  --disable-debug
+  
+make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf xfce4-xkb-plugin
+
+#gnome-icon-theme
+
+#libgudev
+
+#libnotify
+
+#Gvfs
+
+#libexif
+
+#gstreamer
+
+#gst-plugins
+
+#yasm
+
+#libjpeg-turbo
+
+#libxml2
+
+#libgsf
+
+#LittleCMS
+
+#LibTIFF
+
+#libexif
+
+#OpenJPEG
+
+#Cairo
+
+#NSPR
+
+#libtasn
+
+#libffi
+
+#p11-kit
+
+#NSPR
+
+#Poppler
+
+#Tumbler
+
+#Thunar
+
+#mozjs
+
+#polkit
+
+#polkit-gnome
+
+#thunar-volman
+
+#xfce-appfinder
+
+#UPower
+
+#libatasmart
+
+#Which
+
+#Optional dependencies for LVM2
+
+#LVM2
+
+#parted
+
+#sg3_utils
+
+#UDisks
+
+#xfce4-power-manager
+
+#lxde-icon-theme
+
+#libcanberra
+
+#xfce4-settings
+
+#Xfdesktop
+
+#Xfwm4
+
+#desktop-file-utils
+
+#shared-mime-info
+
+#polkit-gnome
+
+#xfce4-session
+
+## Xfce4 Applications ##
+
+#vte
+
+#xfce4-terminal
+
+#ristretto
+
+#xfce-notifyd
+
