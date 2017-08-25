@@ -1811,6 +1811,22 @@ checkBuiltPackage
 rm -rf tumbler
 
 #Thunar
+wget http://archive.xfce.org/src/xfce/thunar/1.6/Thunar-1.6.12.tar.bz2 -O \
+	Thunar-1.6.12.tar.bz2
+	
+mkdir Thunar && tar xf Thunar-*.tar.* -C Thunar --strip-components 1
+cd Thunar
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+    --libdir=/usr/lib64 --sysconfdir=/etc \
+    --docdir=/usr/share/doc/Thunar-1.6.12
+    
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf Thunar
 
 #thunar-volman
 
