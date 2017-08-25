@@ -1863,10 +1863,49 @@ checkBuiltPackage
 rm -rf xfce4-appfinder
 
 #UPower
+wget https://upower.freedesktop.org/releases/upower-0.99.5.tar.xz -O \
+	upower-0.99.5.tar.xz
+
+mkdir upower && tar xf upower-*.tar.* -C upower --strip-components 1
+cd upower
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+    --libdir=/usr/lib64 \
+    --sysconfdir=/etc    \
+    --localstatedir=/var \
+    --enable-deprecated  \
+    --disable-static \
+    --disable-gtk-doc
+    
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf upower
 
 #libatasmart
+wget http://0pointer.de/public/libatasmart-0.19.tar.xz -O \
+	libatasmart-0.19.tar.xz
 
-#Which
+mkdir libatasmart && tar xf libatasmart-*.tar.* -C libatasmart --strip-components 1
+cd libatasmart
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
+    --libdir=/usr/lib64 \
+    --with-doc-dir=/usr/share/doc/libexif-0.6.21 \
+	--disable-static
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf libatasmart
 
 #Optional dependencies for LVM2
 
