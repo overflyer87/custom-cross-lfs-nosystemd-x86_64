@@ -990,7 +990,22 @@ cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 sudo rm -rf xfce4-xkb-plugin
 
-#gnome-icon-theme
+#adwaita-icon-theme
+wget http://ftp.gnome.org/pub/gnome/sources/gnome-icon-theme/3.12/gnome-icon-theme-3.12.0.tar.xz -O \
+    gnome-icon-theme-3.12.0.tar.xz
+
+mkdir gnome-icon-theme && tar xf gnome-icon-theme-*.tar.* -C gnome-icon-theme --strip-components 1
+cd gnome-icon-theme
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
+     --prefix=/usr \
+     --libdir=/usr/lib64 
+
+sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf gnome-icon-theme
 
 #libgudev
 
