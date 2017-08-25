@@ -17,13 +17,7 @@ echo " "
 
 #Building the final CLFS System
 CLFS=/
-CLFSHOME=/home
 CLFSSOURCES=/sources
-CLFSTOOLS=/tools
-CLFSCROSSTOOLS=/cross-tools
-CLFSFILESYSTEM=ext4
-CLFSROOTDEV=/dev/sda4
-CLFSHOMEDEV=/dev/sda5
 MAKEFLAGS="-j$(nproc)"
 BUILD32="-m32"
 BUILD64="-m64"
@@ -33,13 +27,7 @@ PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 
 export CLFS=/
 export CLFSUSER=clfs
-export CLFSHOME=/home
 export CLFSSOURCES=/sources
-export CLFSTOOLS=/tools
-export CLFSCROSSTOOLS=/cross-tools
-export CLFSFILESYSTEM=ext4
-export CLFSROOTDEV=/dev/sda4
-export CLFSHOMEDEV=/dev/sda5
 export MAKEFLAGS="-j$(nproc)"
 export BUILD32="-m32"
 export BUILD64="-m64"
@@ -48,7 +36,8 @@ export PKG_CONFIG_PATH=/usr/lib64/pkgconfig
 export PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 
 cd ${CLFSSOURCES}
-cd ${CLFSSOURCES}/xc/mate
+sudo mkdir ${CLFSSOURCES}/xc/xfce4
+cd ${CLFSSOURCES}/xc/xfce4
 
 #We will only do 64-bit builds in this script
 #We compiled Xorg with 32-bit libraries
@@ -88,9 +77,9 @@ sudo mv -v /usr/lib64/libpcre.so.* /lib64 &&
 sudo ln -sfv ../../../../lib64/$(readlink /usr/lib64/libpcre.so) /usr/lib64/libpcre.so
 sudo ldconfig
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf pcre
+sudo rm -rf pcre
 
 #Glib
 wget http://ftp.gnome.org/pub/gnome/sources/glib/2.52/glib-2.52.3.tar.xz -O \
@@ -107,9 +96,9 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
 make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf glib
+sudo rm -rf glib
 
 #libxfce4util
 wget http://archive.xfce.org/src/xfce/libxfce4util/4.12/libxfce4util-4.12.1.tar.bz2 -O \
@@ -125,9 +114,9 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
 make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf libxfce4util
+sudo rm -rf libxfce4util
 
 #dbus
 wget http://dbus.freedesktop.org/releases/dbus/dbus-1.10.20.tar.gz -O \
@@ -190,9 +179,9 @@ sudo /etc/rc.d/init.d/dbus start
 #More info ondbus:
 #http://www.linuxfromscratch.org/hints/downloads/files/execute-session-scripts-using-kdm.txt
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf dbus
+sudo rm -rf dbus
 
 #dbus-glib
 wget http://dbus.freedesktop.org/releases/dbus-glib/dbus-glib-0.108.tar.gz -O \
@@ -210,9 +199,9 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
 make PREFIX=/usr LIBDIR=/usr/lib4
 sudo make PREFIX=/usr LIBDIR=/usr/lib4 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf dbus-glib
+sudo rm -rf dbus-glib
 
 #Xfconf
 wget http://archive.xfce.org/src/xfce/xfconf/4.12/xfconf-4.12.1.tar.bz2 -O \
@@ -229,9 +218,9 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
 make PREFIX=/usr LIBDIR=/usr/lib4
 sudo make PREFIX=/usr LIBDIR=/usr/lib4 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf xfconf
+sudo rm -rf xfconf
 
 #desktop-file-utils
 wget http://freedesktop.org/software/desktop-file-utils/releases/desktop-file-utils-0.23.tar.xz -O \
@@ -249,9 +238,9 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 sudo update-desktop-database /usr/share/applications
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf desktop-file-utils
+sudo rm -rf desktop-file-utils
 
 #gobj-introspection
 wget http://ftp.gnome.org/pub/gnome/sources/gobject-introspection/1.52/gobject-introspection-1.52.1.tar.xz -O \
@@ -274,9 +263,9 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" i
 
 unset PYTHON
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf gobject-introspection
+sudo rm -rf gobject-introspection
 
 #at-spi2-core
 wget http://ftp.gnome.org/pub/gnome/sources/at-spi2-core/2.24/at-spi2-core-2.24.1.tar.xz -O \
@@ -295,9 +284,9 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf atspi2core
+sudo rm -rf atspi2core
 
 #ATK
 wget http://ftp.gnome.org/pub/gnome/sources/atk/2.24/atk-2.24.0.tar.xz -O \
@@ -316,9 +305,9 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf atk
+sudo rm -rf atk
 
 #at-spi2-atk
 wget http://ftp.gnome.org/pub/gnome/sources/at-spi2-atk/2.24/at-spi2-atk-2.24.1.tar.xz -O \
@@ -337,9 +326,9 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf atspi2atk
+sudo rm -rf atspi2atk
 
 #Cython
 wget https://pypi.python.org/packages/10/d5/753d2cb5073a9f4329d1ffed1de30b0458821780af8fdd8ba1ad5adb6f62/Cython-0.26.tar.gz -O \
@@ -351,9 +340,9 @@ cd cython
 python3 setup.py build
 sudo python3 setup.py install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf cython
+sudo rm -rf cython
 
 #yasm
 wget http://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz -O \
@@ -371,9 +360,9 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf yasm
+sudo rm -rf yasm
 
 #libjpeg-turbo
 wget http://downloads.sourceforge.net/libjpeg-turbo/libjpeg-turbo-1.5.2.tar.gz -O \
@@ -395,9 +384,9 @@ sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 i
 
 sudo ldconfig
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf libjpeg-turbo
+sudo rm -rf libjpeg-turbo
 
 #libpng installed by bootloader script clfs_6b1....sh
 #libepoxy installed by Xorg script
@@ -417,9 +406,9 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf libtiff
+sudo rm -rf libtiff
 
 #ICU
 wget http://download.icu-project.org/files/icu4c/59.1/icu4c-59_1-src.tgz -O \
@@ -437,9 +426,9 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf icu
+sudo rm -rf icu
 
 #harfbuzz, freetype2 and which were installed by Xorg scripts
 #Pixman and libpng needed by  Cairo are also already installed by UEFI-bootloader script and Xorg script, respectively
@@ -460,9 +449,9 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf cairo
+sudo rm -rf cairo
 
 #Nevertheless I seem to need to rebuild
 #harfbuzz, fontconfig and freetype
@@ -501,7 +490,7 @@ sudo cp -v -R docs/*     /usr/share/doc/freetype-2.8
 
 cd ${CLFSSOURCES} 
 #checkBuiltPackage
-rm -rf freetype
+sudo rm -rf freetype
 
 #harfbuzz 64-bit
 mkdir harfbuzz && tar xf harfbuzz-*.tar.* -C harfbuzz --strip-components 1
@@ -515,11 +504,11 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES} 
 #checkBuiltPackage
-rm -rf harfbuzz
+sudo rm -rf harfbuzz
 
 cd ${CLFSSOURCES} 
 #checkBuiltPackage
-rm -rf freetype
+sudo rm -rf freetype
 
 #freeype 64-bit
 mkdir freetype && tar xf freetype-*.tar.* -C freetype --strip-components 1
@@ -552,9 +541,9 @@ sudo cp -v -R docs/*     /usr/share/doc/freetype-2.8
 
 cd ${CLFSSOURCES} 
 #checkBuiltPackage
-rm -rf freetype
+sudo rm -rf freetype
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 
 #Pango
 wget http://ftp.gnome.org/pub/gnome/sources/pango/1.40/pango-1.40.6.tar.xz -O \
@@ -576,9 +565,9 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 sudo ldconfig
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf pango
+sudo rm -rf pango
 
 #hicolor-icon-theme
 wget http://icon-theme.freedesktop.org/releases/hicolor-icon-theme-0.15.tar.xz -O \
@@ -593,9 +582,9 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
 
 sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf hicoloricontheme
+sudo rm -rf hicoloricontheme
 
 #adwaita-icon-theme
 wget http://ftp.gnome.org/pub/gnome/sources/adwaita-icon-theme/3.24/adwaita-icon-theme-3.24.0.tar.xz -O \
@@ -609,9 +598,9 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
 
 sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf adwaiticontheme
+sudo rm -rf adwaiticontheme
 
 #gdk-pixbuf
 wget http://ftp.gnome.org/pub/gnome/sources/gdk-pixbuf/2.36/gdk-pixbuf-2.36.6.tar.xz -O \
@@ -634,9 +623,9 @@ sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 i
 
 sudo ldconfig
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf gdk-pixbuf
+sudo rm -rf gdk-pixbuf
 
 #GTK2
 wget http://ftp.gnome.org/pub/gnome/sources/gtk+/2.24/gtk+-2.24.31.tar.xz -O \
@@ -668,9 +657,9 @@ EOF'
 
 sudo ldconfig
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf gtk2
+sudo rm -rf gtk2
 
 #gtk3
 wget http://ftp.gnome.org/pub/gnome/sources/gtk+/3.22/gtk+-3.22.16.tar.xz -O \
@@ -711,9 +700,9 @@ EOF
 
 sudo ldconfig
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf gtk3
+sudo rm -rf gtk3
 
 #startup-notification
 wget http://www.freedesktop.org/software/startup-notification/releases/startup-notification-0.12.tar.gz -O \
@@ -732,9 +721,9 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 sudo install -v -m644 -D doc/startup-notification.txt \
     /usr/share/doc/startup-notification-0.12/startup-notification.txt
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf startup-notification
+sudo rm -rf startup-notification
 
 #Test::Needs (optional for Perl Module Tests)
 
@@ -750,9 +739,9 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make prefix=/usr libdir=/usr/lib64
 #make test
 sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" prefix=/usr libdir=/usr/lib64 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf URI
+sudo rm -rf URI
 
 ##HTML-Tagset
 #http://search.cpan.org/CPAN/authors/id/P/PE/PETDANCE/HTML-Tagset-3.20.tar.gz -O \
@@ -766,9 +755,9 @@ rm -rf URI
 ##make test
 #sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" prefix=/usr libdir=/usr/lib64 install
 #
-#cd ${CLFSSOURCES}/xc/mate
+#cd ${CLFSSOURCES}/xc/xfce4
 #checkBuiltPackage
-#rm -rf HTML-Tagset
+#sudo rm -rf HTML-Tagset
 #
 ##HTML::Parser
 #wget https://www.cpan.org/authors/id/G/GA/GAAS/HTML-Parser-3.72.tar.gz -O \
@@ -782,9 +771,9 @@ rm -rf URI
 ##make test
 #sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" prefix=/usr libdir=/usr/lib64 install
 #
-#cd ${CLFSSOURCES}/xc/mate
+#cd ${CLFSSOURCES}/xc/xfce4
 #checkBuiltPackage
-#rm -rf HTML-Parser
+#sudo rm -rf HTML-Parser
 #
 #Encode::Locale
 #URI
@@ -824,9 +813,9 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
 make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install 
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf libxfce4ui
+sudo rm -rf libxfce4ui
 
 #Exo
 wget http://archive.xfce.org/src/xfce/exo/0.10/exo-0.10.7.tar.bz2 -O \
@@ -843,9 +832,9 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
 make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install 
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf exo
+sudo rm -rf exo
 
 #Garcon
 wget http://archive.xfce.org/src/xfce/garcon/0.6/garcon-0.6.1.tar.bz2 -O \
@@ -862,9 +851,9 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
 make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install 
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf garcon
+sudo rm -rf garcon
 
 #gtk-xfce-engine
 wget http://archive.xfce.org/src/xfce/gtk-xfce-engine/3.2/gtk-xfce-engine-3.2.0.tar.bz2 -O \
@@ -881,9 +870,9 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
 make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf gtk-xfce-engine
+sudo rm -rf gtk-xfce-engine
 
 #libwnk
 wget http://ftp.gnome.org/pub/gnome/sources/libwnck/2.30/libwnck-2.30.7.tar.xz -O \
@@ -900,9 +889,9 @@ CC="gcc ${BUILD64}"   CXX="g++ ${BUILD64}" USE_ARCH=64    \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make GETTEXT_PACKAGE=libwnck-1 LIBDIR=/usr/lib64 PREFIX=/usr
 sudo make GETTEXT_PACKAGE=libwnck-1 LIBDIR=/usr/lib64 PREFIX=/usr install
   
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf libwnck
+sudo rm -rf libwnck
 
 #xfce4-panel
 wget http://archive.xfce.org/src/xfce/xfce4-panel/4.12/xfce4-panel-4.12.1.tar.bz2 -O \
@@ -919,9 +908,9 @@ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64    \
 make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf xfce4-panel
+sudo rm -rf xfce4-panel
 
 
 #libcroco
@@ -938,9 +927,9 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf libcroco
+sudo rm -rf libcroco
 
 #Vala
 wget http://ftp.gnome.org/pub/gnome/sources/vala/0.36/vala-0.36.4.tar.xz -O \
@@ -956,9 +945,9 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf vala
+sudo rm -rf vala
 
 #librsvg
 wget http://ftp.gnome.org/pub/gnome/sources/librsvg/2.40/librsvg-2.40.17.tar.xz -O \
@@ -975,9 +964,9 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf librsvg
+sudo rm -rf librsvg
 
 #xfce4-xkb-plugin
 wget http://archive.xfce.org/src/panel-plugins/xfce4-xkb-plugin/0.7/xfce4-xkb-plugin-0.7.1.tar.bz2 -O \
@@ -997,9 +986,9 @@ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64    \
 make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf xfce4-xkb-plugin
+sudo rm -rf xfce4-xkb-plugin
 
 #gnome-icon-theme
 
