@@ -1500,8 +1500,48 @@ checkBuiltPackage
 rm -rf lcms2
 
 #OpenJPEG
+wget http://downloads.sourceforge.net/openjpeg.mirror/openjpeg-1.5.2.tar.gz -O \
+    openjpeg-1.5.2.tar.gz
+    
+mkdir openjpeg && tar xf openjpeg-*.tar.* -C openjpeg --strip-components 1
+cd openjpeg
 
+autoreconf -f -i
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+    --libdir=/usr/lib64 \
+    --sysconfdir=/etc \
+    --disable-static
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf openjpeg
 #Cairo
+wget http://cairographics.org/releases/cairo-1.14.10.tar.xz -O \
+    cairo-1.14.10.tar.xz
+
+mkdir cairo && tar xf cairo-*.tar.* -C cairo --strip-components 1
+cd cairo
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
+     --prefix=/usr \
+     --libdir=/usr/lib64 \
+     --disable-static \
+     --enable-tee
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf cairo
+
 
 #NSPR
 
