@@ -1794,6 +1794,21 @@ checkBuiltPackage
 rm -rf poppler
 
 #Tumbler
+wget http://archive.xfce.org/src/xfce/tumbler/0.2/tumbler-0.2.0.tar.bz2 -O \
+	tumbler-0.2.0.tar.bz2
+	
+mkdir tumbler && tar xf tumbler-*.tar.* -C tumbler --strip-components 1
+cd tumbler
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+    --libdir=/usr/lib64 
+    
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf tumbler
 
 #Thunar
 
