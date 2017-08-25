@@ -990,7 +990,7 @@ cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 sudo rm -rf xfce4-xkb-plugin
 
-#adwaita-icon-theme
+#gnome-icon-theme
 wget http://ftp.gnome.org/pub/gnome/sources/gnome-icon-theme/3.12/gnome-icon-theme-3.12.0.tar.xz -O \
     gnome-icon-theme-3.12.0.tar.xz
 
@@ -1006,6 +1006,81 @@ sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 i
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf gnome-icon-theme
+
+#libxml2 WITH ITS PYTHON 2 MODULE
+wget http://xmlsoft.org/sources/libxml2-2.9.4.tar.gz -O \
+    libxml2-2.9.4.tar.gz
+
+#Download testsuite. WE NEED IT to build the Python module!
+wget http://www.w3.org/XML/Test/xmlts20130923.tar.gz -O \
+    xmlts20130923.tar.gz
+
+mkdir libxml2 && tar xf libxml2-*.tar.* -C libxml2 --strip-components 1
+cd libxml2
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --disable-static \
+   --with-history   \
+   --libdir=/usr/lib64 \
+   --with-python=/usr/bin/python2.7 \
+   --with-icu \
+   --with-threads
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} make PREFIX=/usr LIBDIR=/usr/lib64
+
+tar xf ../xmlts20130923.tar.gz
+make check > check.log
+grep -E '^Total|expected' check.log
+checkBuiltPackage
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install 
+
+cd ${CLFSSOURCES}/xc/mate
+sudo updatedb
+sudo bash -c 'locate libxml2 | grep python2.7'
+echo "Did locate libxml | grep python2.7 find the libxml2 python2 modules?"
+echo ""
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf libxml2
+
+#libxml2 WITH ITS PYTHON 3 MODULE
+mkdir libxml2 && tar xf libxml2-*.tar.* -C libxml2 --strip-components 1
+cd libxml2
+
+#run this to build Python3 module
+#Python2 module would be the default
+#We try not to use Python2 in CLFS multib!
+sed -i '/_PyVerify_fd/,+1d' python/types.c
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --disable-static \
+   --with-history   \
+   --libdir=/usr/lib64 \
+   --with-python=/usr/bin/python3.6 \
+   --with-icu \
+   --with-threads
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} make PREFIX=/usr LIBDIR=/usr/lib64
+
+tar xf ../xmlts20130923.tar.gz
+make check > check.log
+grep -E '^Total|expected' check.log
+checkBuiltPackage
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install 
+
+cd ${CLFSSOURCES}/xc/mate
+sudo updatedb
+sudo bash -c 'locate libxml2 | grep python3.6/'
+echo "Did locate libxml | grep python3.6 find the libxml2 python3 modules?"
+echo ""
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf libxml2
+
 
 #libgudev
 wget http://ftp.gnome.org/pub/gnome/sources/libgudev/231/libgudev-231.tar.xz -O \
@@ -1026,30 +1101,403 @@ cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf libgudev
 
+#Vala
+wget http://ftp.gnome.org/pub/gnome/sources/vala/0.36/vala-0.36.4.tar.xz -O \
+    vala-0.36.4.tar.xz
+
+mkdir vala && tar xf vala-*.tar.* -C vala --strip-components 1
+cd vala
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --disable-static 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf vala
+
+#libgcrypt
+wget ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.7.8.tar.bz2 -O \
+    libgcrypt-1.7.8.tar.bz2
+    
+mkdir libgcrypt && tar xf libgcrypt-*.tar.* -C libgcrypt --strip-components 1
+cd libgcrypt
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr --libdir=/usr/lib64
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
+make check
+checkBuiltPackage
+
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -r libgcrypt
+
+#libsecret
+wget http://ftp.gnome.org/pub/gnome/sources/libsecret/0.18/libsecret-0.18.5.tar.xz -O \
+    libsecret-0.18.5.tar.xz
+
+mkdir libsecret && tar xf libsecret-*.tar.* -C libsecret --strip-components 1
+cd libsecret
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+  PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+  --libdir=/usr/lib64 --disable-gtk-doc --disable-manpages
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf libsecret
+
+#libwebp
+wget http://downloads.webmproject.org/releases/webp/libwebp-0.6.0.tar.gz -O \
+    libwebp-0.6.0.tar.gz
+
+mkdir libwebp && tar xf libwebp-*.tar.* -C libwebp --strip-components 1
+cd libwebp
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+  PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+  --libdir=/usr/lib64 \
+  --enable-libwebpmux     \
+  --enable-libwebpdemux   \
+  --enable-libwebpdecoder \
+  --enable-libwebpextras  \
+  --enable-swap-16bit-csp \
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf libwebp
 
 #libnotify
+wget http://ftp.gnome.org/pub/gnome/sources/libnotify/0.7/libnotify-0.7.7.tar.xz -O \
+    libnotify-0.7.7.tar.xz
+
+mkdir libnotify && tar xf libnotify-*.tar.* -C libnotify --strip-components 1
+cd libnotify
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+   PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+   --libdir=/usr/lib64 --disable-static 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf libnotify
+
+#libsoup
+wget http://ftp.gnome.org/pub/gnome/sources/libsoup/2.58/libsoup-2.58.1.tar.xz -O \
+    libsoup-2.58.1.tar.xz
+
+mkdir libsoup && tar xf libsoup-*.tar.* -C libsoup --strip-components 1
+cd libsoup
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+   PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+   --libdir=/usr/lib64 --disable-static 
+
+sudo ln -sfv /usr/bin/python3.6 /usr/bin/python
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+make check 
+checkBuiltPackage
+
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo unlink /usr/bin/python
+sudo ldconfig
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf libsoup
 
 #Gvfs
+wget http://ftp.gnome.org/pub/gnome/sources/gvfs/1.32/gvfs-1.32.1.tar.xz
+	gvfs-1.32.1.tar.xz 
+#You need to recompile udev with this patch in order
+#For Gvfs to support gphoto2
+wget https://sourceforge.net/p/gphoto/patches/_discuss/thread/9180a667/9902/attachment/libgphoto2.udev-136.patch -O \
+	libgphoto2.udev-136.patch
+
+mkdir gvfs && tar xf gvfs-*.tar.* -C gvfs --strip-components 1
+cd gvfs
+
+#UDisks
+wget https://github.com/storaged-project/udisks/releases/download/udisks-2.7.1/udisks-2.7.1.tar.bz2 -O \
+	udisks-2.7.1.tar.bz2
+
+mkdir udisks && tar xf udisks-*.tar.* -C udisks --strip-components 1
+cd udisks	
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+    --libdir=/usr/lib64	\
+    --libexecdir=/usr/lib64 \
+    --disable-static    \
+    --sysconfdir=/etc	\
+    --localstatedir=/var \
+    --disable-gtk-doc	\
+    --disable-gtk-doc-pdf \
+    --disable-gtk-doc-html \
+    --disable-man 	\
+    --enable-shared 	\
+    --enable-btrfs 	\
+    --enable-lvm2 	\
+    --enable-lvmcache	\
+    --enable-polkit	\
+    --disable-tests
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf udisks
+
+LD_LIB_PATH="/usr/lib64" LIBRARY_PATH="/usr/lib64" CPPFLAGS="-I/usr/include" \
+LD_LIBRARY_PATH="/usr/lib64" CC="gcc ${BUILD64} -L/usr/lib64 -lacl" \
+CXX="g++ ${BUILD64} -lacl" USE_ARCH=64 \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+	--libdir=/usr/lib64 \
+	--disable-static    \
+	--sysconfdir=/etc    \
+    --disable-gtk-doc \
+    --disable-gtk-doc-pdf \
+    --disable-gtk-doc-html \
+    --disable-libsystemd-login \
+    --disable-admin \
+    --disable-gphoto2 \
+    --disable-documentation
+    
+sudo ln -sfv /usr/lib64/libacl.so /lib64/
+sudo ln -sfv /usr/lib64/libattr.so /lib64/
+    
+LD_LIB_PATH="/usr/lib64" LIBRARY_PATH="/usr/lib64" CPPFLAGS="-I/usr/include" \
+LD_LIBRARY_PATH="/usr/lib64" CC="gcc ${BUILD64} -L/usr/lib64 -lacl" \
+CXX="g++ ${BUILD64} -lacl" USE_ARCH=64 \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} make PREFIX=/usr LIBDIR=/usr/lib64
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf gvfs
 
 #libexif
+wget http://downloads.sourceforge.net/libexif/libexif-0.6.21.tar.bz2 -O \
+	libexif-0.6.21.tar.bz2
+
+mkdir libexif && tar xf libexif-*.tar.* -C libexif --strip-components 1
+cd libexif
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
+    --libdir=/usr/lib64 \
+    --with-doc-dir=/usr/share/doc/libexif-0.6.21 \
+	--disable-static
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf libexif
 
 #gstreamer
+wget https://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.12.1.tar.xz -O \
+    gstreamer-1.12.1.tar.xz
 
-#gst-plugins
+mkdir gstreamer && tar xf gstreamer-*.tar.* -C gstreamer --strip-components 1
+cd gstreamer
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --disable-static \
+   --with-package-name="GStreamer 1.12.1 BLFS" \
+   --with-package-origin="http://www.linuxfromscratch.org/blfs/view/svn/" 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+rm -rf /usr/bin/gst-* /usr/{lib,libexec}/gstreamer-1.0
+
+make check
+checkBuiltPackage
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+sudo ldconfig
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf gstreamer
+
+#gst-plugins-base
+wget https://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-1.12.1.tar.xz -O \
+    gst-plugins-base-1.12.1.tar.xz
+
+mkdir gstplgbase && tar xf gst-plugins-base-*.tar.* -C gstplgbase --strip-components 1
+cd gstplgbase
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --disable-static \
+   --with-package-name="GStreamer 1.12.1 BLFS" \
+   --with-package-origin="http://www.linuxfromscratch.org/blfs/view/svn/" 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+make check
+checkBuiltPackage
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf gstplgbase
+
+#gst-plugins-good
+wget https://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.12.1.tar.xz -O \
+    gst-plugins-good-1.12.1.tar.xz
+
+mkdir gstplggood && tar xf gst-plugins-good-*.tar.* -C gstplggood --strip-components 1
+cd gstplggood
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --disable-static \
+   --with-package-name="GStreamer 1.12.1 BLFS" \
+   --with-package-origin="http://www.linuxfromscratch.org/blfs/view/svn/" 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+make check
+checkBuiltPackage
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf gstplggood
 
 #yasm
+wget http://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz -O \
+    yasm-1.3.0.tar.gz
+
+mkdir yasm && tar xf yasm-*.tar.* -C yasm --strip-components 1
+cd yasm
+
+sed -i 's#) ytasm.*#)#' Makefile.in
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
+     --prefix=/usr \
+     --libdir=/usr/lib64 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf yasm
 
 #libjpeg-turbo
+wget http://downloads.sourceforge.net/libjpeg-turbo/libjpeg-turbo-1.5.2.tar.gz -O \
+    libjpeg-turbo-1.5.2.tar.gz
 
-#libxml2
+mkdir libjpeg-turbo && tar xf libjpeg-turbo-*.tar.* -C libjpeg-turbo --strip-components 1
+cd libjpeg-turbo
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
+     --prefix=/usr \
+     --libdir=/usr/lib64 \
+     --mandir=/usr/share/man \
+     --with-jpeg8            \
+     --disable-static        \
+     --docdir=/usr/share/doc/libjpeg-turbo-1.5.2
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
+
+sudo ldconfig
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf libjpeg-turbo
+
+#libpng installed by bootloader script clfs_6b1....sh
+#libepoxy installed by Xorg script
+
+#libtiff
+wget http://download.osgeo.org/libtiff/tiff-4.0.8.tar.gz -O \
+    tiff-4.0.8.tar.gz
+
+mkdir libtiff && tar xf tiff-*.tar.* -C libtiff --strip-components 1
+cd libtiff
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
+     --prefix=/usr \
+     --libdir=/usr/lib64 \
+     --disable-static
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf libtiff
 
 #libgsf
+wget http://ftp.gnome.org/pub/gnome/sources/libgsf/1.14/libgsf-1.14.41.tar.xz -O \
+  libgsf-1.14.41.tar.xz
 
-#LittleCMS
+mkdir libgsf && tar xf libgsf-*.tar.* -C libgsf --strip-components 1
+cd libgsf
 
-#LibTIFF
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+     --libdir=/usr/lib64 \
+     --disable-static
 
-#libexif
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf libgsf
+
+#littleCMS2
+wget http://downloads.sourceforge.net/lcms/lcms2-2.8.tar.gz -O \
+    lcms2-2.8.tar.gz
+
+mkdir lcms2 && tar xf lcms2-*.tar.* -C lcms2 --strip-components 1
+cd lcms2
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --disable-static \
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf lcms2
 
 #OpenJPEG
 
