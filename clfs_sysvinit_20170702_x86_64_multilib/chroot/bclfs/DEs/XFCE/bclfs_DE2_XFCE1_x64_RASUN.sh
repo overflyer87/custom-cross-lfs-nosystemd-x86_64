@@ -1236,6 +1236,125 @@ wget https://sourceforge.net/p/gphoto/patches/_discuss/thread/9180a667/9902/atta
 mkdir gvfs && tar xf gvfs-*.tar.* -C gvfs --strip-components 1
 cd gvfs
 
+#js17
+wget wget http://ftp.mozilla.org/pub/mozilla.org/js/mozjs17.0.0.tar.gz -O \
+  mozjs17.0.0.tar.gz
+
+mkdir mozjs && tar xf mozjs*.tar.* -C mozjs --strip-components 1
+cd mozjs
+cd js/src
+
+sed -i 's/(defined\((@TEMPLATE_FILE)\))/\1/' config/milestone.pl
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr --libdir=/usr/lib64 \
+  --enable-readline --enable-threadsafe \
+  --with-system-ffi --with-system-nspr  
+
+#Iso C++ can't compare pointer to Integer
+#First element of array is seen as pointer
+#So to make it a real value I just ficed it
+#by derefferencing the pointer and compare THAT to '\0' (NULL)
+sed -i 's/value\[0\] == /\*value\[0\] == /' shell/jsoptparse.cpp
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} make PREFIX=/usr LIBDIR=/usr/lib64
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+sudo find /usr/include/js-17.0/            \
+     /usr/lib64/libmozjs-17.0.a         \
+     /usr/lib64/pkgconfig/mozjs-17.0.pc \
+     -type f -exec chmod -v 644 {} \;
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf mozjs
+
+#polkit 113
+wget http://www.freedesktop.org/software/polkit/releases/polkit-0.113.tar.gz -O \
+  polkit-0.113.tar.gz
+  
+mkdir polkit && tar xf polkit-*.tar.* -C polkit --strip-components 1
+cd polkit
+
+sudo mkdir /etc/polkit-1
+sudo groupadd -fg 27 polkitd 
+sudo useradd -c "PolicyKit Daemon Owner" -d /etc/polkit-1 -u 27 \
+        -g polkitd -s /bin/false polkitd
+
+echo " "
+echo "Were polkitd group and user created successfully?"
+
+checkBuiltPackage
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+            --sysconfdir=/etc    \
+            --libdir=/usr/lib64  \
+            --localstatedir=/var \
+            --disable-static     \
+            --disable-man-pages  \
+            --disable-gtk-doc    \
+            --with-pam           \
+            --enable-systemd-logind=no 
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} make PREFIX=/usr LIBDIR=/usr/lib64
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+sudo chown root:root /usr/lib/polkit-1/polkit-agent-helper-1
+sudo chown root:root /usr/bin/pkexec
+sudo chmod 4755 /usr/lib/polkit-1/polkit-agent-helper-1
+sudo chmod 4755 /usr/bin/pkexec
+sudo chown -Rv polkitd /etc/polkit-1/rules.d
+sudo chown -Rv polkitd /usr/share/polkit-1/rules.d
+sudo chmod 700 /etc/polkit-1/rules.d
+sudo chmod 700 /usr/share/polkit-1/rules.d
+
+sudo bash -c 'cat > /etc/pam.d/polkit-1 << "EOF"
+# Begin /etc/pam.d/polkit-1
+auth     include        system-auth
+account  include        system-account
+password include        system-password
+session  include        system-session
+# End /etc/pam.d/polkit-1
+EOF'
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf polkit
+
+#polkit-gnome
+wget http://ftp.gnome.org/pub/gnome/sources/polkit-gnome/0.105/polkit-gnome-0.105.tar.xz -O \
+	polkit-gnome-0.105.tar.xz
+
+mkdir polkit-gnome && tar xf polkit-gnome-*.tar.* -C polkit-gnome --strip-components 1
+cd polkit-gnome	
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr --libdir=/usr/lib64
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+sudo mkdir -p /etc/xdg/autostart &&
+sudo bash -c 'cat > /etc/xdg/autostart/polkit-gnome-authentication-agent-1.desktop << "EOF"
+[Desktop Entry]
+Name=PolicyKit Authentication Agent
+Comment=PolicyKit Authentication Agent
+Exec=/usr/libexec/polkit-gnome-authentication-agent-1
+Terminal=false
+Type=Application
+Categories=
+NoDisplay=true
+OnlyShowIn=GNOME;XFCE;Unity;
+AutostartCondition=GNOME3 unless-session gnome
+EOF'
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf gnome-polkit
+
 #UDisks
 wget https://github.com/storaged-project/udisks/releases/download/udisks-2.7.1/udisks-2.7.1.tar.bz2 -O \
 	udisks-2.7.1.tar.bz2
@@ -1542,28 +1661,141 @@ cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf cairo
 
-
 #NSPR
+wget https://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v4.15/src/nspr-4.15.tar.gz -O \
+    nspr-4.15.tar.gz
 
-#libtasn
+mkdir nspr && tar xf nspr-*.tar.* -C nspr --strip-components 1
+cd nspr
+
+cd nspr                                                     &&
+sed -ri 's#^(RELEASE_BINS =).*#\1#' pr/src/misc/Makefile.in &&
+sed -i 's#$(LIBRARY) ##'            config/rules.mk         &&
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --with-mozilla \
+   --with-pthreads \
+   $([ $(uname -m) = x86_64 ] && echo --enable-64bit)
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+echo " "
+echo "checking if /usr/include/pratom.h was installed..."
+ls /usr/include | grep pratom.h
+echo "... should be shown in output one line above. Mozjs 17.0.0 will fail otherwise."
+rm -rf nspr
+
+#libtasn1
+wget http://ftp.gnu.org/gnu/libtasn1/libtasn1-4.12.tar.gz -O \
+    libtasn1-4.12.tar.gz
+
+mkdir libtasn1 && tar xf libtasn1-*.tar.* -C libtasn1 --strip-components 1
+cd libtasn1
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+    --libdir=/usr/lib64 \
+    --disable-static
+    
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
+make check
+checkBuiltPackage
+
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -r libtasn1
 
 #libffi
+wget https://sourceware.org/ftp/libffi/libffi-3.2.1.tar.gz -O\
+	libffi-3.2.1.tar.gz
+	
+mkdir libffi && tar xf libffi-*.tar.* -C libffi --strip-components 1
+cd libffi
+
+sed -e '/^includesdir/ s/$(libdir).*$/$(includedir)/' \
+    -i include/Makefile.in &&
+
+sed -e '/^includedir/ s/=.*$/=@includedir@/' \
+    -e 's/^Cflags: -I${includedir}/Cflags:/' \
+    -i libffi.pc.in        &&
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+	--disable-static 1
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -r libffi
+
 
 #p11-kit
+wget https://github.com/p11-glue/p11-kit/releases/download/0.23.7/p11-kit-0.23.7.tar.gz -O \
+    p11-kit-0.23.7.tar.gz
+    
+mkdir p11-kit && tar xf p11-kit-*.tar.* -C p11-kit --strip-components 1
+cd p11-kit
 
-#NSPR
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+    --libdir=/usr/lib64 \
+    --disable-static \
+    --sysconfdir=/etc \
+    --with-trust-paths=/etc/pki/anchor
+    
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
+make check
+checkBuiltPackage
 
-#Poppler
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -r p11-kit
+
+#poppler-glib 
+wget http://poppler.freedesktop.org/poppler-0.56.0.tar.xz -O \
+    poppler-0.56.0.tar.xz
+    
+wget http://poppler.freedesktop.org/poppler-data-0.4.7.tar.gz -O \
+    Poppler-data-0.4.7.tar.gz
+
+mkdir poppler && tar xf poppler-*.tar.* -C poppler --strip-components 1
+cd poppler
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+    --libdir=/usr/lib64 \
+    --sysconfdir=/etc \
+    --disable-static            \
+    --enable-build-type=release \
+    --enable-cmyk               \
+    --enable-xpdf-headers       \
+    --with-testdatadir=$PWD/testfile
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+mkdir poppler-data
+tar -xf ../Poppler-data-*.tar.gz -C poppler-data --strip-components 1 
+cd poppler-data
+
+sudo make LIBDIR=/usr/lib64 prefix=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf poppler
 
 #Tumbler
 
 #Thunar
-
-#mozjs
-
-#polkit
-
-#polkit-gnome
 
 #thunar-volman
 
@@ -1583,8 +1815,6 @@ rm -rf cairo
 
 #sg3_utils
 
-#UDisks
-
 #xfce4-power-manager
 
 #lxde-icon-theme
@@ -1601,7 +1831,7 @@ rm -rf cairo
 
 #shared-mime-info
 
-#polkit-gnome
+#-gnome
 
 #xfce4-session
 
