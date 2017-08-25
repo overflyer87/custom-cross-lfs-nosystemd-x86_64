@@ -1008,6 +1008,24 @@ checkBuiltPackage
 rm -rf gnome-icon-theme
 
 #libgudev
+wget http://ftp.gnome.org/pub/gnome/sources/libgudev/231/libgudev-231.tar.xz -O \
+    libgudev-231.tar.xz
+
+mkdir libgudev && tar xf libgudev-*.tar.* -C libgudev --strip-components 1
+cd libgudev
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --disable-static \
+   --disable-umockdev
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf libgudev
+
 
 #libnotify
 
