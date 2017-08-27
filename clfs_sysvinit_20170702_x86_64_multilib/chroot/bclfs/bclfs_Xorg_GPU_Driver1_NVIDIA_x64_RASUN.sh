@@ -57,10 +57,10 @@ blacklist nvidiafb
 EOF'
 
 #NVIDIA PROPRIETARY DRIVER
-wget http://us.download.nvidia.com/XFree86/Linux-x86_64/384.59/NVIDIA-Linux-x86_64-384.59.run -O \
-  NVIDIA-Linux-x86_64-384.59.run
+wget http://us.download.nvidia.com/XFree86/Linux-x86_64/384.69/NVIDIA-Linux-x86_64-384.69.run -O \
+  NVIDIA-Linux-x86_64-384.69.run
 
-sudo chmod +x NVIDIA-Linux-x86_64-384.59.run
-sudo bash -c 'PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" CC="gcc" CXX="g++" ./NVIDIA-Linux-x86_64-384.59.run'
+sudo chmod +x NVIDIA-Linux-x86_64-384.69.run
+sudo bash -c 'PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" CC="gcc" CXX="g++" ./NVIDIA-Linux-x86_64-384.69.run'
 
 
