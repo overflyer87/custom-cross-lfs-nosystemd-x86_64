@@ -1926,10 +1926,78 @@ checkBuiltPackage
 rm -rf mdadm
 
 #reiserfsprogs
+wget https://www.kernel.org/pub/linux/kernel/people/jeffm/reiserfsprogs/v3.6.27/reiserfsprogs-3.6.27.tar.xz -O \
+	reiserfsprogs-3.6.27.tar.xz
+
+mkdir reiserfsprogs && tar xf reiserfsprogs-*.tar.* -C reiserfsprogs --strip-components 1
+cd reiserfsprogs
+
+autoreconf -fiv 
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
+    --libdir=/usr/lib64 --sbin=/sbin
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf reiserfsprogs
 
 #valgrind
+wget https://sourceware.org/ftp/valgrind/valgrind-3.13.0.tar.bz2 -O \
+	valgrind-3.13.0.tar.bz2
+
+mkdir valgrind && tar xf valgrind-*.tar.* -C valgrind --strip-components 1
+cd valgrind
+
+sed -i 's|/doc/valgrind||' docs/Makefile.in 
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
+    --libdir=/usr/lib64 --datadir=/usr/share/doc/valgrind-3.13.0
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf valgrind
 
 #xfsprogs
+wget https://www.kernel.org/pub/linux/utils/fs/xfs/xfsprogs/xfsprogs-4.12.0.tar.xz -O \
+	xfsprogs-4.12.0.tar.xz
+	
+mkdir xfsprogs && tar xf xfsprogs-*.tar.* -C xfsprogs --strip-components 1
+cd xfsprogs
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} \
+CC="gcc ${BUILD64}"     \
+USE_ARCH=64             \
+CXX="g++ ${BUILD64}"    \
+make DEBUG=-DNDEBUG     \
+     INSTALL_USER=root  \
+     INSTALL_GROUP=root \
+     PREFIX=/usr        \
+     LIBDIR=/usr/lib64  \
+     LOCAL_CONFIGURE_OPTIONS="--enable-readline"
+
+sudo make PKG_DOC_DIR=/usr/share/doc/xfsprogs-4.12.0 install    
+sudo make PKG_DOC_DIR=/usr/share/doc/xfsprogs-4.12.0 install-dev
+
+sudo rm -rfv /usr/lib/libhandle.a                               
+sudo rm -rfv /lib/libhandle.{a,la,so}                           
+sudo ln -sfv ../../lib/libhandle.so.1 /usr/lib/libhandle.so     
+sudo sed -i "s@libdir='/lib@libdir='/usr/lib@" /usr/lib/libhandle.la
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf xfsprogs
 
 #LVM2
 wget ftp://sources.redhat.com/pub/lvm2/releases/LVM2.2.02.171.tgz -O \
