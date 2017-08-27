@@ -419,3 +419,5 @@ echo " "
 
 rm -rf /tools
 rm -rf /cross-tools
+
+sed -i 's/oom_adj/oom_score_adj/' /etc/rc.d/init.d/sshd
