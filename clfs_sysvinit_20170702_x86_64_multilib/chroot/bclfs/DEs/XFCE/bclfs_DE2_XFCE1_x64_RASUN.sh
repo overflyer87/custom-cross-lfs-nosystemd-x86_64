@@ -1709,31 +1709,6 @@ cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -r libtasn1
 
-#libffi
-wget https://sourceware.org/ftp/libffi/libffi-3.2.1.tar.gz -O\
-	libffi-3.2.1.tar.gz
-	
-mkdir libffi && tar xf libffi-*.tar.* -C libffi --strip-components 1
-cd libffi
-
-sed -e '/^includesdir/ s/$(libdir).*$/$(includedir)/' \
-    -i include/Makefile.in &&
-
-sed -e '/^includedir/ s/=.*$/=@includedir@/' \
-    -e 's/^Cflags: -I${includedir}/Cflags:/' \
-    -i libffi.pc.in        &&
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
-	--disable-static 1
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
-sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
-
-cd ${CLFSSOURCES}/xc/mate
-checkBuiltPackage
-rm -r libffi
-
-
 #p11-kit
 wget https://github.com/p11-glue/p11-kit/releases/download/0.23.7/p11-kit-0.23.7.tar.gz -O \
     p11-kit-0.23.7.tar.gz
