@@ -2246,6 +2246,36 @@ checkBuiltPackage
 rm -rf sharedmimeinfo
 
 #polkit-gnome
+wget http://ftp.gnome.org/pub/gnome/sources/polkit-gnome/0.105/polkit-gnome-0.105.tar.xz -O \
+	polkit-gnome-0.105.tar.xz
+
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+sudo mkdir -p /etc/xdg/autostart &&
+sudo bash -c 'cat > /etc/xdg/autostart/polkit-gnome-authentication-agent-1.desktop << "EOF"
+[Desktop Entry]
+Name=PolicyKit Authentication Agent
+Comment=PolicyKit Authentication Agent
+Exec=/usr/libexec/polkit-gnome-authentication-agent-1
+Terminal=false
+Type=Application
+Categories=
+NoDisplay=true
+OnlyShowIn=GNOME;XFCE;Unity;
+AutostartCondition=GNOME3 unless-session gnome
+EOF'
+
+mkdir polkit-gnome && tar xf polkit-gnome-*.tar.* -C polkit-gnome --strip-components 1
+cd polkit-gnome
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf polkit-gnome
 
 #xfce4-session
 wget http://archive.xfce.org/src/xfce/xfwm4/4.12/xfwm4-4.12.4.tar.bz2 -O \
@@ -2297,8 +2327,58 @@ checkBuiltPackage
 rm -rf vte
 
 #xfce4-terminal
+wget http://archive.xfce.org/src/apps/xfce4-terminal/0.8/xfce4-terminal-0.8.6.tar.bz2 -O \
+	xfce4-terminal-0.8.6.tar.bz2
+
+mkdir xfce4-terminal && tar xf xfce4-terminal-*.tar.* -C xfce4-terminal --strip-components 1
+cd xfce4-terminal
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+    --libdir=/usr/lib64 
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf xfce4-terminal
 
 #ristretto
+wget http://archive.xfce.org/src/apps/ristretto/0.8/ristretto-0.8.2.tar.bz2 -O \
+	ristretto-0.8.2.tar.bz2
+
+mkdir ristretto && tar xf ristretto-*.tar.* -C ristretto --strip-components 1
+cd ristretto
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+    --libdir=/usr/lib64 
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf ristretto
 
 #xfce-notifyd
+wget http://archive.xfce.org/src/apps/xfce4-notifyd/0.2/xfce4-notifyd-0.2.4.tar.bz2 -O \
+	xfce4-notifyd-0.2.4.tar.bz2
+
+mkdir xfce4-notifyd && tar xf xfce4-notifyd-*.tar.* -C xfce4-notifyd --strip-components 1
+cd xfce4-notifyd
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+    --libdir=/usr/lib64 
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+notify-send -i info Information "Hi ${USER}, This is a Test"
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf xfce4-notifyd
 
