@@ -2114,8 +2114,41 @@ checkBuiltPackage
 rm -rf xfce4-power-manager
 
 #lxde-icon-theme
+wget https://downloads.sourceforge.net/lxde/lxde-icon-theme-0.5.1.tar.xz -O \
+    lxde-icon-theme-0.5.1.tar.xz
+
+mkdir lxde-icon-theme && tar xf lxde-icon-theme-*.tar.* -C lxde-icon-theme --strip-components 1
+cd lxde-icon-theme
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
+     --prefix=/usr \
+     --libdir=/usr/lib64 
+
+sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo gtk-update-icon-cache -qf /usr/share/icons/nuoveXT2
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf lxde-icon-theme
 
 #libcanberra
+wget http://0pointer.de/lennart/projects/libcanberra/libcanberra-0.30.tar.xz -O \
+    libcanberra-0.30.tar.xz
+
+mkdir libcanberra && tar xf libcanberra-*.tar.* -C libcanberra --strip-components 1
+cd libcanberra
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --disable-static \
+   --disable-oss 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf libcanberra
 
 #xfce4-settings
 
@@ -2124,8 +2157,44 @@ rm -rf xfce4-power-manager
 #Xfwm4
 
 #desktop-file-utils
+wget http://freedesktop.org/software/desktop-file-utils/releases/desktop-file-utils-0.23.tar.xz -O \
+  desktop-file-utils-0.23.tar.xz
+
+mkdir desktop-file-utils && tar xf desktop-file-utils-*.tar.* -C desktop-file-utils --strip-components 1
+cd desktop-file-utils
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib64
+
+make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+sudo update-desktop-database /usr/share/applications
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf desktop-file-utils
 
 #shared-mime-info
+wget http://freedesktop.org/~hadess/shared-mime-info-1.8.tar.xz -O \
+    shared-mime-info-1.8.tar.xz
+
+mkdir sharedmimeinfo && tar xf shared-mime-info-*.tar.* -C sharedmimeinfo --strip-components 1
+cd sharedmimeinfo
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 
+
+make check
+checkBuiltPackage
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf sharedmimeinfo
 
 #-gnome
 
@@ -2134,6 +2203,26 @@ rm -rf xfce4-power-manager
 ## Xfce4 Applications ##
 
 #vte
+wget http://ftp.gnome.org/pub/gnome/sources/vte/0.48/vte-0.48.3.tar.xz -O \
+    vte-0.48.3.tar.xz
+
+mkdir vte && tar xf vte-*.tar.* -C vte --strip-components 1
+cd vte
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+    --disable-static \
+    --libdir=/usr/lib64 \
+    --sysconfdir=/etc \
+    --enable-introspection \
+    --disable-gtk-doc
+    
+make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf vte
 
 #xfce4-terminal
 
