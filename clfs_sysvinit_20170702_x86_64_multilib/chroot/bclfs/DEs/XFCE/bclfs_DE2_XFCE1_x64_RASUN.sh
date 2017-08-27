@@ -1906,6 +1906,45 @@ cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf libatasmart
 
+#parted
+wget http://ftp.gnu.org/gnu/parted/parted-3.2.tar.xz -O \
+	parted-3.2.tar.xz
+
+#wget http://www.linuxfromscratch.org/patches/blfs/svn/parted-3.2-devmapper-1.patch -O \
+#	Parted-3.2-devmapper-1.patch
+
+mkdir parted && tar xf parted-*.tar.* -C parted --strip-components 1
+cd parted
+
+#patch -Np1 -i ../Parted-3.2-devmapper-1.patch
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
+	--libdir=/usr/lib64 \
+	--disable-static
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf parted
+
+#dmraid
+wget http://people.redhat.com/~heinzm/sw/dmraid/src/dmraid-current.tar.bz2 -O \
+	dmraid-current.tar.bz2
+
+mkdir dmraid && tar xf dmraid-*.tar.* -C dmraid --strip-components 3
+cd dmraid
+
+sudo cp -rv include/dmraid /usr/inlude/
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf dmraid
+
 #mdadm
 wget http://www.kernel.org/pub/linux/utils/raid/mdadm/mdadm-4.0.tar.xz -O \
 	mdadm-4.0.tar.xz
@@ -2036,11 +2075,43 @@ cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf LVM2
 
-#parted
-
 #sg3_utils
+wget http://sg.danny.cz/sg/p/sg3_utils-1.42.tar.xz -O \
+	sg3_utils-1.42.tar.xz
+
+mkdir sg3_utils && tar xf sg3_utils-*.tar.* -C sg3_utils --strip-components 1
+cd sg3_utils
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
+     --prefix=/usr \
+     --libdir=/usr/lib64 \
+     --disable-static
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf sg3_utils
 
 #xfce4-power-manager
+wget http://archive.xfce.org/src/xfce/xfce4-power-manager/1.6/xfce4-power-manager-1.6.0.tar.bz2 -O \
+	xfce4-power-manager-1.6.0.tar.bz2
+
+mkdir xfce4-power-manager && tar xf xfce4-power-manager-*.tar.* -C xfce4-power-manager --strip-components 1
+cd xfce4-power-manager
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
+     --prefix=/usr \
+     --libdir=/usr/lib64 \
+     --sysconfdir=/etc
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf xfce4-power-manager
 
 #lxde-icon-theme
 
