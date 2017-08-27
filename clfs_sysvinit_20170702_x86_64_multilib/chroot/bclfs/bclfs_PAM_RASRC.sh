@@ -413,3 +413,6 @@ useradd -g users -G wheel,storage,power -m -s /bin/bash overflyer
 passwd overflyer
 visudo
 
+echo " "
+echo "You may reboot now and try your new VERY OWN LINUX now ;)"
+echo " "
