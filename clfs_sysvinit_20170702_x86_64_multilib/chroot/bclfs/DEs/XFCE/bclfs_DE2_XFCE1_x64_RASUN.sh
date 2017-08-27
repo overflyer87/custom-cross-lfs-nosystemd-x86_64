@@ -911,7 +911,6 @@ cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 sudo rm -rf xfce4-panel
 
-
 #libcroco
 wget http://ftp.gnome.org/pub/gnome/sources/libcroco/0.6/libcroco-0.6.12.tar.xz -O \
     libcroco-0.6.12.tar.xz
@@ -1079,7 +1078,6 @@ echo ""
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf libxml2
-
 
 #libgudev
 wget http://ftp.gnome.org/pub/gnome/sources/libgudev/231/libgudev-231.tar.xz -O \
