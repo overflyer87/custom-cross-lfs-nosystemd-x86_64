@@ -2151,10 +2151,59 @@ checkBuiltPackage
 rm -rf libcanberra
 
 #xfce4-settings
+wget http://archive.xfce.org/src/xfce/xfce4-settings/4.12/xfce4-settings-4.12.1.tar.bz2 -O \
+	xfce4-settings-4.12.1.tar.bz2
+
+mkdir xfce4-settings && tar xf xfce4-settings-*.tar.* -C xfce4-settings --strip-components 1
+cd xfce4-settings
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
+     --prefix=/usr \
+     --libdir=/usr/lib64 \
+     --sysconfdir=/etc
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf xfce4-settings
 
 #Xfdesktop
+wget http://archive.xfce.org/src/xfce/xfdesktop/4.12/xfdesktop-4.12.4.tar.bz2 -O \
+	xfdesktop-4.12.4.tar.bz2
+
+mkdir xfdesktop && tar xf xfdesktop-*.tar.* -C xfdesktop --strip-components 1
+cd xfdesktop
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
+     --prefix=/usr \
+     --libdir=/usr/lib64 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf xfdesktop
 
 #Xfwm4
+wget http://archive.xfce.org/src/xfce/xfwm4/4.12/xfwm4-4.12.4.tar.bz2 -O \
+	xfwm4-4.12.4.tar.bz2
+
+mkdir xfwm4 && tar xf xfwm4-*.tar.* -C xfwm4 --strip-components 1
+cd xfwm4
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
+     --prefix=/usr \
+     --libdir=/usr/lib64 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf xfwm4
 
 #desktop-file-utils
 wget http://freedesktop.org/software/desktop-file-utils/releases/desktop-file-utils-0.23.tar.xz -O \
@@ -2196,9 +2245,32 @@ cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf sharedmimeinfo
 
-#-gnome
+#polkit-gnome
 
 #xfce4-session
+wget http://archive.xfce.org/src/xfce/xfwm4/4.12/xfwm4-4.12.4.tar.bz2 -O \
+	xfwm4-4.12.4.tar.bz2
+
+mkdir xfwm4 && tar xf xfwm4-*.tar.* -C xfwm4 --strip-components 1
+cd xfwm4
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
+     --prefix=/usr \
+     --libdir=/usr/lib64 \
+     --sysconfdir=/etc \
+     --disable-legacy-sm
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make install
+
+sudo update-desktop-database 
+sudo update-mime-database /usr/share/mime
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf xfwm4
+
+#Generate .xinitrc here
 
 ## Xfce4 Applications ##
 
