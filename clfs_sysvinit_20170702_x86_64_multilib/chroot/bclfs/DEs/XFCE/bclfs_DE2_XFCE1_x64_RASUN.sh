@@ -35,8 +35,7 @@ export CLFS_TARGET32="i686-pc-linux-gnu"
 export PKG_CONFIG_PATH=/usr/lib64/pkgconfig
 export PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 
-cd ${CLFSSOURCES}
-sudo mkdir ${CLFSSOURCES}/xc/xfce4
+sudo mkdir -pv ${CLFSSOURCES}/xc/xfce4
 cd ${CLFSSOURCES}/xc/xfce4
 
 #We will only do 64-bit builds in this script
