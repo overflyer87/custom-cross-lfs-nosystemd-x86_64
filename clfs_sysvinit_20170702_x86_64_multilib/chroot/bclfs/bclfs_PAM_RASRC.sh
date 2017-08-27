@@ -416,3 +416,6 @@ visudo
 echo " "
 echo "You may reboot now and try your new VERY OWN LINUX now ;)"
 echo " "
+
+rm -rf /tools
+rm -rf /cross-tools
