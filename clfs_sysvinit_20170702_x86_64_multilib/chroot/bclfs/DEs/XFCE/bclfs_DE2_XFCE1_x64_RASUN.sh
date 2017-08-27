@@ -1902,14 +1902,71 @@ CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -rf libatasmart
 
-#Optional dependencies for LVM2
+#mdadm
+wget http://www.kernel.org/pub/linux/utils/raid/mdadm/mdadm-4.0.tar.xz -O \
+	mdadm-4.0.tar.xz
+
+mkdir mdadm && tar xf mdadm-*.tar.* -C mdadm --strip-components 1
+cd mdadm
+
+#Fix for GCC 7.1
+sed 's@-Werror@@' -i Makefile
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf mdadm
+
+#reiserfsprogs
+
+#valgrind
+
+#xfsprogs
 
 #LVM2
+wget ftp://sources.redhat.com/pub/lvm2/releases/LVM2.2.02.171.tgz -O \
+	LVM2.2.02.171.tgz
+
+mkdir LVM2 && tar xf LVM2*.tgz -C LVM2 --strip-components 1
+cd LVM2
+
+SAVEPATH=$PATH PATH=$PATH:/sbin:/usr/sbin \
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
+	--libdir=/usr/lib64 \
+	--disable-static    \
+    	--exec-prefix=      \
+    	--enable-applib     \
+    	--enable-cmdlib     \
+    	--enable-pkgconfig  \
+    	--enable-udev_sync
+    
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+PATH=$SAVEPATH                 
+unset SAVEPATH
+
+export PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin
+
+sudo make -C tools install_dmsetup_dynamic 
+sudo make -C udev  install                 
+sudo make -C libdm install
+
+sudo mv /usr/lib/pkgconfig/devmapper.pc ${PKG_CONFIG_PATH64}/
+sudo sudo mv /usr/lib/libdevmapper.so /usr/lib64/
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf LVM2
 
 #parted
 
