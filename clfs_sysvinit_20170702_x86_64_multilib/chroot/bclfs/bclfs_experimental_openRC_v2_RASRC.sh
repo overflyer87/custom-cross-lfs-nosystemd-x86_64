@@ -50,7 +50,7 @@ cd ${CLFSSOURCES}
 
 #EXPERIMENTAL Script for using openRC with CLFS
 
-Sysvinit
+#Sysvinit
 mkdir sysvinit && tar xf sysvinit*.tar.* -C sysvinit --strip-components 1
 cd sysvinit
 
