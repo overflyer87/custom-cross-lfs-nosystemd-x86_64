@@ -95,7 +95,7 @@ sed -i 's:0444:0644:' mk/sys.mk
 
 patch -Np1 -i ${CLFSSOURCES}/openrc-quiet.patch
 
-sudo install -dm644 /etc/openrc
+#sudo install -dm644 /etc/openrc
 sudo install -dm644 /etc/logrotate.d
 
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} \
@@ -124,7 +124,7 @@ MKNET=no
 MKSYSVINIT=yes
 CC="gcc ${BUILD64}" sudo make install
 
-sudo install -m644 support/sysvinit/inittab /etc/openrc/inittab
+sudo install -m644 support/sysvinit/inittab /etc/inittab
 
 sudo bash -c 'cat > /etc/logrotate.d/openrc << "EOF"
 /var/log/rc.log {
