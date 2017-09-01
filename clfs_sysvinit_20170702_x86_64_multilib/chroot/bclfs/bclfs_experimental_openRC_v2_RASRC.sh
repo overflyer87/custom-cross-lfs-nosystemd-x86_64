@@ -167,6 +167,9 @@ sudo bash -c 'for num in 1 2 3 4 5 6;do
         ln -sf /etc/init.d/agetty.tty$num /etc/runlevels/default/agetty.tty$num
 done'
 
+sudo groupadd uucp
+sudo usermod -a -G uucp root
+
 sudo ldconfig
 
 cd ${CLFSSOURCES} 
