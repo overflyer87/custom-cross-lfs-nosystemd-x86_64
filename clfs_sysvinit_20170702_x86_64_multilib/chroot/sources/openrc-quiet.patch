@@ -28,6 +28,3 @@ index f6cc12da..390b1317 100644
  command_args_foreground="${agetty_options} ${port} ${baud} ${term_type}"
  pidfile="/run/${RC_SVCNAME}.pid"
 +export EINFO_QUIET="${quiet:-yes}"
- 
- depend() {
- 	after local
