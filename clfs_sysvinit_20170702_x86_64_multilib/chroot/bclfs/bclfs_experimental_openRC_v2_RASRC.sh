@@ -154,7 +154,7 @@ sudo mv /usr/lib/pkgconfig/openrc.pc /usr/lib64/pkgconfig/
 
  sed -e 's/#unicode="NO"/unicode="YES"/' \
      -e 's/#rc_logger="NO"/rc_logger="YES"/' \
-     -i "/etc/rc.conf"#
+     -i "/etc/rc.conf"
  
  sed -e 's|#baud=""|baud="38400"|' \
         -e 's|#term_type="linux"|term_type="linux"|' \
