@@ -502,6 +502,8 @@ KEYMAP="de"
 # End /etc/vconsole.conf
 EOF
 
+nano /etc/conf.d/keymaps
+
 echo " "
 echo "Bootloader is installed, debugging sysmbols are stripped"
 echo "AND" 
