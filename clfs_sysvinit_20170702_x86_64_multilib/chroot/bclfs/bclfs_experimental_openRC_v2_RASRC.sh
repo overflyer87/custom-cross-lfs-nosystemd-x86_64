@@ -74,7 +74,7 @@ patch -Np1 -i ${CLFSSOURCES}/0001-simplify-writelog-openrc.patch
 patch -Np1 -i ${CLFSSOURCES}/0002-remove-ansi-escape-codes-from-log-file-openrc.patch
 
 #use /etc/openrc/inittab instead of /etc/inittab
-patch -Np1 -i ${CLFSSOURCES}/openrc-init.patch
+#patch -Np1 -i ${CLFSSOURCES}/openrc-init.patch
 
 cd ${CLFSSOURCES}/openrc-sysvinit
 
