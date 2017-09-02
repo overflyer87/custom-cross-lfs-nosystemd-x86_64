@@ -85,6 +85,10 @@ patch -Np1 -i ${CLFSSOURCES}/openrc-quiet.patch
 
 sudo install -dm644 /etc/logrotate.d
 
+#explicitely declare CC=gcc -m64 in the following two files
+nano mk/lib.mk
+nano mk/cc.mk
+
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} \
 BRANDING='CLFS-SVN-x86_64-multilib' \ 
 SYSCONFDIR=/etc \
@@ -127,13 +131,13 @@ sudo bash -c 'cat > /etc/logrotate.d/openrc << "EOF"
 }
 EOF'
 
-sudo mv /usr/lib/pkgconfig/openrc.pc /usr/lib64/pkgconfig/
+sudo mv -v /usr/lib/pkgconfig/openrc.pc /usr/lib64/pkgconfig/
 
- sed -e 's/#unicode="NO"/unicode="YES"/' \
+sed -e 's/#unicode="NO"/unicode="YES"/' \
      -e 's/#rc_logger="NO"/rc_logger="YES"/' \
      -i "/etc/rc.conf"
  
- sed -e 's|#baud=""|baud="38400"|' \
+sed -e 's|#baud=""|baud="38400"|' \
         -e 's|#term_type="linux"|term_type="linux"|' \
         -e 's|#agetty_options=""|agetty_options=""|' \
         -i /etc/conf.d/agetty
