@@ -150,8 +150,8 @@ sudo mv /usr/lib/pkgconfig/openrc.pc /usr/lib64/pkgconfig/
 
 sudo bash -c 'for num in 1 2 3 4 5 6;do
         cp -v /etc/conf.d/agetty /etc/conf.d/agetty.tty$num
-        ln -sf /etc/init.d/agetty /etc/init.d/agetty.tty$num
-        ln -sf /etc/init.d/agetty.tty$num /etc/runlevels/default/agetty.tty$num
+        ln -sfv /etc/init.d/agetty /etc/init.d/agetty.tty$num
+        ln -sfv /etc/init.d/agetty.tty$num /etc/runlevels/default/agetty.tty$num
 done'
 
 sudo groupadd uucp
