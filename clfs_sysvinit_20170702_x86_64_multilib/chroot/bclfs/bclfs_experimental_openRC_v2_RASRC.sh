@@ -151,6 +151,9 @@ sudo usermod -a -G uucp root
 
 sudo ldconfig
 
+sudo install -m755 -d /usr/share/licenses/openrc
+sudo install -m644 LICENSE AUTHORS /usr/share/licenses/openrc/
+
 cd ${CLFSSOURCES} 
 checkBuiltPackage
 rm -rf openrc
