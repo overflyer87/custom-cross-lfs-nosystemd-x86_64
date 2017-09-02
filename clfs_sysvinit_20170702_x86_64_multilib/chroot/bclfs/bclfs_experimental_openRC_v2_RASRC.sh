@@ -124,19 +124,18 @@ sudo bash -c 'cat > /etc/logrotate.d/openrc << "EOF"
 }
 EOF'
 
-sudo install -d /usr/lib64/rc/cache
-
-sudo install -m755 -d /usr/share/licenses/openrc
-sudo install -m644 LICENSE AUTHORS /usr/share/licenses/openrc/
-sudo install -m644 -d /etc/conf.d
-sudo cp -r conf.d/* /etc/conf.d/
-sudo install -m644 -d /etc/init.d
-sudo cp -r init.d/* /etc/init.d/
-sudo install -m644 -d /etc/local.d
-sudo cp -r local.d/* /etc/local.d/
-sudo cp etc/* /etc/
-sudo cp -rv sh /usr/lib64/openrc/
-sudo rm /etc/Makefile
+#sudo install -d /usr/lib64/rc/cache
+#sudo install -m755 -d /usr/share/licenses/openrc
+#sudo install -m644 LICENSE AUTHORS /usr/share/licenses/openrc/
+#sudo install -m644 -d /etc/conf.d
+#sudo cp -r conf.d/* /etc/conf.d/
+#sudo install -m644 -d /etc/init.d
+#sudo cp -r init.d/* /etc/init.d/
+#sudo install -m644 -d /etc/local.d
+#sudo cp -r local.d/* /etc/local.d/
+#sudo cp etc/* /etc/
+#sudo cp -rv sh /usr/lib64/openrc/
+#sudo rm /etc/Makefile
 
 sudo mv /usr/lib/pkgconfig/openrc.pc /usr/lib64/pkgconfig/
 
