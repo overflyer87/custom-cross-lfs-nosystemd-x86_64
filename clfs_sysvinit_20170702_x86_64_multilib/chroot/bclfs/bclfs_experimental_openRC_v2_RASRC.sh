@@ -87,28 +87,32 @@ sudo install -dm644 /etc/logrotate.d
 
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} \
 BRANDING='CLFS-SVN-x86_64-multilib' \ 
-SYSCONFDIR=/etc
-PREFIX=/usr
-SBINDIR=/usr/bin
-LIBEXECDIR=/usr/lib64/openrc
-MKSELINUX=no
-MKPAM=pam
-MKTERMCAP=ncurses
-MKNET=no
-MKSYSVINIT=yes
+SYSCONFDIR=/etc \
+PREFIX=/usr \
+SBINDIR=/usr/bin \
+LIBEXECDIR=/usr/lib64/openrc \
+MKSELINUX=no \
+MKPAM=pam \
+LIBMODE=0644 \
+SHLIBDIR=/usr/lib64 \
+MKTERMCAP=ncurses \
+MKNET=no \
+MKSYSVINIT=yes \
 CC="gcc ${BUILD64}" make 
 
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} \
 BRANDING='CLFS-SVN-x86_64-multilib' \ 
-SYSCONFDIR=/etc
-PREFIX=/usr
-SBINDIR=/usr/bin
-LIBEXECDIR=/usr/lib64/openrc
-MKSELINUX=no
-MKPAM=pam
-MKTERMCAP=ncurses
-MKNET=no
-MKSYSVINIT=yes
+SYSCONFDIR=/etc \
+PREFIX=/usr \
+SBINDIR=/usr/bin \
+LIBEXECDIR=/usr/lib64/openrc \
+MKSELINUX=no \
+MKPAM=pam \
+LIBMODE=0644 \
+SHLIBDIR=/usr/lib64 \
+MKTERMCAP=ncurses \
+MKNET=no \
+MKSYSVINIT=yes \
 CC="gcc ${BUILD64}" sudo make install
 
 sudo install -m644 support/sysvinit/inittab /etc/inittab
