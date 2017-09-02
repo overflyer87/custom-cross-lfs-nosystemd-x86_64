@@ -83,7 +83,6 @@ sed -i 's:0444:0644:' mk/sys.mk
 
 patch -Np1 -i ${CLFSSOURCES}/openrc-quiet.patch
 
-#sudo install -dm644 /etc/openrc
 sudo install -dm644 /etc/logrotate.d
 
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} \
@@ -123,19 +122,6 @@ sudo bash -c 'cat > /etc/logrotate.d/openrc << "EOF"
   notifempty 
 }
 EOF'
-
-#sudo install -d /usr/lib64/rc/cache
-#sudo install -m755 -d /usr/share/licenses/openrc
-#sudo install -m644 LICENSE AUTHORS /usr/share/licenses/openrc/
-#sudo install -m644 -d /etc/conf.d
-#sudo cp -r conf.d/* /etc/conf.d/
-#sudo install -m644 -d /etc/init.d
-#sudo cp -r init.d/* /etc/init.d/
-#sudo install -m644 -d /etc/local.d
-#sudo cp -r local.d/* /etc/local.d/
-#sudo cp etc/* /etc/
-#sudo cp -rv sh /usr/lib64/openrc/
-#sudo rm /etc/Makefile
 
 sudo mv /usr/lib/pkgconfig/openrc.pc /usr/lib64/pkgconfig/
 
