@@ -59,3 +59,18 @@ Test BLockquotes
 > Blockquote 1
 
 > Blockquote 2
+
+
+Inline code is realized by using backticks
+I think you should use an `<addr>` element here
+
+JavaScript Highlighting realized with triple Backticks
+
+ ```javascript
+  function fancyFunction() {
+  
+   //something stands here
+   var int = 0;
+   
+  }
+  ```
