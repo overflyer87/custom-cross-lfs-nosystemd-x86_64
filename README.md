@@ -27,4 +27,12 @@ Scripts with dots in their numbering indicate that script with a different "deci
 #### Test H4
 
 _Test italic with **nested bold writing**_
+
 __Test bold with *nested italic writing*__
+
+Test unordered list
+
+* Item 1
+* Item 2
+  * Item 2a
+  * Item 2b
