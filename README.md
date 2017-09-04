@@ -1,4 +1,3 @@
-
 # automatexlfs
 
 RAHU - Run as (regular) user of your host distro
@@ -37,6 +36,6 @@ Test unordered list
 * Item 2
   * Item 2a
   * Item 2b
-   *Item 2a1
+    * Item 2a1
   
   
