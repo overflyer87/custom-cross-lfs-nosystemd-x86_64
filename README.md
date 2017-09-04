@@ -46,3 +46,8 @@ Test ordered list
   1. Item 3a
   2. Item 3b
 
+
+Test Images
+
+![GitHub Logo](/images/logo.png)
+Format: ![Alt Test](url)
