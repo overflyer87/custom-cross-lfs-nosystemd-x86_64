@@ -62,21 +62,40 @@ checkSanity
 
 echo " "
 
+echo "Starting interactive setting of vital variables through user input..."
+echo " " 
+
+echo "What drive do you want to be your ROOT partition? Type in form of [/dev/sdX]. Make no typos. There is no failsafe, yet!"
+read clfsrootdev
+echo "Your CLFS ROOT partition is $clfsrootdev. It will be mounted to /mnt/clfs"
+echo " "
+echo "What drive do you want to be your HOME partition? Type in form of /dev/sdX. Make no typos. There is no failsafe, yet!"
+echo "If you just press ENTER I will ONLY use the ROOT partition!"
+read clfshomedev
+echo "Your CLFS ROOT partition is $clfshomedev. It will be mounted to /mnt/clfs/home"
+echo " "
+echo "Chose whether or not your home partition should be formatted.[Y/N/y/n/yes/no]"
+read clfsformathomedev
+echo " "
+echo "Now choose your file system. Both drives will be formatted with it. For now only [ext4] will be supported."
+read clfsfilesystem
+echo "You chose to format $clfshomedev and $clfsrootdev with $clfsfilesystem. That's it for now."
+
 CLFS=/mnt/clfs
 CLFSUSER=clfs
 CLFSHOME=${CLFS}/home
 CLFSSOURCES=${CLFS}/sources
 CLFSTOOLS=${CLFS}/tools
 CLFSCROSSTOOLS=${CLFS}/cross-tools
-CLFSFILESYSTEM=ext4
-CLFSROOTDEV=/dev/sda4
-CLFSHOMEDEV=/dev/sda5
+CLFSFILESYSTEM=$clfsfilesystem
+CLFSROOTDEV=$clfsrootdev
+CLFSHOMEDEV=$clfshomedev
 
 export CLFS=/mnt/clfs
 export CLFSHOME=/mnt/clfs/home
-export FILESYSTEM=ext4
-export CLFSROOTDEV=/dev/sda4
-export CLFSHOMEDEV=/dev/sda5
+export FILESYSTEM=$clfsfilesystem
+export CLFSROOTDEV=$clfsrootdev
+export CLFSHOMEDEV=$clfshomedev
 export CLFSSOURCES=/mnt/clfs/sources
 export CLFSTOOLS=/mnt/clfs/tools
 export CLFSCROSSTOOLS=/mnt/clfs/cross-tools
@@ -97,7 +116,11 @@ EOF
 echo " "
 mkfs.${CLFSFILESYSTEM} -q ${CLFSROOTDEV}
 echo " "
-mkfs.${CLFSFILESYSTEM} -q ${CLFSHOMEDEV}
+
+if [[$clfsformathomedev == y || $clfsformathomedev == Y || $clfsformathomedev == yes]]
+ then
+	mkfs.${CLFSFILESYSTEM} -q ${CLFSHOMEDEV}
+fi
 echo " "
 
 mkdir -pv $CLFS
