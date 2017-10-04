@@ -3,7 +3,7 @@
 function checkSanity() {
 echo " "
 echo "Does your system fullfil the requirements to build CLFS?: [Y/N]"
-while read -n1 -r -p "[Y/N]   " && [[ $REPLY != q ]]; do
+while read -n1 -r -p "" && [[ $REPLY != q ]]; do
   case $REPLY in
     Y) break 1;;
     N) echo "$EXIT"
@@ -18,6 +18,8 @@ echo " "
 #=======================
 #RUN AS HOST'S root
 #=======================
+
+printf "\033c"
 
 cat > version-check.sh << "EOF"
 #!/bin/bash
@@ -62,24 +64,46 @@ checkSanity
 
 echo " "
 
+printf "\033c"
+
 echo "Starting interactive setting of vital variables through user input..."
 echo " " 
+echo "Here are both outputs of lsblk and fdisk -l, respectively"
+echo "This should help you with chosing a partition for now"
+
+echo " "
+lsblk
+echo " "
+fdisk -l
+echo " "
 
 echo "What drive do you want to be your ROOT partition? Type in form of [/dev/sdX]. Make no typos. There is no failsafe, yet!"
+echo " "
 read clfsrootdev
+printf "\033c"
 echo "Your CLFS ROOT partition is $clfsrootdev. It will be mounted to /mnt/clfs"
+echo " "
 echo " "
 echo "What drive do you want to be your HOME partition? Type in form of /dev/sdX. Make no typos. There is no failsafe, yet!"
 echo "If you just press ENTER I will ONLY use the ROOT partition!"
+echo " "
 read clfshomedev
+printf "\033c"
 echo "Your CLFS ROOT partition is $clfshomedev. It will be mounted to /mnt/clfs/home"
 echo " "
+echo " "
 echo "Chose whether or not your home partition should be formatted.[Y/N/y/n/yes/no]"
+echo " "
 read clfsformathomedev
+printf "\033c"
+echo " "
 echo " "
 echo "Now choose your file system. Both drives will be formatted with it. For now only [ext4] will be supported."
+echo " "
 read clfsfilesystem
+printf "\033c"
 echo "You chose to format $clfshomedev and $clfsrootdev with $clfsfilesystem. That's it for now."
+echo " "
 
 CLFS=/mnt/clfs
 CLFSUSER=clfs
@@ -117,8 +141,7 @@ echo " "
 mkfs.${CLFSFILESYSTEM} -q ${CLFSROOTDEV}
 echo " "
 
-if [[$clfsformathomedev == y || $clfsformathomedev == Y || $clfsformathomedev == yes]]
- then
+if [[ $clfsformathomedev = y || $clfsformathomedev = Y || $clfsformathomedev = yes ]]; then
 	mkfs.${CLFSFILESYSTEM} -q ${CLFSHOMEDEV}
 fi
 echo " "
