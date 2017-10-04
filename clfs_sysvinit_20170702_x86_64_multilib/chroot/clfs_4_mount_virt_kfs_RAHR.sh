@@ -32,7 +32,8 @@ sudo mount -vt tmpfs tmpfs ${CLFS}/run
 sudo mount -vt sysfs sysfs ${CLFS}/sys
 
 sudo mkdir -pv ${CLFS}/sys/firmware/efi/efivars
-sudo mount -v -o ro bind /sys/firmware/efi/efivars ${CLFS}/sys/firmware/efi/efivars
+sudo mount -v bind /sys/firmware/efi/efivars ${CLFS}/sys/firmware/efi/efivars
+mount -o remount,ro ${CLFS}/sys/firmware/efi/efivars/
 
 [ -h ${CLFS}/dev/shm ] && sudo mkdir -pv ${CLFS}/$(readlink ${CLFS}/dev/shm)
 
