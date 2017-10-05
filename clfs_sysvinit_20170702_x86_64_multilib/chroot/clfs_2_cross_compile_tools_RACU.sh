@@ -146,7 +146,7 @@ cd mpc
 LDFLAGS="-Wl,-rpath,/cross-tools/lib" ./configure \
     --prefix=/cross-tools \
     --with-gmp=/cross-tools \
-	--with-mpfr=/cross-tools \
+    --with-mpfr=/cross-tools \
     --disable-static
 make && make install
 cd ${CLFSSOURCES} 
@@ -233,7 +233,7 @@ LDFLAGS="-Wl,-rpath,/cross-tools/lib" \
     --disable-threads \
     --with-isl=/cross-tools \
     --enable-languages=c \
-    --with-glibc-version=2.25
+    --with-glibc-version=2.26
 
 make all-gcc all-target-libgcc
 make install-gcc install-target-libgcc
@@ -256,7 +256,7 @@ AR="${CLFS_TARGET}-ar" RANLIB="${CLFS_TARGET}-ranlib" \
     --prefix=/tools \
     --host=${CLFS_TARGET32} \
     --build=${CLFS_HOST} \
-    --enable-kernel=3.12.0 \
+    --enable-kernel=3.2 \
     --with-binutils=/cross-tools/bin \
     --with-headers=/tools/include \
     --enable-obsolete-rpc
@@ -284,7 +284,7 @@ AR="${CLFS_TARGET}-ar" RANLIB="${CLFS_TARGET}-ranlib" \
     --host=${CLFS_TARGET} \
     --build=${CLFS_HOST} \
     --libdir=/tools/lib64 \
-    --enable-kernel=3.12.0 \
+    --enable-kernel=3.2 \
     --with-binutils=/cross-tools/bin \
     --with-headers=/tools/include \
     --enable-obsolete-rpc \
