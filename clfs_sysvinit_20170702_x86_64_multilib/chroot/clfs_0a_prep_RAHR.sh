@@ -170,9 +170,11 @@ echo " "
 #wget -i ../dl.list -P ${CLFSSOURCES}
 cp sources/* ${CLFSSOURCES}
 
-wget http://ftp.gnu.org/gnu/binutils/binutils-2.28.tar.bz2 -P ${CLFSSOURCES}
+#Download kernel and toolchain
+wget http://ftp.gnu.org/gnu/binutils/binutils-2.29.1.tar.bz2 -P ${CLFSSOURCES}
 wget ftp://gcc.gnu.org/pub/gcc/releases/gcc-7.2.0/gcc-7.2.0.tar.xz -P ${CLFSSOURCES}
 wget https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.12.10.tar.xz -P ${CLFSSOURCES}
+wget https://ftp.gnu.org/gnu/glibc/glibc-2.26.tar.xz -P ${CLFSSOURCES}
 
 echo " "
 echo "source packages have been copied"
