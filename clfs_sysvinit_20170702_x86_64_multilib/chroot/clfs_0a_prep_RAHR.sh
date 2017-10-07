@@ -21,9 +21,6 @@ echo " "
 
 printf "\033c"
 
-cat > version-check.sh << "EOF"
-#!/bin/bash
-
 # Simple script to list version numbers of critical development tools
 
 echo " "
@@ -90,6 +87,8 @@ echo " "
 CLFS=/mnt/clfs
 CLFSUSER=clfs
 CLFSHOME=${CLFS}/home
+CLFSROOTDEV=$clfsrootdev
+CLFSHOMEDEV=$clfshomedev
 CLFSSOURCES=${CLFS}/sources
 CLFSTOOLS=${CLFS}/tools
 CLFSFILESYSTEM=$clfsfilesystem
@@ -99,6 +98,8 @@ export CLFS=/mnt/clfs
 export CLFSHOME=/mnt/clfs/home
 export CLFSSOURCES=/mnt/clfs/sources
 export CLFSFILESYSTEM=$clfsfilesystem
+export CLFSROOTDEV=$clfsrootdev
+export CLFSHOMEDEV=$clfshomedev
 export CLFSTOOLS=/mnt/clfs/tools
 export CLFSCROSSTOOLS=/mnt/clfs/cross-tools
 export CLFSUSER=clfs
@@ -108,6 +109,8 @@ export CLFS=/mnt/clfs
 export CLFSHOME=/mnt/clfs/home
 export CLFSSOURCES=/mnt/clfs/sources
 export CLFSTOOLS=/mnt/clfs/tools
+export CLFSROOTDEV=$clfsrootdev
+export CLFSHOMEDEV=$clfshomedev
 export CLFSCROSSTOOLS=/mnt/clfs/cross-tools
 export CLFSFILESYSTEM=$clfsfilesystem
 export CLFSUSER=clfs
