@@ -93,7 +93,13 @@ sed -i 's:= @mkdir_p@:= /bin/mkdir -p:' po/Makefile.in.in
 
 CC="gcc ${BUILD64}" \
 ./configure \
-    --prefix=/usr
+    --prefix=/usr \
+    gl_cv_func_getopt_gnu=yes
+    
+    #Concerning the last line above
+    #Needed for version 3.6 with glibc 2.26
+    #Probably can be ommited again for later diffutil versions
+    #https://patchwork.ozlabs.org/patch/809145/
 
 sed -i 's@\(^#define DEFAULT_EDITOR_PROGRAM \).*@\1"vi"@' lib/config.h
 
@@ -794,7 +800,13 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
     PERL=/usr/bin/perl \
     CC="gcc ${BUILD64}" \
     ./configure \
-    --prefix=/usr
+    --prefix=/usr \    
+    gl_cv_func_getopt_gnu=yes
+    
+    #Concerning the last line above
+    #Needed for version 3.6 with glibc 2.26
+    #Probably can be ommited again for later diffutil versions
+    #https://patchwork.ozlabs.org/patch/809145/
 
 make 
 checkBuiltPackage
