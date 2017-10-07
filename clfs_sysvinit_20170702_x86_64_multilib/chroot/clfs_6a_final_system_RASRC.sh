@@ -159,7 +159,7 @@ cd ../glibc-build
 CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" \
 ../glibc/configure \
     --prefix=/usr \
-    --enable-kernel=3.12.0 \
+    --enable-kernel=3.2 \
     --libexecdir=/usr/lib/glibc \
     --host=${CLFS_TARGET32} \
     --enable-stack-protector=strong \
@@ -194,7 +194,7 @@ echo "libc_cv_slibdir=/lib64" >> config.cache
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
 ../glibc/configure \
     --prefix=/usr \
-    --enable-kernel=3.12.0 \
+    --enable-kernel=3.2 \
     --libexecdir=/usr/lib64/glibc \
     --libdir=/usr/lib64 \
     --enable-obsolete-rpc \
