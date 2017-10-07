@@ -548,7 +548,12 @@ PERL=/usr/bin/perl \
 ./configure \
     --prefix=/tools \
     --build=${CLFS_HOST} \
-    --host=${CLFS_TARGET}
+    --host=${CLFS_TARGET} \
+    gl_cv_func_getopt_gnu=yes
+
+  #last line if same patch as used for diffutils 3.6 above
+  #due to incompatibility with new glibc 2.26. 
+  #so might be that we can ommit it again in a new version of texinfo
 
 make && make install
 
