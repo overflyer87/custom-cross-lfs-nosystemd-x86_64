@@ -349,8 +349,14 @@ cd diffutils
 ./configure \
     --prefix=/tools \
     --build=${CLFS_HOST} \
-    --host=${CLFS_TARGET}
-
+    --host=${CLFS_TARGET} \
+    gl_cv_func_getopt_gnu=yes
+    
+    #Concerning the last line above
+    #Needed for version 3.6 with glibc 2.26
+    #Probably can be ommited again for later diffutil versions
+    #https://patchwork.ozlabs.org/patch/809145/
+    
 make && make install
 
 cd ${CLFSSOURCES} 
