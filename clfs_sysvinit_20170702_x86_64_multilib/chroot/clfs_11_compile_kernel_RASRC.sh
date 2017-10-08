@@ -269,7 +269,7 @@ rm -rf /boot/efi/System.map-4.13.5
 rm -rf /boot/efi/vmlinuz-clfs-4.13.5
 
 make mrproper
-cp ${CLFSSOURCES}/kernel.conf ${CLFSSOURCES}/linux/.config
+cp ${CLFSSOURCES}/kernel413.conf ${CLFSSOURCES}/linux/.config
 
 CC="gcc ${BUILD64}" USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make
 CC="gcc ${BUILD64}" USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make modules_install
