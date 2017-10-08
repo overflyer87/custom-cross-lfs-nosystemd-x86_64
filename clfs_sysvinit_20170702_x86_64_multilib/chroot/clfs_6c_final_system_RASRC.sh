@@ -108,7 +108,6 @@ cd acl
 
 sed -i -e 's|/@pkg_name@|&-@pkg_version@|' include/builddefs.in
 sed -i "s:| sed.*::g" test/{sbits-restore,cp,misc}.test
-sed -i '87s/{/\\{/' test/run
 
 CC="gcc ${BUILD32}" \
 ./configure \
@@ -117,6 +116,9 @@ CC="gcc ${BUILD32}" \
     --libexecdir=/usr/lib
 
 make PREFIX=/usr LIBDIR=/lib
+
+sed -i 's/{(/\\{(/' test/run
+
 make tests
 checkBuiltPackage
 make PREFIX=/usr LIBDIR=/lib install install-dev install-lib
@@ -135,7 +137,6 @@ cd acl
 
 sed -i -e 's|/@pkg_name@|&-@pkg_version@|' include/builddefs.in
 sed -i "s:| sed.*::g" test/{sbits-restore,cp,misc}.test
-sed -i '87s/{/\\{/' test/run
 
 CC="gcc ${BUILD64}" \
 ./configure \
@@ -144,7 +145,11 @@ CC="gcc ${BUILD64}" \
     --libexecdir=/usr/lib64
 
 make PREFIX=/usr LIBDIR=/lib64
+
+sed -i 's/{(/\\{(/' test/run
+
 make tests
+
 checkBuiltPackage
 make PREFIX=/usr LIBDIR=/lib64 install install-dev install-lib
 
