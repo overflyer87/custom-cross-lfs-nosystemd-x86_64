@@ -611,9 +611,9 @@ rm -v doc/arpd.sgml
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"
 
-make CC="gcc ${BUILD64}" LIBDIR=/usr/lib64
+make CC="gcc ${BUILD64}" PREFIX=/usr LIBDIR=/usr/lib64
 
-make LIBDIR=/usr/lib64 \
+make LIBDIR=/usr/lib64 PREFIX=/usr \
     DOCDIR=/usr/share/doc/iproute2-4.9.0 install
 
 cd ${CLFSSOURCES} 
