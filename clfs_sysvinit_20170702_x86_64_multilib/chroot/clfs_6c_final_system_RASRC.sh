@@ -743,7 +743,7 @@ make install
 unset BUILD_ZLIB BUILD_BZIP2
 
 mv -v /usr/bin/perl{,-32}
-mv -v /usr/bin/perl5.26.0{,-32}
+mv -v /usr/bin/perl5.26.1{,-32}
 
 cd ${CLFSSOURCES} 
 checkBuiltPackage
@@ -781,10 +781,10 @@ make install
 unset BUILD_ZLIB BUILD_BZIP2
 
 mv -v /usr/bin/perl{,-64}
-mv -v /usr/bin/perl5.26.0{,-64}
+mv -v /usr/bin/perl5.26.1{,-64}
 
 ln -sv multiarch_wrapper /usr/bin/perl
-ln -sv multiarch_wrapper /usr/bin/perl5.26.0
+ln -sv multiarch_wrapper /usr/bin/perl5.26.1
 
 cd ${CLFSSOURCES} 
 checkBuiltPackage
