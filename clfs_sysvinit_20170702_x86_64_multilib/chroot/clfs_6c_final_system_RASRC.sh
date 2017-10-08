@@ -621,6 +621,9 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"
 
 make CC="gcc ${BUILD64}" PREFIX=/usr LIBDIR=/usr/lib64
 
+#need to add #include <stdint.h> to tc/tc_core.h
+nano tc/tc_core.h
+
 make LIBDIR=/usr/lib64 PREFIX=/usr \
     DOCDIR=/usr/share/doc/iproute2-4.9.0 install
 
