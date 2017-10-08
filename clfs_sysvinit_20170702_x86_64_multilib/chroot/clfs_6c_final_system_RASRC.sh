@@ -81,6 +81,7 @@ cd attr
 
 sed -i -e "/SUBDIRS/s|man[25]||g" man/Makefile
 sed -i -e 's|/@pkg_name@|&-@pkg_version@|' include/builddefs.in
+sed -i '87s/{/\\{/' test/run
 
 CC="gcc ${BUILD64}" \
 ./configure \
@@ -107,6 +108,7 @@ cd acl
 
 sed -i -e 's|/@pkg_name@|&-@pkg_version@|' include/builddefs.in
 sed -i "s:| sed.*::g" test/{sbits-restore,cp,misc}.test
+sed -i '87s/{/\\{/' test/run
 
 CC="gcc ${BUILD32}" \
 ./configure \
@@ -133,6 +135,7 @@ cd acl
 
 sed -i -e 's|/@pkg_name@|&-@pkg_version@|' include/builddefs.in
 sed -i "s:| sed.*::g" test/{sbits-restore,cp,misc}.test
+sed -i '87s/{/\\{/' test/run
 
 CC="gcc ${BUILD64}" \
 ./configure \
