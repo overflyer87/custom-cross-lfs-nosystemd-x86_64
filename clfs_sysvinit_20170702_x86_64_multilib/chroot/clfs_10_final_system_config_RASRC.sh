@@ -502,6 +502,7 @@ KEYMAP="de"
 # End /etc/vconsole.conf
 EOF
 
+mkdir /etc/conf.d
 nano /etc/conf.d/keymaps
 
 echo " "
