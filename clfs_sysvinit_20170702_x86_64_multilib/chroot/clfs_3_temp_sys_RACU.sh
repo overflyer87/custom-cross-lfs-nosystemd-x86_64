@@ -554,9 +554,6 @@ PERL=/usr/bin/perl \
   #last line if same patch as used for diffutils 3.6 above
   #due to incompatibility with new glibc 2.26. 
   #so might be that we can ommit it again in a new version of texinfo
-  
-  #also add <stdint.h> to tc/tc_core.h
-  nano tc/tc_core.h
 
 make && make install
 
