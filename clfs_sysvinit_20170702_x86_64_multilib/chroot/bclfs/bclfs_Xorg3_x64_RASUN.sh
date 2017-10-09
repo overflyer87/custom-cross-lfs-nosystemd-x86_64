@@ -323,6 +323,31 @@ cd ${CLFSSOURCES}/xc
 checkBuiltPackage
 rm -rf pixman
 
+#nettle
+wget https://ftp.gnu.org/gnu/nettle/nettle-3.3.tar.gz -O \
+    nettle-3.3.tar.gz
+
+mkdir nettle && tar xf nettle-*.tar.* -C nettle --strip-components 1
+cd nettle
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+   PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+   --libdir=/usr/lib64 --disable-static 
+   
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+make check
+checkBuiltPackage
+
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo chmod   -v   755 /usr/lib64/lib{hogweed,nettle}.so &&
+sudo install -v -m755 -d /usr/share/doc/nettle-3.3 &&
+sudo install -v -m644 nettle.html /usr/share/doc/nettle-3.3
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf nettle
+
 #Xorg Server 64-bit
 wget https://www.x.org/pub/individual/xserver/xorg-server-1.19.4.tar.bz2 -O \
   xorg-server-1.19.4.tar.bz2 
