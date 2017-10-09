@@ -171,10 +171,10 @@ EOF
 
 cd ${CLFSSOURCES}
 
-sed -i 's/\/lib\//\/lib64\//' /etc/rc.dinit.d/*
-sed -i 's/\/lib6464\//\/lib64\//' /etc/rc.dinit.d/*
-sed -i 's/loadproc/start_daemon/' /etc/rc.dinit.d/*
-sed -i 's/load_info_msg/echo/' /etc/rc.dinit.d/*
+sed -i 's/\/lib\//\/lib64\//' /etc/rc.d/init.d/*
+sed -i 's/\/lib6464\//\/lib64\//' /etc/rc.d/init.d/*
+sed -i 's/loadproc/start_daemon/' /etc/rc.d/init.d/*
+sed -i 's/load_info_msg/echo/' /etc/rc.d/init.d/*
 ln -sfv /etc/rc.d/init.d/functions /lib64/init-functions
 
 #lsb-release
