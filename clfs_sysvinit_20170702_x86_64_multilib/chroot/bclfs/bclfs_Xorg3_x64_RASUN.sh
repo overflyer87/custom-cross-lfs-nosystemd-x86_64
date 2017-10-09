@@ -264,8 +264,8 @@ rm -rf intltool
 cd ${CLFSSOURCES}/xc
 
 #XKeyboardConfig 64-bit
-wget http://xorg.freedesktop.org/archive/individual/data/xkeyboard-config/xkeyboard-config-2.21.tar.bz2 -O \
-  xkeyboard-config-2.21.tar.bz2
+wget http://xorg.freedesktop.org/archive/individual/data/xkeyboard-config/xkeyboard-config-2.22.tar.bz2 -O \
+  xkeyboard-config-2.22.tar.bz2
   
 mkdir xkeyboard-config && tar xf xkeyboard-config-*.tar.* -C xkeyboard-config --strip-components 1
 cd xkeyboard-config
@@ -274,7 +274,8 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
 USE_ARCH=64 \
 CC="gcc ${BUILD64}" \
 CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64 \
-    --with-xkb-rules-symlink=xorg &&
+    --with-xkb-rules-symlink=xorg 
+    
 make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
@@ -292,7 +293,8 @@ cd libepoxy
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
 USE_ARCH=64 CC="gcc ${BUILD64}" \
 CXX="g++ ${BUILD64}" ./configure --prefix=/usr \
-    --libdir=/usr/lib64 &&
+    --libdir=/usr/lib64
+    
 make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
@@ -322,16 +324,16 @@ checkBuiltPackage
 rm -rf pixman
 
 #Xorg Server 64-bit
-wget https://www.x.org/pub/individual/xserver/xorg-server-1.19.3.tar.bz2 -O \
-  xorg-server-1.19.3.tar.bz2 
+wget https://www.x.org/pub/individual/xserver/xorg-server-1.19.4.tar.bz2 -O \
+  xorg-server-1.19.4.tar.bz2 
 
-wget http://www.linuxfromscratch.org/patches/blfs/svn/xorg-server-1.19.3-add_prime_support-1.patch -O \
-  Xorg-server-1.19.3-add_prime_support-1.patch
+#wget http://www.linuxfromscratch.org/patches/blfs/svn/xorg-server-1.19.3-add_prime_support-1.patch -O \
+#  Xorg-server-1.19.3-add_prime_support-1.patch
   
 mkdir xorg-server && tar xf xorg-server-*.tar.* -C xorg-server --strip-components 1
 cd xorg-server
 
-patch -Np1 -i ../Xorg-server-1.19.3-add_prime_support-1.patch
+#patch -Np1 -i ../Xorg-server-1.19.3-add_prime_support-1.patch
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
 USE_ARCH=64 \
@@ -341,7 +343,7 @@ CXX="g++ ${BUILD64}" ./configure $XORG_CONFIG64 \
            --enable-install-setuid  \
            --enable-suid-wrapper    \
            --disable-systemd-logind \
-           --with-xkb-output=/var/lib/xkb &&
+           --with-xkb-output=/var/lib/xkb 
            
 make PREFIX=/usr LIBDIR=/usr/lib64
 sudo ldconfig
@@ -444,8 +446,8 @@ checkBuiltPackage
 rm -rf xf86-input-evdev
 
 #libinput 64-bit
-wget http://www.freedesktop.org/software/libinput/libinput-1.8.0.tar.xz -O \
-    libinput-1.8.0.tar.xz
+wget http://www.freedesktop.org/software/libinput/libinput-1.8.3.tar.xz -O \
+    libinput-1.8.3.tar.xz
     
 mkdir libinput && tar xf libinput-*.tar.* -C libinput --strip-components 1
 cd libinput
@@ -500,7 +502,7 @@ USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}"
 
 #xterm 64-bit
-wget https://fossies.org/linux/misc/xterm-330.tar.bz2 -O \
+wget http://invisible-mirror.net/archives/xterm/xterm-330.tgz -O \
   xterm-330.tgz
   
 mkdir xterm && tar xf xterm-*.tgz -C xterm --strip-components 1
@@ -543,8 +545,8 @@ checkBuiltPackage
 rm -rf xclock
 
 #xinit 64-bit
-wget https://www.x.org/pub/individual/app/xinit-1.0.7.tar.bz2 -O \
-  xinit-1.0.7.tar.bz2
+wget https://www.x.org/pub/individual/app/xinit-1.3.4.tar.bz2 -O \
+  xinit-1.3.4.tar.bz2
 
 mkdir xinit && tar xf xinit-*.tar.* -C xinit --strip-components 1
 cd xinit
