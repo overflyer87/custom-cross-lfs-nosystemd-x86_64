@@ -800,18 +800,15 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
     PERL=/usr/bin/perl-64 \
     CC="gcc ${BUILD64}" \
     ./configure \
-    --prefix=/usr \    
-    --libdir=/usr/lib64 \
+    --prefix=/usr \
     gl_cv_func_getopt_gnu=yes
     
-    #At the moment textinfo fails when automatically running the scripts
-    #However building it manually worked...dont know why yet
-    
+       
     #Concerning the last line above
     #Needed for version 3.6 with glibc 2.26
     #Probably can be ommited again for later diffutil versions
     #https://patchwork.ozlabs.org/patch/809145/
-
+    
 make 
 checkBuiltPackage
 make install
