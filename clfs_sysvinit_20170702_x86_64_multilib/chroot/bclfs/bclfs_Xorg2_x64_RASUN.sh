@@ -267,7 +267,7 @@ checkBuiltPackage
 rm -rf libdrm
 
 #So before we can build Mesa
-#There are some reccomended deps
+#There are some recommended deps
 #elfutils-0.169 (required for the radeonsi driver)
 #libvdpau-1.1.1 (to build VDPAU drivers)
 #LLVM-4.0.1 (required for Gallium3D, r300, and radeonsi drivers and for the llvmpipe software rasterizer)
@@ -296,11 +296,11 @@ checkBuiltPackage
 rm -rf libvdpau
 
 #Mesa 64-bit
-wget https://mesa.freedesktop.org/archive/mesa-17.1.5.tar.xz -O \
-  Mesa-17.1.5.tar.xz
+wget https://mesa.freedesktop.org/archive/mesa-17.2.2.tar.xz -O \
+  Mesa-17.2.2.tar.xz
   
-wget http://www.linuxfromscratch.org/patches/blfs/svn/mesa-17.1.5-add_xdemos-1.patch -O \
-    mesa-17.1.5-add_xdemos-1.patch
+wget http://www.linuxfromscratch.org/patches/blfs/svn/mesa-17.2.2-add_xdemos-1.patch -O \
+    mesa-17.2.2-add_xdemos-1.patch
 
 mkdir Mesa && tar xf Mesa-*.tar.* -C Mesa --strip-components 1
 cd Mesa
@@ -322,8 +322,7 @@ CXX="g++ ${BUILD64}" ./autogen.sh CFLAGS='-O2' CXXFLAGS='-O2' \
             --enable-xa                  \
             --enable-glx-tls             \
             --with-platforms="drm,x11"   \
-            --with-gallium-drivers=$GLL_DRV \
-            --with-egl-platforms
+            --with-gallium-drivers=$GLL_DRV 
 
 unset GLL_DRV
 
@@ -332,8 +331,8 @@ make -C xdemos DEMOS_PREFIX=$XORG_PREFIX LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 sudo make -C xdemos DEMOS_PREFIX=$XORG_PREFIX LIBDIR=/usr/lib64 install
 
-install -v -dm755 /usr/share/doc/mesa-17.1.4 &&
-cp -rfv docs/* /usr/share/doc/mesa-17.1.4
+install -v -dm755 /usr/share/doc/mesa-17.2.2 &&
+cp -rfv docs/* /usr/share/doc/mesa-17.2.2
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
