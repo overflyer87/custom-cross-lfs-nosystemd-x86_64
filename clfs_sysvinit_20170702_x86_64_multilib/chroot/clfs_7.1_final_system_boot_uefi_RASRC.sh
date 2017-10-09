@@ -440,7 +440,10 @@ sed -i ':a;$!{N;ba};s/.*#include[^\n]*/&\n#include <sys\/sysmacros.h>/' \
 
 PREFIX=/usr LIBDIR=/usr/lib64 make
 PREFIX=/usr LIBDIR=/usr/lib64 make install
+
+mount -o remount,rw ${CLFS}/sys/firmware/efi/efivars/
 goofiboot --path=/boot/efi install 
+mount -o remount,ro ${CLFS}/sys/firmware/efi/efivars/
 
 fs_uuid=$(blkid -o value -s PARTUUID /dev/sda4)
 
