@@ -143,4 +143,4 @@ sudo ln -sfv /usr/bin/python3.6 /usr/bin/python3
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
-sudo bash -c 'rm -rf Python-3'
+sudo rm -rf Python-3
