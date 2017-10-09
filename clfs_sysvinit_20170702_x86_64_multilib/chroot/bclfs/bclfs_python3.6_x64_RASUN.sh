@@ -51,6 +51,8 @@ export ACLOCAL="aclocal -I $XORG_PREFIX/share/aclocal"
 
 cd ${CLFSSOURCES}
 
+sudo -c bash 'chmod -Rv overflyer /sources'
+
 #Expat (Needed by Python) 64-bit
 wget http://downloads.sourceforge.net/expat/expat-2.1.0.tar.gz -O \
   expat-2.1.0.tar.gz
@@ -141,4 +143,4 @@ sudo ln -sfv /usr/bin/python3.6 /usr/bin/python3
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
-rm -rf Python-3
+sudo bash -c 'rm -rf Python-3'
