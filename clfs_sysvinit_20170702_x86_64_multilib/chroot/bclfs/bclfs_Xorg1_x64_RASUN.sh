@@ -65,11 +65,11 @@ mkdir xc && cd xc
 
 export XORG_PREFIX="/usr"
 export XORG_CONFIG64="--prefix=$XORG_PREFIX --sysconfdir=/etc --localstatedir=/var \
-  --libdir=$XORG_PREFIX/lib64"
+  --libdir=$XORG_PREFIX/lib64 --disable-static" 
 
 XORG_PREFIX="/usr"
 XORG_CONFIG64="--prefix=$XORG_PREFIX --sysconfdir=/etc --localstatedir=/var \
-  --libdir=$XORG_PREFIX/lib64"
+  --libdir=$XORG_PREFIX/lib64 --disable-static"
   
 #Down there you see one way to create a file as sudo using cat << EOF ... EOF
 #Here is an alternative if this ever shouldn't work
@@ -81,9 +81,9 @@ XORG_CONFIG64="--prefix=$XORG_PREFIX --sysconfdir=/etc --localstatedir=/var \
 sudo bash -c 'cat > /etc/profile.d/xorg.sh << EOF
 export XORG_PREFIX="/usr"
 export XORG_CONFIG32="--prefix=$XORG_PREFIX --sysconfdir=/etc --localstatedir=/var \
-  --libdir=$XORG_PREFIX/lib"
+  --libdir=$XORG_PREFIX/lib --disable-static"
 export XORG_CONFIG64="--prefix=$XORG_PREFIX --sysconfdir=/etc --localstatedir=/var \
-  --libdir=$XORG_PREFIX/lib64"
+  --libdir=$XORG_PREFIX/lib64 --disable-static"
 EOF'
 
 chmod 644 /etc/profile.d/xorg.sh
@@ -250,7 +250,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure $XORG_CONFIG64    \
             --without-doxygen \
             --libdir=/usr/lib64 \
             --without-doxygen \
-            --docdir='${datadir}'/doc/libxcb-1.12 &&
+            --docdir='${datadir}'/doc/libxcb-1.12
             
 make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
@@ -260,8 +260,8 @@ checkBuiltPackage
 rm -rf libxcb
 
 #fontconfig 64-bit
-wget http://www.freedesktop.org/software/fontconfig/release/fontconfig-2.12.4.tar.bz2 -O \
-  fontconfig-2.12.4.tar.bz2
+wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.12.6.tar.bz2 -O \
+  fontconfig-2.12.6.tar.bz2
   
 mkdir fontconfig && tar xf fontconfig-*.tar.* -C fontconfig --strip-components 1
 cd fontconfig
@@ -273,7 +273,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
             --sysconfdir=/etc    \
             --localstatedir=/var \
             --disable-docs       \
-            --docdir=/usr/share/doc/fontconfig-2.12.4 \
+            --docdir=/usr/share/doc/fontconfig-2.12.6 \
             --libdir=/usr/lib64
 
 make PREFIX=/usr LIBDIR=/usr/lib64
