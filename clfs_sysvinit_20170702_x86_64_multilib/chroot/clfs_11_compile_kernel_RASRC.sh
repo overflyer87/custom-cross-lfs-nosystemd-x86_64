@@ -280,7 +280,7 @@ cp -v .config /boot/efi/config-4.13.5
 cd ${CLFSSOURCES}
 
 #Copy source folder to /lib/modules
-mv ${CLFSSOURCES}/linux /lib/modules/CLFS-4.12.10_SOURCE
+mv ${CLFSSOURCES}/linux /lib/modules/CLFS-4.13.15_SOURCE
 
 #Properly link the new kernel source folder path to subdirectories
 # build/ and source/
