@@ -1,6 +1,6 @@
 
 
-# automatexlfs
+# my-clfs-svn-nosystemd-x86_64
 
 RAHU - Run as (regular) user of your host distro
 
