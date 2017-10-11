@@ -280,14 +280,14 @@ cp -v .config /boot/efi/config-4.13.5
 cd ${CLFSSOURCES}
 
 #Copy source folder to /lib/modules
-mv ${CLFSSOURCES}/linux /lib/modules/CLFS-4.13.15_SOURCE
+mv ${CLFSSOURCES}/linux /lib/modules/CLFS-4.13.15-headers
 
 #Properly link the new kernel source folder path to subdirectories
 # build/ and source/
 unlink /lib/modules/4.13.5-CLFS-SYSVINIT-SVN-x86_64/build
 unlink /lib/modules/4.13.5-CLFS-SYSVINIT-SVN-x86_64/source
-ln -sfv /lib/modules/CLFS-4.13.5_SOURCE /lib/modules/4.13.5-CLFS-SYSVINIT-SVN-x86_64/build
-ln -sfv /lib/modules/CLFS-4.13.5_SOURCE /lib/modules/4.13.5-CLFS-SYSVINIT-SVN-x86_64/source
+ln -sfv /lib/modules/CLFS-4.13.15-headers /lib/modules/4.13.5-CLFS-SYSVINIT-SVN-x86_64/build
+ln -sfv /lib/modules/CLFS-4.13.15-headers /lib/modules/4.13.5-CLFS-SYSVINIT-SVN-x86_64/source
 
 echo " "
 echo "CONGRATS. You are done! Your very own CLFS is now bootable."
