@@ -21,11 +21,6 @@ sudo chown -Rv overflyer /sources
 CLFS=/
 CLFSHOME=/home
 CLFSSOURCES=/sources
-CLFSTOOLS=/tools
-CLFSCROSSTOOLS=/cross-tools
-CLFSFILESYSTEM=ext4
-CLFSROOTDEV=/dev/sda4
-CLFSHOMEDEV=/dev/sda5
 MAKEFLAGS="-j$(nproc)"
 BUILD32="-m32"
 BUILD64="-m64"
@@ -35,14 +30,8 @@ PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 ACLOCAL="aclocal -I $XORG_PREFIX/share/aclocal"
 
 export CLFS=/
-export CLFSUSER=clfs
 export CLFSHOME=/home
 export CLFSSOURCES=/sources
-export CLFSTOOLS=/tools
-export CLFSCROSSTOOLS=/cross-tools
-export CLFSFILESYSTEM=ext4
-export CLFSROOTDEV=/dev/sda4
-export CLFSHOMEDEV=/dev/sda5
 export MAKEFLAGS="-j$(nproc)"
 export BUILD32="-m32"
 export BUILD64="-m64"
@@ -54,30 +43,6 @@ export ACLOCAL="aclocal -I $XORG_PREFIX/share/aclocal"
 cd ${CLFSSOURCES}
 
 sudo -c bash 'chmod -Rv overflyer /sources'
-
-#Expat (Needed by Python) 64-bit
-wget https://downloads.sourceforge.net/project/expat/expat/2.2.4/expat-2.2.4.tar.bz2 -O \
-  expat-2.2.4.tar.bz2
-  
-mkdir expat && tar xf expat-*.tar.* -C expat --strip-components 1
-cd expat
-
-USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"
-CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" ./configure \
-  --prefix=/usr \
-  --libdir=/usr/lib64 \
-  --disable-static \
-  --enable-shared &&
-  
-make LIBDIR=/usr/lib64 PREFIX=/usr 
-sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
-  
-sudo install -v -m755 -d /usr/share/doc/expat-2.2.4
-sudo install -v -m644 doc/*.{html,png,css} /usr/share/doc/expat-2.2.4
-
-cd ${CLFSSOURCES}
-checkBuiltPackage
-sudo rm -rf expat
 
 #Python 3 64-bit
 wget https://www.python.org/ftp/python/3.6.3/Python-3.6.3.tar.xz -O \
