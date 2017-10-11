@@ -19,7 +19,6 @@ sudo chown -Rv overflyer /sources
 
 #Building the final CLFS System
 CLFS=/
-CLFSHOME=/home
 CLFSSOURCES=/sources
 MAKEFLAGS="-j$(nproc)"
 BUILD32="-m32"
@@ -30,7 +29,6 @@ PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 ACLOCAL="aclocal -I $XORG_PREFIX/share/aclocal"
 
 export CLFS=/
-export CLFSHOME=/home
 export CLFSSOURCES=/sources
 export MAKEFLAGS="-j$(nproc)"
 export BUILD32="-m32"
