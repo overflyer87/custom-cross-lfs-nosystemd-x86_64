@@ -83,16 +83,16 @@ sudo rm -rf expat
 wget https://www.python.org/ftp/python/3.6.3/Python-3.6.3.tar.xz -O \
   Python-3.6.3.tar.xz
 
-wget http://pkgs.fedoraproject.org/rpms/python3/raw/master/f/00102-lib64.patch -O \
-python360-multilib2.patch
+#wget http://pkgs.fedoraproject.org/rpms/python3/raw/master/f/00102-lib64.patch -O \
+#python360-multilib2.patch
   
-wget https://docs.python.org/3.6/archives/python-3.6.0-docs-html.tar.bz2 -O \
-  python-360-docs.tar.bz2
+#wget https://docs.python.org/3.6/archives/python-3.6.0-docs-html.tar.bz2 -O \
+# python-360-docs.tar.bz2
   
 mkdir Python-3 && tar xf Python-3.6*.tar.xz -C Python-3 --strip-components 1
 cd Python-3
 
-patch -Np1 -i ../python360-multilib2.patch
+patch -Np1 -i ../python360-multilib.patch
 
 checkBuiltPackage
 
@@ -131,14 +131,14 @@ sudo sudo rm -rf /usr/lib/python3.6/
 sudo chmod -v 755 /usr/lib64/libpython3.6m.so
 sudo chmod -v 755 /usr/lib64/libpython3.so
 
-sudo install -v -dm755 /usr/share/doc/python-3.6.0/html &&
-sudo tar --strip-components=1 \
-    --no-same-owner \
-    --no-same-permissions \
-    -C /usr/share/doc/python-3.6.0/html \
-    -xvf ../python-360-docs.tar.bz2
+#sudo install -v -dm755 /usr/share/doc/python-3.6.0/html &&
+#sudo tar --strip-components=1 \
+#    --no-same-owner \
+#    --no-same-permissions \
+#    -C /usr/share/doc/python-3.6.0/html \
+#    -xvf ../python-360-docs.tar.bz2
 
-sudo ln -svfn python-3.6.0 /usr/share/doc/python-3
+#sudo ln -svfn python-3.6.0 /usr/share/doc/python-3
 sudo ln -svf /usr/lib64/libpython3.6m.so /usr/lib64/libpython3.6.so
 sudo ln -svf /usr/lib64/libpython3.6m.so.1.0 /usr/lib64/libpython3.6.so.1.0
 sudo ln -sfv /usr/bin/python3.6 /usr/bin/python3
