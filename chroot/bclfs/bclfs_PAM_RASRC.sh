@@ -17,13 +17,7 @@ echo " "
 
 #Building the final CLFS System
 CLFS=/
-CLFSHOME=/home
 CLFSSOURCES=/sources
-CLFSTOOLS=/tools
-CLFSCROSSTOOLS=/cross-tools
-CLFSFILESYSTEM=ext4
-CLFSROOTDEV=/dev/sda4
-CLFSHOMEDEV=/dev/sda5
 MAKEFLAGS="-j$(nproc)"
 BUILD32="-m32"
 BUILD64="-m64"
@@ -32,14 +26,7 @@ PKG_CONFIG_PATH32=/usr/lib/pkgconfig
 PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 
 export CLFS=/
-export CLFSUSER=clfs
-export CLFSHOME=/home
 export CLFSSOURCES=/sources
-export CLFSTOOLS=/tools
-export CLFSCROSSTOOLS=/cross-tools
-export CLFSFILESYSTEM=ext4
-export CLFSROOTDEV=/dev/sda4
-export CLFSHOMEDEV=/dev/sda5
 export MAKEFLAGS="-j$(nproc)"
 export BUILD32="-m32"
 export BUILD64="-m64"
@@ -56,9 +43,10 @@ cd cracklib
 sed -i '/skipping/d' util/packer.c
 
 CC="gcc ${BUILD64}" USE_ARCH=64 ./configure --prefix=/usr \
-  --libdir=/usr/lib64 --disable-static --with-default-dict=/lib/cracklib/pw_dict &&
+  --libdir=/usr/lib64 --disable-static --with-default-dict=/lib/cracklib/pw_dict 
+  
 sed -i 's@prefix}/lib@&64@g' dicts/Makefile doc/Makefile lib/Makefile \
-     m4/Makefile Makefile python/Makefile util/Makefile &&
+     m4/Makefile Makefile python/Makefile util/Makefile 
      
 make PREFIX=/usr LIBDIR=/usr/lib64
 make PREFIX=/usr LIBDIR=/usr/lib64 install 
@@ -67,12 +55,12 @@ mv -v /usr/lib64/libcrack.so.* /lib64
 ln -sfv ../../lib64/$(readlink /usr/lib64/libcrack.so) /usr/lib64/libcrack.so
 
 install -v -m644 -D    ../cracklib-words-2.9.6.gz \
-                         /usr/share/dict/cracklib-words.gz     &&
+                         /usr/share/dict/cracklib-words.gz     
 
-gunzip -v                /usr/share/dict/cracklib-words.gz     &&
-ln -v -sf cracklib-words /usr/share/dict/words                 &&
-echo $(hostname) >>      /usr/share/dict/cracklib-extra-words  &&
-install -v -m755 -d      /lib64/cracklib                         &&
+gunzip -v                /usr/share/dict/cracklib-words.gz     
+ln -v -sf cracklib-words /usr/share/dict/words                 
+echo $(hostname) >>      /usr/share/dict/cracklib-extra-words  
+install -v -m755 -d      /lib64/cracklib                         
 
 create-cracklib-dict     /usr/share/dict/cracklib-words \
                          /usr/share/dict/cracklib-extra-words
@@ -113,17 +101,17 @@ checkBuiltPackage
 
 rm -fv /etc/pam.d/*
 
-make PREFIX=/usr LIBDIR=/usr/lib64 install &&
-chmod -v 4755 /sbin/unix_chkpwd &&
+make PREFIX=/usr LIBDIR=/usr/lib64 install 
+chmod -v 4755 /sbin/unix_chkpwd 
 
 for file in pam pam_misc pamc
 do
-  mv -v /usr/lib/lib${file}.so.* /lib &&
+  mv -v /usr/lib/lib${file}.so.* /lib 
   ln -sfv ../../lib/$(readlink /usr/lib/lib${file}.so) /usr/lib/lib${file}.so
 done
 
-install -vdm755 /etc/pam.d &&
-cat > /etc/pam.d/system-account << "EOF" &&
+install -vdm755 /etc/pam.d 
+cat > /etc/pam.d/system-account << "EOF" 
 # Begin /etc/pam.d/system-account
 
 account   required    pam_unix.so
@@ -131,7 +119,7 @@ account   required    pam_unix.so
 # End /etc/pam.d/system-account
 EOF
 
-cat > /etc/pam.d/system-auth << "EOF" &&
+cat > /etc/pam.d/system-auth << "EOF" 
 # Begin /etc/pam.d/system-auth
 
 auth      required    pam_unix.so
@@ -188,17 +176,17 @@ sed -i 's@DICTPATH.*@DICTPATH\t/lib/cracklib/pw_dict@' etc/login.defs
 mkdir shadow && tar xf shadow-*.tar.* -C shadow --strip-components 1
 cd shadow
 
-sed -i 's/groups$(EXEEXT) //' src/Makefile.in &&
+sed -i 's/groups$(EXEEXT) //' src/Makefile.in 
 
-find man -name Makefile.in -exec sed -i '/groups\.1\.xml/d' '{}' \; &&
-find man -name Makefile.in -exec sed -i 's/groups\.1 / /'   {} \; &&
-find man -name Makefile.in -exec sed -i 's/getspnam\.3 / /' {} \; &&
-find man -name Makefile.in -exec sed -i 's/passwd\.5 / /'   {} \; &&
+find man -name Makefile.in -exec sed -i '/groups\.1\.xml/d' '{}' \; 
+find man -name Makefile.in -exec sed -i 's/groups\.1 / /'   {} \; 
+find man -name Makefile.in -exec sed -i 's/getspnam\.3 / /' {} \; 
+find man -name Makefile.in -exec sed -i 's/passwd\.5 / /'   {} \; 
 
 sed -i -e 's@#ENCRYPT_METHOD DES@ENCRYPT_METHOD SHA512@' \
-       -e 's@/var/spool/mail@/var/mail@' etc/login.defs &&
+       -e 's@/var/spool/mail@/var/mail@' etc/login.defs 
 
-sed -i 's/1000/999/' etc/useradd                           &&
+sed -i 's/1000/999/' etc/useradd                           
 
 sed -i 's/groups$(EXEEXT) //' src/Makefile.in
 
@@ -224,7 +212,7 @@ touch /var/log/{fail,last}log
 chgrp -v utmp /var/log/{fail,last}log
 chmod -v 664 /var/log/{fail,last}log
 
-install -v -m644 /etc/login.defs /etc/login.defs.orig &&
+install -v -m644 /etc/login.defs /etc/login.defs.orig 
 for FUNCTION in FAIL_DELAY               \
                 FAILLOG_ENAB             \
                 LASTLOG_ENAB             \
