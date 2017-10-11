@@ -202,7 +202,7 @@ CC="gcc ${BUILD64}" ./configure \
     --bindir=/bin \
     --docdir=/usr/share/doc/sed-4.4
 
-make && make-html
+make && make html
 make check
 checkBuiltPackage
 

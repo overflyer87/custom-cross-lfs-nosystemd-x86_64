@@ -195,11 +195,11 @@ PREFIX=/usr LIBDIR=/usr/lib64 make
 PREFIX=/usr LIBDIR=/usr/lib64 make install
 mv -v /usr/bin/freetype-config{,-64}
 ln -sf multiarch_wrapper /usr/bin/freetype-config
-install -v -m755 -d /usr/share/doc/freetype-2.4.12
-cp -v -R docs/* /usr/share/doc/freetype-2.4.12
+install -v -m755 -d /usr/share/doc/freetype-2.8.1
+cp -v -R docs/* /usr/share/doc/freetype-2.8.1
 
-install -v -m755 -d /usr/share/doc/freetype-2.8
-cp -v -R docs/*     /usr/share/doc/freetype-2.8
+install -v -m755 -d /usr/share/doc/freetype-2.8.1
+cp -v -R docs/*     /usr/share/doc/freetype-2.8.1
 
 
 cd ${CLFSSOURCES} 
@@ -284,11 +284,11 @@ PREFIX=/usr LIBDIR=/usr/lib64 make install
 
 mv -v /usr/bin/freetype-config{,-64}
 ln -sf multiarch_wrapper /usr/bin/freetype-config
-install -v -m755 -d /usr/share/doc/freetype-2.4.12
-cp -v -R docs/* /usr/share/doc/freetype-2.4.12
+install -v -m755 -d /usr/share/doc/freetype-2.8.1
+cp -v -R docs/* /usr/share/doc/freetype-2.8.1
 
-install -v -m755 -d /usr/share/doc/freetype-2.8
-cp -v -R docs/*     /usr/share/doc/freetype-2.8
+install -v -m755 -d /usr/share/doc/freetype-2.8.1
+cp -v -R docs/*     /usr/share/doc/freetype-2.8.1
 
 cd ${CLFSSOURCES} 
 checkBuiltPackage
@@ -417,9 +417,10 @@ rm -rf gnuefi
 #unicode font
 
 mkdir -pv /usr/share/fonts/unifont
-gunzip -c ${CLFSSOURCES}/unifont-9.0.06.pcf.gz > \
+gunzip -c ${CLFSSOURCES}/unifont-*.pcf.gz > \
     /usr/share/fonts/unifont/unifont.pcf
 
+checkBuiltPackage
 cd ${CLFSSOURCES}
 
 #goofiboot

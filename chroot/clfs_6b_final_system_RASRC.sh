@@ -212,7 +212,7 @@ LDFLAGS="-Wl,-rpath-link,/usr/lib64:/lib64 ${BUILD64}" \
     --with-mpfr=/usr/lib64 \
     --docdir=/usr/share/doc/mpc-1.0.3
 
-make && make-html
+make && make html
 make check
 checkBuiltPackage 
 make install && make install-html

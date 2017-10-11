@@ -51,38 +51,14 @@ export ACLOCAL="aclocal -I $XORG_PREFIX/share/aclocal"
 
 cd ${CLFSSOURCES}
 
-#Expat (Needed by Python) 64-bit
-wget http://downloads.sourceforge.net/expat/expat-2.1.0.tar.gz -O \
-  expat-2.1.0.tar.gz
-  
-mkdir expat && tar xf expat-*.tar.* -C expat --strip-components 1
-cd expat
-
-USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"
-CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" ./configure \
-  --prefix=/usr \
-  --libdir=/usr/lib64 \
-  --disable-static \
-  --enable-shared &&-3
-  
-make LIBDIR=/usr/lib64 PREFIX=/usr 
-sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
-  
-sudo install -v -m755 -d /usr/share/doc/expat-2.1.0
-sudo install -v -m644 doc/*.{html,png,css} /usr/share/doc/expat-2.1.0
-
-cd ${CLFSSOURCES}
-checkBuiltPackage
-rm -rf expat
-
 #Python2.7.6 64-bit
-wget https://www.python.org/ftp/python/2.7.13/Python-2.7.13.tar.xz -O \
-  Python-2.7.13.tar.xz
+wget https://www.python.org/ftp/python/2.7.14/Python-2.7.14.tar.xz -O \
+  Python-2.7.14.tar.xz
   
-wget https://www.python.org/ftp/python/doc/2.7.13/python-2.7.13-docs-html.tar.bz2 -O \
-  python-2.7.13-docs-html.tar.bz2
+wget https://www.python.org/ftp/python/doc/2.7.14/python-2.7.14-docs-html.tar.bz2 -O \
+  python-2.7.14-docs-html.tar.bz2
   
-mkdir Python-2 && tar xf Python-2.7.13.tar.* -C Python-2 --strip-components 1
+mkdir Python-2 && tar xf Python-2.7.14.tar.* -C Python-2 --strip-components 1
 cd Python-2
 
 cp ${CLFSSOURCES}/python2713-lib64-patch.patch ${CLFSSOURCES}/Python-2
@@ -130,13 +106,13 @@ sudo ln -sfv multiarch_wrapper /usr/bin/python2.7
 
 sudo install -v -dm755 /usr/share/doc/python-2.7.13 
 
-tar --strip-components=1                     \
+sudo bash -c 'tar --strip-components=1       \
     --no-same-owner                          \
     --directory /usr/share/doc/python-2.7.13 \
-    -xvf ../python-2.7.*.tar.* 
+    -xvf ../python-2.7.*.tar.*' 
 
-sudo find /usr/share/doc/python-2.7.13 -type d -exec chmod 0755 {} \; 
-sudo find /usr/share/doc/python-2.7.13 -type f -exec chmod 0644 {} \;
+sudo bash -c 'find /usr/share/doc/python-2.7.13 -type d -exec chmod 0755 {} \;'
+sudo bash -c 'find /usr/share/doc/python-2.7.13 -type f -exec chmod 0644 {} \;'
 
 sudo ln -sfv /usr/bin/python2.7-config /usr/bin/python2-config
             

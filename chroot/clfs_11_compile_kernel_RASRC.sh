@@ -87,7 +87,7 @@ openssl x509 -in root.crt -text -fingerprint -setalias "CAcert Class 1 root" \
         -addtrust serverAuth -addtrust emailProtection -addtrust codeSigning \
         > /etc/ssl/local/CAcert_Class_1_root.pem
 install -vm755 make-ca.sh-20170514 /usr/sbin/make-ca.sh
-/usr/sbin/make-ca.sh
+/usr/sbin/make-ca.sh --force
 
 #Wget
 mkdir wget && tar xf wget-*.tar.* -C wget --strip-components 1
@@ -157,7 +157,7 @@ checkBuiltPackage
 rm -rf git
 
 #openSSH
-mkdir openssh && tar xf openssh-7.5p1.tar.gz -C openssh --strip-components 1
+mkdir openssh && tar xf openssh-7.6p1.tar.gz -C openssh --strip-components 1
 cd openssh
 
 install  -v -m700 -d /var/lib/sshd &&
@@ -170,7 +170,7 @@ useradd  -c 'sshd PrivSep' \
          -s /bin/false     \
          -u 50 sshd
 
-patch -Np1 -i ../openssh-7.5p1-openssl-1.1.0-1.patch &&
+patch -Np1 -i ../openssh-7.6p1-openssl-1.1.0-1.patch &&
 
 CC="gcc ${BUILD64}" USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
 CXX="g++ ${BUILD64}" 
@@ -203,16 +203,16 @@ checkBuiltPackage
 rm -rf openssh
 
 #gptfdisk
-wget http://downloads.sourceforge.net/project/gptfdisk/gptfdisk/1.0.1/gptfdisk-1.0.1.tar.gz -O \
-  gptfdisk-1.0.1.tar.gz
+wget https://downloads.sourceforge.net/gptfdisk/gptfdisk-1.0.3.tar.gz -O \
+  gptfdisk-1.0.3.tar.gz
 
 wget http://www.linuxfromscratch.org/patches/blfs/svn/gptfdisk-1.0.3-convenience-1.patch -O \
-  GPTfdisk-1.0.1-convenience-1.patch 
+  GPTfdisk-1.0.3-convenience-1.patch 
 
 mkdir gptfdisk && tar xf gptfdisk-*.tar.* -C gptfdisk --strip-components 1
 cd gptfdisk
 
-patch -Np1 -i ../GPTfdisk-1.0.1-convenience-1.patch
+patch -Np1 -i ../GPTfdisk-1.0.3-convenience-1.patch
 make PREFIX=/usr LIBDIR=/usr/lib64 POPT=1
 make PREFIX=/usr LIBDIR=/usr/lib64 POPT=1 install
 

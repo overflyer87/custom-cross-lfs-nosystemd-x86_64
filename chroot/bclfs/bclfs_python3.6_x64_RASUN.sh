@@ -15,6 +15,8 @@ done
 echo " "
 }
 
+sudo chown -Rv overflyer /sources
+
 #Building the final CLFS System
 CLFS=/
 CLFSHOME=/home
@@ -54,8 +56,8 @@ cd ${CLFSSOURCES}
 sudo -c bash 'chmod -Rv overflyer /sources'
 
 #Expat (Needed by Python) 64-bit
-wget http://downloads.sourceforge.net/expat/expat-2.1.0.tar.gz -O \
-  expat-2.1.0.tar.gz
+wget https://downloads.sourceforge.net/project/expat/expat/2.2.4/expat-2.2.4.tar.bz2 -O \
+  expat-2.2.4.tar.bz2
   
 mkdir expat && tar xf expat-*.tar.* -C expat --strip-components 1
 cd expat
@@ -70,19 +72,19 @@ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" ./configure \
 make LIBDIR=/usr/lib64 PREFIX=/usr 
 sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
   
-sudo install -v -m755 -d /usr/share/doc/expat-2.1.0
-sudo install -v -m644 doc/*.{html,png,css} /usr/share/doc/expat-2.1.0
+sudo install -v -m755 -d /usr/share/doc/expat-2.2.4
+sudo install -v -m644 doc/*.{html,png,css} /usr/share/doc/expat-2.2.4
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
-rm -rf expat
+sudo rm -rf expat
 
 #Python 3 64-bit
-wget https://www.python.org/ftp/python/3.6.2/Python-3.6.2.tar.xz -O \
-  Python-3.6.2.tar.xz
+wget https://www.python.org/ftp/python/3.6.3/Python-3.6.3.tar.xz -O \
+  Python-3.6.3.tar.xz
 
-#wget http://pkgs.fedoraproject.org/rpms/python3/raw/master/f/00102-lib64.patch -O \
-#python360-multilib.patch
+wget http://pkgs.fedoraproject.org/rpms/python3/raw/master/f/00102-lib64.patch -O \
+python360-multilib2.patch
   
 wget https://docs.python.org/3.6/archives/python-3.6.0-docs-html.tar.bz2 -O \
   python-360-docs.tar.bz2
@@ -90,7 +92,7 @@ wget https://docs.python.org/3.6/archives/python-3.6.0-docs-html.tar.bz2 -O \
 mkdir Python-3 && tar xf Python-3.6*.tar.xz -C Python-3 --strip-components 1
 cd Python-3
 
-patch -Np1 -i ../python360-multilib.patch
+patch -Np1 -i ../python360-multilib2.patch
 
 checkBuiltPackage
 
@@ -124,7 +126,7 @@ sudo make altinstall PREFIX=/usr LIBDIR=/usr/lib64 PLATLIBDIR=/usr/lib64 \
   platlibdir=/usr/lib64
   
 sudo cp -rv /usr/lib/python3.6/ /usr/lib64/
-sudo rm -rf /usr/lib/python3.6/
+sudo sudo rm -rf /usr/lib/python3.6/
 
 sudo chmod -v 755 /usr/lib64/libpython3.6m.so
 sudo chmod -v 755 /usr/lib64/libpython3.so
@@ -143,4 +145,4 @@ sudo ln -sfv /usr/bin/python3.6 /usr/bin/python3
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
-sudo rm -rf Python-3
+sudo sudo rm -rf Python-3
