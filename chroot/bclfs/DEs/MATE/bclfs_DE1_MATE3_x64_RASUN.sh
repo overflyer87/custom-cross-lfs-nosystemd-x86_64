@@ -163,7 +163,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -r libksba
+rm -r libassuan
 
 #libksba
 wget ftp://ftp.gnupg.org/gcrypt/libksba/libksba-1.3.5.tar.bz2 -O \
@@ -226,6 +226,9 @@ cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 rm -r pinentry
 
+#XSLTPROC
+
+
 #GCR
 wget http://ftp.gnome.org/pub/gnome/sources/gcr/3.20/gcr-3.20.0.tar.xz -O \
     gcr-3.20.0.tar.xz
@@ -238,7 +241,10 @@ sed -i -r 's:"(/desktop):"/org/gnome\1:' schema/*.xml
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
     --libdir=/usr/lib64 \
     --disable-static \
-    --sysconfdir=/etc
+    --sysconfdir=/etc \
+	--disable-gtk-doc \
+	--disable-gtk-doc-html \
+	--disable-gtk-doc-pdf
  
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 make -k check

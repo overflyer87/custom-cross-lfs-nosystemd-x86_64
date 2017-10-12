@@ -919,7 +919,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 
 sudo make LIBDIR=/usr/lib64 PREFIX=/usr install 
 
-cd ${CLFSSOURCES}/xc/mate 
+cd ${CLFSSOURCES}/xc/xfce4 
 checkBuiltPackage 
 sudo rm -rf
 
@@ -939,7 +939,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf libxklavier
+sudo rm -rf libxklavier
 
 #xfce4-panel
 wget http://archive.xfce.org/src/xfce/xfce4-panel/4.12/xfce4-panel-4.12.1.tar.bz2 -O \
@@ -996,7 +996,7 @@ echo ""
 
 cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf libxml2
+sudo rm -rf libxml2
 
 #libxml2 WITH ITS PYTHON 3 MODULE
 mkdir libxml2 && tar xf libxml2-*.tar.* -C libxml2 --strip-components 1
@@ -1032,7 +1032,7 @@ echo ""
 
 cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf libxml2
+sudo rm -rf libxml2
 
 #libcroco
 wget http://ftp.gnome.org/pub/gnome/sources/libcroco/0.6/libcroco-0.6.12.tar.xz -O \
@@ -1240,7 +1240,9 @@ sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 i
 
 cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf gnome-icon-theme
+sudo rm -rf gnome-icon-theme
+
+#libudev
 
 #libgudev
 wget http://ftp.gnome.org/pub/gnome/sources/libgudev/231/libgudev-231.tar.xz -O \
@@ -1259,7 +1261,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf libgudev
+sudo rm -rf libgudev
 
 #Vala
 wget http://ftp.gnome.org/pub/gnome/sources/vala/0.36/vala-0.36.4.tar.xz -O \
@@ -1277,7 +1279,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf vala
+sudo rm -rf vala
 
 #libgpg-error
 wget ftp://ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-1.27.tar.bz2 -O \
@@ -1290,7 +1292,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr --libdir=/usr/l
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
 sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -r libgpgerror
 
@@ -1312,6 +1314,52 @@ cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -r libgcrypt
 
+#libtasn1
+wget http://ftp.gnu.org/gnu/libtasn1/libtasn1-4.12.tar.gz -O \
+    libtasn1-4.12.tar.gz
+
+mkdir libtasn1 && tar xf libtasn1-*.tar.* -C libtasn1 --strip-components 1
+cd libtasn1
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+    --libdir=/usr/lib64 \
+    --disable-static
+    
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
+make check
+checkBuiltPackage
+
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+rm -r libtasn1
+
+#p11-kit
+wget https://github.com/p11-glue/p11-kit/releases/download/0.23.7/p11-kit-0.23.7.tar.gz -O \
+    p11-kit-0.23.7.tar.gz
+    
+mkdir p11-kit && tar xf p11-kit-*.tar.* -C p11-kit --strip-components 1
+cd p11-kit
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+    --libdir=/usr/lib64 \
+    --disable-static \
+    --sysconfdir=/etc \
+    --with-trust-paths=/etc/pki/anchor
+    
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
+make check
+checkBuiltPackage
+
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+rm -r p11-kit
+
+
+
 #libsecret
 wget http://ftp.gnome.org/pub/gnome/sources/libsecret/0.18/libsecret-0.18.5.tar.xz -O \
     libsecret-0.18.5.tar.xz
@@ -1329,7 +1377,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf libsecret
+sudo rm -rf libsecret
 
 #libwebp
 wget http://downloads.webmproject.org/releases/webp/libwebp-0.6.0.tar.gz -O \
@@ -1353,7 +1401,188 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf libwebp
+sudo rm -rf libwebp
+
+#sqlite
+wget http://sqlite.org/2017/sqlite-autoconf-3190300.tar.gz -O \
+    sqlite-autoconf-3190300.tar.gz
+
+mkdir sqlite-autoconf && tar xf sqlite-autoconf-*.tar.* -C sqlite-autoconf --strip-components 1
+cd sqlite-autoconf
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+            --disable-static        \
+            --libdir=/usr/lib64     \
+            CFLAGS="-g -O2 -DSQLITE_ENABLE_FTS3=1 \
+            -DSQLITE_ENABLE_COLUMN_METADATA=1     \
+            -DSQLITE_ENABLE_UNLOCK_NOTIFY=1       \
+            -DSQLITE_SECURE_DELETE=1              \
+            -DSQLITE_ENABLE_DBSTAT_VTAB=1" &&
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf sqlite-autoconf
+
+#nettle
+wget https://ftp.gnu.org/gnu/nettle/nettle-3.3.tar.gz -O \
+    nettle-3.3.tar.gz
+
+mkdir nettle && tar xf nettle-*.tar.* -C nettle --strip-components 1
+cd nettle
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+   PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+   --libdir=/usr/lib64 --disable-static 
+   
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+make check
+checkBuiltPackage
+
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+sudo chmod   -v   755 /usr/lib64/lib{hogweed,nettle}.so
+sudo install -v -m755 -d /usr/share/doc/nettle-3.3
+sudo install -v -m644 nettle.html /usr/share/doc/nettle-3.3
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf nettle
+
+#libunistring
+wget https://ftp.gnu.org/gnu/libunistring/libunistring-0.9.7.tar.xz -O \
+	libunistring-0.9.7.tar.xz
+
+mkdir libunistring && tar xf libunistring-*.tar.* -C libunistring --strip-components 1
+cd libunistring
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+   PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+   --libdir=/usr/lib64 --disable-static \
+   --docdir=/usr/share/doc/libunistring-0.9.7
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf libunistring
+
+#libidn2
+wget https://ftp.gnu.org/gnu/libidn/libidn2-2.0.4.tar.gz -O \
+	libidn2-2.0.4.tar.gz
+
+mkdir libidn2 && tar xf libidn2-*.tar.* -C libidn2 --strip-components 1
+cd libidn2
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+   PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+   --libdir=/usr/lib64 --disable-static 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf libidn2
+
+#libidn2
+wget https://ftp.gnu.org/gnu/libidn/libidn-1.33.tar.gz -O \
+    libidn-1.33.tar.gz
+
+mkdir libidn && tar xf libidn-*.tar.* -C libidn --strip-components 1
+cd libidn
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+   PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+   --libdir=/usr/lib64 --disable-static 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf libidn
+
+#p11-kit
+wget https://github.com/p11-glue/p11-kit/releases/download/0.23.7/p11-kit-0.23.7.tar.gz -O \
+    p11-kit-0.23.7.tar.gz
+    
+mkdir p11-kit && tar xf p11-kit-*.tar.* -C p11-kit --strip-components 1
+cd p11-kit
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+    --libdir=/usr/lib64 \
+    --disable-static \
+    --sysconfdir=/etc \
+    --with-trust-paths=/etc/pki/anchor
+    
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
+make check
+checkBuiltPackage
+
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+rm -r p11-kit
+
+#GnuTLS
+wget https://www.gnupg.org/ftp/gcrypt/gnutls/v3.5/gnutls-3.5.14.tar.xz -O \
+    gnutls-3.5.14.tar.xz
+    
+mkdir gnutls && tar xf gnutls-*.tar.* -C gnutls --strip-components 1
+cd gnutls
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+   PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+   --libdir=/usr/lib64 --disable-static \
+   --with-default-trust-store-pkcs11="pkcs11:" \
+   --with-default-trust-store-file=/etc/ssl/ca-bundle.crt \
+   --disable-gtk-doc \
+   --enable-openssl-compatibility \
+   --with-included-unistring
+   
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+make check
+checkBuiltPackage
+
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf gnutls
+
+#glib-networking
+wget ftp://ftp.gnome.org/pub/gnome/sources/glib-networking/2.50/glib-networking-2.50.0.tar.xz -O \
+    glib-networking-2.50.0.tar.xz
+
+mkdir glibnet && tar xf glib-networking-*.tar.* -C glibnet --strip-components 1
+cd glibnet
+
+CC="gcc ${BUILD64}" \
+  CXX="g++ ${BUILD64}" USE_ARCH=64 \
+   PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+   --libdir=/usr/lib64 --disable-static \
+   --without-ca-certificates 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+make -k check 
+checkBuiltPackage
+
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf glibnet
 
 #libnotify
 wget http://ftp.gnome.org/pub/gnome/sources/libnotify/0.7/libnotify-0.7.7.tar.xz -O \
@@ -1372,7 +1601,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf libnotify
+sudo rm -rf libnotify
 
 #libsoup
 wget http://ftp.gnome.org/pub/gnome/sources/libsoup/2.58/libsoup-2.58.1.tar.xz -O \
@@ -1398,11 +1627,56 @@ sudo ldconfig
 
 cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf libsoup
+sudo rm -rf libsoup
+
+#libxslt
+wget http://xmlsoft.org/sources/libxslt-1.1.31.tar.gz -O \
+    libxslt-1.1.31.tar.gz 
+
+mkdir libxslt && tar xf libxslt-*.tar.* -C libxslt --strip-components 1
+cd libxslt
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --disable-static \
+   --libdir=/usr/lib64 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+sudo ldconfig
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf libxslt
+
+#GCR
+wget http://ftp.gnome.org/pub/gnome/sources/gcr/3.20/gcr-3.20.0.tar.xz -O \
+    gcr-3.20.0.tar.xz
+    
+mkdir gcr && tar xf gcr-*.tar.* -C gcr --strip-components 1
+cd gcr
+
+sed -i -r 's:"(/desktop):"/org/gnome\1:' schema/*.xml
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+    --libdir=/usr/lib64 \
+    --disable-static \
+    --sysconfdir=/etc
+ 
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+make -k check
+checkBuiltPackage
+
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf gcr
 
 #Gvfs
-wget http://ftp.gnome.org/pub/gnome/sources/gvfs/1.32/gvfs-1.32.1.tar.xz
+wget http://ftp.gnome.org/pub/gnome/sources/gvfs/1.32/gvfs-1.32.1.tar.xz -O \
 	gvfs-1.32.1.tar.xz 
+
 #You need to recompile udev with this patch in order
 #For Gvfs to support gphoto2
 wget https://sourceforge.net/p/gphoto/patches/_discuss/thread/9180a667/9902/attachment/libgphoto2.udev-136.patch -O \
@@ -1410,6 +1684,114 @@ wget https://sourceforge.net/p/gphoto/patches/_discuss/thread/9180a667/9902/atta
 
 mkdir gvfs && tar xf gvfs-*.tar.* -C gvfs --strip-components 1
 cd gvfs
+
+LD_LIB_PATH="/usr/lib64" LIBRARY_PATH="/usr/lib64" CPPFLAGS="-I/usr/include" \
+LD_LIBRARY_PATH="/usr/lib64" CC="gcc ${BUILD64} -L/usr/lib64 -lacl" \
+CXX="g++ ${BUILD64} -lacl" USE_ARCH=64 \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+    --libdir=/usr/lib64 \
+    --disable-static    \
+    --sysconfdir=/etc    \
+    --disable-gtk-doc \
+    --disable-gtk-doc-pdf \
+    --disable-gtk-doc-html \
+    --disable-libsystemd-login \
+    --disable-admin \
+    --disable-gphoto2 \
+    --disable-documentation
+    
+sudo ln -sfv /usr/lib64/libacl.so /lib64/
+sudo ln -sfv /usr/lib64/libattr.so /lib64/
+    
+LD_LIB_PATH="/usr/lib64" LIBRARY_PATH="/usr/lib64" CPPFLAGS="-I/usr/include" \
+LD_LIBRARY_PATH="/usr/lib64" CC="gcc ${BUILD64} -L/usr/lib64 -lacl" \
+CXX="g++ ${BUILD64} -lacl" USE_ARCH=64 \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} make PREFIX=/usr LIBDIR=/usr/lib64
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf gvfs
+
+#NSPR
+wget https://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v4.15/src/nspr-4.15.tar.gz -O \
+    nspr-4.15.tar.gz
+
+mkdir nspr && tar xf nspr-*.tar.* -C nspr --strip-components 1
+cd nspr
+
+cd nspr                                                     &&
+sed -ri 's#^(RELEASE_BINS =).*#\1#' pr/src/misc/Makefile.in &&
+sed -i 's#$(LIBRARY) ##'            config/rules.mk         &&
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --with-mozilla \
+   --with-pthreads \
+   $([ $(uname -m) = x86_64 ] && echo --enable-64bit)
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+
+echo " "
+echo "checking if /usr/include/pratom.h was installed..."
+ls /usr/include | grep pratom.h
+echo "... should be shown in output one line above. Mozjs 17.0.0 will fail otherwise."
+
+sudo rm -rf nspr
+
+#NSS
+wget https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_31_RTM/src/nss-3.31.tar.gz -O \
+    nss-3.31.tar.gz
+    
+wget http://www.linuxfromscratch.org/patches/blfs/svn/nss-3.31-standalone-1.patch -O \
+    NSS-3.31-standalone-1.patch
+    
+mkdir nss && tar xf nss-*.tar.* -C nss --strip-components 1
+cd nss
+
+patch -Np1 -i ../NSS-3.31-standalone-1.patch 
+cd nss
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} make -j1 BUILD_OPT=1 \
+  NSPR_INCLUDE_DIR=/usr/include/nspr  \
+  USE_SYSTEM_ZLIB=1                   \
+  ZLIB_LIBS=-lz                       \
+  NSS_ENABLE_WERROR=0                 \
+  LIBDIR=/usr/lib64                   \
+  PREFIX=/usr                         \
+  $([ $(uname -m) = x86_64 ] && echo USE_64=1) \
+  $([ -f /usr/include/sqlite3.h ] && echo NSS_USE_SYSTEM_SQLITE=1)
+  
+cd ../dist
+
+sudo install -v -m755 Linux*/lib/*.so              /usr/lib64              &&
+sudo install -v -m644 Linux*/lib/{*.chk,libcrmf.a} /usr/lib64              &&
+
+sudo install -v -m755 -d                           /usr/include/nss      &&
+sudo cp -v -RL {public,private}/nss/*              /usr/include/nss      &&
+sudo chmod -v 644                                  /usr/include/nss/*    &&
+
+sudo install -v -m755 Linux*/bin/{certutil,nss-config,pk12util} /usr/bin &&
+
+sudo install -v -m644 Linux*/lib/pkgconfig/nss.pc  /usr/lib64/pkgconfig
+
+if [ -e /usr/lib64/libp11-kit.so ]; then
+  sudo readlink /usr/lib64/libnssckbi.so ||
+  sudo rm -v /usr/lib64/libnssckbi.so    &&
+  sudo ln -sfv ./pkcs11/p11-kit-trust.so /usr/lib64/libnssckbi.so
+fi
+
+sh ${CLFSSOURCES}/make-ca.sh-* --force
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf nss
 
 #js17
 wget wget http://ftp.mozilla.org/pub/mozilla.org/js/mozjs17.0.0.tar.gz -O \
@@ -1444,7 +1826,7 @@ sudo find /usr/include/js-17.0/            \
 
 cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf mozjs
+sudo rm -rf mozjs
 
 #polkit 113
 wget http://www.freedesktop.org/software/polkit/releases/polkit-0.113.tar.gz -O \
@@ -1499,7 +1881,7 @@ EOF'
 
 cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf polkit
+sudo rm -rf polkit
 
 #polkit-gnome
 wget http://ftp.gnome.org/pub/gnome/sources/polkit-gnome/0.105/polkit-gnome-0.105.tar.xz -O \
@@ -1528,515 +1910,11 @@ EOF'
 
 cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf gnome-polkit
-
-#UDisks
-wget https://github.com/storaged-project/udisks/releases/download/udisks-2.7.1/udisks-2.7.1.tar.bz2 -O \
-	udisks-2.7.1.tar.bz2
-
-mkdir udisks && tar xf udisks-*.tar.* -C udisks --strip-components 1
-cd udisks	
-
-CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
-USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
-    --libdir=/usr/lib64	\
-    --libexecdir=/usr/lib64 \
-    --disable-static    \
-    --sysconfdir=/etc	\
-    --localstatedir=/var \
-    --disable-gtk-doc	\
-    --disable-gtk-doc-pdf \
-    --disable-gtk-doc-html \
-    --disable-man 	\
-    --enable-shared 	\
-    --enable-btrfs 	\
-    --enable-lvm2 	\
-    --enable-lvmcache	\
-    --enable-polkit	\
-    --disable-tests
-
-PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
-CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
-
-sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
-
-cd ${CLFSSOURCES}/xc/xfce4
-checkBuiltPackage
-rm -rf udisks
-
-LD_LIB_PATH="/usr/lib64" LIBRARY_PATH="/usr/lib64" CPPFLAGS="-I/usr/include" \
-LD_LIBRARY_PATH="/usr/lib64" CC="gcc ${BUILD64} -L/usr/lib64 -lacl" \
-CXX="g++ ${BUILD64} -lacl" USE_ARCH=64 \
-PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
-	--libdir=/usr/lib64 \
-	--disable-static    \
-	--sysconfdir=/etc    \
-    --disable-gtk-doc \
-    --disable-gtk-doc-pdf \
-    --disable-gtk-doc-html \
-    --disable-libsystemd-login \
-    --disable-admin \
-    --disable-gphoto2 \
-    --disable-documentation
-    
-sudo ln -sfv /usr/lib64/libacl.so /lib64/
-sudo ln -sfv /usr/lib64/libattr.so /lib64/
-    
-LD_LIB_PATH="/usr/lib64" LIBRARY_PATH="/usr/lib64" CPPFLAGS="-I/usr/include" \
-LD_LIBRARY_PATH="/usr/lib64" CC="gcc ${BUILD64} -L/usr/lib64 -lacl" \
-CXX="g++ ${BUILD64} -lacl" USE_ARCH=64 \
-PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} make PREFIX=/usr LIBDIR=/usr/lib64
-
-sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
-
-cd ${CLFSSOURCES}/xc/xfce4
-checkBuiltPackage
-rm -rf gvfs
-
-#libexif
-wget http://downloads.sourceforge.net/libexif/libexif-0.6.21.tar.bz2 -O \
-	libexif-0.6.21.tar.bz2
-
-mkdir libexif && tar xf libexif-*.tar.* -C libexif --strip-components 1
-cd libexif
-
-CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
-USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
-    --libdir=/usr/lib64 \
-    --with-doc-dir=/usr/share/doc/libexif-0.6.21 \
-	--disable-static
-
-PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
-CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
-
-sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
-
-cd ${CLFSSOURCES}/xc/xfce4
-checkBuiltPackage
-rm -rf libexif
-
-#gstreamer
-wget https://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.12.1.tar.xz -O \
-    gstreamer-1.12.1.tar.xz
-
-mkdir gstreamer && tar xf gstreamer-*.tar.* -C gstreamer --strip-components 1
-cd gstreamer
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
-   --libdir=/usr/lib64 \
-   --disable-static \
-   --with-package-name="GStreamer 1.12.1 BLFS" \
-   --with-package-origin="http://www.linuxfromscratch.org/blfs/view/svn/" 
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-
-rm -rf /usr/bin/gst-* /usr/{lib,libexec}/gstreamer-1.0
-
-make check
-checkBuiltPackage
-
-sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
-
-sudo ldconfig
-
-cd ${CLFSSOURCES}/xc/xfce4
-checkBuiltPackage
-rm -rf gstreamer
-
-#gst-plugins-base
-wget https://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-1.12.1.tar.xz -O \
-    gst-plugins-base-1.12.1.tar.xz
-
-mkdir gstplgbase && tar xf gst-plugins-base-*.tar.* -C gstplgbase --strip-components 1
-cd gstplgbase
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
-   --libdir=/usr/lib64 \
-   --disable-static \
-   --with-package-name="GStreamer 1.12.1 BLFS" \
-   --with-package-origin="http://www.linuxfromscratch.org/blfs/view/svn/" 
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-
-make check
-checkBuiltPackage
-
-sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
-
-cd ${CLFSSOURCES}/xc/xfce4
-checkBuiltPackage
-rm -rf gstplgbase
-
-#gst-plugins-good
-wget https://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.12.1.tar.xz -O \
-    gst-plugins-good-1.12.1.tar.xz
-
-mkdir gstplggood && tar xf gst-plugins-good-*.tar.* -C gstplggood --strip-components 1
-cd gstplggood
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
-   --libdir=/usr/lib64 \
-   --disable-static \
-   --with-package-name="GStreamer 1.12.1 BLFS" \
-   --with-package-origin="http://www.linuxfromscratch.org/blfs/view/svn/" 
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-
-make check
-checkBuiltPackage
-
-sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
-
-cd ${CLFSSOURCES}/xc/xfce4
-checkBuiltPackage
-rm -rf gstplggood
-
-#yasm
-wget http://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz -O \
-    yasm-1.3.0.tar.gz
-
-mkdir yasm && tar xf yasm-*.tar.* -C yasm --strip-components 1
-cd yasm
-
-sed -i 's#) ytasm.*#)#' Makefile.in
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
-     --prefix=/usr \
-     --libdir=/usr/lib64 
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
-
-cd ${CLFSSOURCES}/xc/xfce4
-checkBuiltPackage
-rm -rf yasm
-
-#libjpeg-turbo
-wget http://downloads.sourceforge.net/libjpeg-turbo/libjpeg-turbo-1.5.2.tar.gz -O \
-    libjpeg-turbo-1.5.2.tar.gz
-
-mkdir libjpeg-turbo && tar xf libjpeg-turbo-*.tar.* -C libjpeg-turbo --strip-components 1
-cd libjpeg-turbo
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
-     --prefix=/usr \
-     --libdir=/usr/lib64 \
-     --mandir=/usr/share/man \
-     --with-jpeg8            \
-     --disable-static        \
-     --docdir=/usr/share/doc/libjpeg-turbo-1.5.2
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
-
-sudo ldconfig
-
-cd ${CLFSSOURCES}/xc/xfce4
-checkBuiltPackage
-rm -rf libjpeg-turbo
-
-#libpng installed by bootloader script clfs_6b1....sh
-#libepoxy installed by Xorg script
-
-#libtiff
-wget http://download.osgeo.org/libtiff/tiff-4.0.8.tar.gz -O \
-    tiff-4.0.8.tar.gz
-
-mkdir libtiff && tar xf tiff-*.tar.* -C libtiff --strip-components 1
-cd libtiff
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
-     --prefix=/usr \
-     --libdir=/usr/lib64 \
-     --disable-static
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
-
-cd ${CLFSSOURCES}/xc/xfce4
-checkBuiltPackage
-rm -rf libtiff
-
-#libgsf
-wget http://ftp.gnome.org/pub/gnome/sources/libgsf/1.14/libgsf-1.14.41.tar.xz -O \
-  libgsf-1.14.41.tar.xz
-
-mkdir libgsf && tar xf libgsf-*.tar.* -C libgsf --strip-components 1
-cd libgsf
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
-     --libdir=/usr/lib64 \
-     --disable-static
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
-
-cd ${CLFSSOURCES}/xc/xfce4
-checkBuiltPackage
-rm -rf libgsf
-
-#littleCMS2
-wget http://downloads.sourceforge.net/lcms/lcms2-2.8.tar.gz -O \
-    lcms2-2.8.tar.gz
-
-mkdir lcms2 && tar xf lcms2-*.tar.* -C lcms2 --strip-components 1
-cd lcms2
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
-   --libdir=/usr/lib64 \
-   --disable-static \
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
-
-cd ${CLFSSOURCES}/xc/xfce4
-checkBuiltPackage
-rm -rf lcms2
-
-#OpenJPEG
-wget http://downloads.sourceforge.net/openjpeg.mirror/openjpeg-1.5.2.tar.gz -O \
-    openjpeg-1.5.2.tar.gz
-    
-mkdir openjpeg && tar xf openjpeg-*.tar.* -C openjpeg --strip-components 1
-cd openjpeg
-
-autoreconf -f -i
-
-CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
-USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
-    --libdir=/usr/lib64 \
-    --sysconfdir=/etc \
-    --disable-static
-
-PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
-CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
-
-sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
-
-cd ${CLFSSOURCES}/xc/xfce4
-checkBuiltPackage
-rm -rf openjpeg
-#Cairo
-wget http://cairographics.org/releases/cairo-1.14.10.tar.xz -O \
-    cairo-1.14.10.tar.xz
-
-mkdir cairo && tar xf cairo-*.tar.* -C cairo --strip-components 1
-cd cairo
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
-     --prefix=/usr \
-     --libdir=/usr/lib64 \
-     --disable-static \
-     --enable-tee
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
-
-cd ${CLFSSOURCES}/xc/xfce4
-checkBuiltPackage
-rm -rf cairo
-
-#NSPR
-wget https://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v4.15/src/nspr-4.15.tar.gz -O \
-    nspr-4.15.tar.gz
-
-mkdir nspr && tar xf nspr-*.tar.* -C nspr --strip-components 1
-cd nspr
-
-cd nspr                                                     &&
-sed -ri 's#^(RELEASE_BINS =).*#\1#' pr/src/misc/Makefile.in &&
-sed -i 's#$(LIBRARY) ##'            config/rules.mk         &&
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
-   --libdir=/usr/lib64 \
-   --with-mozilla \
-   --with-pthreads \
-   $([ $(uname -m) = x86_64 ] && echo --enable-64bit)
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
-
-cd ${CLFSSOURCES}/xc/xfce4
-checkBuiltPackage
-echo " "
-echo "checking if /usr/include/pratom.h was installed..."
-ls /usr/include | grep pratom.h
-echo "... should be shown in output one line above. Mozjs 17.0.0 will fail otherwise."
-rm -rf nspr
-
-#libtasn1
-wget http://ftp.gnu.org/gnu/libtasn1/libtasn1-4.12.tar.gz -O \
-    libtasn1-4.12.tar.gz
-
-mkdir libtasn1 && tar xf libtasn1-*.tar.* -C libtasn1 --strip-components 1
-cd libtasn1
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
-    --libdir=/usr/lib64 \
-    --disable-static
-    
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
-make check
-checkBuiltPackage
-
-sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
-
-cd ${CLFSSOURCES}/xc/xfce4
-checkBuiltPackage
-rm -r libtasn1
-
-#p11-kit
-wget https://github.com/p11-glue/p11-kit/releases/download/0.23.7/p11-kit-0.23.7.tar.gz -O \
-    p11-kit-0.23.7.tar.gz
-    
-mkdir p11-kit && tar xf p11-kit-*.tar.* -C p11-kit --strip-components 1
-cd p11-kit
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
-    --libdir=/usr/lib64 \
-    --disable-static \
-    --sysconfdir=/etc \
-    --with-trust-paths=/etc/pki/anchor
-    
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
-make check
-checkBuiltPackage
-
-sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
-
-cd ${CLFSSOURCES}/xc/xfce4
-checkBuiltPackage
-rm -r p11-kit
-
-#poppler-glib 
-wget http://poppler.freedesktop.org/poppler-0.56.0.tar.xz -O \
-    poppler-0.56.0.tar.xz
-    
-wget http://poppler.freedesktop.org/poppler-data-0.4.7.tar.gz -O \
-    Poppler-data-0.4.7.tar.gz
-
-mkdir poppler && tar xf poppler-*.tar.* -C poppler --strip-components 1
-cd poppler
-
-CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
-USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
-    --libdir=/usr/lib64 \
-    --sysconfdir=/etc \
-    --disable-static            \
-    --enable-build-type=release \
-    --enable-cmyk               \
-    --enable-xpdf-headers       \
-    --with-testdatadir=$PWD/testfile
-
-PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
-CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
-
-sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
-
-mkdir poppler-data
-tar -xf ../Poppler-data-*.tar.gz -C poppler-data --strip-components 1 
-cd poppler-data
-
-sudo make LIBDIR=/usr/lib64 prefix=/usr install
-
-cd ${CLFSSOURCES}/xc/xfce4
-checkBuiltPackage
-rm -rf poppler
-
-#Tumbler
-wget http://archive.xfce.org/src/xfce/tumbler/0.2/tumbler-0.2.0.tar.bz2 -O \
-	tumbler-0.2.0.tar.bz2
-	
-mkdir tumbler && tar xf tumbler-*.tar.* -C tumbler --strip-components 1
-cd tumbler
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
-    --libdir=/usr/lib64 
-    
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
-sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
-
-cd ${CLFSSOURCES}/xc/xfce4
-checkBuiltPackage
-rm -rf tumbler
-
-#Thunar
-wget http://archive.xfce.org/src/xfce/thunar/1.6/Thunar-1.6.12.tar.bz2 -O \
-	Thunar-1.6.12.tar.bz2
-	
-mkdir Thunar && tar xf Thunar-*.tar.* -C Thunar --strip-components 1
-cd Thunar
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
-    --libdir=/usr/lib64 --sysconfdir=/etc \
-    --docdir=/usr/share/doc/Thunar-1.6.12
-    
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
-sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
-
-cd ${CLFSSOURCES}/xc/xfce4
-checkBuiltPackage
-rm -rf Thunar
-
-#thunar-volman
-wget http://archive.xfce.org/src/xfce/thunar-volman/0.8/thunar-volman-0.8.1.tar.bz2 -O \
-	thunar-volman-0.8.1.tar.bz2
-
-mkdir thunar-volman && tar xf thunar-volman-*.tar.* -C thunar-volman --strip-components 1
-cd thunar-volman
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
-    --libdir=/usr/lib64 
-    
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
-sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
-
-cd ${CLFSSOURCES}/xc/xfce4
-checkBuiltPackage
-rm -rf thunar-volman
-
-#xfce-appfinder
-wget http://archive.xfce.org/src/xfce/xfce4-appfinder/4.12/xfce4-appfinder-4.12.0.tar.bz2 -O \
-	xfce4-appfinder-4.12.0.tar.bz2
-
-mkdir xfce4-appfinder && tar xf xfce4-appfinder-*.tar.* -C xfce4-appfinder --strip-components 1
-cd xfce4-appfinder
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
-    --libdir=/usr/lib64 
-    
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
-sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
-
-cd ${CLFSSOURCES}/xc/xfce4
-checkBuiltPackage
-rm -rf xfce4-appfinder
-
-#UPower
-wget https://upower.freedesktop.org/releases/upower-0.99.5.tar.xz -O \
-	upower-0.99.5.tar.xz
-
-mkdir upower && tar xf upower-*.tar.* -C upower --strip-components 1
-cd upower
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
-    --libdir=/usr/lib64 \
-    --sysconfdir=/etc    \
-    --localstatedir=/var \
-    --enable-deprecated  \
-    --disable-static \
-    --disable-gtk-doc
-    
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
-sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
-
-cd ${CLFSSOURCES}/xc/xfce4
-checkBuiltPackage
-rm -rf upower
+sudo rm -rf gnome-polkit
 
 #libatasmart
 wget http://0pointer.de/public/libatasmart-0.19.tar.xz -O \
-	libatasmart-0.19.tar.xz
+    libatasmart-0.19.tar.xz
 
 mkdir libatasmart && tar xf libatasmart-*.tar.* -C libatasmart --strip-components 1
 cd libatasmart
@@ -2044,34 +1922,32 @@ cd libatasmart
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
 USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
     --libdir=/usr/lib64 \
-    --with-doc-dir=/usr/share/doc/libexif-0.6.21 \
-	--disable-static
+    --disable-static
 
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}/xc/xfce4
+cd ${CLFSSOURCES}/xc/xfce
 checkBuiltPackage
-rm -rf libatasmart
+sudo rm -rf libatasmart
 
-#parted
-wget http://ftp.gnu.org/gnu/parted/parted-3.2.tar.xz -O \
-	parted-3.2.tar.xz
+#libbytesize
+wget https://github.com/storaged-project/libbytesize/archive/libbytesize-0.11.tar.gz -O \
+    libbytesize-0.11.tar.gz
 
-#wget http://www.linuxfromscratch.org/patches/blfs/svn/parted-3.2-devmapper-1.patch -O \
-#	Parted-3.2-devmapper-1.patch
+mkdir libbytesize && tar xf libbytesize-*.tar.* -C libbytesize --strip-components 1
+cd libbytesize
 
-mkdir parted && tar xf parted-*.tar.* -C parted --strip-components 1
-cd parted
-
-#patch -Np1 -i ../Parted-3.2-devmapper-1.patch
+sh autogen.sh
 
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
 USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
-	--libdir=/usr/lib64 \
-	--disable-static
+    --libdir=/usr/lib64 \
+    --disable-static
+
+sed -i 's/docs/#docs/' Makefile*
 
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
@@ -2080,113 +1956,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf parted
-
-#dmraid
-wget http://people.redhat.com/~heinzm/sw/dmraid/src/dmraid-current.tar.bz2 -O \
-	dmraid-current.tar.bz2
-
-mkdir dmraid && tar xf dmraid-*.tar.* -C dmraid --strip-components 3
-cd dmraid
-
-sudo cp -rv include/dmraid /usr/inlude/
-
-cd ${CLFSSOURCES}/xc/xfce4
-checkBuiltPackage
-rm -rf dmraid
-
-#mdadm
-wget http://www.kernel.org/pub/linux/utils/raid/mdadm/mdadm-4.0.tar.xz -O \
-	mdadm-4.0.tar.xz
-
-mkdir mdadm && tar xf mdadm-*.tar.* -C mdadm --strip-components 1
-cd mdadm
-
-#Fix for GCC 7.1
-sed 's@-Werror@@' -i Makefile
-
-PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
-CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
-
-sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
-
-cd ${CLFSSOURCES}/xc/xfce4
-checkBuiltPackage
-rm -rf mdadm
-
-#reiserfsprogs
-wget https://www.kernel.org/pub/linux/kernel/people/jeffm/reiserfsprogs/v3.6.27/reiserfsprogs-3.6.27.tar.xz -O \
-	reiserfsprogs-3.6.27.tar.xz
-
-mkdir reiserfsprogs && tar xf reiserfsprogs-*.tar.* -C reiserfsprogs --strip-components 1
-cd reiserfsprogs
-
-autoreconf -fiv 
-
-CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
-USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
-    --libdir=/usr/lib64 --sbin=/sbin
-
-PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
-CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
-
-sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
-
-cd ${CLFSSOURCES}/xc/xfce4
-checkBuiltPackage
-rm -rf reiserfsprogs
-
-#valgrind
-wget https://sourceware.org/ftp/valgrind/valgrind-3.13.0.tar.bz2 -O \
-	valgrind-3.13.0.tar.bz2
-
-mkdir valgrind && tar xf valgrind-*.tar.* -C valgrind --strip-components 1
-cd valgrind
-
-sed -i 's|/doc/valgrind||' docs/Makefile.in 
-
-CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
-USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
-    --libdir=/usr/lib64 --datadir=/usr/share/doc/valgrind-3.13.0
-
-PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
-CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
-
-sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
-
-cd ${CLFSSOURCES}/xc/xfce4
-checkBuiltPackage
-rm -rf valgrind
-
-#xfsprogs
-wget https://www.kernel.org/pub/linux/utils/fs/xfs/xfsprogs/xfsprogs-4.12.0.tar.xz -O \
-	xfsprogs-4.12.0.tar.xz
-	
-mkdir xfsprogs && tar xf xfsprogs-*.tar.* -C xfsprogs --strip-components 1
-cd xfsprogs
-
-PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} \
-CC="gcc ${BUILD64}"     \
-USE_ARCH=64             \
-CXX="g++ ${BUILD64}"    \
-make DEBUG=-DNDEBUG     \
-     INSTALL_USER=root  \
-     INSTALL_GROUP=root \
-     PREFIX=/usr        \
-     LIBDIR=/usr/lib64  \
-     LOCAL_CONFIGURE_OPTIONS="--enable-readline"
-
-sudo make PKG_DOC_DIR=/usr/share/doc/xfsprogs-4.12.0 install    
-sudo make PKG_DOC_DIR=/usr/share/doc/xfsprogs-4.12.0 install-dev
-
-sudo rm -rfv /usr/lib/libhandle.a                               
-sudo rm -rfv /lib/libhandle.{a,la,so}                           
-sudo ln -sfv ../../lib/libhandle.so.1 /usr/lib/libhandle.so     
-sudo sed -i "s@libdir='/lib@libdir='/usr/lib@" /usr/lib/libhandle.la
-
-cd ${CLFSSOURCES}/xc/xfce4
-checkBuiltPackage
-rm -rf xfsprogs
+sudo rm -rf libbytesize
 
 #LVM2
 wget ftp://sources.redhat.com/pub/lvm2/releases/LVM2.2.02.171.tgz -O \
@@ -2223,7 +1993,945 @@ sudo sudo mv /usr/lib/libdevmapper.so /usr/lib64/
 
 cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf LVM2
+sudo rm -rf LVM2
+
+#parted
+wget http://ftp.gnu.org/gnu/parted/parted-3.2.tar.xz -O \
+    parted-3.2.tar.xz
+
+#wget http://www.linuxfromscratch.org/patches/blfs/svn/parted-3.2-devmapper-1.patch -O \
+#   Parted-3.2-devmapper-1.patch
+
+mkdir parted && tar xf parted-*.tar.* -C parted --strip-components 1
+cd parted
+
+#patch -Np1 -i ../Parted-3.2-devmapper-1.patch
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
+    --libdir=/usr/lib64 \
+    --disable-static
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf parted
+
+#dmraid
+wget http://people.redhat.com/~heinzm/sw/dmraid/src/dmraid-current.tar.bz2 -O \
+    dmraid-current.tar.bz2
+
+mkdir dmraid && tar xf dmraid-*.tar.* -C dmraid --strip-components 3
+cd dmraid
+
+sudo cp -rv include/dmraid /usr/inlude/
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf dmraid
+
+#mdadm
+wget http://www.kernel.org/pub/linux/utils/raid/mdadm/mdadm-4.0.tar.xz -O \
+    mdadm-4.0.tar.xz
+
+mkdir mdadm && tar xf mdadm-*.tar.* -C mdadm --strip-components 1
+cd mdadm
+
+#Fix for GCC 7.1
+sed 's@-Werror@@' -i Makefile
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf mdadm
+
+#LZO
+wget http://www.oberhumer.com/opensource/lzo/download/lzo-2.10.tar.gz -O \
+    lzo-2.10.tar.gz
+
+mkdir lzo && tar xf lzo-*.tar.* -C lzo --strip-components 1
+cd lzo
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
+    --libdir=/usr/lib64 \
+    --disable-static \
+    --enable-shared \
+    --docdir=/usr/share/doc/lzo-2.10
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf lzo
+
+#btrfs-progs
+wget https://www.kernel.org/pub/linux/kernel/people/kdave/btrfs-progs/btrfs-progs-v4.12.tar.xz -O \
+    btrfs-progs-v4.12.tar.xz
+
+mkdir btrfs-progs && tar xf btrfs-progs-*.tar.* -C btrfs-progs --strip-components 1
+cd btrfs-progs
+
+sed -i '1,100 s/\.gz//g' Documentation/Makefile.in
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
+    --libdir=/lib64 \
+    --disable-static \
+    --disable-documentation
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/lib64
+
+mv tests/fuzz-tests/003-multi-check-unmounted/test.sh{,.broken}    &&
+mv tests/fuzz-tests/004-simple-dump-tree/test.sh{,.broken}         &&
+mv tests/fuzz-tests/007-simple-super-recover/test.sh{,.broken}     &&
+mv tests/fuzz-tests/009-simple-zero-log/test.sh{,.broken}          &&
+mv tests/misc-tests/019-receive-clones-on-munted-subvol/test.sh{,.broken}
+
+#pushd tests
+#   sudo ./fsck-tests.sh
+#   sudo ./mkfs-tests.sh
+#   sudo ./convert-tests.sh
+#   sudo ./misc-tests.sh
+#   sudo ./cli-tests.sh
+#   sudo ./fuzz-tests.sh
+#popd
+
+sudo make PREFIX=/usr LIBDIR=/lib64 install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf btrfs-progs
+
+#libassuan
+wget ftp://ftp.gnupg.org/gcrypt/libassuan/libassuan-2.4.3.tar.bz2 -O \
+    libassuan-2.4.3.tar.bz2
+    
+mkdir libassuan && tar xf libassuan-*.tar.* -C libassuan --strip-components 1
+cd libassuan
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+    --libdir=/usr/lib64 \
+    --disable-static
+    
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
+make check
+checkBuiltPackage
+
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -r libassuan
+
+#GPGME
+wget ftp://ftp.gnupg.org/gcrypt/gpgme/gpgme-1.9.0.tar.bz2 -O \
+	gpgme-1.9.0.tar.bz2
+
+mkdir gpgme && tar xf gpgme-*.tar.* -C gpgme --strip-components 1
+cd gpgme
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
+    --libdir=/usr/lib64 \
+	--disable-static
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf gpgme
+
+#SWIG
+wget http://downloads.sourceforge.net/swig/swig-3.0.12.tar.gz -O \
+	swig-3.0.12.tar.gz
+
+mkdir swig && tar xf swig-*.tar.* -C swig --strip-components 1
+cd swig
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
+    --libdir=/usr/lib64 \
+	--disable-static \
+	--without-clisp   \
+    --without-maximum-compile-warnings
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+sudo cp -rv  /usr/lib/python2.7/ /usr/lib64/
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -rf swig
+
+#cryptsetup
+wget https://www.kernel.org/pub/linux/utils/cryptsetup/v1.7/cryptsetup-1.7.5.tar.xz -O \
+	cryptsetup-1.7.5.tar.xz
+
+mkdir cryptsetup && tar xf cryptsetup-*.tar.* -C cryptsetup --strip-components 1
+cd cryptsetup
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
+    --libdir=/usr/lib64 \
+	--disable-static
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf cryptsetup
+
+#volume_key
+wget https://releases.pagure.org/volume_key/volume_key-0.3.9.tar.xz -O \
+	volume_key-0.3.9.tar.xz
+
+mkdir volume_key && tar xf volume_key-*.tar.* -C volume_key --strip-components 1
+cd volume_key
+
+export PYTHON=/usr/bin/python3.6
+
+sed -i '/config.h/d' lib/libvolume_key.h
+autoreconf -fiv
+
+PYTHON=/usr/bin/python3.6 \
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
+	--libdir=/usr/lib64 \
+	--disable-static
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+unset PYTHON
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf volume_key
+
+#libblockdev
+wget https://github.com/storaged-project/libblockdev/releases/download/2.13-1/libblockdev-2.13.tar.gz -O \
+    libblockdev-2.13.tar.gz
+
+mkdir libblockdev && tar xf libblockdev-*.tar.* -C libblockdev --strip-components 1
+cd libblockdev
+
+sh autogen.sh
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
+    --libdir=/usr/lib64 \
+    --disable-static \
+    --without-dm 
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+sed -i 's/docs/#docs/' Makefile*
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf libblockdev
+
+#UDisks
+wget https://github.com/storaged-project/udisks/releases/download/udisks-2.7.3/udisks-2.7.3.tar.bz2 -O \
+	udisks-2.7.3.tar.bz2
+
+mkdir udisks && tar xf udisks-*.tar.* -C udisks --strip-components 1
+cd udisks	
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+    --libdir=/usr/lib64	\
+    --libexecdir=/usr/lib64 \
+    --disable-static    \
+    --sysconfdir=/etc	\
+    --localstatedir=/var \
+    --disable-gtk-doc	\
+    --disable-gtk-doc-pdf \
+    --disable-gtk-doc-html \
+    --disable-man 	\
+    --enable-shared 	\
+    --enable-btrfs 	\
+    --enable-lvm2 	\
+    --enable-lvmcache	\
+    --enable-polkit	\
+    --disable-tests \
+	--disable-logind \
+	--with-systemdsystemunitdir=no \
+	--with-udevdir=/lib64/udev
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf udisks
+
+LD_LIB_PATH="/usr/lib64" LIBRARY_PATH="/usr/lib64" CPPFLAGS="-I/usr/include" \
+LD_LIBRARY_PATH="/usr/lib64" CC="gcc ${BUILD64} -L/usr/lib64 -lacl" \
+CXX="g++ ${BUILD64} -lacl" USE_ARCH=64 \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+	--libdir=/usr/lib64 \
+	--disable-static    \
+	--sysconfdir=/etc    \
+    --disable-gtk-doc \
+    --disable-gtk-doc-pdf \
+    --disable-gtk-doc-html \
+    --disable-libsystemd-login \
+    --disable-admin \
+    --disable-gphoto2 \
+    --disable-documentation
+    
+sudo ln -sfv /usr/lib64/libacl.so /lib64/
+sudo ln -sfv /usr/lib64/libattr.so /lib64/
+    
+LD_LIB_PATH="/usr/lib64" LIBRARY_PATH="/usr/lib64" CPPFLAGS="-I/usr/include" \
+LD_LIBRARY_PATH="/usr/lib64" CC="gcc ${BUILD64} -L/usr/lib64 -lacl" \
+CXX="g++ ${BUILD64} -lacl" USE_ARCH=64 \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} make PREFIX=/usr LIBDIR=/usr/lib64
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf gvfs
+
+#libexif
+wget http://downloads.sourceforge.net/libexif/libexif-0.6.21.tar.bz2 -O \
+	libexif-0.6.21.tar.bz2
+
+mkdir libexif && tar xf libexif-*.tar.* -C libexif --strip-components 1
+cd libexif
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
+    --libdir=/usr/lib64 \
+    --with-doc-dir=/usr/share/doc/libexif-0.6.21 \
+	--disable-static
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf libexif
+
+#gstreamer
+wget https://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.12.1.tar.xz -O \
+    gstreamer-1.12.1.tar.xz
+
+mkdir gstreamer && tar xf gstreamer-*.tar.* -C gstreamer --strip-components 1
+cd gstreamer
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --disable-static \
+   --with-package-name="GStreamer 1.12.1 BLFS" \
+   --with-package-origin="http://www.linuxfromscratch.org/blfs/view/svn/" 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+sudo rm -rf /usr/bin/gst-* /usr/{lib,libexec}/gstreamer-1.0
+
+make check
+checkBuiltPackage
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+sudo ldconfig
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf gstreamer
+
+#gst-plugins-base
+wget https://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-1.12.1.tar.xz -O \
+    gst-plugins-base-1.12.1.tar.xz
+
+mkdir gstplgbase && tar xf gst-plugins-base-*.tar.* -C gstplgbase --strip-components 1
+cd gstplgbase
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --disable-static \
+   --with-package-name="GStreamer 1.12.1 BLFS" \
+   --with-package-origin="http://www.linuxfromscratch.org/blfs/view/svn/" 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+make check
+checkBuiltPackage
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf gstplgbase
+
+#gst-plugins-good
+wget https://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.12.1.tar.xz -O \
+    gst-plugins-good-1.12.1.tar.xz
+
+mkdir gstplggood && tar xf gst-plugins-good-*.tar.* -C gstplggood --strip-components 1
+cd gstplggood
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --disable-static \
+   --with-package-name="GStreamer 1.12.1 BLFS" \
+   --with-package-origin="http://www.linuxfromscratch.org/blfs/view/svn/" 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+make check
+checkBuiltPackage
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf gstplggood
+
+#yasm
+wget http://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz -O \
+    yasm-1.3.0.tar.gz
+
+mkdir yasm && tar xf yasm-*.tar.* -C yasm --strip-components 1
+cd yasm
+
+sed -i 's#) ytasm.*#)#' Makefile.in
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
+     --prefix=/usr \
+     --libdir=/usr/lib64 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf yasm
+
+#libjpeg-turbo
+wget http://downloads.sourceforge.net/libjpeg-turbo/libjpeg-turbo-1.5.2.tar.gz -O \
+    libjpeg-turbo-1.5.2.tar.gz
+
+mkdir libjpeg-turbo && tar xf libjpeg-turbo-*.tar.* -C libjpeg-turbo --strip-components 1
+cd libjpeg-turbo
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
+     --prefix=/usr \
+     --libdir=/usr/lib64 \
+     --mandir=/usr/share/man \
+     --with-jpeg8            \
+     --disable-static        \
+     --docdir=/usr/share/doc/libjpeg-turbo-1.5.2
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
+
+sudo ldconfig
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf libjpeg-turbo
+
+#libpng installed by bootloader script clfs_6b1....sh
+#libepoxy installed by Xorg script
+
+#libtiff
+wget http://download.osgeo.org/libtiff/tiff-4.0.8.tar.gz -O \
+    tiff-4.0.8.tar.gz
+
+mkdir libtiff && tar xf tiff-*.tar.* -C libtiff --strip-components 1
+cd libtiff
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
+     --prefix=/usr \
+     --libdir=/usr/lib64 \
+     --disable-static
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf libtiff
+
+#libgsf
+wget http://ftp.gnome.org/pub/gnome/sources/libgsf/1.14/libgsf-1.14.41.tar.xz -O \
+  libgsf-1.14.41.tar.xz
+
+mkdir libgsf && tar xf libgsf-*.tar.* -C libgsf --strip-components 1
+cd libgsf
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+     --libdir=/usr/lib64 \
+     --disable-static
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf libgsf
+
+#littleCMS2
+wget http://downloads.sourceforge.net/lcms/lcms2-2.8.tar.gz -O \
+    lcms2-2.8.tar.gz
+
+mkdir lcms2 && tar xf lcms2-*.tar.* -C lcms2 --strip-components 1
+cd lcms2
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --disable-static \
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf lcms2
+
+#OpenJPEG
+wget http://downloads.sourceforge.net/openjpeg.mirror/openjpeg-1.5.2.tar.gz -O \
+    openjpeg-1.5.2.tar.gz
+    
+mkdir openjpeg && tar xf openjpeg-*.tar.* -C openjpeg --strip-components 1
+cd openjpeg
+
+autoreconf -f -i
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+    --libdir=/usr/lib64 \
+    --sysconfdir=/etc \
+    --disable-static
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf openjpeg
+#Cairo
+wget http://cairographics.org/releases/cairo-1.14.10.tar.xz -O \
+    cairo-1.14.10.tar.xz
+
+mkdir cairo && tar xf cairo-*.tar.* -C cairo --strip-components 1
+cd cairo
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
+     --prefix=/usr \
+     --libdir=/usr/lib64 \
+     --disable-static \
+     --enable-tee
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf cairo
+
+#NSPR
+wget https://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v4.15/src/nspr-4.15.tar.gz -O \
+    nspr-4.15.tar.gz
+
+mkdir nspr && tar xf nspr-*.tar.* -C nspr --strip-components 1
+cd nspr
+
+cd nspr                                                     &&
+sed -ri 's#^(RELEASE_BINS =).*#\1#' pr/src/misc/Makefile.in &&
+sed -i 's#$(LIBRARY) ##'            config/rules.mk         &&
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --with-mozilla \
+   --with-pthreads \
+   $([ $(uname -m) = x86_64 ] && echo --enable-64bit)
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+echo " "
+echo "checking if /usr/include/pratom.h was installed..."
+ls /usr/include | grep pratom.h
+echo "... should be shown in output one line above. Mozjs 17.0.0 will fail otherwise."
+sudo rm -rf nspr
+
+#libtasn1
+wget http://ftp.gnu.org/gnu/libtasn1/libtasn1-4.12.tar.gz -O \
+    libtasn1-4.12.tar.gz
+
+mkdir libtasn1 && tar xf libtasn1-*.tar.* -C libtasn1 --strip-components 1
+cd libtasn1
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+    --libdir=/usr/lib64 \
+    --disable-static
+    
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
+make check
+checkBuiltPackage
+
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+rm -r libtasn1
+
+#poppler-glib 
+wget http://poppler.freedesktop.org/poppler-0.56.0.tar.xz -O \
+    poppler-0.56.0.tar.xz
+    
+wget http://poppler.freedesktop.org/poppler-data-0.4.7.tar.gz -O \
+    Poppler-data-0.4.7.tar.gz
+
+mkdir poppler && tar xf poppler-*.tar.* -C poppler --strip-components 1
+cd poppler
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+    --libdir=/usr/lib64 \
+    --sysconfdir=/etc \
+    --disable-static            \
+    --enable-build-type=release \
+    --enable-cmyk               \
+    --enable-xpdf-headers       \
+    --with-testdatadir=$PWD/testfile
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+mkdir poppler-data
+tar -xf ../Poppler-data-*.tar.gz -C poppler-data --strip-components 1 
+cd poppler-data
+
+sudo make LIBDIR=/usr/lib64 prefix=/usr install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf poppler
+
+#Tumbler
+wget http://archive.xfce.org/src/xfce/tumbler/0.2/tumbler-0.2.0.tar.bz2 -O \
+	tumbler-0.2.0.tar.bz2
+	
+mkdir tumbler && tar xf tumbler-*.tar.* -C tumbler --strip-components 1
+cd tumbler
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+    --libdir=/usr/lib64 
+    
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf tumbler
+
+#Thunar
+wget http://archive.xfce.org/src/xfce/thunar/1.6/Thunar-1.6.12.tar.bz2 -O \
+	Thunar-1.6.12.tar.bz2
+	
+mkdir Thunar && tar xf Thunar-*.tar.* -C Thunar --strip-components 1
+cd Thunar
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+    --libdir=/usr/lib64 --sysconfdir=/etc \
+    --docdir=/usr/share/doc/Thunar-1.6.12
+    
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf Thunar
+
+#thunar-volman
+wget http://archive.xfce.org/src/xfce/thunar-volman/0.8/thunar-volman-0.8.1.tar.bz2 -O \
+	thunar-volman-0.8.1.tar.bz2
+
+mkdir thunar-volman && tar xf thunar-volman-*.tar.* -C thunar-volman --strip-components 1
+cd thunar-volman
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+    --libdir=/usr/lib64 
+    
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf thunar-volman
+
+#xfce-appfinder
+wget http://archive.xfce.org/src/xfce/xfce4-appfinder/4.12/xfce4-appfinder-4.12.0.tar.bz2 -O \
+	xfce4-appfinder-4.12.0.tar.bz2
+
+mkdir xfce4-appfinder && tar xf xfce4-appfinder-*.tar.* -C xfce4-appfinder --strip-components 1
+cd xfce4-appfinder
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+    --libdir=/usr/lib64 
+    
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf xfce4-appfinder
+
+#UPower
+wget https://upower.freedesktop.org/releases/upower-0.99.5.tar.xz -O \
+	upower-0.99.5.tar.xz
+
+mkdir upower && tar xf upower-*.tar.* -C upower --strip-components 1
+cd upower
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+    --libdir=/usr/lib64 \
+    --sysconfdir=/etc    \
+    --localstatedir=/var \
+    --enable-deprecated  \
+    --disable-static \
+    --disable-gtk-doc
+    
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf upower
+
+#libatasmart
+wget http://0pointer.de/public/libatasmart-0.19.tar.xz -O \
+	libatasmart-0.19.tar.xz
+
+mkdir libatasmart && tar xf libatasmart-*.tar.* -C libatasmart --strip-components 1
+cd libatasmart
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
+    --libdir=/usr/lib64 \
+    --with-doc-dir=/usr/share/doc/libexif-0.6.21 \
+	--disable-static
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf libatasmart
+
+#parted
+wget http://ftp.gnu.org/gnu/parted/parted-3.2.tar.xz -O \
+	parted-3.2.tar.xz
+
+#wget http://www.linuxfromscratch.org/patches/blfs/svn/parted-3.2-devmapper-1.patch -O \
+#	Parted-3.2-devmapper-1.patch
+
+mkdir parted && tar xf parted-*.tar.* -C parted --strip-components 1
+cd parted
+
+#patch -Np1 -i ../Parted-3.2-devmapper-1.patch
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
+	--libdir=/usr/lib64 \
+	--disable-static
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf parted
+
+#dmraid
+wget http://people.redhat.com/~heinzm/sw/dmraid/src/dmraid-current.tar.bz2 -O \
+	dmraid-current.tar.bz2
+
+mkdir dmraid && tar xf dmraid-*.tar.* -C dmraid --strip-components 3
+cd dmraid
+
+sudo cp -rv include/dmraid /usr/inlude/
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf dmraid
+
+#mdadm
+wget http://www.kernel.org/pub/linux/utils/raid/mdadm/mdadm-4.0.tar.xz -O \
+	mdadm-4.0.tar.xz
+
+mkdir mdadm && tar xf mdadm-*.tar.* -C mdadm --strip-components 1
+cd mdadm
+
+#Fix for GCC 7.1
+sed 's@-Werror@@' -i Makefile
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf mdadm
+
+#reiserfsprogs
+wget https://www.kernel.org/pub/linux/kernel/people/jeffm/reiserfsprogs/v3.6.27/reiserfsprogs-3.6.27.tar.xz -O \
+	reiserfsprogs-3.6.27.tar.xz
+
+mkdir reiserfsprogs && tar xf reiserfsprogs-*.tar.* -C reiserfsprogs --strip-components 1
+cd reiserfsprogs
+
+autoreconf -fiv 
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
+    --libdir=/usr/lib64 --sbin=/sbin
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf reiserfsprogs
+
+#valgrind
+wget https://sourceware.org/ftp/valgrind/valgrind-3.13.0.tar.bz2 -O \
+	valgrind-3.13.0.tar.bz2
+
+mkdir valgrind && tar xf valgrind-*.tar.* -C valgrind --strip-components 1
+cd valgrind
+
+sed -i 's|/doc/valgrind||' docs/Makefile.in 
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
+    --libdir=/usr/lib64 --datadir=/usr/share/doc/valgrind-3.13.0
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf valgrind
+
+#xfsprogs
+wget https://www.kernel.org/pub/linux/utils/fs/xfs/xfsprogs/xfsprogs-4.12.0.tar.xz -O \
+	xfsprogs-4.12.0.tar.xz
+	
+mkdir xfsprogs && tar xf xfsprogs-*.tar.* -C xfsprogs --strip-components 1
+cd xfsprogs
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} \
+CC="gcc ${BUILD64}"     \
+USE_ARCH=64             \
+CXX="g++ ${BUILD64}"    \
+make DEBUG=-DNDEBUG     \
+     INSTALL_USER=root  \
+     INSTALL_GROUP=root \
+     PREFIX=/usr        \
+     LIBDIR=/usr/lib64  \
+     LOCAL_CONFIGURE_OPTIONS="--enable-readline"
+
+sudo make PKG_DOC_DIR=/usr/share/doc/xfsprogs-4.12.0 install    
+sudo make PKG_DOC_DIR=/usr/share/doc/xfsprogs-4.12.0 install-dev
+
+sudo rm -rfv /usr/lib/libhandle.a                               
+sudo rm -rfv /lib/libhandle.{a,la,so}                           
+sudo ln -sfv ../../lib/libhandle.so.1 /usr/lib/libhandle.so     
+sudo sed -i "s@libdir='/lib@libdir='/usr/lib@" /usr/lib/libhandle.la
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf xfsprogs
+
+#LVM2
+wget ftp://sources.redhat.com/pub/lvm2/releases/LVM2.2.02.171.tgz -O \
+	LVM2.2.02.171.tgz
+
+mkdir LVM2 && tar xf LVM2*.tgz -C LVM2 --strip-components 1
+cd LVM2
+
+SAVEPATH=$PATH PATH=$PATH:/sbin:/usr/sbin \
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
+	--libdir=/usr/lib64 \
+	--disable-static    \
+    	--exec-prefix=      \
+    	--enable-applib     \
+    	--enable-cmdlib     \
+    	--enable-pkgconfig  \
+    	--enable-udev_sync
+    
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+PATH=$SAVEPATH                 
+unset SAVEPATH
+
+export PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin
+
+sudo make -C tools install_dmsetup_dynamic 
+sudo make -C udev  install                 
+sudo make -C libdm install
+
+sudo mv /usr/lib/pkgconfig/devmapper.pc ${PKG_CONFIG_PATH64}/
+sudo sudo mv /usr/lib/libdevmapper.so /usr/lib64/
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf LVM2
 
 #sg3_utils
 wget http://sg.danny.cz/sg/p/sg3_utils-1.42.tar.xz -O \
@@ -2242,7 +2950,7 @@ sudo make install
 
 cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf sg3_utils
+sudo rm -rf sg3_utils
 
 #xfce4-power-manager
 wget http://archive.xfce.org/src/xfce/xfce4-power-manager/1.6/xfce4-power-manager-1.6.0.tar.bz2 -O \
@@ -2261,7 +2969,7 @@ sudo make install
 
 cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf xfce4-power-manager
+sudo rm -rf xfce4-power-manager
 
 #lxde-icon-theme
 wget https://downloads.sourceforge.net/lxde/lxde-icon-theme-0.5.1.tar.xz -O \
@@ -2279,7 +2987,7 @@ sudo gtk-update-icon-cache -qf /usr/share/icons/nuoveXT2
 
 cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf lxde-icon-theme
+sudo rm -rf lxde-icon-theme
 
 #libcanberra
 wget http://0pointer.de/lennart/projects/libcanberra/libcanberra-0.30.tar.xz -O \
@@ -2298,7 +3006,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf libcanberra
+sudo rm -rf libcanberra
 
 #xfce4-settings
 wget http://archive.xfce.org/src/xfce/xfce4-settings/4.12/xfce4-settings-4.12.1.tar.bz2 -O \
@@ -2317,7 +3025,7 @@ sudo make install
 
 cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf xfce4-settings
+sudo rm -rf xfce4-settings
 
 #Xfdesktop
 wget http://archive.xfce.org/src/xfce/xfdesktop/4.12/xfdesktop-4.12.4.tar.bz2 -O \
@@ -2335,7 +3043,7 @@ sudo make install
 
 cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf xfdesktop
+sudo rm -rf xfdesktop
 
 #Xfwm4
 wget http://archive.xfce.org/src/xfce/xfwm4/4.12/xfwm4-4.12.4.tar.bz2 -O \
@@ -2353,7 +3061,7 @@ sudo make install
 
 cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf xfwm4
+sudo rm -rf xfwm4
 
 #desktop-file-utils
 wget http://freedesktop.org/software/desktop-file-utils/releases/desktop-file-utils-0.23.tar.xz -O \
@@ -2373,7 +3081,7 @@ sudo update-desktop-database /usr/share/applications
 
 cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf desktop-file-utils
+sudo rm -rf desktop-file-utils
 
 #shared-mime-info
 wget http://freedesktop.org/~hadess/shared-mime-info-1.8.tar.xz -O \
@@ -2393,7 +3101,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf sharedmimeinfo
+sudo rm -rf sharedmimeinfo
 
 #polkit-gnome
 wget http://ftp.gnome.org/pub/gnome/sources/polkit-gnome/0.105/polkit-gnome-0.105.tar.xz -O \
@@ -2425,7 +3133,7 @@ cd polkit-gnome
 
 cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf polkit-gnome
+sudo rm -rf polkit-gnome
 
 #xfce4-session
 wget http://archive.xfce.org/src/xfce/xfwm4/4.12/xfwm4-4.12.4.tar.bz2 -O \
@@ -2448,7 +3156,7 @@ sudo update-mime-database /usr/share/mime
 
 cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf xfwm4
+sudo rm -rf xfwm4
 
 #Generate .xinitrc here
 
@@ -2474,7 +3182,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf vte
+sudo rm -rf vte
 
 #xfce4-terminal
 wget http://archive.xfce.org/src/apps/xfce4-terminal/0.8/xfce4-terminal-0.8.6.tar.bz2 -O \
@@ -2492,7 +3200,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf xfce4-terminal
+sudo rm -rf xfce4-terminal
 
 #ristretto
 wget http://archive.xfce.org/src/apps/ristretto/0.8/ristretto-0.8.2.tar.bz2 -O \
@@ -2510,7 +3218,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf ristretto
+sudo rm -rf ristretto
 
 #xfce-notifyd
 wget http://archive.xfce.org/src/apps/xfce4-notifyd/0.2/xfce4-notifyd-0.2.4.tar.bz2 -O \
@@ -2530,5 +3238,5 @@ notify-send -i info Information "Hi ${USER}, This is a Test"
 
 cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
-rm -rf xfce4-notifyd
+sudo rm -rf xfce4-notifyd
 

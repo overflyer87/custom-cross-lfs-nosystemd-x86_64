@@ -379,7 +379,6 @@ cd libatasmart
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
 USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
     --libdir=/usr/lib64 \
-    --with-doc-dir=/usr/share/doc/libexif-0.6.21 \
 	--disable-static
 
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
