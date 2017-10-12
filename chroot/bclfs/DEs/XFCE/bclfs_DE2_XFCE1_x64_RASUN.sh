@@ -35,8 +35,12 @@ export CLFS_TARGET32="i686-pc-linux-gnu"
 export PKG_CONFIG_PATH=/usr/lib64/pkgconfig
 export PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 
+sudo rm -rf ${CLFSSOURCES}/xc/xfce4
+
 sudo mkdir -pv ${CLFSSOURCES}/xc/xfce4
 cd ${CLFSSOURCES}/xc/xfce4
+
+sudo chown -Rv overflyer ${CLFSSOURCES}/xc
 
 #We will only do 64-bit builds in this script
 #We compiled Xorg with 32-bit libraries
@@ -210,7 +214,7 @@ wget http://archive.xfce.org/src/xfce/xfconf/4.12/xfconf-4.12.1.tar.bz2 -O \
   xfconf-4.12.1.tar.bz2
 
 mkdir xfconf && tar xf xfconf-*.tar.* -C xfconf --strip-components 1
-cd 
+cd xfconf
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
             --libdir=/usr/lib64 \
@@ -899,6 +903,26 @@ cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 sudo rm -rf libwnck
 
+#iso-codes 
+wget https://pkg-isocodes.alioth.debian.org/downloads/iso-codes-3.75.tar.xz -O \
+	iso-codes-3.75.tar.xz 
+mkdir iso-codes && tar xf iso-codes-*.tar.* -C iso-codes --strip-components 1 
+cd iso-codes 
+
+sed -i '/^LN_S/s/s/sfvn/' */Makefile 
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \ 
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+	--libdir=/usr/lib64
+ 
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr 
+
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install 
+
+cd ${CLFSSOURCES}/xc/mate 
+checkBuiltPackage 
+sudo rm -rf
+
 #libxklavier
 wget http://pkgs.fedoraproject.org/repo/pkgs/libxklavier/libxklavier-5.4.tar.bz2/13af74dcb6011ecedf1e3ed122bd31fa/libxklavier-5.4.tar.bz2 -O \
     libxklavier-5.4.tar.bz2
@@ -1087,6 +1111,24 @@ cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 sudo rm -rf xfce4-xkb-plugin
 
+#icon-naming-utils
+wget http://tango.freedesktop.org/releases/icon-naming-utils-0.8.90.tar.bz2 -O \
+	icon-naming-utils-0.8.90.tar.bz2
+
+mkdir icon-naming-utils && tar xf icon-naming-utils-*.tar.* -C icon-naming-utils --strip-components 1
+cd icon-naming-utils
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64    \
+  PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr  \
+  --libdir=/usr/lib64
+ 
+make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf icon-naming-utils
+
 #gnome-icon-theme
 wget http://ftp.gnome.org/pub/gnome/sources/gnome-icon-theme/3.12/gnome-icon-theme-3.12.0.tar.xz -O \
     gnome-icon-theme-3.12.0.tar.xz
@@ -1140,6 +1182,21 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf vala
+
+#libgpg-error
+wget ftp://ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-1.27.tar.bz2 -O \
+    libgpg-error-1.27.tar.bz2
+    
+mkdir libgpgerror && tar xf libgpg-error-*.tar.* -C libgpgerror --strip-components 1
+cd libgpgerror
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr --libdir=/usr/lib64
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+rm -r libgpgerror
 
 #libgcrypt
 wget ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.7.8.tar.bz2 -O \
