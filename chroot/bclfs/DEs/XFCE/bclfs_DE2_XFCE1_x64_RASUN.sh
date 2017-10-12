@@ -919,7 +919,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 
 sudo make LIBDIR=/usr/lib64 PREFIX=/usr install 
 
-cd ${CLFSSOURCES}/xc/mate 
+cd ${CLFSSOURCES}/xc/xfce4 
 checkBuiltPackage 
 sudo rm -rf
 
@@ -1290,7 +1290,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr --libdir=/usr/l
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
 sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -r libgpgerror
 
