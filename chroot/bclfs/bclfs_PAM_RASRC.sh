@@ -34,6 +34,22 @@ export CLFS_TARGET32="i686-pc-linux-gnu"
 export PKG_CONFIG_PATH32=/usr/lib/pkgconfig
 export PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 
+echo " "
+echo " "
+echo "This is the last script that runs before you can reboot and enjoy you very OWN customized linux :)"
+echo "This script runs after the kernel was compiled and installed"
+echo "It installs sudo, shadow, cracklib and PAM to provide the system with a much more secure way to handle authentications"
+echo " "
+echo " "
+echo "In the end it will finally CREATE A USER FOR YOU and open up /etc/sudoers for YOU TO EDIT!"
+echo " "
+echo " "
+echo "Please CHOOSE YOUR USERNAME"
+
+read myusername
+YOURUSERNAME=$myusername
+export YOURUSERNAME
+
 cd ${CLFSSOURCES}
 
 #Cracklib 64-bit
@@ -397,8 +413,8 @@ rm -rf sudo
 groupadd users
 groupadd storage
 groupadd power
-useradd -g users -G wheel,storage,power -m -s /bin/bash overflyer
-passwd overflyer
+useradd -g users -G wheel,storage,power -m -s /bin/bash $YOURUSERNAME
+passwd $YOURUSERNAME
 visudo
 
 echo " "
@@ -409,3 +425,20 @@ rm -rf /tools
 rm -rf /cross-tools
 
 sed -i 's/oom_adj/oom_score_adj/' /etc/rc.d/init.d/sshd
+
+#Blacklist Modules that are not compatible
+#With the proprietary NVIDIA driver
+sudo mkdir -v /etc/modprobe.d
+
+sudo bash -c 'cat > /etc/modprobe.d/blacklist-nouveau.conf << "EOF"
+blacklist nouveau
+EOF'
+
+sudo bash -c 'cat > /etc/modprobe.d/blacklist-nouveaufb.conf << "EOF"
+blacklist nouveaufb
+EOF'
+
+sudo bash -c 'cat > /etc/modprobe.d/blacklist-nvidiafb.conf << "EOF"
+blacklist nvidiafb
+EOF'
+

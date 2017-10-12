@@ -17,13 +17,8 @@ echo " "
 
 #Building the final CLFS System
 CLFS=/
-CLFSHOME=/home
 CLFSSOURCES=/sources
 CLFSTOOLS=/tools
-CLFSCROSSTOOLS=/cross-tools
-CLFSFILESYSTEM=ext4
-CLFSROOTDEV=/dev/sda4
-CLFSHOMEDEV=/dev/sda5
 MAKEFLAGS="-j$(nproc)"
 BUILD32="-m32"
 BUILD64="-m64"
@@ -31,13 +26,7 @@ CLFS_TARGET32="i686-pc-linux-gnu"
 
 export CLFS=/
 export CLFSUSER=clfs
-export CLFSHOME=/home
 export CLFSSOURCES=/sources
-export CLFSTOOLS=/tools
-export CLFSCROSSTOOLS=/cross-tools
-export CLFSFILESYSTEM=ext4
-export CLFSROOTDEV=/dev/sda4
-export CLFSHOMEDEV=/dev/sda5
 export MAKEFLAGS="-j$(nproc)"
 export BUILD32="-m32"
 export BUILD64="-m64"
@@ -147,6 +136,8 @@ rm -rf man-pages
 mkdir glibc && tar xf glibc-*.tar.* -C glibc --strip-components 1
 cd glibc
 
+patch -Np1 -i ../glibc-2.26-fhs-1.patch
+
 LINKER=$(readelf -l /tools/bin/bash | sed -n 's@.*interpret.*/tools\(.*\)]$@\1@p')
 sed -i "s|libs -o|libs -L/usr/lib -Wl,-dynamic-linker=${LINKER} -o|" \
   scripts/test-installation.pl
@@ -180,6 +171,8 @@ rm -rf glibc-build
 #Glibc 64-bit
 mkdir glibc && tar xf glibc-*.tar.* -C glibc --strip-components 1
 cd glibc
+
+patch -Np1 -i ../glibc-2.26-fhs-1.patch
 
 LINKER=$(readelf -l /tools/bin/bash | sed -n 's@.*interpret.*/tools\(.*\)]$@\1@p')
 sed -i "s|libs -o|libs -L/usr/lib64 -Wl,-dynamic-linker=${LINKER} -o|" \

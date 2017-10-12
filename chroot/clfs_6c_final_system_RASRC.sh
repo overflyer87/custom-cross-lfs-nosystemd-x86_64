@@ -17,13 +17,7 @@ echo " "
 
 #Building the final CLFS System
 CLFS=/
-CLFSHOME=/home
 CLFSSOURCES=/sources
-CLFSTOOLS=/tools
-CLFSCROSSTOOLS=/cross-tools
-CLFSFILESYSTEM=ext4
-CLFSROOTDEV=/dev/sda4
-CLFSHOMEDEV=/dev/sda5
 MAKEFLAGS="-j$(nproc)"
 BUILD32="-m32"
 BUILD64="-m64"
@@ -31,13 +25,7 @@ CLFS_TARGET32="i686-pc-linux-gnu"
 
 export CLFS=/
 export CLFSUSER=clfs
-export CLFSHOME=/home
 export CLFSSOURCES=/sources
-export CLFSTOOLS=/tools
-export CLFSCROSSTOOLS=/cross-tools
-export CLFSFILESYSTEM=ext4
-export CLFSROOTDEV=/dev/sda4
-export CLFSHOMEDEV=/dev/sda5
 export MAKEFLAGS="-j$(nproc)"
 export BUILD32="-m32"
 export BUILD64="-m64"
@@ -635,8 +623,11 @@ rm -rf iproute
 mkdir bzip2 && tar xf bzip2-*.tar.* -C bzip2 --strip-components 1
 cd bzip2
 
+patch -Np1 -i ../bzip2-1.0.6-install_docs-1.patch
+
 sed -i -e 's:ln -s -f $(PREFIX)/bin/:ln -s :' Makefile
 sed -i 's@X)/man@X)/share/man@g' ./Makefile
+
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}"
 make -f Makefile-libbz2_so CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}"
 make clean
@@ -657,9 +648,12 @@ rm -rf bzip2
 mkdir bzip2 && tar xf bzip2-*.tar.* -C bzip2 --strip-components 1
 cd bzip2
 
+patch -Np1 -i ../bzip2-1.0.6-install_docs-1.patch
+
 sed -i -e 's:ln -s -f $(PREFIX)/bin/:ln -s :' Makefile
 sed -i 's@X)/man@X)/share/man@g' ./Makefile
 sed -i 's@/lib\(/\| \|$\)@/lib64\1@g' Makefile
+
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"
 make -f Makefile-libbz2_so CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}"
 make clean
@@ -789,6 +783,101 @@ ln -sv multiarch_wrapper /usr/bin/perl5.26.1
 cd ${CLFSSOURCES} 
 checkBuiltPackage
 rm -rf perl
+
+#Expat (Needed by Python) 64-bit
+mkdir expat && tar xf expat-*.tar.* -C expat --strip-components 1
+cd expat
+
+USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}"
+CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" ./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib \
+  --disable-static \
+  --enable-shared  
+  
+make LIBDIR=/usr/lib64 PREFIX=/usr 
+make check 
+checkBuiltPackage 
+make LIBDIR=/usr/lib64 PREFIX=/usr install
+  
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf expat
+
+#Expat (Needed by Python) 64-bit
+mkdir expat && tar xf expat-*.tar.* -C expat --strip-components 1
+cd expat
+
+USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" ./configure \
+  --prefix=/usr \
+  --libdir=/usr/lib64 \
+  --disable-static \
+  --enable-shared 
+  
+make LIBDIR=/usr/lib64 PREFIX=/usr 
+make check 
+checkBuiltPackage 
+make LIBDIR=/usr/lib64 PREFIX=/usr install
+  
+install -v -m755 -d /usr/share/doc/expat-2.2.4
+install -v -m644 doc/*.{html,png,css} /usr/share/doc/expat-2.2.4
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf expat
+
+#XML::Parser (Perl module) 32-bit
+mkdir xmlparser && tar xf XML-Parser-*.tar.* -C xmlparser --strip-components 1
+cd xmlparser
+
+USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
+CC="gcc ${BUILD32}" CXX="g++ ${BUILD32}" perl Makefile.PL
+
+make PREFIX=/usr LIBDIR=/usr/lib
+
+make PREFIX=/usr LIBDIR=/usr/lib test
+checkBuiltPackage
+make PREFIX=/usr LIBDIR=/usr/lib install
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf xmlparser
+
+#XML::Parser (Perl module) 64-bit
+mkdir xmlparser && tar xf XML-Parser-*.tar.* -C xmlparser --strip-components 1
+cd xmlparser
+
+USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" perl Makefile.PL
+
+make PREFIX=/usr LIBDIR=/usr/lib64
+
+make PREFIX=/usr LIBDIR=/usr/lib64 test
+checkBuiltPackage
+make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf xmlparser
+
+#intltool 64-bit
+mkdir intltool && tar xf intltool-*.tar.* -C intltool --strip-components 1
+cd intltool
+
+patch -Np1 -i ../intltool-0.51.0-perl-5.22-compatibility.patch
+checkBuiltPackage
+
+USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" ./configure --prefix=/usr \
+  --libdir=/usr/lib64
+
+make PREFIX=/usr LIBDIR=/usr/lib64
+
+make PREFIX=/usr LIBDIR=/usr/lib64 check
+checkBuiltPackage
+
+make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 #Readline 32-bit
 mkdir readline && tar xf readline-*.tar.* -C readline --strip-components 1

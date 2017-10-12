@@ -17,13 +17,7 @@ echo " "
 
 #Building the final CLFS System
 CLFS=/
-CLFSHOME=/home
 CLFSSOURCES=/sources
-CLFSTOOLS=/tools
-CLFSCROSSTOOLS=/cross-tools
-CLFSFILESYSTEM=ext4
-CLFSROOTDEV=/dev/sda4
-CLFSHOMEDEV=/dev/sda5
 MAKEFLAGS="-j$(nproc)"
 BUILD32="-m32"
 BUILD64="-m64"
@@ -32,14 +26,7 @@ PKG_CONFIG_PATH32=/usr/lib/pkgconfig
 PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 
 export CLFS=/
-export CLFSUSER=clfs
-export CLFSHOME=/home
 export CLFSSOURCES=/sources
-export CLFSTOOLS=/tools
-export CLFSCROSSTOOLS=/cross-tools
-export CLFSFILESYSTEM=ext4
-export CLFSROOTDEV=/dev/sda4
-export CLFSHOMEDEV=/dev/sda5
 export MAKEFLAGS="-j$(nproc)"
 export BUILD32="-m32"
 export BUILD64="-m64"
@@ -229,6 +216,155 @@ cd ${CLFSSOURCES}
 #checkBuiltPackage
 rm -rf gettext
 
+#libffi 32-bit
+mkdir libffi && tar xf libffi-*.tar.* -C libffi --strip-components 1
+cd libffi
+
+sed -e '/^includesdir/ s/$(libdir).*$/$(includedir)/' \
+    -i include/Makefile.in
+
+sed -e '/^includedir/ s/=.*$/=@includedir@/' \
+    -e 's/^Cflags: -I${includedir}/Cflags:/' \
+    -i libffi.pc.in
+
+USE_ARCH=32 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
+CC="gcc ${BUILD32}" ./configure \
+    --prefix=/usr \
+	--libdir=/usr/lib \
+	--disable-static
+
+make PREFIX=/usr LIBDIR=/usr/lib
+make check
+checkBuiltPackage
+make install
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf libffi
+
+#libffi 64-bit
+mkdir libffi && tar xf libffi-*.tar.* -C libffi --strip-components 1
+cd libffi
+
+sed -e '/^includesdir/ s/$(libdir).*$/$(includedir)/' \
+    -i include/Makefile.in
+
+sed -e '/^includedir/ s/=.*$/=@includedir@/' \
+    -e 's/^Cflags: -I${includedir}/Cflags:/' \
+    -i libffi.pc.in
+
+USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+CC="gcc ${BUILD64}" ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib64 \
+    --disable-static
+
+make PREFIX=/usr LIBDIR=/usr/lib64
+make check
+checkBuiltPackage
+make install
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf libffi
+
+#Python 3 64-bit
+wget https://www.python.org/ftp/python/3.6.3/Python-3.6.3.tar.xz -O \
+  Python-3.6.3.tar.xz
+
+#wget http://pkgs.fedoraproject.org/rpms/python3/raw/master/f/00102-lib64.patch -O \
+#python360-multilib2.patch
+  
+#wget https://docs.python.org/3.6/archives/python-3.6.0-docs-html.tar.bz2 -O \
+# python-360-docs.tar.bz2
+  
+mkdir Python-3 && tar xf Python-3.6*.tar.xz -C Python-3 --strip-components 1
+cd Python-3
+
+patch -Np1 -i ../python360-multilib.patch
+
+checkBuiltPackage
+
+############################################################################
+#  Let's see later if adding /usr/lib64 to ld.so.conf is really neccessary #
+############################################################################
+
+USE_ARCH=64 CXX="/usr/bin/g++ ${BUILD64}" \
+    CC="/usr/bin/gcc ${BUILD64}" \
+    LD_LIBRARY_PATH=/usr/lib64 \
+    LD_LIB_PATH=/usr/lib64 \
+    LIBRARY_PATH=/usr/lib64 \
+    PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
+            --prefix=/usr       \
+            --enable-shared     \
+            --disable-static    \
+            --with-system-expat \
+            --with-system-ffi   \
+            --libdir=/usr/lib64 \
+            --with-custom-platlibdir=/usr/lib64 \
+            --with-ensurepip=yes \
+            LDFLAGS="-Wl,-rpath /usr/lib64"
+
+LDFLAGS="-Wl,-rpath /usr/lib64" \
+LD_LIBRARY_PATH=/usr/lib64 \
+LD_LIB_PATH=/usr/lib64 \
+LIBRARY_PATH=/usr/lib64 make PREFIX=/usr LIBDIR=/usr/lib64 PLATLIBDIR=/usr/lib64 \
+  platlibdir=/usr/lib64
+
+make altinstall PREFIX=/usr LIBDIR=/usr/lib64 PLATLIBDIR=/usr/lib64 \
+  platlibdir=/usr/lib64
+  
+cp -rv /usr/lib/python3.6/ /usr/lib64/
+rm -rf /usr/lib/python3.6/
+
+chmod -v 755 /usr/lib64/libpython3.6m.so
+chmod -v 755 /usr/lib64/libpython3.so
+
+ln -svf /usr/lib64/libpython3.6m.so /usr/lib64/libpython3.6.so
+ln -svf /usr/lib64/libpython3.6m.so.1.0 /usr/lib64/libpython3.6.so.1.0
+ln -sfv /usr/bin/python3.6 /usr/bin/python3
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf Python-3
+
+#Ninja
+mkdir ninja && tar xf ninja-*.tar.* -C ninja --strip-components 1
+cd ninja
+
+CXX="g++ ${BUILD64}" USE_ARCH=64 CC="gcc ${BUILD64}" PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  \
+python3 configure.py --bootstrap
+
+CXX="g++ ${BUILD64}" USE_ARCH=64 CC="gcc ${BUILD64}" PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+python3 configure.py
+./ninja ninja_test
+./ninja_test --gtest_filter=-SubprocessTest.SetWithLots
+
+install -vm755 ninja /usr/bin/
+install -vDm644 misc/ninja.vim \
+                /usr/share/vim/vim80/syntax/ninja.vim
+install -vDm644 misc/bash-completion \
+                /usr/share/bash-completion/completions/ninja
+install -vDm644 misc/zsh-completion \
+                /usr/share/zsh/site-functions/_ninja
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf ninja
+
+#Meson
+mkdir meson && tar xf meson-*.tar.* -C meson --strip-components 1
+cd meson
+
+CXX="g++ ${BUILD64}" USE_ARCH=64 CC="gcc ${BUILD64}" PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+python3 setup.py build
+python3 setup.py install --verbose --prefix=/usr/lib64 --install-lib=/usr/lib64/python3.6/site-packages --optimize=1
+
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rf meson
+
 #Grep
 mkdir grep && tar xf grep-*.tar.* -C grep --strip-components 1
 cd grep
@@ -251,16 +387,16 @@ rm -rf grep
 mkdir groff && tar xf groff-*.tar.* -C groff --strip-components 1
 cd groff
 
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
 PAGE=A4 CC="gcc ${BUILD64}" \
 CXX="g++ ${BUILD64}" ./configure \
     --prefix=/usr \
     --libdir=/usr/lib64
 
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make -j1 PREFIX=/usr LIBDIR=/usr/lib64
 make install
 
-cd ${CLFSSOURCES} 
+cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf groff
 
@@ -329,6 +465,11 @@ rm -rf iputils
 #Kbd
 mkdir kbd && tar xf kbd-*.tar.* -C kbd --strip-components 1
 cd kbd
+
+patch -Np1 -i ../kbd-2.0.4-backspace-1.patch
+
+sed -i 's/\(RESIZECONS_PROGS=\)yes/\1no/g' configure
+sed -i 's/resizecons.8 //' docs/man/man8/Makefile.in
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
 CC="gcc ${BUILD64}" PKG_CONFIG_PATH="/tools/lib64/pkgconfig" \
@@ -715,6 +856,8 @@ rm -rf rsyslog
 #Sysvinit
 mkdir sysvinit && tar xf sysvinit-*.tar.* -C sysvinit --strip-components 1
 cd sysvinit
+
+patch -Np1 -i ../sysvinit-2.88dsf-consolidated-1.patch
 
 sed -i -e 's/\ sulogin[^ ]*//' -e 's/pidof\.8//' -e '/ln .*pidof/d' \
     -e '/utmpdump/d' -e '/mountpoint/d' -e '/mesg/d' src/Makefile

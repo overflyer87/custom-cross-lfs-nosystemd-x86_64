@@ -118,8 +118,8 @@ checkBuiltPackage
 sudo rm -rf libxfce4util
 
 #dbus
-wget http://dbus.freedesktop.org/releases/dbus/dbus-1.10.20.tar.gz -O \
-  dbus-1.10.20.tar.gz
+wget http://dbus.freedesktop.org/releases/dbus/dbus-1.10.22.tar.gz -O \
+  dbus-1.10.22.tar.gz
 
 mkdir dbus && tar xf dbus-*.tar.* -C dbus --strip-components 1
 cd dbus
@@ -150,9 +150,9 @@ sudo mkdir /lib64/lsb
 sudo ln -sfv /etc/rc.d/init.d/functions /lib/lsb/init-functions
 sudo ln -sfv /etc/rc.d/init.d/functions /lib64/lsb/init-functions
 
-sed -i 's/\/lib\/lsb\/init-functions/\/lib64\/lsb\/init-functions/' /etc/rc.d/init.d/*
-sed -i 's/loadproc/start_daemon/' /etc/rc.d/init.d/functions
-sed -i 's/load_msg_info/echo/' /etc/rc.d/init.d/functions
+sudo sed -i 's/\/lib\/lsb\/init-functions/\/lib64\/lsb\/init-functions/' /etc/rc.d/init.d/*
+sudo sed -i 's/loadproc/start_daemon/' /etc/rc.d/init.d/functions
+sudo sed -i 's/load_msg_info/echo/' /etc/rc.d/init.d/functions
 
 sudo mkdir /etc/dbus-1/
 sudo mkdir /usr/share/dbus-1/
@@ -170,8 +170,11 @@ sudo bash -c 'cat > /etc/dbus-1/session-local.conf << "EOF"
 </busconfig>
 EOF'
 
-cd ${CLFSSOURCES}/blfs-bootscripts
+cd ${CLFSSOURCES}/bootscripts
 sudo make install-dbus
+
+sudo sed -i 's/loadproc/start_daemon/' /etc/rc.d/init.d/dbus
+sudo sed -i 's/load_msg_info/echo/' /etc/rc.d/init.d/dbus
 
 sudo /etc/rc.d/init.d/dbus start
 
@@ -416,6 +419,10 @@ wget http://download.icu-project.org/files/icu4c/59.1/icu4c-59_1-src.tgz -O \
 mkdir icu && tar xf icu*.tgz -C icu --strip-components 1
 cd icu
 cd source
+
+#this patch is probably ONLY for glibx 2.26
+#it might cause icu to fail building for another glibc version
+sed -i 's/xlocale/locale/' i18n/digitlst.cpp
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
      --prefix=/usr \
@@ -892,6 +899,24 @@ cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 sudo rm -rf libwnck
 
+#libxklavier
+wget http://pkgs.fedoraproject.org/repo/pkgs/libxklavier/libxklavier-5.4.tar.bz2/13af74dcb6011ecedf1e3ed122bd31fa/libxklavier-5.4.tar.bz2 -O \
+    libxklavier-5.4.tar.bz2
+
+mkdir libxklavier && tar xf libxklavier-*.tar.* -C libxklavier --strip-components 1
+cd libxklavier
+    
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr --libdir=/usr/lib64 \
+    --disable-static
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+rm -rf libxklavier
+
 #xfce4-panel
 wget http://archive.xfce.org/src/xfce/xfce4-panel/4.12/xfce4-panel-4.12.1.tar.bz2 -O \
   xfce4-panel-4.12.1.tar.bz2
@@ -910,6 +935,80 @@ sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 i
 cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 sudo rm -rf xfce4-panel
+
+#libxml2 WITH ITS PYTHON 2 MODULE
+wget http://xmlsoft.org/sources/libxml2-2.9.4.tar.gz -O \
+    libxml2-2.9.4.tar.gz
+
+#Download testsuite. WE NEED IT to build the Python module!
+wget http://www.w3.org/XML/Test/xmlts20130923.tar.gz -O \
+    xmlts20130923.tar.gz
+
+mkdir libxml2 && tar xf libxml2-*.tar.* -C libxml2 --strip-components 1
+cd libxml2
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --disable-static \
+   --with-history   \
+   --libdir=/usr/lib64 \
+   --with-python=/usr/bin/python2.7 \
+   --with-icu \
+   --with-threads
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} make PREFIX=/usr LIBDIR=/usr/lib64
+
+tar xf ../xmlts20130923.tar.gz
+make check > check.log
+grep -E '^Total|expected' check.log
+checkBuiltPackage
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install 
+
+cd ${CLFSSOURCES}/xc/xfce4
+sudo updatedb
+sudo bash -c 'locate libxml2 | grep python2.7'
+echo "Did locate libxml | grep python2.7 find the libxml2 python2 modules?"
+echo ""
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+rm -rf libxml2
+
+#libxml2 WITH ITS PYTHON 3 MODULE
+mkdir libxml2 && tar xf libxml2-*.tar.* -C libxml2 --strip-components 1
+cd libxml2
+
+#run this to build Python3 module
+#Python2 module would be the default
+#We try not to use Python2 in CLFS multib!
+sed -i '/_PyVerify_fd/,+1d' python/types.c
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --disable-static \
+   --with-history   \
+   --libdir=/usr/lib64 \
+   --with-python=/usr/bin/python3.6 \
+   --with-icu \
+   --with-threads
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} make PREFIX=/usr LIBDIR=/usr/lib64
+
+tar xf ../xmlts20130923.tar.gz
+make check > check.log
+grep -E '^Total|expected' check.log
+checkBuiltPackage
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install 
+
+cd ${CLFSSOURCES}/xc/xfce4
+sudo updatedb
+sudo bash -c 'locate libxml2 | grep python3.6/'
+echo "Did locate libxml | grep python3.6 find the libxml2 python3 modules?"
+echo ""
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+rm -rf libxml2
 
 #libcroco
 wget http://ftp.gnome.org/pub/gnome/sources/libcroco/0.6/libcroco-0.6.12.tar.xz -O \
@@ -1001,83 +1100,9 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
 
 sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf gnome-icon-theme
-
-#libxml2 WITH ITS PYTHON 2 MODULE
-wget http://xmlsoft.org/sources/libxml2-2.9.4.tar.gz -O \
-    libxml2-2.9.4.tar.gz
-
-#Download testsuite. WE NEED IT to build the Python module!
-wget http://www.w3.org/XML/Test/xmlts20130923.tar.gz -O \
-    xmlts20130923.tar.gz
-
-mkdir libxml2 && tar xf libxml2-*.tar.* -C libxml2 --strip-components 1
-cd libxml2
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
-   --disable-static \
-   --with-history   \
-   --libdir=/usr/lib64 \
-   --with-python=/usr/bin/python2.7 \
-   --with-icu \
-   --with-threads
-
-PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} make PREFIX=/usr LIBDIR=/usr/lib64
-
-tar xf ../xmlts20130923.tar.gz
-make check > check.log
-grep -E '^Total|expected' check.log
-checkBuiltPackage
-
-sudo make PREFIX=/usr LIBDIR=/usr/lib64 install 
-
-cd ${CLFSSOURCES}/xc/mate
-sudo updatedb
-sudo bash -c 'locate libxml2 | grep python2.7'
-echo "Did locate libxml | grep python2.7 find the libxml2 python2 modules?"
-echo ""
-
-cd ${CLFSSOURCES}/xc/mate
-checkBuiltPackage
-rm -rf libxml2
-
-#libxml2 WITH ITS PYTHON 3 MODULE
-mkdir libxml2 && tar xf libxml2-*.tar.* -C libxml2 --strip-components 1
-cd libxml2
-
-#run this to build Python3 module
-#Python2 module would be the default
-#We try not to use Python2 in CLFS multib!
-sed -i '/_PyVerify_fd/,+1d' python/types.c
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
-   --disable-static \
-   --with-history   \
-   --libdir=/usr/lib64 \
-   --with-python=/usr/bin/python3.6 \
-   --with-icu \
-   --with-threads
-
-PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} make PREFIX=/usr LIBDIR=/usr/lib64
-
-tar xf ../xmlts20130923.tar.gz
-make check > check.log
-grep -E '^Total|expected' check.log
-checkBuiltPackage
-
-sudo make PREFIX=/usr LIBDIR=/usr/lib64 install 
-
-cd ${CLFSSOURCES}/xc/mate
-sudo updatedb
-sudo bash -c 'locate libxml2 | grep python3.6/'
-echo "Did locate libxml | grep python3.6 find the libxml2 python3 modules?"
-echo ""
-
-cd ${CLFSSOURCES}/xc/mate
-checkBuiltPackage
-rm -rf libxml2
 
 #libgudev
 wget http://ftp.gnome.org/pub/gnome/sources/libgudev/231/libgudev-231.tar.xz -O \
@@ -1094,7 +1119,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf libgudev
 
@@ -1112,7 +1137,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf vala
 
@@ -1130,7 +1155,7 @@ checkBuiltPackage
 
 sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -r libgcrypt
 
@@ -1149,7 +1174,7 @@ CC="gcc ${BUILD64}" \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf libsecret
 
@@ -1173,7 +1198,7 @@ CC="gcc ${BUILD64}" \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf libwebp
 
@@ -1192,7 +1217,7 @@ CC="gcc ${BUILD64}" \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
 sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf libnotify
 
@@ -1218,7 +1243,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 sudo unlink /usr/bin/python
 sudo ldconfig
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf libsoup
 
@@ -1264,7 +1289,7 @@ sudo find /usr/include/js-17.0/            \
      /usr/lib64/pkgconfig/mozjs-17.0.pc \
      -type f -exec chmod -v 644 {} \;
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf mozjs
 
@@ -1319,7 +1344,7 @@ session  include        system-session
 # End /etc/pam.d/polkit-1
 EOF'
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf polkit
 
@@ -1348,7 +1373,7 @@ OnlyShowIn=GNOME;XFCE;Unity;
 AutostartCondition=GNOME3 unless-session gnome
 EOF'
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf gnome-polkit
 
@@ -1382,7 +1407,7 @@ CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf udisks
 
@@ -1411,7 +1436,7 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} make PREFIX=/usr LIBDIR=/usr/lib64
 
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf gvfs
 
@@ -1433,7 +1458,7 @@ CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf libexif
 
@@ -1461,7 +1486,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 sudo ldconfig
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf gstreamer
 
@@ -1485,7 +1510,7 @@ checkBuiltPackage
 
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf gstplgbase
 
@@ -1509,7 +1534,7 @@ checkBuiltPackage
 
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf gstplggood
 
@@ -1529,7 +1554,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf yasm
 
@@ -1553,7 +1578,7 @@ sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 i
 
 sudo ldconfig
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf libjpeg-turbo
 
@@ -1575,7 +1600,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf libtiff
 
@@ -1593,7 +1618,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf libgsf
 
@@ -1611,7 +1636,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf lcms2
 
@@ -1635,7 +1660,7 @@ CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf openjpeg
 #Cairo
@@ -1654,7 +1679,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf cairo
 
@@ -1678,7 +1703,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 echo " "
 echo "checking if /usr/include/pratom.h was installed..."
@@ -1703,7 +1728,7 @@ checkBuiltPackage
 
 sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -r libtasn1
 
@@ -1726,7 +1751,7 @@ checkBuiltPackage
 
 sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -r p11-kit
 
@@ -1761,7 +1786,7 @@ cd poppler-data
 
 sudo make LIBDIR=/usr/lib64 prefix=/usr install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf poppler
 
@@ -1778,7 +1803,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
 sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf tumbler
 
@@ -1796,7 +1821,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
 sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf Thunar
 
@@ -1813,7 +1838,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
 sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf thunar-volman
 
@@ -1830,7 +1855,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
 sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf xfce4-appfinder
 
@@ -1852,7 +1877,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
 sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf upower
 
@@ -1874,7 +1899,7 @@ CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf libatasmart
 
@@ -1900,7 +1925,7 @@ CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf parted
 
@@ -1913,7 +1938,7 @@ cd dmraid
 
 sudo cp -rv include/dmraid /usr/inlude/
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf dmraid
 
@@ -1932,7 +1957,7 @@ CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf mdadm
 
@@ -1954,7 +1979,7 @@ CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf reiserfsprogs
 
@@ -1976,7 +2001,7 @@ CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf valgrind
 
@@ -2006,7 +2031,7 @@ sudo rm -rfv /lib/libhandle.{a,la,so}
 sudo ln -sfv ../../lib/libhandle.so.1 /usr/lib/libhandle.so     
 sudo sed -i "s@libdir='/lib@libdir='/usr/lib@" /usr/lib/libhandle.la
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf xfsprogs
 
@@ -2043,7 +2068,7 @@ sudo make -C libdm install
 sudo mv /usr/lib/pkgconfig/devmapper.pc ${PKG_CONFIG_PATH64}/
 sudo sudo mv /usr/lib/libdevmapper.so /usr/lib64/
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf LVM2
 
@@ -2062,7 +2087,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf sg3_utils
 
@@ -2081,7 +2106,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf xfce4-power-manager
 
@@ -2099,7 +2124,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
 sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 install
 sudo gtk-update-icon-cache -qf /usr/share/icons/nuoveXT2
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf lxde-icon-theme
 
@@ -2118,7 +2143,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf libcanberra
 
@@ -2137,7 +2162,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf xfce4-settings
 
@@ -2155,7 +2180,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf xfdesktop
 
@@ -2173,7 +2198,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf xfwm4
 
@@ -2193,7 +2218,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 sudo update-desktop-database /usr/share/applications
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf desktop-file-utils
 
@@ -2213,7 +2238,7 @@ checkBuiltPackage
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf sharedmimeinfo
 
@@ -2245,7 +2270,7 @@ EOF'
 mkdir polkit-gnome && tar xf polkit-gnome-*.tar.* -C polkit-gnome --strip-components 1
 cd polkit-gnome
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf polkit-gnome
 
@@ -2268,7 +2293,7 @@ sudo make install
 sudo update-desktop-database 
 sudo update-mime-database /usr/share/mime
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf xfwm4
 
@@ -2294,7 +2319,7 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
 make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf vte
 
@@ -2312,7 +2337,7 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf xfce4-terminal
 
@@ -2330,7 +2355,7 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf ristretto
 
@@ -2350,7 +2375,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 notify-send -i info Information "Hi ${USER}, This is a Test"
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf xfce4-notifyd
 

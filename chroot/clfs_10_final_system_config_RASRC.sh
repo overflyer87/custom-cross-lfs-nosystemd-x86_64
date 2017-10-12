@@ -17,13 +17,7 @@ echo " "
 
 #Building the final CLFS System
 CLFS=/
-CLFSHOME=/home
 CLFSSOURCES=/sources
-CLFSTOOLS=/tools
-CLFSCROSSTOOLS=/cross-tools
-CLFSFILESYSTEM=ext4
-CLFSROOTDEV=/dev/sda4
-CLFSHOMEDEV=/dev/sda5
 MAKEFLAGS="-j$(nproc)"
 BUILD32="-m32"
 BUILD64="-m64"
@@ -31,13 +25,7 @@ CLFS_TARGET32="i686-pc-linux-gnu"
 
 export CLFS=/
 export CLFSUSER=clfs
-export CLFSHOME=/home
 export CLFSSOURCES=/sources
-export CLFSTOOLS=/tools
-export CLFSCROSSTOOLS=/cross-tools
-export CLFSFILESYSTEM=ext4
-export CLFSROOTDEV=/dev/sda4
-export CLFSHOMEDEV=/dev/sda5
 export MAKEFLAGS="-j$(nproc)"
 export BUILD32="-m32"
 export BUILD64="-m64"
@@ -489,21 +477,121 @@ dircolors -p > /etc/dircolors
 cat > /etc/sysconfig/console << "EOF"
 # Begin /etc/sysconfig/console
 
-KEYMAP="de"
+KEYMAP="de-latin1"
+KEYMAP_CORRECTIONS="euro2"
+FONT="lat0-16 -m 8859-15"
 
 # End /etc/sysconfig/console
 EOF
 
-cat > /etc/vconsole.conf << "EOF"
-# Begin /etc/vconsole.conf
+mkdir /etc/conf.d
+cat > /etc/conf.d/keymaps << "EOF"
 
-KEYMAP="de"
+keymap="de"
+extended_keymaps=""
+windowkeys="NO"
+dumpkeys_charset=""
+fix_euro="NO"
 
-# End /etc/vconsole.conf
 EOF
 
-mkdir /etc/conf.d
-nano /etc/conf.d/keymaps
+cat > /etc/sysconfig/rc.site << "EOF"
+
+# rc.site
+# Optional parameters for boot scripts.
+
+# Distro Information
+# These values, if specified here, override the defaults
+#DISTRO="Linux From Scratch" # The distro name
+#DISTRO_CONTACT="lfs-dev@linuxfromscratch.org" # Bug report address
+#DISTRO_MINI="LFS" # Short name used in filenames for distro config
+
+# Define custom colors used in messages printed to the screen
+
+# Please consult `man console_codes` for more information
+# under the "ECMA-48 Set Graphics Rendition" section
+#
+# Warning: when switching from a 8bit to a 9bit font,
+# the linux console will reinterpret the bold (1;) to
+# the top 256 glyphs of the 9bit font.  This does
+# not affect framebuffer consoles
+
+# These values, if specified here, override the defaults
+BRACKET="\\033[1;34m" # Blue
+FAILURE="\\033[1;31m" # Red
+INFO="\\033[1;36m"    # Cyan
+NORMAL="\\033[0;39m"  # Grey
+SUCCESS="\\033[1;32m" # Green
+WARNING="\\033[1;33m" # Yellow
+
+# Use a colored prefix
+# These values, if specified here, override the defaults
+#BMPREFIX="     "
+#SUCCESS_PREFIX="${SUCCESS}  *  ${NORMAL}"
+#FAILURE_PREFIX="${FAILURE}*****${NORMAL}"
+#WARNING_PREFIX="${WARNING} *** ${NORMAL}"
+
+# Manually set the right edge of message output (characters)
+# Useful when resetting console font during boot to override
+# automatic screen width detection
+#COLUMNS=120
+
+# Interactive startup
+#IPROMPT="yes" # Whether to display the interactive boot prompt
+#itime="3"    # The amount of time (in seconds) to display the prompt
+
+# The total length of the distro welcome string, without escape codes
+wlen=$(echo "Welcome to ${DISTRO}" | wc -c )
+welcome_message="Welcome to ${INFO}${DISTRO}${NORMAL}"
+
+# The total length of the interactive string, without escape codes
+#ilen=$(echo "Press 'I' to enter interactive startup" | wc -c )
+#i_message="Press '${FAILURE}I${NORMAL}' to enter interactive startup"
+
+# Set scripts to skip the file system check on reboot
+FASTBOOT=yes
+
+# Skip reading from the console
+#HEADLESS=yes
+
+# Write out fsck progress if yes
+VERBOSE_FSCK=no
+
+# Speed up boot without waiting for settle in udev
+OMIT_UDEV_SETTLE=y
+
+# Speed up boot without waiting for settle in udev_retry
+OMIT_UDEV_RETRY_SETTLE=yes
+
+# Skip cleaning /tmp if yes
+#SKIPTMPCLEAN=no
+
+# For setclock
+UTC=1
+#CLOCKPARAMS=
+
+# For consolelog (Note that the default, 7=debug, is noisy)
+LOGLEVEL=5
+
+# For network
+HOSTNAME=overflyer-main
+
+# Delay between TERM and KILL signals at shutdown
+#KILLDELAY=3
+
+# Optional sysklogd parameters
+#SYSKLOGD_PARMS="-m 0"
+
+# Console parameters
+UNICODE=1
+KEYMAP="de-latin1"
+KEYMAP_CORRECTIONS="euro2"
+FONT="lat0-16 -m 8859-15"
+LEGACY_CHARSET=
+
+EOF
+
+
 
 echo " "
 echo "Bootloader is installed, debugging sysmbols are stripped"

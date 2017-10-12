@@ -21,7 +21,6 @@ PKG_CONFIG_PATH32=/usr/lib/pkgconfig
 PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 
 export CLFS=/
-export CLFSUSER=clfs
 export CLFSSOURCES=/sources
 export MAKEFLAGS="-j$(nproc)"
 export BUILD32="-m32"
@@ -280,14 +279,14 @@ cp -v .config /boot/efi/config-4.13.5
 cd ${CLFSSOURCES}
 
 #Copy source folder to /lib/modules
-mv ${CLFSSOURCES}/linux /lib/modules/CLFS-4.13.15-headers
+mv ${CLFSSOURCES}/linux /lib/modules/CLFS-4.13.5-headers
 
 #Properly link the new kernel source folder path to subdirectories
 # build/ and source/
 unlink /lib/modules/4.13.5-CLFS-SYSVINIT-SVN-x86_64/build
 unlink /lib/modules/4.13.5-CLFS-SYSVINIT-SVN-x86_64/source
-ln -sfv /lib/modules/CLFS-4.13.15-headers /lib/modules/4.13.5-CLFS-SYSVINIT-SVN-x86_64/build
-ln -sfv /lib/modules/CLFS-4.13.15-headers /lib/modules/4.13.5-CLFS-SYSVINIT-SVN-x86_64/source
+ln -sfv /lib/modules/CLFS-4.13.5-headers /lib/modules/4.13.5-CLFS-SYSVINIT-SVN-x86_64/build
+ln -sfv /lib/modules/CLFS-4.13.5-headers /lib/modules/4.13.5-CLFS-SYSVINIT-SVN-x86_64/source
 
 echo " "
 echo "CONGRATS. You are done! Your very own CLFS is now bootable."

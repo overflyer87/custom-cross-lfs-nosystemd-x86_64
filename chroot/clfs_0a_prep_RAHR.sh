@@ -168,11 +168,11 @@ echo " "
 echo "Sources are owned by clfs:clfs now"
 echo " "
 
-cp -v clfs_*.sh /home/${CLFSUSER}
+cp -v clfs_1_*.sh clfs_2_*.sh clfs_3_*.sh /home/${CLFSUSER}
 cp -v clfs_*.sh ${CLFS}
 cp -rv bclfs ${CLFS}
 
-chown -v ${CLFSUSER}:${CLFSUSER} /home/clfs
+chown -Rv ${CLFSUSER}:${CLFSUSER} /home/${CLFSUSER}
 
 echo " "
 echo "Check the screen output if everything looks fine"
