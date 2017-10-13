@@ -1,3 +1,25 @@
+#!/bin/bash
+
+#Building the final CLFS System
+CLFS=/
+CLFSSOURCES=/sources
+MAKEFLAGS="-j$(nproc)"
+BUILD32="-m32"
+BUILD64="-m64"
+CLFS_TARGET32="i686-pc-linux-gnu"
+PKG_CONFIG_PATH32=/usr/lib/pkgconfig
+PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
+
+export CLFS=/
+export CLFSSOURCES=/sources
+export MAKEFLAGS="-j$(nproc)"
+export BUILD32="-m32"
+export BUILD64="-m64"
+export CLFS_TARGET32="i686-pc-linux-gnu"
+export PKG_CONFIG_PATH32=/usr/lib/pkgconfig
+export PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
+cd ${CLFSSOURCES}
+
 #OpenSSL 32-bit
 mkdir openssl && tar xf openssl-*.tar.* -C openssl --strip-components 1
 cd openssl
