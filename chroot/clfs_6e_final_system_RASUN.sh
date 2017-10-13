@@ -1,3 +1,39 @@
+#!/bin/bash
+
+function checkBuiltPackage() {
+echo " "
+echo "Did everything build fine?: [Y/N]"
+while read -n1 -r -p "[Y/N]   " && [[ $REPLY != q ]]; do
+  case $REPLY in
+    Y) break 1;;
+    N) echo "$EXIT"
+       echo "Fix it!"
+       exit 1;;
+    *) echo " Try again. Type y or n";;
+  esac
+done
+echo " "
+}
+
+#Building the final CLFS System
+CLFS=/
+CLFSSOURCES=/sources
+MAKEFLAGS="-j$(nproc)"
+BUILD32="-m32"
+BUILD64="-m64"
+CLFS_TARGET32="i686-pc-linux-gnu"
+PKG_CONFIG_PATH32=/usr/lib/pkgconfig
+PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
+
+export CLFS=/
+export CLFSSOURCES=/sources
+export MAKEFLAGS="-j$(nproc)"
+export BUILD32="-m32"
+export BUILD64="-m64"
+export CLFS_TARGET32="i686-pc-linux-gnu"
+export PKG_CONFIG_PATH32=/usr/lib/pkgconfig
+export PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
+
 #Tar
 mkdir tar && tar xf tar-*.tar.* -C tar --strip-components 1
 cd tar
