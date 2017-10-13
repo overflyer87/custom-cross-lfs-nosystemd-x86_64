@@ -37,3 +37,5 @@ RASRN - Run as root user of your final system NATIVELY (booted or via ssh)
 RACU - Run as the CLFS-user (the special, under-priviledged user on your host distro to build the temporary system)
 
 ### Major pain points I could need help with
+
+* The multilib capability of Python is just utterly ridiculous. 3.6 works a little better than 2.7. They both sometimes work and sometimes don't. The very common dependy of linux packages nowadays is sad. I never noticed that until I did this project. Please keep coding in C, C++, C# or Java, please developers. The abstraction layers caused by script and web languages have nothing to do in an operating system /rant :-D
