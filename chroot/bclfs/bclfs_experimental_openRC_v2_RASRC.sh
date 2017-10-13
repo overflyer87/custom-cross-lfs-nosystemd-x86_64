@@ -166,6 +166,22 @@ sudo cp -rv /libexec/rc /usr/lib64/
 sudo mv /usr/lib64/rc /usr/lib64/openrc
 sudo rm -rf /libexec/rc
 
+mkdir my-clfs-openrc-services && tar xf my-clfs-openrc-services.tar.* -C my-clfs-openrc-services --strip-components 1
+cd myclfs-openrc-services
+
+sudo cp -v *.* /etc/init.d/
+cd ..
+
+sudo chmod 777 /etc/init.d/*
+
+sed -i 's/\/usr\/bin\//\/sbin\//' /etc/init.d/*
+sed -i 's/\/usr\/bin\//\/sbin\//' /usr/lib64/openrc
+sed -i 's/\/usr\/bin\//\/sbin\//' /etc/inittab
+sed -i 's/\/usr\/lib\//\/usr\/lib64\//' /etc/init.d/*
+sed -i 's/\/usr\/lib6464\//\/usr\/lib64\//' /etc/init.d/*
+sed -i 's/\/usr\/lib\//\/usr\/lib64\//' /usr/lib64/rc/sh/*
+sed -i 's/\/usr\/lib6464\//\/usr\/lib64\//' /usr/lib64/rc/sh/*
+
 cd ${CLFSSOURCES} 
 checkBuiltPackage
 rm -rf openrc
