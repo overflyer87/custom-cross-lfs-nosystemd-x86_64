@@ -39,4 +39,16 @@ RACU - Run as the CLFS-user (the special, under-priviledged user on your host di
 ### Major pain points I could need help with
 
   <rant>
-* The multilib capability of Python is just utterly ridiculous. 3.6 works a little better than 2.7. They both sometimes work and sometimes don't. The very common dependy of linux packages nowadays is sad. I never noticed that until I did this project. Please keep coding in C, C++, C# or Java, please developers. The abstraction layers caused by script and web languages have nothing to do in an operating system  </rant> :-D
+* The multilib """capability""" of Python is just utterly ridiculous. 3.6 works a little better than 2.7. They both sometimes work and sometimes don't. The very common dependy of linux packages nowadays is sad. I never noticed that until I did this project. Please keep coding in C, C++, C#, Rust, or Java, developers. The abstraction layers caused by script and web languages have nothing to do in an operating system  </rant> :-D
+
+* So since even patches that I tracked down with a lot of effort wont make Python work well in /usr/lib64 (standard is /usr/lib), I am thinking to restructure the toolchain and tell GCC and Binutils that my 32-bit folders will be named lib32 and my 64-bit folders lib. lib can then be symlinked to lib64 named folders.
+
+* If I fix Python I would solve many problems, such as Bluettoth functionality and finally the capability to compile a decent version of MozJS. Until now only 17 is possible. 38 would be nice. 52 would be awesome.
+
+* Alsa behaves way better with openRC. Even pulseaudio starts. However I still have no sound. I had to copy asound.state from my host distro. Don't know why that does not get created for me when building alsa. Did not change anything. Still get these messages also pulseaudio and openrc-alsasound run: 
+ALSA lib control.c:1373:(snd_ctl_open_noupdate) Invalid CTL hw:2 (also hw:0 and hw:1)
+aplay: device_list:279: control open (2): No such file or directory
+
+* Display managers like lightdm or lxdm failed miserably with sysvinit. Let's checkout how this goes with openrc.
+
+* Since openrc I know get a boring prompt after boot up saying localhost login: I have to figure out How to get a correct prompt again like I had with sysvinit. BUT HEY...openRC fixed my keyboard layout issues.
