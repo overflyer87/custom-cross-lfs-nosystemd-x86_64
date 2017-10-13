@@ -8,7 +8,7 @@ I did **not** use the adjective **free** since I do not midn if linux systems us
 I for my part will make this "distro" only a customized version for very modern systems. That is just because I can put just so many hours into this. And you dont wanna know how many hours since end of July 2017 went into this ;-).
 
 I will ONLY support **openRC** (this question for me is also one of principle)!
-SysVinit as a standalone init system is just too old and the bootup scripts were outdated. OpenRC runs successfully as of        2017-10-13. Now I am more indendent from the CLFS guys. I updated the toolchain to binutils 2.29.1, GCC 7.2.0 and glibc 2.26 by myself. CLFS is has not come that far, yet. **_I will delete sysvinit scripts in a few weeks!**
+SysVinit as a standalone init system is just too old and the bootup scripts were outdated. OpenRC runs successfully as of        2017-10-13. Now I am more indendent from the CLFS guys. I updated the toolchain to binutils 2.29.1, GCC 7.2.0 and glibc 2.26 by myself. CLFS is has not come that far, yet. **_I will delete sysvinit scripts in a few weeks!_**
 
 I will ONLY make this bootable for **UEFI** systems.
 This "distro" will start with kernel 4.12.10.
