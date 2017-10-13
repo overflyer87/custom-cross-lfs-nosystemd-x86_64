@@ -16,7 +16,7 @@ I will try to use openrc-elogind and NOT consolekit. Elogind however is suddenly
 I will ONLY provide scripts for *XCFCE* and *MATE* as Desktop environments.
 I will ONLY provide Xorg drivers for *Intel/NVIDIA* Systems.
 I will deactivate nouveau and nouveau fb (framebuffer) by default and provide an NVIDIA install script
-This might change if I will ever build a AMD Ryzen+Vega RIG _*_*_
+This might change if I will ever build a AMD Ryzen+Vega RIG ****_****
 
 I do *not provide all Xorg drivers by default!!!*
 
