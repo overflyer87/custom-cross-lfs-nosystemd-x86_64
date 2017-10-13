@@ -35,31 +35,31 @@ cd ${CLFSSOURCES}
 mkdir linux && tar xf linux-*.tar.* -C linux --strip-components 1
 cd linux
 
-rm -rf /lib/modules/4.13.5*
-rm -rf /lib/modules/*4.13.5*
-rm -rf /boot/efi/System.map-4.13.5
-rm -rf /boot/efi/vmlinuz-clfs-4.13.5
+rm -rf /lib/modules/4.12.10*
+rm -rf /lib/modules/*4.12.10*
+rm -rf /boot/efi/System.map-4.12.10
+rm -rf /boot/efi/vmlinuz-clfs-4.12.10
 
 make mrproper
-cp ${CLFSSOURCES}/kernel413.conf ${CLFSSOURCES}/linux/.config
+cp ${CLFSSOURCES}/kernel412.conf ${CLFSSOURCES}/linux/.config
 
 CC="gcc ${BUILD64}" USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make
 CC="gcc ${BUILD64}" USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make modules_install
 CC="gcc ${BUILD64}" USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make firmware_install
-cp -v arch/x86_64/boot/bzImage /boot/efi/vmlinuz-clfs-4.13.5
-cp -v System.map /boot/efi/System.map-4.13.5
-cp -v .config /boot/efi/config-4.13.5
+cp -v arch/x86_64/boot/bzImage /boot/efi/vmlinuz-clfs-4.12.10
+cp -v System.map /boot/efi/System.map-4.12.10
+cp -v .config /boot/efi/config-4.12.10
 cd ${CLFSSOURCES}
 
 #Copy source folder to /lib/modules
-mv ${CLFSSOURCES}/linux /lib/modules/CLFS-4.13.5-headers
+mv ${CLFSSOURCES}/linux /lib/modules/CLFS-4.12.10-headers
 
 #Properly link the new kernel source folder path to subdirectories
 # build/ and source/
-unlink /lib/modules/4.13.5-CLFS-SYSVINIT-SVN-x86_64/build
-unlink /lib/modules/4.13.5-CLFS-SYSVINIT-SVN-x86_64/source
-ln -sfv /lib/modules/CLFS-4.13.5-headers /lib/modules/4.13.5-CLFS-SYSVINIT-SVN-x86_64/build
-ln -sfv /lib/modules/CLFS-4.13.5-headers /lib/modules/4.13.5-CLFS-SYSVINIT-SVN-x86_64/source
+unlink /lib/modules/4.12.10-CLFS-SYSVINIT-SVN-x86_64/build
+unlink /lib/modules/4.12.10-CLFS-SYSVINIT-SVN-x86_64/source
+ln -sfv /lib/modules/CLFS-4.12.10-headers /lib/modules/4.12.10-CLFS-SYSVINIT-SVN-x86_64/build
+ln -sfv /lib/modules/CLFS-4.12.10-headers /lib/modules/4.12.0-CLFS-SYSVINIT-SVN-x86_64/source
 
 echo " "
 echo "CONGRATS. You are done! Your very own CLFS is now bootable."
