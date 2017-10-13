@@ -523,5 +523,3 @@ echo " "
 echo "Run script #6c next"
 echo " "
 
-sh ${CLFS}/clfs_6c_final_system_RASRC.sh
-
