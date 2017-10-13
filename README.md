@@ -1,6 +1,6 @@
 # my-clfs-svn-nosystemd-x86_64
 
-## This customized version of CLFS SVN multilib x86_64 is free of charge for anyone to have, use, download, adjust, modify, distribute and redistribute!
+## This customized version of CLFS SVN multilib x86_64 is free and gratis for anyone to have, use, download, adjust, modify, distribute and redistribute!
 
 ### Geneal Announcement
 I for my part will make this "distro" only a customized version for very modern systems. That is just because I can put just so many hours into this. And you dont wanna know how many hours since end of July 2017 went into this ;-).
