@@ -190,11 +190,11 @@ ln -sfv /etc/init.d/udev-trigger /etc/runlevels/sysinit/udev-trigger
 ln -sfv /etc/init.d/net.lo /etc/runlevels/boot/net.lo
 ln -sfv /etc/init.d/opentmpfiles-setup /etc/runlevels/boot/opentmpfiles-setup
 
-ln -sfv /etc/init.d/default/sshd /etc/runlevels/default/sshd
-ln -sfv /etc/init.d/default/acpid /etc/runlevels/default/acpid
-ln -sfv /etc/init.d/default/dhcpd /etc/runlevels/default/dhcpd
-ln -sfv /etc/init.d/default/cronie /etc/runlevels/default/cronie
-ln -sfv /etc/init.d/default/syslog-ng /etc/runlevels/default/syslog-ng
+ln -sfv /etc/init.d/sshd /etc/runlevels/default/sshd
+ln -sfv /etc/init.d/acpid /etc/runlevels/default/acpid
+ln -sfv /etc/init.d/dhcpd /etc/runlevels/default/dhcpd
+ln -sfv /etc/init.d/cronie /etc/runlevels/default/cronie
+ln -sfv /etc/init.d/syslog-ng /etc/runlevels/default/syslog-ng
 
 cd ${CLFSSOURCES} 
 checkBuiltPackage
