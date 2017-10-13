@@ -106,4 +106,4 @@ sudo chmod 755 /run/systemd
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf elogind
+sudo rm -rf elogind

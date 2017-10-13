@@ -103,7 +103,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf gvfs
+sudo rm -rf gvfs
 
 #libevent
 wget https://github.com/libevent/libevent/releases/download/release-2.1.8-stable/libevent-2.1.8-stable.tar.gz -O \
@@ -125,10 +125,10 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libevent
+sudo rm -rf libevent
 
 #MariaDB
-wget https://downloads.mariadb.org/interstitial/mariadb-10.2.7/source/mariadb-10.2.7.tar.gz
+wget https://downloads.mariadb.org/interstitial/mariadb-10.2.7/source/mariadb-10.2.7.tar.gz -O \
 	mariadb-10.2.7.tar.gz
 
 mkdir mariadb && tar xf mariadb-*.tar.* -C mariadb --strip-components 1
@@ -171,7 +171,7 @@ CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 sudo install -v -dm 755 /etc/mysql &&
-sudo bash -c 'cat > /etc/mysql/my.cnf << "EOF"
+sudo bash -c 'cat > /etc/mysql/my.cnf << EOF
 # Begin /etc/mysql/my.cnf
 
 # The following options will be passed to all MySQL clients
@@ -257,7 +257,7 @@ sudo make install-mysql
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf mariadb
+sudo rm -rf mariadb
 
 #libsigc++
 wget http://ftp.gnome.org/pub/gnome/sources/libsigc++/2.10/libsigc++-2.10.0.tar.xz -O \
@@ -283,7 +283,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libsigcpp
+sudo rm -rf libsigcpp
 
 #Glibmm
 wget http://ftp.gnome.org/pub/gnome/sources/glibmm/2.52/glibmm-2.52.0.tar.xz -O \
@@ -310,7 +310,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf glibmm
+sudo rm -rf glibmm
 
 #Atkmm
 wget http://ftp.gnome.org/pub/gnome/sources/atkmm/2.24/atkmm-2.24.2.tar.xz -O \
@@ -337,7 +337,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf atkmm
+sudo rm -rf atkmm
 
 #Cairomm
 wget http://cairographics.org/releases/cairomm-1.12.2.tar.gz -O \
@@ -364,7 +364,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf cairomm
+sudo rm -rf cairomm
 
 #Pangomm
 wget http://ftp.gnome.org/pub/gnome/sources/pangomm/2.40/pangomm-2.40.1.tar.xz -O \
@@ -391,7 +391,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf pangomm
+sudo rm -rf pangomm
 
 #Gtkmm3
 wget http://ftp.gnome.org/pub/gnome/sources/gtkmm/3.22/gtkmm-3.22.1.tar.xz -O \
@@ -418,7 +418,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf gtkmm
+sudo rm -rf gtkmm
 
 #gtkmm2
 wget http://ftp.gnome.org/pub/gnome/sources/gtkmm/2.24/gtkmm-2.24.5.tar.xz -O \
@@ -445,7 +445,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf gtkmm-2
+sudo rm -rf gtkmm-2
 
 #xmlto
 wget http://anduin.linuxfromscratch.org/BLFS/xmlto/xmlto-0.0.28.tar.bz2 -O \
@@ -466,7 +466,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf xmlto
+sudo rm -rf xmlto
 
 #xdg-su
 wget https://github.com/tarakbumba/xdg-su/archive/xdg-su-1.2.3.tar.gz -O \
@@ -489,7 +489,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf xdg-su
+sudo rm -rf xdg-su
 
 #libgksu
 wget http://people.debian.org/~kov/gksu/libgksu-2.0.12.tar.gz -O \
@@ -525,7 +525,7 @@ sudo mv libgksu/gksu-properties /usr/bin/
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libgksu
+sudo rm -rf libgksu
 
 #gksu
 wget https://people.debian.org/~kov/gksu/gksu-2.0.2.tar.gz -O \
@@ -552,7 +552,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf gksu
+sudo rm -rf gksu
 
 #Gparted
 wget http://downloads.sourceforge.net/gparted/gparted-0.29.0.tar.gz -O \
@@ -575,7 +575,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf gparted
+sudo rm -rf gparted
 
 #libtirpc
 wget http://downloads.sourceforge.net/project/libtirpc/libtirpc/1.0.1/libtirpc-1.0.1.tar.bz2 -O \
@@ -600,7 +600,7 @@ sudo ln -sfv ../../lib64/libtirpc.so.3.0.0 /usr/lib64/libtirpc.so
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libtirpc
+sudo rm -rf libtirpc
 
 #Parse::Yapp-1.2
 wget http://www.cpan.org/authors/id/W/WB/WBRASWELL/Parse-Yapp-1.2.tar.gz -O \
@@ -620,7 +620,7 @@ sudo make install PREFIX=/usr LIBDIR=/usr/lib64
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf Parse-Yapp
+sudo rm -rf Parse-Yapp
 
 #PyCrypto
 wget https://pypi.python.org/packages/60/db/645aa9af249f059cc3a368b118de33889219e0362141e75d4eaf6f80f163/pycrypto-2.6.1.tar.gz -O \
@@ -636,7 +636,7 @@ sudo python3.6 setup.py install --verbose --prefix=/usr/lib64 --install-lib=/usr
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf pycrypto
+sudo rm -rf pycrypto
 
 #Cyrus SASL
 wget ftp://ftp.cyrusimap.org/cyrus-sasl/cyrus-sasl-2.1.26.tar.gz -O \
@@ -675,7 +675,7 @@ sudo make install-saslauthd
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf cyrus
+sudo rm -rf cyrus
 
 #openLDAP
 wget ftp://ftp.openldap.org/pub/OpenLDAP/openldap-release/openldap-2.4.45.tgz -O \
@@ -741,7 +741,7 @@ sudo ldapsearch -x -b '' -s base '(objectclass=*)' namingContexts
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf openldap
+sudo rm -rf openldap
 
 #Samba
 wget https://download.samba.org/pub/samba/stable/samba-4.6.6.tar.gz -O \
@@ -810,7 +810,7 @@ sudo /etc/rc.d/init.d/winbind start
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf samba
+sudo rm -rf samba
 
 #libndp
 wget http://libndp.org/files/libndp-1.6.tar.gz -O \
@@ -833,7 +833,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libndp
+sudo rm -rf libndp
 
 #libnl
 wget https://github.com/thom311/libnl/releases/download/libnl3_3_0/libnl-3.3.0.tar.gz -O \
@@ -856,7 +856,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libnl
+sudo rm -rf libnl
 
 #Iptables
 wget http://www.netfilter.org/projects/iptables/files/iptables-1.6.1.tar.bz2 -O \
@@ -893,7 +893,7 @@ sudo make install-iptables
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf iptables
+sudo rm -rf iptables
 
 #slang
 wget http://www.jedsoft.org/releases/slang/slang-2.3.1.tar.bz2 -O -
@@ -919,7 +919,7 @@ sudo chmod -v 755 /usr/lib64/slang/v2/modules/*.so
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf slang
+sudo rm -rf slang
 
 #newt
 wget https://releases.pagure.org/newt/newt-0.52.20.tar.gz -O \
@@ -946,7 +946,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf newt
+sudo rm -rf newt
 
 #NetworkManager
 wget http://ftp.gnome.org/pub/gnome/sources/NetworkManager/1.8/NetworkManager-1.8.0.tar.xz -O \
@@ -998,4 +998,4 @@ sudo /etc/rc.d/init.d/networkmanager start
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf NetworkManager
+sudo rm -rf NetworkManager

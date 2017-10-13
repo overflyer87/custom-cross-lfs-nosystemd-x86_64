@@ -141,7 +141,7 @@ sudo /etc/rc.d/init.d/dbus start
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf dbus
+sudo rm -rf dbus
 
 #PCRE (NOT PCRE2!!!)
 wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.41.tar.bz2 -O \
@@ -169,7 +169,7 @@ sudo ldconfig
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf pcre
+sudo rm -rf pcre
 
 #Glib
 wget http://ftp.gnome.org/pub/gnome/sources/glib/2.52/glib-2.52.3.tar.xz -O \
@@ -188,7 +188,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf glib
+sudo rm -rf glib
 
 #desktop-file-utils
 wget http://freedesktop.org/software/desktop-file-utils/releases/desktop-file-utils-0.23.tar.xz -O \
@@ -208,7 +208,7 @@ sudo update-desktop-database /usr/share/applications
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf desktop-file-utils
+sudo rm -rf desktop-file-utils
 
 #gobj-introspection
 wget http://ftp.gnome.org/pub/gnome/sources/gobject-introspection/1.52/gobject-introspection-1.52.1.tar.xz -O \
@@ -233,7 +233,7 @@ unset PYTHON
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf gobject-introspection
+sudo rm -rf gobject-introspection
 
 #at-spi2-core
 wget http://ftp.gnome.org/pub/gnome/sources/at-spi2-core/2.24/at-spi2-core-2.24.1.tar.xz -O \
@@ -254,7 +254,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" i
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf atspi2core
+sudo rm -rf atspi2core
 
 #ATK
 wget http://ftp.gnome.org/pub/gnome/sources/atk/2.24/atk-2.24.0.tar.xz -O \
@@ -275,7 +275,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" i
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf atk
+sudo rm -rf atk
 
 #at-spi2-atk
 wget http://ftp.gnome.org/pub/gnome/sources/at-spi2-atk/2.24/at-spi2-atk-2.24.1.tar.xz -O \
@@ -296,7 +296,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" i
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf atspi2atk
+sudo rm -rf atspi2atk
 
 #Cython
 wget https://pypi.python.org/packages/10/d5/753d2cb5073a9f4329d1ffed1de30b0458821780af8fdd8ba1ad5adb6f62/Cython-0.26.tar.gz -O \
@@ -310,7 +310,7 @@ sudo python3 setup.py install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf cython
+sudo rm -rf cython
 
 #yasm
 wget http://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz -O \
@@ -330,7 +330,7 @@ sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 i
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf yasm
+sudo rm -rf yasm
 
 #libjpeg-turbo
 wget http://downloads.sourceforge.net/libjpeg-turbo/libjpeg-turbo-1.5.2.tar.gz -O \
@@ -354,7 +354,7 @@ sudo ldconfig
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libjpeg-turbo
+sudo rm -rf libjpeg-turbo
 
 #libpng installed by bootloader script clfs_6b1....sh
 #libepoxy installed by Xorg script
@@ -376,7 +376,7 @@ sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 i
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libtiff
+sudo rm -rf libtiff
 
 #ICU
 wget http://download.icu-project.org/files/icu4c/59.1/icu4c-59_1-src.tgz -O \
@@ -396,7 +396,7 @@ sudo make install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf icu
+sudo rm -rf icu
 
 #harfbuzz, freetype2 and which were installed by Xorg scripts
 #Pixman and libpng needed by  Cairo are also already installed by UEFI-bootloader script and Xorg script, respectively
@@ -419,7 +419,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf cairo
+sudo rm -rf cairo
 
 #Nevertheless I seem to need to rebuild
 #harfbuzz, fontconfig and freetype
@@ -458,7 +458,7 @@ sudo cp -v -R docs/*     /usr/share/doc/freetype-2.8
 
 cd ${CLFSSOURCES} 
 #checkBuiltPackage
-rm -rf freetype
+sudo rm -rf freetype
 
 #harfbuzz 64-bit
 mkdir harfbuzz && tar xf harfbuzz-*.tar.* -C harfbuzz --strip-components 1
@@ -472,11 +472,11 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES} 
 #checkBuiltPackage
-rm -rf harfbuzz
+sudo rm -rf harfbuzz
 
 cd ${CLFSSOURCES} 
 #checkBuiltPackage
-rm -rf freetype
+sudo rm -rf freetype
 
 #freeype 64-bit
 mkdir freetype && tar xf freetype-*.tar.* -C freetype --strip-components 1
@@ -509,7 +509,7 @@ sudo cp -v -R docs/*     /usr/share/doc/freetype-2.8
 
 cd ${CLFSSOURCES} 
 #checkBuiltPackage
-rm -rf freetype
+sudo rm -rf freetype
 
 cd ${CLFSSOURCES}/xc/mate
 
@@ -535,7 +535,7 @@ sudo ldconfig
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf pango
+sudo rm -rf pango
 
 #hicolor-icon-theme
 wget http://icon-theme.freedesktop.org/releases/hicolor-icon-theme-0.15.tar.xz -O \
@@ -552,7 +552,7 @@ sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 i
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf hicoloricontheme
+sudo rm -rf hicoloricontheme
 
 #adwaita-icon-theme
 wget http://ftp.gnome.org/pub/gnome/sources/adwaita-icon-theme/3.24/adwaita-icon-theme-3.24.0.tar.xz -O \
@@ -569,7 +569,7 @@ sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" PREFIX=/usr LIBDIR=/usr/lib64 i
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf adwaiticontheme
+sudo rm -rf adwaiticontheme
 
 #gdk-pixbuf
 wget http://ftp.gnome.org/pub/gnome/sources/gdk-pixbuf/2.36/gdk-pixbuf-2.36.6.tar.xz -O \
@@ -594,7 +594,7 @@ sudo ldconfig
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf gdk-pixbuf
+sudo rm -rf gdk-pixbuf
 
 #gtk3
 wget http://ftp.gnome.org/pub/gnome/sources/gtk+/3.22/gtk+-3.22.16.tar.xz -O \
@@ -637,4 +637,4 @@ sudo ldconfig
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf gtk3
+sudo rm -rf gtk3

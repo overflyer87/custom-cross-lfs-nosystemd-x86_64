@@ -102,7 +102,7 @@ echo ""
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libxml2
+sudo rm -rf libxml2
 
 #libxml2 WITH ITS PYTHON 3 MODULE
 mkdir libxml2 && tar xf libxml2-*.tar.* -C libxml2 --strip-components 1
@@ -138,7 +138,7 @@ echo ""
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libxml2
+sudo rm -rf libxml2
 
 #libxslt
 wget http://xmlsoft.org/sources/libxslt-1.1.29.tar.gz -O \
@@ -158,7 +158,7 @@ sudo ldconfig
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libxslt
+sudo rm -rf libxslt
 
 #Before dconf we need to build everything needed for GTK-Doc
 #That is when you have no internet connection!!!
@@ -200,7 +200,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf dconf
+sudo rm -rf dconf
 
 #json-glib
 wget http://ftp.gnome.org/pub/gnome/sources/json-glib/1.2/json-glib-1.2.8.tar.xz -O \
@@ -217,7 +217,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf jsonglib
+sudo rm -rf jsonglib
 
 #libcroco
 wget http://ftp.gnome.org/pub/gnome/sources/libcroco/0.6/libcroco-0.6.12.tar.xz -O \
@@ -235,7 +235,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libcroco
+sudo rm -rf libcroco
 
 #Vala
 wget http://ftp.gnome.org/pub/gnome/sources/vala/0.36/vala-0.36.4.tar.xz -O \
@@ -253,7 +253,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf vala
+sudo rm -rf vala
 
 #librsvg
 wget http://ftp.gnome.org/pub/gnome/sources/librsvg/2.40/librsvg-2.40.17.tar.xz -O \
@@ -272,7 +272,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf librsvg
+sudo rm -rf librsvg
 
 #shared-mime-info
 wget http://freedesktop.org/~hadess/shared-mime-info-1.8.tar.xz -O \
@@ -292,7 +292,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf sharedmimeinfo
+sudo rm -rf sharedmimeinfo
 
 #libogg
 wget http://downloads.xiph.org/releases/ogg/libogg-1.3.2.tar.xz -O \
@@ -314,7 +314,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libogg
+sudo rm -rf libogg
 
 #libvorbis
 wget http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.5.tar.xz -O \
@@ -340,7 +340,7 @@ ldconfig
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libvorbis
+sudo rm -rf libvorbis
 
 #alsa-lib
 wget ftp://ftp.alsa-project.org/pub/lib/alsa-lib-1.1.4.1.tar.bz2 -O \
@@ -390,7 +390,7 @@ EOF'
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf alsa-lib
+sudo rm -rf alsa-lib
 
 #gstreamer
 wget https://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.12.1.tar.xz -O \
@@ -407,7 +407,7 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
-rm -rf /usr/bin/gst-* /usr/{lib,libexec}/gstreamer-1.0
+sudo rm -rf /usr/bin/gst-* /usr/{lib,libexec}/gstreamer-1.0
 
 make check
 checkBuiltPackage
@@ -418,7 +418,7 @@ ldconfig
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf gstreamer
+sudo rm -rf gstreamer
 
 #gst-plugins-base
 wget https://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-1.12.1.tar.xz -O \
@@ -442,7 +442,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf gstplgbase
+sudo rm -rf gstplgbase
 
 #gst-plugins-good
 wget https://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.12.1.tar.xz -O \
@@ -466,7 +466,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf gstplggood
+sudo rm -rf gstplggood
 
 #libcanberra
 wget http://0pointer.de/lennart/projects/libcanberra/libcanberra-0.30.tar.xz -O \
@@ -485,7 +485,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libcanberra
+sudo rm -rf libcanberra
 
 #littleCMS2
 wget http://downloads.sourceforge.net/lcms/lcms2-2.8.tar.gz -O \
@@ -503,7 +503,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf lcms2
+sudo rm -rf lcms2
 
 #sqlite
 wget http://sqlite.org/2017/sqlite-autoconf-3190300.tar.gz -O \
@@ -526,7 +526,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf sqlite-autoconf
+sudo rm -rf sqlite-autoconf
 
 #Valgrind
 wget ftp://sourceware.org/pub/valgrind/valgrind-3.13.0.tar.bz2 -O \
@@ -546,7 +546,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf valgrind
+sudo rm -rf valgrind
 
 #libgudev
 wget http://ftp.gnome.org/pub/gnome/sources/libgudev/231/libgudev-231.tar.xz -O \
@@ -565,7 +565,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libgudev
+sudo rm -rf libgudev
 
 #libusb
 wget https://github.com//libusb/libusb/releases/download/v1.0.21/libusb-1.0.21.tar.bz2 -O \
@@ -585,7 +585,7 @@ sudo make -j1 PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libusb
+sudo rm -rf libusb
 
 #libgusb
 wget http://people.freedesktop.org/~hughsient/releases/libgusb-0.2.10.tar.xz -O \
@@ -603,7 +603,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libgusb
+sudo rm -rf libgusb
 
 #NSPR
 wget https://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v4.15/src/nspr-4.15.tar.gz -O \
@@ -631,7 +631,7 @@ echo " "
 echo "checking if /usr/include/pratom.h was installed..."
 ls /usr/include | grep pratom.h
 echo "... should be shown in output one line above. Mozjs 17.0.0 will fail otherwise."
-rm -rf nspr
+sudo rm -rf nspr
 
 #startup-notification
 wget http://www.freedesktop.org/software/startup-notification/releases/startup-notification-0.12.tar.gz -O \
@@ -652,7 +652,7 @@ sudo install -v -m644 -D doc/startup-notification.txt \
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf startup-notification
+sudo rm -rf startup-notification
 
 #mate-common
 git clone https://github.com/mate-desktop/mate-common
@@ -672,7 +672,7 @@ sudo cp -rv macros/*.m4 /usr/share/aclocal
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf mate-common
+sudo rm -rf mate-common
 
 #Damned now we really need to build GTK-doc
 
@@ -711,7 +711,7 @@ sudo install-catalog --add /etc/sgml/sgml-docbook.cat \
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf sgml-common
+sudo rm -rf sgml-common
 
 #Unzip
 wget http://downloads.sourceforge.net/infozip/unzip60.tar.gz -O \
@@ -728,7 +728,7 @@ sudo make prefix=/usr libdir=/usr/lib64 -f unix/Makefile install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf unzip
+sudo rm -rf unzip
 
 sudo chown -Rv overflyer ${CLFSSOURCES}
 
@@ -884,7 +884,7 @@ checkBuiltPackage
 #echo "With \"add command failed\""
 #echo "I cheated and copied /etc/xml/* over to clfs from my host distro"
 #echo " "
-rm -rf docbook-xsl
+sudo rm -rf docbook-xsl
 
 sudo chown -Rv overflyer ${CLFSSOURCES}
 
@@ -907,7 +907,7 @@ unset PYTHON
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf itstool
+sudo rm -rf itstool
 
 #gtk-doc
 wget http://ftp.gnome.org/pub/gnome/sources/gtk-doc/1.25/gtk-doc-1.25.tar.xz -O \
@@ -926,7 +926,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf gtk-doc
+sudo rm -rf gtk-doc
 
 #mate-desktop
 git clone https://github.com/mate-desktop/mate-desktop
@@ -948,4 +948,4 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf mate-desktop
+sudo rm -rf mate-desktop

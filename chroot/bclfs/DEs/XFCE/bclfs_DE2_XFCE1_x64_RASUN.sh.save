@@ -1,0 +1,90 @@
+#!/bin/bash
+
+function checkBuiltPackage() {
+echo " "
+echo "Make sure you are able to continue... [Y/N]"
+while read -n1 -r -p "[Y/N]   " && [[ $REPLY != q ]]; do
+  case $REPLY in
+    Y) break 1;;
+    N) echo "$EXIT"
+       echo "Fix it!"
+       exit 1;;
+    *) echo " Try again. Type y or n";;
+  esac
+done
+echo " "
+}
+
+#Building the final CLFS System
+CLFS=/
+CLFSSOURCES=/sources
+MAKEFLAGS="-j$(nproc)"
+BUILD32="-m32"
+BUILD64="-m64"
+CLFS_TARGET32="i686-pc-linux-gnu"
+PKG_CONFIG_PATH=/usr/lib64/pkgconfig
+PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
+
+export CLFS=/
+export CLFSUSER=clfs
+export CLFSSOURCES=/sources
+export MAKEFLAGS="-j$(nproc)"
+export BUILD32="-m32"
+export BUILD64="-m64"
+export CLFS_TARGET32="i686-pc-linux-gnu"
+export PKG_CONFIG_PATH=/usr/lib64/pkgconfig
+export PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
+
+sudo rm -rf ${CLFSSOURCES}/xc/xfce4
+
+sudo mkdir -pv ${CLFSSOURCES}/xc/xfce4
+cd ${CLFSSOURCES}/xc/xfce4
+
+sudo chown -Rv overflyer ${CLFSSOURCES}/xc
+
+#We will only do 64-bit builds in this script
+#We compiled Xorg with 32-bit libraries
+#That should suffice
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" 
+USE_ARCH=64 
+CXX="g++ ${BUILD64}" 
+CC="gcc ${BUILD64}"
+
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" 
+export USE_ARCH=64 
+export CXX="g++ ${BUILD64}" 
+export CC="gcc ${BUILD64}"
+
+#PCRE (NOT PCRE2!!!)
+wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.41.tar.bz2 -O \
+  pcre-8.41.tar.bz2
+
+mkdir pcre && tar xf pcre-*.tar.* -C pcre --strip-components 1
+cd pcre
+
+./configure --prefix=/usr                     \
+            --docdir=/usr/share/doc/pcre-8.41 \
+            --enable-unicode-properties       \
+            --enable-pcre16                   \
+            --enable-pcre32                   \
+            --enable-pcregrep-libz            \
+            --enable-pcregrep-libbz2          \
+            --enable-pcretest-libreadline     \
+            --disable-static                  \
+            --libdir=/usr/lib64
+
+make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install 
+sudo mv -v /usr/lib64/libpcre.so.* /lib64 &&
+sudo ln -sfv ../../../../lib64/$(readlink /usr/lib64/libpcre.so) /usr/lib64/libpcre.so
+sudo ldconfig
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf pcre
+
+#Glib
+wget http://ftp.gnome.org/pub/gnome/sources/glib/2.52/glib-2.52.3.tar.xz -O \
+  glib-2.52.3.tar.xz
+

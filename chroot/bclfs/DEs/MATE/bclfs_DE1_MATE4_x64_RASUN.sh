@@ -81,42 +81,42 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libgtop
+sudo rm -rf libgtop
 
 #mate-utils
-git clone https://github.com/mate-desktop/mate-utils
-cd mate-utils
-
-intltool-prepare
-intltoolize --force
-cp -rv /usr/share/aclocal/*.m4 m4/
-
-echo "How did intltoolize perform? "
-checkBuiltPackage
-
-CPPFLAGS="-I/usr/include" LDFLAGS="-L/usr/lib64"  \
-PYTHON="/usr/bin/python2" PYTHONPATH="/usr/lib64/python2.7" \
-PYTHONHOME="/usr/lib64/python2.7" PYTHON_INCLUDES="/usr/include/python2.7" \
-ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
-USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
-    --libdir=/usr/lib64 \
-    --sysconfdir=/etc \
-    --localstatedir=/var \
-    --bindir=/usr/bin \
-    --sbindir=/usr/sbin --disable-gtk-doc &&
-    
-#Deactivate building of baobab because it will fail
-#Because itstool will throw error
-#Baobab can show size of directory trees in percentage
-Let's see later if this tool was essential...hope not
-sed -i 's/baobab/#baobab/' Makefile*
-   
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
-sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
-
-cd ${CLFSSOURCES}/xc/mate
-checkBuiltPackage
-rm -rf mate-utils
+#git clone https://github.com/mate-desktop/mate-utils
+#cd mate-utils
+#
+#intltool-prepare
+#intltoolize --force
+#cp -rv /usr/share/aclocal/*.m4 m4/
+#
+#echo "How did intltoolize perform? "
+#checkBuiltPackage
+#
+#CPPFLAGS="-I/usr/include" LDFLAGS="-L/usr/lib64"  \
+#PYTHON="/usr/bin/python2" PYTHONPATH="/usr/lib64/python2.7" \
+#PYTHONHOME="/usr/lib64/python2.7" PYTHON_INCLUDES="/usr/include/python2.7" \
+#ACLOCAL_FLAG=/usr/share/aclocal/ CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+#USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} sh autogen.sh --prefix=/usr\
+#    --libdir=/usr/lib64 \
+#    --sysconfdir=/etc \
+#    --localstatedir=/var \
+#    --bindir=/usr/bin \
+#    --sbindir=/usr/sbin --disable-gtk-doc &&
+#    
+##Deactivate building of baobab because it will fail
+##Because itstool will throw error
+##Baobab can show size of directory trees in percentage
+#Let's see later if this tool was essential...hope not
+#sed -i 's/baobab/#baobab/' Makefile*
+#   
+#PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+#sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+#
+#cd ${CLFSSOURCES}/xc/mate
+#checkBuiltPackage
+#sudo rm -rf mate-utils
 
 #PCRE2
 wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre2-10.23.tar.bz2 -O \
@@ -142,7 +142,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
      
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf pcre2
+sudo rm -rf pcre2
 
 #vte
 wget http://ftp.gnome.org/pub/gnome/sources/vte/0.48/vte-0.48.3.tar.xz -O \
@@ -164,7 +164,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf vte
+sudo rm -rf vte
 
 #mate-terminal
 git clone https://github.com/mate-desktop/mate-terminal
@@ -191,7 +191,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
-rm -rf mate-terminal
+sudo rm -rf mate-terminal
 
 #iso-codes
 wget https://pkg-isocodes.alioth.debian.org/downloads/iso-codes-3.75.tar.xz
@@ -210,7 +210,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf iso-codes
+sudo rm -rf iso-codes
 
 #libxklavier
 wget http://pkgs.fedoraproject.org/repo/pkgs/libxklavier/libxklavier-5.4.tar.bz2/13af74dcb6011ecedf1e3ed122bd31fa/libxklavier-5.4.tar.bz2 -O \
@@ -228,7 +228,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
-rm -rf libxklavier
+sudo rm -rf libxklavier
 
 #libmatekbd
 git clone https://github.com/mate-desktop/libmatekbd
@@ -250,7 +250,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libmatekbd
+sudo rm -rf libmatekbd
 
 #json-c
 git clone https://github.com/json-c/json-c    
@@ -265,7 +265,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
-rm -rf json-c
+sudo rm -rf json-c
 
 #FLAC
 wget http://downloads.xiph.org/releases/flac/flac-1.3.2.tar.xz -O \
@@ -283,7 +283,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf flac
+sudo rm -rf flac
 
 #libsndfile
 wget http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.28.tar.gz -O \
@@ -301,7 +301,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libsndfile
+sudo rm -rf libsndfile
 
 #libcap
 wget https://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2/libcap-2.25.tar.xz -O \
@@ -318,7 +318,7 @@ sudo install -v -m644 pam_cap/capability.conf /etc/security
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libcap
+sudo rm -rf libcap
 
 #speex
 wget http://downloads.xiph.org/releases/speex/speex-1.2rc2.tar.gz -O \
@@ -338,7 +338,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf speex        
+sudo rm -rf speex        
 
 #speexdsp
 wget http://downloads.xiph.org/releases/speex/speexdsp-1.2rc3.tar.gz -O \
@@ -358,7 +358,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf speexdsp
+sudo rm -rf speexdsp
 
 #libical
 wget https://github.com/libical/libical/releases/download/v2.0.0/libical-2.0.0.tar.gz -O \
@@ -384,7 +384,7 @@ sudo cp -vr apidocs/html/* /usr/share/doc/libical-2.0.0/html
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libical
+sudo rm -rf libical
 
 #BlueZ
 wget http://www.kernel.org/pub/linux/bluetooth/bluez-5.45.tar.xz -O \
@@ -439,7 +439,7 @@ sudo make install-bluetooth
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
-rm -rf bluez
+sudo rm -rf bluez
 
 #gconf
 wget http://ftp.gnome.org/pub/gnome/sources/GConf/3.2/GConf-3.2.6.tar.xz -O \
@@ -462,7 +462,7 @@ sudo ln -s gconf.xml.defaults /etc/gconf/gconf.xml.system
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf gconf
+sudo rm -rf gconf
 
 #SBC
 wget http://www.kernel.org/pub/linux/bluetooth/sbc-1.3.tar.xz -O \
@@ -482,7 +482,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf sbc
+sudo rm -rf sbc
 
 #PulseAudio
 wget http://freedesktop.org/software/pulseaudio/releases/pulseaudio-10.0.tar.xz -O \
@@ -517,7 +517,7 @@ sudo sed -i '/load-module module-console-kit/s/^/#/' /etc/pulse/default.pa
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf pulseaudio
+sudo rm -rf pulseaudio
 
 #libmatemixer
 git clone https://github.com/mate-desktop/libmatemixer
@@ -538,7 +538,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libmatemixer
+sudo rm -rf libmatemixer
 
 #NSS
 wget https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_31_RTM/src/nss-3.31.tar.gz -O \
@@ -587,7 +587,7 @@ sh ${CLFSSOURCES}/make-ca.sh-* --force
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf nss
+sudo rm -rf nss
 
 #mate-setting-daemon
 git clone https://github.com/mate-desktop/mate-settings-daemon
@@ -609,7 +609,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf mate-settings-daemon
+sudo rm -rf mate-settings-daemon
 
 #mate-media
 git clone https://github.com/mate-desktop/mate-media
@@ -630,7 +630,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf mate-media
+sudo rm -rf mate-media
 
 #mate-screensaver
 wget https://github.com/mate-desktop/mate-screensaver/archive/v1.18.1.tar.gz -O \
@@ -657,7 +657,7 @@ sudo cp -rv data/* /usr/share/mate-screensaver
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf mate-screensaver
+sudo rm -rf mate-screensaver
 
 #libwebp
 wget http://downloads.webmproject.org/releases/webp/libwebp-0.6.0.tar.gz -O \
@@ -681,4 +681,4 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libwebp
+sudo rm -rf libwebp

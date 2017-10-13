@@ -83,7 +83,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf gtksourceview
+sudo rm -rf gtksourceview
 
 #Consolekit
 wget https://github.com/Consolekit2/ConsoleKit2/releases/download/1.0.2/ConsoleKit2-1.0.2.tar.bz2 -O \
@@ -143,7 +143,7 @@ sudo chmod -v 755 /usr/lib/ConsoleKit/run-session.d/pam-foreground-compat.ck
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf ConsoleKit2
+sudo rm -rf ConsoleKit2
 
 #PyGObject
 wget http://ftp.gnome.org/pub/gnome/sources/pygobject/3.24/pygobject-3.24.1.tar.xz -O \
@@ -175,14 +175,14 @@ USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ../configure --prefix=/usr \
 sed -i 's/lib6464/lib64/' Makefile
 sudo make install
 sudo cp /usr/lib/python2.7 /usr/lib64/
-sudo rm -rf /usr/lib/python2.7
+sudo sudo rm -rf /usr/lib/python2.7
 
 make 
 popd
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf pygobject
+sudo rm -rf pygobject
 
 #libpeas
 wget ftp://ftp.gnome.org/pub/gnome/sources/libpeas/1.20/libpeas-1.20.0.tar.xz -O \
@@ -203,7 +203,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libpeas
+sudo rm -rf libpeas
 
 #gnome-bluetooth
 wget http://ftp.gnome.org/pub/GNOME/core/3.24/3.24.2/sources/gnome-bluetooth-3.20.1.tar.xz -O \
@@ -225,7 +225,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf gnome-bluetooth
+sudo rm -rf gnome-bluetooth
 
 #blueman
 git clone https://github.com/blueman-project/blueman
@@ -244,7 +244,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf blueman
+sudo rm -rf blueman
 
 gsettings set org.blueman.plugins.powermanager auto-power-on true
 sudo gsettings set org.blueman.plugins.powermanager auto-power-on true
@@ -273,12 +273,12 @@ USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} make PREFIX=/usr \
 
 sed -i 's/lib/lib64/' /usr/bin/blueberry/*
 
-sudo cp -rv etc/* etc/
-sudo cp -rv usr/* usr/
+sudo cp -rv etc/* /etc/
+sudo cp -rv usr/* /usr/
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf blueman
+sudo rm -rf blueberry
 
 #htop
 wget https://github.com/hishamhm/htop/archive/2.0.2.tar.gz -O \
@@ -304,7 +304,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf htop
+sudo rm -rf htop
 
 #Boost
 wget https://dl.bintray.com/boostorg/release/1.64.0/source//boost_1_64_0.tar.bz2 -O \
@@ -323,7 +323,7 @@ sudo ./b2 install threading=multi link=shared
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf boost
+sudo rm -rf boost
 
 #Exempi
 wget http://libopenraw.freedesktop.org/download/exempi-2.4.2.tar.bz2 -O \
@@ -345,7 +345,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf exempi
+sudo rm -rf exempi
 
 #libexif
 wget http://downloads.sourceforge.net/libexif/libexif-0.6.21.tar.bz2 -O \
@@ -367,7 +367,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libexif
+sudo rm -rf libexif
 
 #libatasmart
 wget http://0pointer.de/public/libatasmart-0.19.tar.xz -O \
@@ -389,7 +389,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libatasmart
+sudo rm -rf libatasmart
 
 #libbytesize
 wget http://github.com/storaged-project/libbytesize/archive/libbytesize-0.10.tar.gz -O \
@@ -414,7 +414,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libbytesize
+sudo rm -rf libbytesize
 
 #LVM2
 wget ftp://sources.redhat.com/pub/lvm2/releases/LVM2.2.02.171.tgz -O \
@@ -451,7 +451,7 @@ sudo sudo mv /usr/lib/libdevmapper.so /usr/lib64/
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf LVM2
+sudo rm -rf LVM2
 
 #GPGME
 wget ftp://ftp.gnupg.org/gcrypt/gpgme/gpgme-1.9.0.tar.bz2 -O \
@@ -472,7 +472,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf gpgme
+sudo rm -rf gpgme
 
 #SWIG
 wget http://downloads.sourceforge.net/swig/swig-3.0.12.tar.gz -O \
@@ -497,7 +497,7 @@ sudo cp -rv  /usr/lib/python2.7/ /usr/lib64/
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf swig
+sudo rm -rf swig
 
 #cryptsetup
 wget https://www.kernel.org/pub/linux/utils/cryptsetup/v1.7/cryptsetup-1.7.5.tar.xz -O \
@@ -518,7 +518,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf cryptsetup
+sudo rm -rf cryptsetup
 
 #volume_key
 wget https://releases.pagure.org/volume_key/volume_key-0.3.9.tar.xz -O \
@@ -547,7 +547,7 @@ unset PYTHON
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf volume_key
+sudo rm -rf volume_key
 
 #parted
 wget http://ftp.gnu.org/gnu/parted/parted-3.2.tar.xz -O \
@@ -573,7 +573,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf parted
+sudo rm -rf parted
 
 #dmraid
 wget http://people.redhat.com/~heinzm/sw/dmraid/src/dmraid-current.tar.bz2 -O \
@@ -586,7 +586,7 @@ sudo cp -rv include/dmraid /usr/inlude/
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf dmraid
+sudo rm -rf dmraid
 
 #mdadm
 wget http://www.kernel.org/pub/linux/utils/raid/mdadm/mdadm-4.0.tar.xz -O \
@@ -605,7 +605,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf mdadm
+sudo rm -rf mdadm
 
 #libblockdev
 wget https://github.com/storaged-project/libblockdev/archive/2.11-1.tar.gz -O \
@@ -631,7 +631,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libblockdev
+sudo rm -rf libblockdev
 
 #LZO
 wget http://www.oberhumer.com/opensource/lzo/download/lzo-2.10.tar.gz -O \
@@ -654,7 +654,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf lzo
+sudo rm -rf lzo
 
 #btrfs-progs
 wget https://www.kernel.org/pub/linux/kernel/people/kdave/btrfs-progs/btrfs-progs-v4.12.tar.xz -O \
@@ -693,7 +693,7 @@ sudo make PREFIX=/usr LIBDIR=/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf btrfs-progs
+sudo rm -rf btrfs-progs
 
 #BerkeleyDB
 wget http://download.oracle.com/berkeley-db/db-6.2.32.tar.gz -O \
@@ -725,7 +725,7 @@ sudo chown -v -R root:root                \
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf db
+sudo rm -rf db
 
 #cpio
 wget http://ftp.gnu.org/pub/gnu/cpio/cpio-2.12.tar.bz2 -O \
@@ -758,7 +758,7 @@ sudo install -v -m644    doc/cpio.{html,txt} \
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf cpio
+sudo rm -rf cpio
 
 #xdg-utils
 #wget http://portland.freedesktop.org/download/xdg-utils-1.1.2.tar.gz -O \
@@ -782,7 +782,7 @@ rm -rf cpio
 #
 #cd ${CLFSSOURCES}/xc/mate
 #checkBuiltPackage
-#rm -rf xdg-utils
+#sudo rm -rf xdg-utils
 
 #colord
 wget http://www.freedesktop.org/software/colord/releases/colord-1.2.12.tar.xz -O \
@@ -829,7 +829,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf colord
+sudo rm -rf colord
 
 #cups
 wget https://github.com/apple/cups/releases/download/v2.2.4/cups-2.2.4-source.tar.gz -O \
@@ -868,9 +868,9 @@ CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 sudo mkdir /etc/cups
-sudo rm -rf /tmp/cupsinit
+sudo sudo rm -rf /tmp/cupsinit
 sudo ln -svnf ../cups/doc-2.2.4 /usr/share/doc/cups-2.2.4
-sudo echo "ServerName /var/run/cups/cups.sock" > /etc/cups/client.conf
+sudo bash -c 'echo "ServerName /var/run/cups/cups.sock" > /etc/cups/client.conf'
 sudo gtk-update-icon-cache
 
 sudo bash -c 'cat > /etc/pam.d/cups << "EOF"
@@ -891,7 +891,7 @@ sudo sed -i 's/loadproc\(\)/start_daemon\(\)/' /etc/rc.d/init.d/functions
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf cups
+sudo rm -rf cups
 
 #gif_lib
 wget http://downloads.sourceforge.net/giflib/giflib-5.1.4.tar.bz2 -O \
@@ -912,7 +912,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf giflib
+sudo rm -rf giflib
 
 #Fuse3
 wget https://github.com/libfuse/libfuse/releases/download/fuse-3.1.0/fuse-3.1.0.tar.gz -O \
@@ -940,7 +940,7 @@ CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 sudo rm -v /lib64/libfuse3.{so,la}                 
 sudo ln -sfv ../../lib/libfuse3.so.3 /usr/lib64/libfuse3.so
-sudo rm -rf  /tmp/init.d
+sudo sudo rm -rf  /tmp/init.d
 sudo install -v -m755 -d /usr/share/doc/fuse-3.1.0 &&
 sudo install -v -m644    doc/{README.NFS,kernel.txt} \
                     /usr/share/doc/fuse-3.1.0
@@ -960,7 +960,7 @@ EOF'
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf fuse
+sudo rm -rf fuse
 
 #NTFS-3g
 wget https://tuxera.com/opensource/ntfs-3g_ntfsprogs-2017.3.23.tgz -O \
@@ -988,7 +988,7 @@ sudo chmod -v 4755 /bin/ntfs-3g
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf ntfs
+sudo rm -rf ntfs
 
 #libidn-1.33
 wget  http://ftp.gnu.org/gnu/libidn/libidn-1.33.tar.gz -O \
@@ -1009,7 +1009,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libidn
+sudo rm -rf libidn
 
 #whois
 wget http://ftp.debian.org/debian/pool/main/w/whois/whois_5.2.17.tar.xz -O \
@@ -1026,7 +1026,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install-pos
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf whois
+sudo rm -rf whois
 
 ##UDisks (unsafe custom no-polkit version!!!)
 #
@@ -1067,7 +1067,7 @@ rm -rf whois
 #echo "This might be dangerous AF and it might destroy data or something"
 #echo "I take no responsibility for ANY damage done if you use it!!!"
 #echo "decide for yourself"
-#rm -rf udisks
+#sudo rm -rf udisks
 
 #UDisks
 wget https://github.com/storaged-project/udisks/releases/download/udisks-2.7.1/udisks-2.7.1.tar.bz2 -O \
@@ -1101,4 +1101,4 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf udisks
+sudo rm -rf udisks

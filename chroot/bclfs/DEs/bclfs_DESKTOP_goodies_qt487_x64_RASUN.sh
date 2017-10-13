@@ -185,7 +185,7 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} make PREFIX=${QT4PREFIX} install
 
 sudo PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} make PREFIX=${QT4PREFIX} install 
 
-sudo rm -rf $QT4PREFIX/tests
+sudo sudo rm -rf $QT4PREFIX/tests
 sudo find $QT4PREFIX/lib64/pkgconfig -name "*.pc" -exec perl -pi -e "s, -L$PWD/?\S+,,g" {} \;
 
 sudo sed -r -e '/^QMAKE_PRL_BUILD_DIR/d' -e 's/(QMAKE_PRL_LIBS =).*/\1/' /opt/qt4/lib64/libQt*.prl
@@ -358,4 +358,4 @@ EOF'
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf qt4
+sudo rm -rf qt4

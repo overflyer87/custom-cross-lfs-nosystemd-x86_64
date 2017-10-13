@@ -109,7 +109,7 @@ EOF'
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf alsa-lib
+sudo rm -rf alsa-lib
 
 #alsa-utils
 wget ftp://ftp.alsa-project.org/pub/plugins/alsa-plugins-1.1.4.tar.bz2 -O \
@@ -126,7 +126,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf alsa-plugins
+sudo rm -rf alsa-plugins
 
 #alsa-utils
 wget ftp://ftp.alsa-project.org/pub/utils/alsa-utils-1.1.4.tar.bz2 -O \
@@ -159,7 +159,7 @@ sudo /etc/rc.d/init.d/alsa start
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf alsa-utils
+sudo rm -rf alsa-utils
 
 #alsa-tools
 wget ftp://ftp.alsa-project.org/pub/tools/alsa-tools-1.1.3.tar.bz2 -O \
@@ -168,7 +168,7 @@ wget ftp://ftp.alsa-project.org/pub/tools/alsa-tools-1.1.3.tar.bz2 -O \
 mkdir alsa-tools && tar xf alsa-tools-*.tar.* -C alsa-tools --strip-components 1
 cd alsa-tools
 
-rm -rf qlo10k1 Makefile gitcompile
+sudo rm -rf qlo10k1 Makefile gitcompile
 
 for tool in *
 do
@@ -195,7 +195,7 @@ unset tool tool_dir
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf alsa-tools
+sudo rm -rf alsa-tools
 
 
 #alsa-firmware
@@ -213,7 +213,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf alsa-firmware
+sudo rm -rf alsa-firmware
 
 #alsa-oss
 wget ftp://ftp.alsa-project.org/pub/oss-lib/alsa-oss-1.0.28.tar.bz2 -O \
@@ -230,7 +230,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf alsa-oss
+sudo rm -rf alsa-oss
 
 
 #PulseAudio
@@ -266,4 +266,4 @@ sudo sed -i '/load-module module-console-kit/s/^/#/' /etc/pulse/default.pa
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf pulseaudio
+sudo rm -rf pulseaudio

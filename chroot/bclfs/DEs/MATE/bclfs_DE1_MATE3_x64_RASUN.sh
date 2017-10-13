@@ -17,13 +17,7 @@ echo " "
 
 #Building the final CLFS System
 CLFS=/
-CLFSHOME=/home
 CLFSSOURCES=/sources
-CLFSTOOLS=/tools
-CLFSCROSSTOOLS=/cross-tools
-CLFSFILESYSTEM=ext4
-CLFSROOTDEV=/dev/sda4
-CLFSHOMEDEV=/dev/sda5
 MAKEFLAGS="-j$(nproc)"
 BUILD32="-m32"
 BUILD64="-m64"
@@ -32,14 +26,7 @@ PKG_CONFIG_PATH=/usr/lib64/pkgconfig
 PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 
 export CLFS=/
-export CLFSUSER=clfs
-export CLFSHOME=/home
 export CLFSSOURCES=/sources
-export CLFSTOOLS=/tools
-export CLFSCROSSTOOLS=/cross-tools
-export CLFSFILESYSTEM=ext4
-export CLFSROOTDEV=/dev/sda4
-export CLFSHOMEDEV=/dev/sda5
 export MAKEFLAGS="-j$(nproc)"
 export BUILD32="-m32"
 export BUILD64="-m64"
@@ -278,7 +265,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf gnome-common
+sudo rm -rf gnome-common
 
 #libgnome-keyring (for gnome-keyring-1) FINALLY FOUND IT
 wget https://github.com/GNOME/libgnome-keyring/archive/3.12.0.tar.gz -O \
@@ -307,7 +294,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libgnome-keyring
+sudo rm -rf libgnome-keyring
 
 #gnome-keyring
 wget http://ftp.gnome.org/pub/gnome/sources/gnome-keyring/3.20/gnome-keyring-3.20.1.tar.xz -O \
@@ -349,7 +336,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf gnome-keyring
+sudo rm -rf gnome-keyring
 
 #dbus-glib
 wget http://dbus.freedesktop.org/releases/dbus-glib/dbus-glib-0.108.tar.gz -O \
@@ -368,7 +355,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib4 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf dbus-glib
+sudo rm -rf dbus-glib
 
 #mate-session-manager
 git clone https://github.com/mate-desktop/mate-session-manager
@@ -395,7 +382,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf mate-session-manager
+sudo rm -rf mate-session-manager
 
 #nettle
 wget https://ftp.gnu.org/gnu/nettle/nettle-3.3.tar.gz -O \
@@ -420,7 +407,7 @@ sudo install -v -m644 nettle.html /usr/share/doc/nettle-3.3
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf nettle
+sudo rm -rf nettle
 
 #GnuTLS
 wget https://www.gnupg.org/ftp/gcrypt/gnutls/v3.5/gnutls-3.5.14.tar.xz -O \
@@ -447,7 +434,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf gnutls
+sudo rm -rf gnutls
 
 #gsettings-desktop-schemas
 wget http://ftp.gnome.org/pub/gnome/sources/gsettings-desktop-schemas/3.24/gsettings-desktop-schemas-3.24.0.tar.xz -O \
@@ -468,7 +455,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf gsetdeskschemas
+sudo rm -rf gsetdeskschemas
 
 #libarchive
 wget http://www.libarchive.org/downloads/libarchive-3.3.2.tar.gz -O \
@@ -487,7 +474,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libarchive
+sudo rm -rf libarchive
 
 #CMake
 wget http://www.cmake.org/files/v3.8/cmake-3.8.2.tar.gz -O \
@@ -516,7 +503,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf cmake
+sudo rm -rf cmake
 
 #libproxy
 wget https://github.com/libproxy/libproxy/archive/0.4.15.tar.gz -O \
@@ -535,7 +522,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libproxy
+sudo rm -rf libproxy
 
 #glib-networking
 wget ftp://ftp.gnome.org/pub/gnome/sources/glib-networking/2.50/glib-networking-2.50.0.tar.xz -O \
@@ -558,7 +545,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf glibnet
+sudo rm -rf glibnet
 
 #libsoup
 wget http://ftp.gnome.org/pub/gnome/sources/libsoup/2.58/libsoup-2.58.1.tar.xz -O \
@@ -584,7 +571,7 @@ sudo ldconfig
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libsoup
+sudo rm -rf libsoup
 
 #libmateweather
 git clone https://github.com/mate-desktop/libmateweather
@@ -602,7 +589,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libmateweather
+sudo rm -rf libmateweather
 
 #libwnk
 wget http://ftp.gnome.org/pub/gnome/sources/libwnck/3.24/libwnck-3.24.0.tar.xz -O \
@@ -628,7 +615,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
   
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libwnck
+sudo rm -rf libwnck
 
 
 #mate-menus
@@ -649,7 +636,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
   
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf mate-menus
+sudo rm -rf mate-menus
 
 #notification-daemon
 wget http://ftp.gnome.org/pub/gnome/sources/notification-daemon/3.20/notification-daemon-3.20.0.tar.xz -O \
@@ -671,7 +658,7 @@ notify-send -i info Information "Hi ${USER}, This is a Test"
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf notificationdaemon
+sudo rm -rf notificationdaemon
 
 #Zip 
 wget http://downloads.sourceforge.net/infozip/zip30.tar.gz -O \
@@ -690,7 +677,7 @@ sudo mv /usr/local/bin/* /usr/bin/
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf zip
+sudo rm -rf zip
 
 #autoconf2.13
 wget http://ftp.gnu.org/gnu/autoconf/autoconf-2.13.tar.gz -O \
@@ -720,7 +707,7 @@ sudo install-info --info-dir=/usr/share/info autoconf213.info
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf autoconf
+sudo rm -rf autoconf
 
 #libqmi (recommended for ModemManager)
 wget http://www.freedesktop.org/software/libqmi/libqmi-1.18.0.tar.xz -O \
@@ -745,7 +732,7 @@ sudo unlink sudo ln -sfv /usr/bin/python
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libqmi
+sudo rm -rf libqmi
 
 #libmbim (recommended for ModemManager)
 wget http://www.freedesktop.org/software/libmbim/libmbim-1.14.0.tar.xz -O \
@@ -770,7 +757,7 @@ sudo unlink sudo ln -sfv /usr/bin/python
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libmbim
+sudo rm -rf libmbim
 
 #ModemManager
 wget http://www.freedesktop.org/software/ModemManager/ModemManager-1.6.8.tar.xz -O \
@@ -794,7 +781,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf ModemManager
+sudo rm -rf ModemManager
 
 #libdaemon
 wget http://0pointer.de/lennart/projects/libdaemon/libdaemon-0.14.tar.gz -O \
@@ -813,7 +800,7 @@ sudo make docdir=/usr/share/doc/libdaemon-0.14 LIBDIR=/usr/lib64 PREFIX=/usr ins
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libdaemon
+sudo rm -rf libdaemon
 
 #GTK2
 wget http://ftp.gnome.org/pub/gnome/sources/gtk+/2.24/gtk+-2.24.31.tar.xz -O \
@@ -847,7 +834,7 @@ sudo ldconfig
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf gtk2
+sudo rm -rf gtk2
 
 #Pixman 64-bit
 wget http://cairographics.org/releases/pixman-0.34.0.tar.gz -O \
@@ -867,7 +854,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc
 checkBuiltPackage
-rm -rf pixman
+sudo rm -rf pixman
 
 #libglade
 wget http://ftp.gnome.org/pub/gnome/sources/libglade/2.6/libglade-2.6.4.tar.bz2 -O \
@@ -888,7 +875,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libglade
+sudo rm -rf libglade
 
 #PyCairo2
 wget https://github.com/pygobject/pycairo/releases/download/v1.14.0/pycairo-1.14.0.tar.gz -O \
@@ -909,11 +896,11 @@ sudo bash -c 'export PKG_CONFIG_PATH64=/usr/lib64/pkgconfig && PKG_CONFIG_PATH=$
    --install-lib=/usr/lib64/python3.6/site-packages --optimize=1'
 
 sudo mv -v /usr/lib64/lib/pkgconfig/* /usr/lib64/pkgconfig/ 
-sudo rm -rf /usr/lib64/lib
+sudo sudo rm -rf /usr/lib64/lib
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf pycairo
+sudo rm -rf pycairo
 
 #PyGObject2
 wget http://ftp.gnome.org/pub/gnome/sources/pygobject/2.28/pygobject-2.28.6.tar.xz -O \
@@ -949,7 +936,7 @@ unset PYTHON PYTHONHOME PYTHONPATH PYTHON_INCLUDES CPPFLAGS
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf pygobject
+sudo rm -rf pygobject
 
 #PyGObject3
 wget http://ftp.gnome.org/pub/gnome/sources/pygobject/3.24/pygobject-3.24.1.tar.xz -O \
@@ -984,7 +971,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 -C python3 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf pygobject3
+sudo rm -rf pygobject3
 
 #DbusPy
 wget http://dbus.freedesktop.org/releases/dbus-python/dbus-python-1.2.4.tar.gz -O \
@@ -1016,7 +1003,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 -C python3 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf dbus-python
+sudo rm -rf dbus-python
 
 #Avahi
 wget https://github.com/lathiat/avahi/releases/download/v0.7/avahi-0.7.tar.gz -O \
@@ -1067,7 +1054,7 @@ sed -i 's/\/lib\//\/lib64\//' /etc/rc.d/init.d/avahi
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf avahi
+sudo rm -rf avahi
 
 cd ${CLFSSOURCES}
 wget http://anduin.linuxfromscratch.org/BLFS/blfs-bootscripts/blfs-bootscripts-20170611.tar.xz -O \
@@ -1097,7 +1084,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf geoclue
+sudo rm -rf geoclue
 
 #Aspell
 wget https://ftp.gnu.org/gnu/aspell/aspell-0.60.6.1.tar.gz -O \
@@ -1131,7 +1118,7 @@ sudo install -v -m 755 scripts/spell /usr/bin/
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf aspell
+sudo rm -rf aspell
 
 #enchant
 wget http://www.abisource.com/downloads/enchant/1.6.0/enchant-1.6.0.tar.gz -O \
@@ -1150,7 +1137,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf enchant
+sudo rm -rf enchant
 
 #libsecret
 wget http://ftp.gnome.org/pub/gnome/sources/libsecret/0.18/libsecret-0.18.5.tar.xz -O \
@@ -1169,7 +1156,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libsecret
+sudo rm -rf libsecret
 
 #libwebp
 wget http://downloads.webmproject.org/releases/webp/libwebp-0.6.0.tar.gz -O \
@@ -1193,7 +1180,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libwebp
+sudo rm -rf libwebp
 
 #Ruby
 wget http://cache.ruby-lang.org/pub/ruby/2.4/ruby-2.4.1.tar.xz -O \
@@ -1214,7 +1201,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf ruby
+sudo rm -rf ruby
 
 #libnotify
 wget http://ftp.gnome.org/pub/gnome/sources/libnotify/0.7/libnotify-0.7.7.tar.xz -O \
@@ -1233,7 +1220,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libnotify
+sudo rm -rf libnotify
 
 #Hyphen
 wget https://netix.dl.sourceforge.net/project/hunspell/Hyphen/2.8/hyphen-2.8.8.tar.gz -O \
@@ -1252,7 +1239,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf hyphen
+sudo rm -rf hyphen
 
 #WebKitGTK
 wget http://webkitgtk.org/releases/webkitgtk-2.16.5.tar.xz -O \
@@ -1306,7 +1293,7 @@ LIBS_PATH=-L./usr/lib64 INC_PATH=-I./usr/include/ \
             
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf webkitgtk
+sudo rm -rf webkitgtk
 
 #yelp-xsl
 wget http://ftp.gnome.org/pub/gnome/sources/yelp-xsl/3.20/yelp-xsl-3.20.1.tar.xz -O \
@@ -1329,7 +1316,7 @@ sudo install -vm644  ../Documentation/webkitdomgtk-4.0/html/* \
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf yelp-xsl
+sudo rm -rf yelp-xsl
 
 #Yelp
 wget ftp://ftp.gnome.org/pub/gnome/sources/yelp/3.22/yelp-3.22.0.tar.xz -O \
@@ -1352,7 +1339,7 @@ ldconfig
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf yelp
+sudo rm -rf yelp
 
 #yelp-tools
 wget https://github.com/GNOME/yelp-tools/archive/3.18.0.tar.gz -O \
@@ -1372,7 +1359,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf yelp
+sudo rm -rf yelp
 
 #mate-panel
 git clone https://github.com/mate-desktop/mate-panel
@@ -1402,4 +1389,4 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
  
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf mate-panel
+sudo rm -rf mate-panel

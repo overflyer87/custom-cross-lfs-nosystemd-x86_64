@@ -88,7 +88,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf gnome-common
+sudo rm -rf gnome-common
 
 #zenity
 wget https://github.com/GNOME/zenity/archive/ZENITY_3_24_2.tar.gz -O \
@@ -120,7 +120,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf zenity
+sudo rm -rf zenity
 
 #marco
 git clone https://github.com/mate-desktop/marco
@@ -141,7 +141,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf marco
+sudo rm -rf marco
 
 #mate-control-center
 git clone https://github.com/mate-desktop/mate-control-center
@@ -165,7 +165,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf mate-control-center
+sudo rm -rf mate-control-center
 
 #mate-notification-daemon
 git clone https://github.com/mate-desktop/mate-notification-daemon
@@ -189,7 +189,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf mate-notification-daemon
+sudo rm -rf mate-notification-daemon
 
 #js17
 wget wget http://ftp.mozilla.org/pub/mozilla.org/js/mozjs17.0.0.tar.gz -O \
@@ -224,7 +224,7 @@ sudo find /usr/include/js-17.0/            \
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf mozjs
+sudo rm -rf mozjs
 
 #polkit 113
 wget http://www.freedesktop.org/software/polkit/releases/polkit-0.113.tar.gz -O \
@@ -281,7 +281,7 @@ EOF'
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf polkit
+sudo rm -rf polkit
 
 #accountservice
 wget http://www.freedesktop.org/software/accountsservice/accountsservice-0.6.45.tar.xz -O \
@@ -311,7 +311,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf accountsservice
+sudo rm -rf accountsservice
 
 #mate-polkit
 git clone https://github.com/mate-desktop/mate-polkit
@@ -336,7 +336,7 @@ sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
   
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf mate-polkit
+sudo rm -rf mate-polkit
 
 #Glib
 wget http://ftp.gnome.org/pub/gnome/sources/glib/2.52/glib-2.52.3.tar.xz -O \
@@ -356,7 +356,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf glib
+sudo rm -rf glib
 
 #caja
 git clone https://github.com/mate-desktop/caja
@@ -380,7 +380,7 @@ sudo cp -rv data/* /usr/share/caja
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf caja
+sudo rm -rf caja
 
 #caja-extensions
 git clone https://github.com/mate-desktop/caja-extensions
@@ -401,7 +401,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf caja-extensions
+sudo rm -rf caja-extensions
 
 #mate-applets
 git clone https://github.com/mate-desktop/mate-applets
@@ -437,7 +437,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf mate-applets
+sudo rm -rf mate-applets
 
 #mate-themes
 git clone https://github.com/mate-desktop/mate-themes
@@ -458,7 +458,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf mate-themes
+sudo rm -rf mate-themes
 
 #Start X at login
 cat >> ~/.bash_profile << "EOF"
@@ -511,7 +511,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf gtksourceview
+sudo rm -rf gtksourceview
 
 
 export PYTHON=/usr/bin/python3.6
@@ -535,7 +535,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf libpeas
+sudo rm -rf libpeas
 
 
 #pluma
@@ -563,7 +563,7 @@ unset PYTHON
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf pluma
+sudo rm -rf pluma
 
 #upower-glib
 wget http://upower.freedesktop.org/releases/upower-0.99.5.tar.xz -O \
@@ -594,7 +594,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf upower
+sudo rm -rf upower
 
 #mate-power-manager
 git clone https://github.com/mate-desktop/mate-power-manager
@@ -618,7 +618,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf mate-power-manager
+sudo rm -rf mate-power-manager
 
 #mate-user-share
 git clone https://github.com/mate-desktop/mate-user-share
@@ -643,7 +643,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf mate-user-share
+sudo rm -rf mate-user-share
     
 #python-caja
 git clone https://github.com/mate-desktop/python-caja
@@ -664,7 +664,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf python-caja
+sudo rm -rf python-caja
     
 #engrampa
 git clone https://github.com/mate-desktop/engrampa
@@ -691,7 +691,7 @@ sudo cp -rv data/* /usr/share/engrampa/
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf engrampa
+sudo rm -rf engrampa
 
 #eom
 git clone https://github.com/mate-desktop/eom
@@ -718,7 +718,7 @@ sudo cp -rv data/* /usr/share/eom/
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf eom
+sudo rm -rf eom
 
 #mate-calc
 git clone https://github.com/mate-desktop/mate-calc
@@ -745,7 +745,7 @@ sudo cp -rv data/* /usr/share/mate-calc/
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf mate-calc
+sudo rm -rf mate-calc
 
 #OpenJPEG
 wget http://downloads.sourceforge.net/openjpeg.mirror/openjpeg-1.5.2.tar.gz -O \
@@ -769,7 +769,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf openjpeg
+sudo rm -rf openjpeg
 
 #poppler-glib (PDF support for atril)
 wget http://poppler.freedesktop.org/poppler-0.56.0.tar.xz -O \
@@ -804,7 +804,7 @@ sudo make LIBDIR=/usr/lib64 prefix=/usr install
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf poppler
+sudo rm -rf poppler
 
 #atril
 git clone https://github.com/mate-desktop/atril
@@ -831,7 +831,7 @@ sudo cp -rv data/* /usr/share/atril
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf atril
+sudo rm -rf atril
 
 #Brisk-Menu
 git clone https://github.com/solus-project/brisk-menu 
@@ -858,4 +858,4 @@ sudo gsettings set com.solus-project.brisk-menu hot-key 'Super_L'
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
-rm -rf brisk-menu
+sudo rm -rf brisk-menu
