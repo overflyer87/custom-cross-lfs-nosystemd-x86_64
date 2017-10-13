@@ -292,5 +292,3 @@ echo " "
 echo "CONGRATS. You are done! Your very own CLFS is now bootable."
 echo "Please install the bclfs_PAM script before reboot NOW!"
 echo " "
-
-sh /bclfs/bclfs_PAM_RASRC.sh
