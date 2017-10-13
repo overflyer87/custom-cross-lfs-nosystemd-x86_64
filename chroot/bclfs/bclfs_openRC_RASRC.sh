@@ -36,8 +36,6 @@ export PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 
 cd ${CLFSSOURCES} 
 
-#EXPERIMENTAL Script for using openRC with CLFS
-
 #Sysvinit
 mkdir sysvinit && tar xf sysvinit*.tar.* -C sysvinit --strip-components 1
 cd sysvinit
