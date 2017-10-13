@@ -89,6 +89,17 @@ sudo install -dm644 /etc/logrotate.d
 nano mk/lib.mk
 nano mk/cc.mk
 
+export BRANDING='CLFS-SVN-x86_64-multilib' 
+export SYSCONFDIR=/etc 
+export PREFIX=/usr 
+export SBINDIR=/usr/bin 
+export LIBEXECDIR=/usr/lib64/openrc 
+export MKSELINUX=no 
+export MKPAM=pam
+export MKTERMCAP=ncurses 
+export MKNET=no 
+export MKSYSVINIT=yes 
+
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} \
 BRANDING='CLFS-SVN-x86_64-multilib' \ 
 SYSCONFDIR=/etc \
@@ -151,6 +162,9 @@ sudo ldconfig
 
 sudo install -m755 -d /usr/share/licenses/openrc
 sudo install -m644 LICENSE AUTHORS /usr/share/licenses/openrc/
+sudo cp -rv /libexec/rc /usr/lib64/
+sudo mv /usr/lib64/rc /usr/lib64/openrc
+sudo rm -rf /libexec/rc
 
 cd ${CLFSSOURCES} 
 checkBuiltPackage
