@@ -872,10 +872,10 @@ sudo xmlcatalog --noout --add "rewriteURI" \
            "/usr/share/xml/docbook/xsl-stylesheets-<version>" \
     /etc/xml/catalog
 
-sudo cp ${CLFSSOURCES}/docbook-xml-xsl.tar.* .
-sudo mkdir xml 
-sudo tar xf docbook-xml-xsl.tar.* -C xml --strip-components 1
-sudo cp -rv xml /etc/
+#sudo cp ${CLFSSOURCES}/docbook-xml-xsl.tar.* .
+#sudo mkdir xml 
+#sudo tar xf docbook-xml-xsl.tar.* -C xml --strip-components 1
+#sudo cp -rv xml /etc/
 
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage

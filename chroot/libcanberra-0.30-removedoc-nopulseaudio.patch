@@ -1,0 +1,186 @@
+--- Makefile.orig	2017-10-13 13:02:37.914892081 +0200
++++ Makefile	2017-10-13 13:10:11.112652584 +0200
+@@ -87,7 +87,7 @@
+ 	build-aux/ltmain.sh build-aux/missing
+ ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
+ am__aclocal_m4_deps = $(top_srcdir)/m4/attributes.m4 \
+-	$(top_srcdir)/m4/gtk-doc.m4 $(top_srcdir)/m4/libtool.m4 \
++	$(top_srcdir)/m4/libtool.m4 \
+ 	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
+ 	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
+ 	$(top_srcdir)/acinclude.m4 $(top_srcdir)/configure.ac
+@@ -114,13 +114,10 @@
+ am__v_at_1 = 
+ SOURCES =
+ DIST_SOURCES =
+-RECURSIVE_TARGETS = all-recursive check-recursive dvi-recursive \
+-	html-recursive info-recursive install-data-recursive \
+-	install-dvi-recursive install-exec-recursive \
+-	install-html-recursive install-info-recursive \
+-	install-pdf-recursive install-ps-recursive install-recursive \
+-	installcheck-recursive installdirs-recursive pdf-recursive \
+-	ps-recursive uninstall-recursive
++RECURSIVE_TARGETS = all-recursive check-recursive \
++	dvi-recursive install-exec-recursive \
++	install-recursive installcheck-recursive installdirs-recursive \
++	uninstall-recursive
+ am__can_run_installinfo = \
+   case $$AM_UPDATE_INFO_DIR in \
+     n|no|NO) false;; \
+@@ -256,11 +253,6 @@
+ GTK3_CFLAGS = -pthread -I/usr/include/gtk-3.0 -I/usr/include/at-spi2-atk/2.0 -I/usr/include/at-spi-2.0 -I/usr/include/dbus-1.0 -I/usr/lib64/dbus-1.0/include -I/usr/include/atk-1.0 -I/usr/include/gtk-3.0 -I/usr/include/gio-unix-2.0/ -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libpng16 -I/usr/include/cairo -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/harfbuzz -I/usr/include/freetype2 -I/usr/include/harfbuzz -I/usr/include/libpng16 -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include 
+ GTK3_LIBS = -lgtk-3 -latk-1.0 -lgio-2.0 -lgthread-2.0 -pthread -lgdk-3 -lpangocairo-1.0 -lpango-1.0 -lgdk_pixbuf-2.0 -lcairo-gobject -lcairo -lgobject-2.0 -lglib-2.0 -lX11 
+ GTK3_MODULES_DIR = /usr/lib64/gtk-3.0/modules
+-GTKDOC_CHECK = /usr/bin/gtkdoc-check
+-GTKDOC_DEPS_CFLAGS = 
+-GTKDOC_DEPS_LIBS = 
+-GTKDOC_MKPDF = /usr/bin/gtkdoc-mkpdf
+-GTKDOC_REBASE = /usr/bin/gtkdoc-rebase
+ GTK_CFLAGS = -pthread -I/usr/include/gtk-2.0 -I/usr/lib64/gtk-2.0/include -I/usr/include/atk-1.0 -I/usr/include/gtk-2.0 -I/usr/lib64/gtk-2.0/include -I/usr/include/pango-1.0 -I/usr/include/cairo -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/harfbuzz -I/usr/include/freetype2 -I/usr/include/harfbuzz -I/usr/include/libpng16 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libpng16 -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include 
+ GTK_LIBS = -lgtk-x11-2.0 -lgdk-x11-2.0 -latk-1.0 -lgio-2.0 -lpangoft2-1.0 -lfontconfig -lfreetype -lgthread-2.0 -pthread -lgdk-x11-2.0 -lpangocairo-1.0 -lpango-1.0 -lcairo -lgdk_pixbuf-2.0 -lgobject-2.0 -lglib-2.0 -lX11 
+ GTK_MODULES_DIR = /usr/lib64/gtk-2.0/modules
+@@ -291,7 +283,6 @@
+ LIPO = 
+ LN_S = ln -s
+ LTLIBOBJS = 
+-MAKEINFO = ${SHELL} /sources/xc/xfce4/libcanberra/build-aux/missing --run makeinfo
+ MANIFEST_TOOL = :
+ MKDIR_P = /bin/mkdir -p
+ NM = /usr/bin/nm -B
+@@ -353,7 +344,6 @@
+ datadir = ${datarootdir}
+ datarootdir = ${prefix}/share
+ docdir = ${datarootdir}/doc/${PACKAGE_TARNAME}
+-dvidir = ${docdir}
+ exec_prefix = ${prefix}
+ have_lynx = yes
+ host = x86_64-unknown-linux-gnu
+@@ -361,21 +351,16 @@
+ host_cpu = x86_64
+ host_os = linux-gnu
+ host_vendor = unknown
+-htmldir = ${docdir}
+ includedir = ${prefix}/include
+-infodir = ${datarootdir}/info
+ install_sh = ${SHELL} /sources/xc/xfce4/libcanberra/build-aux/install-sh
+ libdir = /usr/lib64
+ libexecdir = ${exec_prefix}/libexec
+ localedir = ${datarootdir}/locale
+ localstatedir = ${prefix}/var
+-mandir = ${datarootdir}/man
+ mkdir_p = $(MKDIR_P)
+ oldincludedir = /usr/include
+-pdfdir = ${docdir}
+ prefix = /usr
+ program_transform_name = s,x,x,
+-psdir = ${docdir}
+ sbindir = ${exec_prefix}/sbin
+ sharedstatedir = ${prefix}/com
+ srcdir = .
+@@ -392,7 +377,7 @@
+ 	vala/libcanberra.vapi \
+ 	vala/libcanberra-gtk.vapi
+ 
+-SUBDIRS = src gtkdoc doc
++SUBDIRS = src
+ MAINTAINERCLEANFILES = README
+ noinst_DATA = README
+ pkgconfigdir = $(libdir)/pkgconfig
+@@ -901,45 +886,11 @@
+ distclean-am: clean-am distclean-generic distclean-hdr \
+ 	distclean-libtool distclean-tags
+ 
+-dvi: dvi-recursive
+-
+-dvi-am:
+-
+-html: html-recursive
+-
+-html-am:
+-
+-info: info-recursive
+-
+-info-am:
+-
+ install-data-am: install-dist_docDATA install-pkgconfigDATA \
+ 	install-vapiDATA
+ 
+-install-dvi: install-dvi-recursive
+-
+-install-dvi-am:
+-
+ install-exec-am:
+ 
+-install-html: install-html-recursive
+-
+-install-html-am:
+-
+-install-info: install-info-recursive
+-
+-install-info-am:
+-
+-install-man:
+-
+-install-pdf: install-pdf-recursive
+-
+-install-pdf-am:
+-
+-install-ps: install-ps-recursive
+-
+-install-ps-am:
+-
+ installcheck-am:
+ 
+ maintainer-clean: maintainer-clean-recursive
+@@ -952,14 +903,6 @@
+ 
+ mostlyclean-am: mostlyclean-generic mostlyclean-libtool
+ 
+-pdf: pdf-recursive
+-
+-pdf-am:
+-
+-ps: ps-recursive
+-
+-ps-am:
+-
+ uninstall-am: uninstall-dist_docDATA uninstall-pkgconfigDATA \
+ 	uninstall-vapiDATA
+ 
+@@ -974,31 +917,24 @@
+ 	dist-bzip2 dist-gzip dist-lzip dist-shar dist-tarZ dist-xz \
+ 	dist-zip distcheck distclean distclean-generic distclean-hdr \
+ 	distclean-libtool distclean-tags distcleancheck distdir \
+-	distuninstallcheck dvi dvi-am html html-am info info-am \
+-	install install-am install-data install-data-am \
+-	install-dist_docDATA install-dvi install-dvi-am install-exec \
+-	install-exec-am install-html install-html-am install-info \
+-	install-info-am install-man install-pdf install-pdf-am \
+-	install-pkgconfigDATA install-ps install-ps-am install-strip \
++	distuninstallcheck install install-am install-data install-data-am \
++	install-dist_docDATA install-exec \
++	install-exec-am install-pkgconfigDATA install-strip \
+ 	install-vapiDATA installcheck installcheck-am installdirs \
+ 	installdirs-am maintainer-clean maintainer-clean-generic \
+-	mostlyclean mostlyclean-generic mostlyclean-libtool pdf pdf-am \
+-	ps ps-am tags tags-recursive uninstall uninstall-am \
++	mostlyclean mostlyclean-generic mostlyclean-libtool \
++	tags tags-recursive uninstall uninstall-am \
+ 	uninstall-dist_docDATA uninstall-pkgconfigDATA \
+ 	uninstall-vapiDATA
+ 
+ 
+ README:
+ 	rm -f README
+-	$(MAKE) -C doc README
+-	ln -s doc/README README
+ 
+ homepage: dist
+ 	test -d $$HOME/homepage/private
+ 	mkdir -p $$HOME/homepage/private/projects/libcanberra $$HOME/homepage/private/projects/libcanberra/gtkdoc
+ 	cp libcanberra-0.30.tar.xz $$HOME/homepage/private/projects/libcanberra
+-	cp doc/README.html doc/style.css $$HOME/homepage/private/projects/libcanberra
+-	cp -a gtkdoc/html/* $$HOME/homepage/private/projects/libcanberra/gtkdoc
+ 	ln -sf README.html $$HOME/homepage/private/projects/libcanberra/index.html
+ 
+ .PHONY: homepage

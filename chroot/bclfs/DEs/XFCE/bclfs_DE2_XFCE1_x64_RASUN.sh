@@ -1,4 +1,4 @@
-#!/bin/bash
+##!/bin/bash
 
 function checkBuiltPackage() {
 echo " "
@@ -1580,7 +1580,7 @@ checkBuiltPackage
 
 sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf glibnet
 
@@ -1745,16 +1745,16 @@ echo "... should be shown in output one line above. Mozjs 17.0.0 will fail other
 sudo rm -rf nspr
 
 #NSS
-wget https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_31_RTM/src/nss-3.31.tar.gz -O \
-    nss-3.31.tar.gz
+wget https://archive.mozilla.org/pub/security/nss/releases/NSS_3_33_RTM/src/nss-3.33.tar.gz -O \
+    nss-3.33.tar.gz
     
-wget http://www.linuxfromscratch.org/patches/blfs/svn/nss-3.31-standalone-1.patch -O \
-    NSS-3.31-standalone-1.patch
+wget http://www.linuxfromscratch.org/patches/blfs/svn/nss-3.33-standalone-1.patch -O \
+    NSS-3.33-standalone-1.patch
     
 mkdir nss && tar xf nss-*.tar.* -C nss --strip-components 1
 cd nss
 
-patch -Np1 -i ../NSS-3.31-standalone-1.patch 
+patch -Np1 -i ../NSS-3.33-standalone-1.patch 
 cd nss
 
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
@@ -1770,20 +1770,19 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} make -j1 BUILD_OPT=1 \
   
 cd ../dist
 
-sudo install -v -m755 Linux*/lib/*.so              /usr/lib64              &&
-sudo install -v -m644 Linux*/lib/{*.chk,libcrmf.a} /usr/lib64              &&
+sudo install -v -m755 Linux*/lib/*.so              /usr/lib64           
+sudo install -v -m644 Linux*/lib/{*.chk,libcrmf.a} /usr/lib64            
 
-sudo install -v -m755 -d                           /usr/include/nss      &&
-sudo cp -v -RL {public,private}/nss/*              /usr/include/nss      &&
-sudo chmod -v 644                                  /usr/include/nss/*    &&
+sudo install -v -m755 -d                           /usr/include/nss      
+sudo cp -v -RL {public,private}/nss/*              /usr/include/nss      
+sudo chmod -v 644                                  /usr/include/nss/*    
 
-sudo install -v -m755 Linux*/bin/{certutil,nss-config,pk12util} /usr/bin &&
+sudo install -v -m755 Linux*/bin/{certutil,nss-config,pk12util} /usr/bin 
 
 sudo install -v -m644 Linux*/lib/pkgconfig/nss.pc  /usr/lib64/pkgconfig
 
 if [ -e /usr/lib64/libp11-kit.so ]; then
-  sudo readlink /usr/lib64/libnssckbi.so ||
-  sudo rm -v /usr/lib64/libnssckbi.so    &&
+  sudo readlink /usr/lib64/libnssckbi.so ||  sudo rm -v /usr/lib64/libnssckbi.so
   sudo ln -sfv ./pkcs11/p11-kit-trust.so /usr/lib64/libnssckbi.so
 fi
 
@@ -2178,7 +2177,7 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 sudo cp -rv  /usr/lib/python2.7/ /usr/lib64/
 
-cd ${CLFSSOURCES}/xc/mate
+cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 rm -rf swig
 
@@ -2211,8 +2210,14 @@ mkdir volume_key && tar xf volume_key-*.tar.* -C volume_key --strip-components 1
 cd volume_key
 
 export PYTHON=/usr/bin/python3.6
+sudo ln -sfv /usr/bin/python3.6 /usr/bin/python
 
+sed -i 's/$(PYTHON_VERSION)/3.6/' Makefile*
+sed -i 's/\/lib\/python3.6/\/lib64\/python3.6/' Makefile*
+sed -i 's/\/lib6464\/python3.6/\/lib64\/python3.6/' Makefile*
+sed -i 's/<Python.h>/\"\/usr\/include\/python3.6m\/Python.h\"/' python/volume_key_wrap.c
 sed -i '/config.h/d' lib/libvolume_key.h
+
 autoreconf -fiv
 
 PYTHON=/usr/bin/python3.6 \
@@ -2226,6 +2231,7 @@ CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
 
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
+sudo unlink /usr/bin/python
 unset PYTHON
 
 cd ${CLFSSOURCES}/xc/xfce4
@@ -2294,35 +2300,6 @@ sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 sudo rm -rf udisks
-
-LD_LIB_PATH="/usr/lib64" LIBRARY_PATH="/usr/lib64" CPPFLAGS="-I/usr/include" \
-LD_LIBRARY_PATH="/usr/lib64" CC="gcc ${BUILD64} -L/usr/lib64 -lacl" \
-CXX="g++ ${BUILD64} -lacl" USE_ARCH=64 \
-PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
-	--libdir=/usr/lib64 \
-	--disable-static    \
-	--sysconfdir=/etc    \
-    --disable-gtk-doc \
-    --disable-gtk-doc-pdf \
-    --disable-gtk-doc-html \
-    --disable-libsystemd-login \
-    --disable-admin \
-    --disable-gphoto2 \
-    --disable-documentation
-    
-sudo ln -sfv /usr/lib64/libacl.so /lib64/
-sudo ln -sfv /usr/lib64/libattr.so /lib64/
-    
-LD_LIB_PATH="/usr/lib64" LIBRARY_PATH="/usr/lib64" CPPFLAGS="-I/usr/include" \
-LD_LIBRARY_PATH="/usr/lib64" CC="gcc ${BUILD64} -L/usr/lib64 -lacl" \
-CXX="g++ ${BUILD64} -lacl" USE_ARCH=64 \
-PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} make PREFIX=/usr LIBDIR=/usr/lib64
-
-sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
-
-cd ${CLFSSOURCES}/xc/xfce4
-checkBuiltPackage
-sudo rm -rf gvfs
 
 #libexif
 wget http://downloads.sourceforge.net/libexif/libexif-0.6.21.tar.bz2 -O \
@@ -2651,12 +2628,302 @@ cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 sudo rm -rf poppler
 
-#Tumbler
+#volume_key
+wget https://releases.pagure.org/volume_key/volume_key-0.3.9.tar.xz -O \
+    volume_key-0.3.9.tar.xz
+
+mkdir volume_key && tar xf volume_key-*.tar.* -C volume_key --strip-components 1
+cd volume_key
+
+export PYTHON=/usr/bin/python3.6
+sudo ln -sfv /usr/bin/python3.6 /usr/bin/python
+
+sed -i 's/$(PYTHON_VERSION)/3.6/' Makefile*
+sed -i 's/\/lib\/python3.6/\/lib64\/python3.6/' Makefile*
+sed -i 's/\/lib6464\/python3.6/\/lib64\/python3.6/' Makefile*
+sed -i 's/<Python.h>/\"\/usr\/include\/python3.6m\/Python.h\"/' python/volume_key_wrap.c
+sed -i '/config.h/d' lib/libvolume_key.h
+
+autoreconf -fiv
+
+PYTHON=/usr/bin/python3.6 \
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" \
+USE_ARCH=64 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr\
+    --libdir=/usr/lib64 \
+    --disable-static
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" USE_ARCH=64 \
+CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+sudo unlink /usr/bin/python
+unset PYTHON
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf volume_key
+
+#sgml-common
+wget http://anduin.linuxfromscratch.org/BLFS/sgml-common/sgml-common-0.6.3.tgz -O \
+    sgml-common-0.6.3.tgz
+
+wget http://www.linuxfromscratch.org/patches/blfs/svn/sgml-common-0.6.3-manpage-1.patch -O \
+    Sgml-common-0.6.3-manpage-1.patch 
+
+mkdir sgml-common && tar xf sgml-common-*.tgz -C sgml-common --strip-components 1
+cd sgml-common
+
+patch -Np1 -i ../Sgml-common-0.6.3-manpage-1.patch
+
+autoreconf -f -i
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --sysconfdir=/etc
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 docdir=/usr/share/doc install
+
+sudo install-catalog --remove /etc/sgml/sgml-ent.cat \
+    /usr/share/sgml/sgml-iso-entities-8879.1986/catalog &&
+
+sudo install-catalog --remove /etc/sgml/sgml-docbook.cat \
+    /etc/sgml/sgml-ent.cat
+
+sudo install-catalog --add /etc/sgml/sgml-ent.cat \
+    /usr/share/sgml/sgml-iso-entities-8879.1986/catalog &&
+
+sudo install-catalog --add /etc/sgml/sgml-docbook.cat \
+    /etc/sgml/sgml-ent.cat
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf sgml-common
+
+#Unzip
+wget http://downloads.sourceforge.net/infozip/unzip60.tar.gz -O \
+    unzip60.tar.gz
+
+mkdir unzip && tar xf unzip*.tar.* -C unzip --strip-components 1
+cd unzip
+
+sed -i 's/CC = cc#/CC = gcc#/' unix/Makefile
+
+CC="gcc ${BUILD64}" \
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make prefix=/usr libdir=/usr/lib64 -f unix/Makefile generic
+sudo make prefix=/usr libdir=/usr/lib64 -f unix/Makefile install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf unzip
+
+sudo chown -Rv overflyer ${CLFSSOURCES}
+
+#docbook-xml
+wget http://www.docbook.org/xml/4.5/docbook-xml-4.5.zip -O \
+    docbook-xml-4.5.zip
+
+unzip docbook-xml-*.zip
+
+sudo install -v -d -m755 /usr/share/xml/docbook/xml-dtd-4.5
+sudo install -v -d -m755 /etc/xml
+sudo chown -R root:root .
+sudo cp -v -af catalog.xml docbook.cat *.dtd ent/ *.mod /usr/share/xml/docbook/xml-dtd-4.5
+
+if [ ! -e /etc/xml/docbook ]; then
+    sudo xmlcatalog --noout --create /etc/xml/docbook
+fi &&
+sudo xmlcatalog --noout --add "public" \
+    "-//OASIS//DTD DocBook XML V4.5//EN" \
+    "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" \
+    /etc/xml/docbook &&
+sudo xmlcatalog --noout --add "public" \
+    "-//OASIS//DTD DocBook XML CALS Table Model V4.5//EN" \
+    "file:///usr/share/xml/docbook/xml-dtd-4.5/calstblx.dtd" \
+    /etc/xml/docbook &&
+sudo xmlcatalog --noout --add "public" \
+    "-//OASIS//DTD XML Exchange Table Model 19990315//EN" \
+    "file:///usr/share/xml/docbook/xml-dtd-4.5/soextblx.dtd" \
+    /etc/xml/docbook &&
+sudo xmlcatalog --noout --add "public" \
+    "-//OASIS//ELEMENTS DocBook XML Information Pool V4.5//EN" \
+    "file:///usr/share/xml/docbook/xml-dtd-4.5/dbpoolx.mod" \
+    /etc/xml/docbook &&
+sudo xmlcatalog --noout --add "public" \
+    "-//OASIS//ELEMENTS DocBook XML Document Hierarchy V4.5//EN" \
+    "file:///usr/share/xml/docbook/xml-dtd-4.5/dbhierx.mod" \
+    /etc/xml/docbook &&
+sudo xmlcatalog --noout --add "public" \
+    "-//OASIS//ELEMENTS DocBook XML HTML Tables V4.5//EN" \
+    "file:///usr/share/xml/docbook/xml-dtd-4.5/htmltblx.mod" \
+    /etc/xml/docbook &&
+sudo xmlcatalog --noout --add "public" \
+    "-//OASIS//ENTITIES DocBook XML Notations V4.5//EN" \
+    "file:///usr/share/xml/docbook/xml-dtd-4.5/dbnotnx.mod" \
+    /etc/xml/docbook &&
+sudo xmlcatalog --noout --add "public" \
+    "-//OASIS//ENTITIES DocBook XML Character Entities V4.5//EN" \
+    "file:///usr/share/xml/docbook/xml-dtd-4.5/dbcentx.mod" \
+    /etc/xml/docbook &&
+sudo xmlcatalog --noout --add "public" \
+    "-//OASIS//ENTITIES DocBook XML Additional General Entities V4.5//EN" \
+    "file:///usr/share/xml/docbook/xml-dtd-4.5/dbgenent.mod" \
+    /etc/xml/docbook &&
+sudo xmlcatalog --noout --add "rewriteSystem" \
+    "http://www.oasis-open.org/docbook/xml/4.5" \
+    "file:///usr/share/xml/docbook/xml-dtd-4.5" \
+    /etc/xml/docbook &&
+sudo xmlcatalog --noout --add "rewriteURI" \
+    "http://www.oasis-open.org/docbook/xml/4.5" \
+    "file:///usr/share/xml/docbook/xml-dtd-4.5" \
+    /etc/xml/docbook
+
+if [ ! -e /etc/xml/catalog ]; then
+    sudo xmlcatalog --noout --create /etc/xml/catalog
+fi &&
+sudo xmlcatalog --noout --add "delegatePublic" \
+    "-//OASIS//ENTITIES DocBook XML" \
+    "file:///etc/xml/docbook" \
+    /etc/xml/catalog &&
+sudo xmlcatalog --noout --add "delegatePublic" \
+    "-//OASIS//DTD DocBook XML" \
+    "file:///etc/xml/docbook" \
+    /etc/xml/catalog &&
+sudo xmlcatalog --noout --add "delegateSystem" \
+    "http://www.oasis-open.org/docbook/" \
+    "file:///etc/xml/docbook" \
+    /etc/xml/catalog &&
+sudo xmlcatalog --noout --add "delegateURI" \
+    "http://www.oasis-open.org/docbook/" \
+    "file:///etc/xml/docbook" \
+    /etc/xml/catalog
+
+for DTDVERSION in 4.1.2 4.2 4.3 4.4
+do
+  sudo xmlcatalog --noout --add "public" \
+    "-//OASIS//DTD DocBook XML V$DTDVERSION//EN" \
+    "http://www.oasis-open.org/docbook/xml/$DTDVERSION/docbookx.dtd" \
+    /etc/xml/docbook
+  sudo xmlcatalog --noout --add "rewriteSystem" \
+    "http://www.oasis-open.org/docbook/xml/$DTDVERSION" \
+    "file:///usr/share/xml/docbook/xml-dtd-4.5" \
+    /etc/xml/docbook
+  sudo xmlcatalog --noout --add "rewriteURI" \
+    "http://www.oasis-open.org/docbook/xml/$DTDVERSION" \
+    "file:///usr/share/xml/docbook/xml-dtd-4.5" \
+    /etc/xml/docbook
+  sudo xmlcatalog --noout --add "delegateSystem" \
+    "http://www.oasis-open.org/docbook/xml/$DTDVERSION/" \
+    "file:///etc/xml/docbook" \
+    /etc/xml/catalog
+  sudo xmlcatalog --noout --add "delegateURI" \
+    "http://www.oasis-open.org/docbook/xml/$DTDVERSION/" \
+    "file:///etc/xml/docbook" \
+    /etc/xml/catalog
+done
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+
+sudo chown -Rv overflyer ${CLFSSOURCES}
+
+#docbook-xsl
+wget http://downloads.sourceforge.net/docbook/docbook-xsl-1.79.1.tar.bz2 -O \
+    docbook-xsl-1.79.1.tar.bz2
+
+mkdir docbook-xsl && tar xf docbook-xsl-*.tar.* -C docbook-xsl --strip-components 1
+cd docbook-xsl
+
+sudo install -v -m755 -d /usr/share/xml/docbook/xsl-stylesheets-1.79.1 &&
+
+sudo cp -v -R VERSION assembly common eclipse epub epub3 extensions fo  \
+         highlighting html htmlhelp images javahelp lib manpages params  \
+         profiling roundtrip slides template tests tools webhelp website \
+         xhtml xhtml-1_1 xhtml5                                          \
+         /usr/share/xml/docbook/xsl-stylesheets-1.79.1 
+
+sudo ln -s VERSION /usr/share/xml/docbook/xsl-stylesheets-1.79.1/VERSION.xsl &&
+
+sudo install -v -m644 -D README \
+                    /usr/share/doc/docbook-xsl-1.79.1/README.txt &&
+sudo install -v -m644    RELEASE-NOTES* NEWS* \
+                    /usr/share/doc/docbook-xsl-1.79.1
+
+sudo xmlcatalog --noout --add "rewriteSystem" \
+           "http://docbook.sourceforge.net/release/xsl/<version>" \
+           "/usr/share/xml/docbook/xsl-stylesheets-<version>" \
+    /etc/xml/catalog &&
+
+sudo xmlcatalog --noout --add "rewriteURI" \
+           "http://docbook.sourceforge.net/release/xsl/<version>" \
+           "/usr/share/xml/docbook/xsl-stylesheets-<version>" \
+    /etc/xml/catalog
+
+sudo cp ${CLFSSOURCES}/docbook-xml-xsl.tar.* .
+sudo mkdir xml 
+sudo tar xf docbook-xml-xsl.tar.* -C xml --strip-components 1
+sudo cp -rv xml /etc/
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+#echo " "
+#echo "For me xmlcatalog --noout --add was failing"
+#echo "With \"add command failed\""
+#echo "I cheated and copied /etc/xml/* over to clfs from my host distro"
+#echo " "
+sudo rm -rf docbook-xsl
+
+sudo chown -Rv overflyer ${CLFSSOURCES}
+
+#itstool
+wget http://files.itstool.org/itstool/itstool-2.0.2.tar.bz2 -O \
+    itstool-2.0.2.tar.bz2
+
+mkdir itstool && tar xf itstool-*.tar.* -C itstool --strip-components 1
+cd itstool
+
+sed -i 's/python \- \&/python3.6 \- \&/' configure
+
+export PYTHON=/usr/bin/python3.6
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr 
+sudo make PREFIX=/usr install
+
+unset PYTHON
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+rm -rf itstool
+
+#gtk-doc
+wget http://ftp.gnome.org/pub/gnome/sources/gtk-doc/1.25/gtk-doc-1.25.tar.xz -O \
+    gtk-doc-1.25.tar.xz
+
+mkdir gtk-doc && tar xf gtk-doc-*.tar.* -C gtk-doc --strip-components 1
+cd gtk-doc
+
+PYTHON=/usr/bin/python2.7 \
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+    --libdir=/usr/lib64 --enable-shared --disable-static \
+    --with-xml-catalog=/etc/xml/catalog --sysconfdir=/etc --datarootdir=/usr/share
+    
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf gtk-doc
+
+#tumbler
 wget http://archive.xfce.org/src/xfce/tumbler/0.2/tumbler-0.2.0.tar.bz2 -O \
 	tumbler-0.2.0.tar.bz2
-	
+
 mkdir tumbler && tar xf tumbler-*.tar.* -C tumbler --strip-components 1
 cd tumbler
+
+sed -i 's/<ft2build.h>/\"\/usr\/include\/freetype2\/ft2build.h\"/' plugins/font-thumbnailer/font-thumbnailer.c
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
     --libdir=/usr/lib64 
@@ -2720,9 +2987,52 @@ cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 sudo rm -rf xfce4-appfinder
 
+#libusb
+wget https://github.com//libusb/libusb/releases/download/v1.0.21/libusb-1.0.21.tar.bz2 -O \
+    libusb-1.0.21.tar.bz2
+
+mkdir libusb && tar xf libusb-*.tar.* -C libusb --strip-components 1
+cd libusb
+
+sed -i "s/^PROJECT_LOGO/#&/" doc/doxygen.cfg.in
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --disable-static 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make -j1 PREFIX=/usr LIBDIR=/usr/lib64
+sudo make -j1 PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf libusb
+
+#libgusb
+wget http://people.freedesktop.org/~hughsient/releases/libgusb-0.2.10.tar.xz -O \
+    libgusb-0.2.10.tar.xz
+
+mkdir libgusb && tar xf libgusb-*.tar.* -C libgusb --strip-components 1
+cd libgusb
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --disable-static \
+   --disable-gtk-doc \ 
+   --disable-gtk-doc-html \ 
+   --disable-gtk-doc-pdf  
+
+sed -i 's/docs/#docs/' Makefile*
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf libgusb
+
 #UPower
-wget https://upower.freedesktop.org/releases/upower-0.99.5.tar.xz -O \
-	upower-0.99.5.tar.xz
+wget https://upower.freedesktop.org/releases/upower-0.99.6.tar.xz -O \
+	upower-0.99.6.tar.xz
 
 mkdir upower && tar xf upower-*.tar.* -C upower --strip-components 1
 cd upower
@@ -2734,7 +3044,9 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
     --enable-deprecated  \
     --disable-static \
     --disable-gtk-doc
-    
+
+sed -i 's/doc/#doc/' Makefile*
+
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}"  make LIBDIR=/usr/lib64 PREFIX=/usr
 sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
 
@@ -2989,6 +3301,104 @@ cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 sudo rm -rf lxde-icon-theme
 
+#libogg
+wget http://downloads.xiph.org/releases/ogg/libogg-1.3.2.tar.xz -O \
+    libogg-1.3.2.tar.xz
+
+mkdir libogg && tar xf libogg-*.tar.* -C libogg --strip-components 1
+cd libogg
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --disable-static \
+   --docdir=/usr/share/doc/libogg-1.3.2
+
+make check
+checkBuiltPackage
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf libogg
+
+#libvorbis
+wget http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.5.tar.xz -O \
+    libvorbis-1.3.5.tar.xz
+
+mkdir libvorbis && tar xf libvorbis-*.tar.* -C libvorbis --strip-components 1
+cd libvorbis
+
+sed -i '/components.png \\/{n;d}' doc/Makefile.in
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --disable-static 
+
+make LIBS=-lm check
+checkBuiltPackage
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo install -v -m644 doc/Vorbis* /usr/share/doc/libvorbis-1.3.5
+
+ldconfig 
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf libvorbis
+
+wget ftp://ftp.alsa-project.org/pub/lib/alsa-lib-1.1.4.1.tar.bz2 -O \
+    alsa-lib-1.1.4.1.tar.bz2
+
+mkdir alsa-lib && tar xf alsa-lib-*.tar.* -C alsa-lib --strip-components 1
+cd alsa-lib
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+   --libdir=/usr/lib64 \
+   --disable-static 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+make check
+checkBuiltPackage
+
+sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+sudo install -v -d -m755 /usr/share/doc/alsa-lib-1.1.4.1/html/search &&
+sudo install -v -m644 doc/doxygen/html/*.* \
+                /usr/share/doc/alsa-lib-1.1.4.1/html 
+
+
+sudo bash -c 'cat > /etc/asound.conf << "EOF"
+pcm.!default {
+  type hw
+  card 0
+}
+
+ctl.!default {
+  type hw           
+  card 0
+}
+EOF'
+
+sudo bash -c 'cat > /usr/share/alsa/alsa.conf << "EOF"
+pcm.!default {
+  type hw
+  card 0
+}
+
+ctl.!default {
+  type hw           
+  card 0
+}
+EOF'
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf alsa-lib
+
+
 #libcanberra
 wget http://0pointer.de/lennart/projects/libcanberra/libcanberra-0.30.tar.xz -O \
     libcanberra-0.30.tar.xz
@@ -2996,13 +3406,26 @@ wget http://0pointer.de/lennart/projects/libcanberra/libcanberra-0.30.tar.xz -O 
 mkdir libcanberra && tar xf libcanberra-*.tar.* -C libcanberra --strip-components 1
 cd libcanberra
 
+intltoolize-prepare --force
+autoconf
+automake
+
+cp ${CLFSSOURCES}/libcanberra-0.30-removedoc-nopulseaudio.patch ../
+
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
    --libdir=/usr/lib64 \
    --disable-static \
-   --disable-oss 
+   --disable-oss \
+   --disable-gtk-doc \
+   --disable-gtk-doc-html \
+   --disable-gtk-doc-pdf \
+   --with-html-dir=no \
+   --with-systemdsystemunitdir=no
+
+patch -Np1 -i ../libcanberra-0.30-removedoc-nopulseaudio.patch
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+sudo make install
 
 cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
@@ -3018,7 +3441,7 @@ cd xfce4-settings
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure \
      --prefix=/usr \
      --libdir=/usr/lib64 \
-     --sysconfdir=/etc
+     --sysconfdir=/etc 
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
 sudo make install
@@ -3107,6 +3530,8 @@ sudo rm -rf sharedmimeinfo
 wget http://ftp.gnome.org/pub/gnome/sources/polkit-gnome/0.105/polkit-gnome-0.105.tar.xz -O \
 	polkit-gnome-0.105.tar.xz
 
+mkdir polkit-gnome && tar xf polkit-gnome-*.tar.* -C polkit-gnome --strip-components 1
+cd polkit-gnome
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
    --libdir=/usr/lib64 
@@ -3127,9 +3552,6 @@ NoDisplay=true
 OnlyShowIn=GNOME;XFCE;Unity;
 AutostartCondition=GNOME3 unless-session gnome
 EOF'
-
-mkdir polkit-gnome && tar xf polkit-gnome-*.tar.* -C polkit-gnome --strip-components 1
-cd polkit-gnome
 
 cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
@@ -3160,7 +3582,114 @@ sudo rm -rf xfwm4
 
 #Generate .xinitrc here
 
+cat > /home/overflyer/.xinitrc << "EOF"
+#!/bin/sh
+#
+# ~/.xinitrc
+#
+# Executed by startx (run your window manager from here)
+
+if [[ -f ~/.extend.xinitrc ]];then
+	. ~/.extend.xinitrc
+else
+	DEFAULT_SESSION=xfce4-session
+fi
+
+userresources=$HOME/.Xresources
+usermodmap=$HOME/.Xmodmap
+sysresources=/etc/X11/xinit/.Xresources
+sysmodmap=/etc/X11/xinit/.Xmodmap
+
+# merge in defaults and keymaps
+
+if [ -f $sysresources ]; then
+    xrdb -merge $sysresources
+fi
+
+if [ -f $sysmodmap ]; then
+    xmodmap $sysmodmap
+fi
+
+if [ -f "$userresources" ]; then
+    xrdb -merge "$userresources"
+fi
+
+if [ -f "$usermodmap" ]; then
+    xmodmap "$usermodmap"
+fi
+
+# start some nice programs
+
+if [ -d /etc/X11/xinit/xinitrc.d ] ; then
+    for f in /etc/X11/xinit/xinitrc.d/?*.sh ; do
+        [ -x "$f" ] && . "$f"
+    done
+    unset f
+fi
+
+get_session(){
+	local dbus_args=(--sh-syntax --exit-with-session)
+	case $1 in
+		awesome) dbus_args+=(awesome) ;;
+		bspwm) dbus_args+=(bspwm-session) ;;
+		budgie) dbus_args+=(budgie-desktop) ;;
+		cinnamon) dbus_args+=(cinnamon-session) ;;
+		deepin) dbus_args+=(startdde) ;;
+		enlightenment) dbus_args+=(enlightenment_start) ;;
+		fluxbox) dbus_args+=(startfluxbox) ;;
+		gnome) dbus_args+=(gnome-session) ;;
+		i3|i3wm) dbus_args+=(i3 --shmlog-size 0) ;;
+		jwm) dbus_args+=(jwm) ;;
+		kde) dbus_args+=(startkde) ;;
+		lxde) dbus_args+=(startlxde) ;;
+		lxqt) dbus_args+=(lxqt-session) ;;
+		mate) dbus_args+=(mate-session) ;;
+		xfce) dbus_args+=(xfce4-session) ;;
+		openbox) dbus_args+=(openbox-session) ;;
+		*) dbus_args+=($DEFAULT_SESSION) ;;
+	esac
+
+	echo "dbus-launch ${dbus_args[*]}"
+}
+
+exec $(get_session)
+
+
+# twm &
+# xclock -geometry 50x50-1+1 &
+# xterm -geometry 80x50+494+51 &
+# xterm -geometry 80x20+494-0 &
+#exec xterm -geometry 80x66+0+0 -name login
+EOF
+
 ## Xfce4 Applications ##
+
+#vte needs pcre2
+#PCRE2
+wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre2-10.23.tar.bz2 -O \
+    pcre2-10.23.tar.bz2
+
+mkdir pcre2 && tar xf pcre2-*.tar.* -C pcre2 --strip-components 1
+cd pcre2
+
+CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
+     --docdir=/usr/share/doc/pcre2-10.23 \
+            --enable-unicode                    \
+            --enable-pcre2-16                   \
+            --enable-pcre2-32                   \
+            --enable-pcre2grep-libz             \
+            --enable-pcre2grep-libbz2           \
+            --enable-pcre2test-libreadline      \
+            --disable-static  \
+            --libdir=/usr/lib64
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+sudo make LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/xfce4
+checkBuiltPackage
+sudo rm -rf pcre2
 
 #vte
 wget http://ftp.gnome.org/pub/gnome/sources/vte/0.48/vte-0.48.3.tar.xz -O \
@@ -3169,15 +3698,24 @@ wget http://ftp.gnome.org/pub/gnome/sources/vte/0.48/vte-0.48.3.tar.xz -O \
 mkdir vte && tar xf vte-*.tar.* -C vte --strip-components 1
 cd vte
 
+sudo cp ${CLFSSOURCES}/vte-0.48.3-removedoc.patch ../
+
 CC="gcc ${BUILD64}" CXX="g++ ${BUILD64}" USE_ARCH=64 \
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} ./configure --prefix=/usr \
     --disable-static \
     --libdir=/usr/lib64 \
     --sysconfdir=/etc \
     --enable-introspection \
-    --disable-gtk-doc
-    
+    --disable-gtk-doc \
+    --disable-gtk-doc-html \
+    --disable-gtk-doc-pdf
+
+patch -Np1 -i ../vte-0.48.3-removedoc.patch
+
+checkBuiltPackage
+
 make PREFIX=/usr LIBDIR=/usr/lib64
+
 sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}/xc/xfce4
@@ -3240,3 +3778,4 @@ cd ${CLFSSOURCES}/xc/xfce4
 checkBuiltPackage
 sudo rm -rf xfce4-notifyd
 
+sudo chown -Rv overflyer /home/overflyer
