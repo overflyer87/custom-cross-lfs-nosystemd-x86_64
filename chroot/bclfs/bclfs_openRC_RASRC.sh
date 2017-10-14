@@ -37,14 +37,112 @@ export PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 cd ${CLFSSOURCES} 
 
 #syslog-ng
-wget https://github.com/balabit/syslog-ng/archive/syslog-ng-3.12.1.tar.gz -O \
-  syslog-ng-3.12.1.tar.gz
+#wget https://github.com/balabit/syslog-ng/archive/syslog-ng-3.12.1.tar.gz -O \
+#  syslog-ng-3.12.1.tar.gz
+#
+#mkdir syslog-ng && tar xf syslog-ng*.tar.* -C syslog-ng --strip-components 1
+#cd syslog-ng
+#PKG_CONFIG_PATH=/usr/lib64/pkgconfig/ CC="gcc -m64" ./configure --prefix=/usr --libdir=/usr/lib64 \
+#  --with-systemdsystemunitdir=no --disable-systemd --disable-python \
+#  --enable-dynamic-linking --enable-extra-warnings --disable-env-wrapper  \
+#  --disable-java --disable-gprof --enable-native --disable-librabbitmq \
+#  --disable-jsonc --disable-docbook-docs --disable-valgrind --disable-riemann \
+#  --disable-geoip --disable-geoip2 --disable-http --disable-java-modules \
+#  --disable-redis --disable-amqp --disable-mongodb --disable-ssl \
+#  --disable-tcp-wrapper --disable-spoof-source --enable-shared --enable-legacy-mongodb-options=no \
+#  --with-mongoc=no --disable-stomp --enable-json=no --with-jsonc=no --with-pidfile-dir=/run \
+#  --libexecdir=/usr/lib64 --sysconfdir=/etc/syslog-ng --sbindir=/usr/bin \
+#  --localstatedir=/var/lib64/syslog-ng  --datadir=/usr/share
+# Gave up! would not install to /usr/lib64 no matter what. Another reason to reconfigure the standard CLFS instructions for the toolchain
+#Rsyslog
+mkdir rsyslog && tar xf rsyslog-*.tar.* -C rsyslog --strip-components 1
+cd rsyslog
 
-mkdir syslog-ng && tar xf syslog-ng*.tar.* -C syslog-ng --strip-components 1
-cd syslog-ng
+CC="gcc ${BUILD64}" \
+    PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
+    USE_ARCH=64 \
+    ./configure --prefix=/usr \
+    --libdir=/usr/lib64 && 
+
+make
+make check
+checkBuiltPackage
+make install
+
+install -dv /etc/rsyslog.d
+
+cat > /etc/rsyslog.conf << "EOF"
+# Begin /etc/rsyslog.conf
+
+# CLFS configuration of rsyslog. For more info use man rsyslog.conf
+
+#######################################################################
+# Rsyslog Modules
+
+# Support for Local System Logging
+$ModLoad imuxsock.so
+
+# Support for Kernel Logging
+$ModLoad imklog.so
+
+#######################################################################
+# Global Options
+
+# Use traditional timestamp format.
+$ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat
+
+# Set the default permissions for all log files.
+$FileOwner root
+$FileGroup root
+$FileCreateMode 0640
+$DirCreateMode 0755
+
+# Provides UDP reception
+$ModLoad imudp
+$UDPServerRun 514
+
+# Disable Repeating of Entries
+$RepeatedMsgReduction on
+
+#######################################################################
+# Include Rsyslog Config Snippets
+
+$IncludeConfig /etc/rsyslog.d/*.conf
+
+#######################################################################
+# Standard Log Files
+
+auth,authpriv.*                 /var/log/auth.log
+*.*;auth,authpriv.none          -/var/log/syslog
+daemon.*                        -/var/log/daemon.log
+kern.*                          -/var/log/kern.log
+lpr.*                           -/var/log/lpr.log
+mail.*                          -/var/log/mail.log
+user.*                          -/var/log/user.log
+
+# Catch All Logs
+*.=debug;\
+        auth,authpriv.none;\
+        news.none;mail.none     -/var/log/debug
+*.=info;*.=notice;*.=warn;\
+        auth,authpriv.none;\
+        cron,daemon.none;\
+        mail,news.none          -/var/log/messages
+
+# Emergencies are shown to everyone
+*.emerg                         *
+
+# End /etc/rsyslog.conf
+EOF
+
+cd ${CLFSSOURCES} 
+checkBuiltPackage
+rm -rf rsyslog
 
 
 
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" make 
+sudo bash -c 'PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" make'
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
@@ -206,6 +304,8 @@ ln -sfv /etc/init.d/net.lo /etc/runlevels/boot/net.lo
 ln -sfv /etc/init.d/sshd /etc/runlevels/default/sshd
 ln -sfv /etc/init.d/acpid /etc/runlevels/default/acpid
 ln -sfv /etc/init.d/dhcpd /etc/runlevels/default/dhcpd
+
+#todo: get rsyslog-openrc init script
 
 cd ${CLFSSOURCES} 
 checkBuiltPackage
