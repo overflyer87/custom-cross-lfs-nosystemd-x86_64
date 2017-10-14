@@ -61,6 +61,31 @@ unlink /lib/modules/4.12.10-CLFS-SYSVINIT-SVN-x86_64/source
 ln -sfv /lib/modules/CLFS-4.12.10-headers /lib/modules/4.12.10-CLFS-SYSVINIT-SVN-x86_64/build
 ln -sfv /lib/modules/CLFS-4.12.10-headers /lib/modules/4.12.0-CLFS-SYSVINIT-SVN-x86_64/source
 
+#Create boot entry
+
+fs_uuid=$(blkid -o value -s PARTUUID /dev/sda4)
+
+cat > /boot/efi/loader/entries/clfs-uefi.conf << "EOF"
+title   Cross Linux from Scratch (4.12.10)
+linux   /vmlinuz-clfs-4.12.10
+initrd  /intel-ucode.img
+EOF
+
+cat > /boot/efi/loader/loader.conf << "EOF"
+default clfs-uefi
+timeout 5
+EOF
+
+cd /boot/efi/loader/entries/
+echo options root=PARTUUID=`echo $fs_uuid` rw >> clfs-uefi.conf
+
+cd ${CLFSSOURCES} 
+checkBuiltPackage
+rm -rf goofiboot
+
+cp -v ${CLFSSOURCES}/intel-ucode.img /boot/efi/
+echo " " 
+
 echo " "
 echo "CONGRATS. You are done! Your very own CLFS is now bootable."
 echo "Please install the bclfs_PAM script before reboot NOW!"
