@@ -276,13 +276,15 @@ sudo cp -rv /libexec/rc /usr/lib64/
 sudo mv /usr/lib64/rc /usr/lib64/openrc
 sudo rm -rf /libexec/rc
 
-mkdir my-clfs-openrc-services && tar xf my-clfs-openrc-services.tar.* -C my-clfs-openrc-services --strip-components 1
-cd myclfs-openrc-services
+mkdir cclfs-openrc-services && tar xf cclfs-openrc-services.tar.* -C cclfs-openrc-services --strip-components 1
+cd cclfs-openrc-services
 
-sudo cp -v  etc/init.d/* /etc/init.d/
+sudo cp -v --no-clobber * /etc/init.d/
 cd ..
 
 sudo chmod 777 /etc/init.d/*
+
+#Let see if at the next test installation the following sed commands will still be neccessary
 
 sed -i 's/\/usr\/bin\//\/sbin\//' /etc/init.d/*
 sed -i 's/\/usr\/bin\//\/sbin\//' /usr/lib64/openrc
@@ -302,7 +304,6 @@ ln -sfv /etc/init.d/udev-trigger /etc/runlevels/sysinit/udev-trigger
 ln -sfv /etc/init.d/net.lo /etc/runlevels/boot/net.lo
 
 ln -sfv /etc/init.d/sshd /etc/runlevels/default/sshd
-ln -sfv /etc/init.d/acpid /etc/runlevels/default/acpid
 ln -sfv /etc/init.d/dhcpd /etc/runlevels/default/dhcpd
 
 #todo: get rsyslog-openrc init script
@@ -323,7 +324,7 @@ PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} \
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} \
   CC="gcc ${BUILD64}" USE_ARCH=64 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64 install
 
-ln -s /etc/init.d/net.{lo,eth0}
+ln -sfv /etc/init.d/net.{lo,eth0}
   
 cd ${CLFSSOURCES} 
 checkBuiltPackage
