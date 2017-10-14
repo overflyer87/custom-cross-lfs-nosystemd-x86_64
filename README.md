@@ -2,7 +2,7 @@
 
 ###### Beards of Gentoo user's suddenly seem so short ;-D
 
-### *This customized version of CLFS SVN multilib x86_64 is gratis for anyone to have, use, download, adjust, modify, distribute and redistribute!*
+### *This customized version of CLFS SVN multilib x86_64 is gratis for anyone to have, use, download, adjust, modify, distribute and redistribute! However if you write scripts for more packages you have to provide the code back to this repo or whereever this project will be located. This is probably conform to GPLv2 but right now I am to lazy to copy and paste it. See this linux system grow would be nice and to see it get more and more packages and in the end there can be one installer where a user choses from. With dependency and collision check of course. I dont want to create a new major branch of Linux! We have enough distros.*
 
 ### General Announcement
 I did **not** use the adjective **free** since I do not mind linux systems using proprietary binary blobs. IMHO especially for high-performance GPUs and some firmware that is inevidable.
@@ -13,6 +13,10 @@ I will ONLY support **openRC** (this question for me is also one of principle)!
 SysVinit as a standalone init system is just too old and the bootup scripts were outdated. OpenRC runs successfully as of        2017-10-13. Now I am more indendent from the CLFS guys. I updated the toolchain to binutils 2.29.1, GCC 7.2.0 and glibc 2.26 by myself. CLFS is has not come that far, yet. **_I will delete sysvinit scripts in a few weeks!_**
 
 I will ONLY make this bootable for **UEFI** systems.
+
+I will ONLY provide a script for one bootloader - **goofiboot**. (gummiboot -> systemd-boot -> goofiboot)
+Goofiboot however is deprecated, maybe I will switch to grub when it stops working or I will find a way to use systemd-boot as standalone.
+
 This "distro" will start with kernel 4.12.10.
 I will try to use openrc-elogind and NOT consolekit. Elogind however is suddenly failing on me although it worled before
 I will ONLY provide scripts for **XCFCE** and **MATE** as Desktop environments.
