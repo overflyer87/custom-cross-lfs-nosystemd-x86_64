@@ -48,11 +48,12 @@ export PKG_CONFIG_PATH=/usr/lib64/pkgconfig
 export PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 export ACLOCAL="aclocal -I $XORG_PREFIX/share/aclocal"
 
-sudo chown -Rv overflyer cd ${CLFSSOURCES}
+sudo chown -Rv overflyer ${CLFSSOURCES}
 
 cd ${CLFSSOURCES}
 
-mkdir xc && cd xc
+mkdir -v cd ${CLFSSOURCES}/xc 
+cd ${CLFSSOURCES}/xc
 
 export XORG_PREFIX="/usr"
 export XORG_CONFIG64="--prefix=$XORG_PREFIX --sysconfdir=/etc --localstatedir=/var \
