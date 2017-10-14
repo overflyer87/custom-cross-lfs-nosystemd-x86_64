@@ -106,6 +106,17 @@ nameserver 192.168.0.1
 # End /etc/resolv.conf
 EOF
 
+echo "overflyer-main" >> /etc/hotname
+
+cat > /etc/shells << "EOF"
+# Begin /etc/shells
+
+/bin/sh
+/bin/bash
+
+# End /etc/shells
+EOF
+
 #dhcpcd
 mkdir dhcpcd && tar xf dhcpcd-*.tar.* -C dhcpcd --strip-components 1
 cd dhcpcd
