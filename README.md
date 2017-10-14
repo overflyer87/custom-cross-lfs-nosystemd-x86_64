@@ -36,7 +36,9 @@ RASRN - Run as root user of your final system NATIVELY (booted or via ssh)
 
 RACU - Run as the CLFS-user (the special, under-priviledged user on your host distro to build the temporary system)
 
-### Major pain points I could need help with
+### Pain points
+
+#### Major pain points I could need help with
 
 
 * The multilib """capability""" of Python is just utterly ridiculous. 3.6 works a little better than 2.7. They both sometimes work and sometimes don't. The very common dependy of linux packages nowadays is sad. I never noticed that until I did this project. Please keep coding in C, C++, C#, Rust, or Java, developers. The abstraction layers caused by script and web languages have nothing to do in an operating system  </rant> :-D
@@ -45,7 +47,7 @@ RACU - Run as the CLFS-user (the special, under-priviledged user on your host di
 
 * If I fix Python I would solve many problems, such as Bluettoth functionality and finally the capability to compile a decent version of MozJS. Until now only 17 is possible. 38 would be nice. 52 would be awesome.
 
-### Medium pain points
+#### Medium pain points
 
 * Alsa behaves way better with openRC. Even pulseaudio starts. However I still have no sound. I had to copy asound.state from my host distro. Don't know why that does not get created for me when building alsa. Did not change anything. Still get these messages also pulseaudio and openrc-alsasound run: 
 ALSA lib control.c:1373:(snd_ctl_open_noupdate) Invalid CTL hw:2 (also hw:0 and hw:1)
@@ -53,7 +55,7 @@ aplay: device_list:279: control open (2): No such file or directory
 
 * Display managers like lightdm or lxdm failed miserably with sysvinit. Let's checkout how this goes with openrc.
 
-### Minor paint points
+#### Minor paint points
 
 * Since openrc I know get a boring prompt after boot up saying localhost login: I have to figure out How to get a correct prompt again like I had with sysvinit. BUT HEY...openRC fixed my keyboard layout issues.
 
