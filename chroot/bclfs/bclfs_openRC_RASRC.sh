@@ -182,19 +182,16 @@ sed -i 's/\/usr\/lib6464\//\/usr\/lib64\//' /usr/lib64/rc/sh/*
 
 ln -sfv /usr/lib64/openrc/sh/functions.sh /etc/init.d/functions.sh
 
+#Create basic symlinks from services to bootlevels
 ln -sfv /etc/init.d/kmod-static-nodes /etc/runlevels/sysinit/kmod-static-nodes
-ln -sfv /etc/init.d/opentmpfiles-dev /etc/runlevels/sysinit/opentmpfiles-dev
 ln -sfv /etc/init.d/udev /etc/runlevels/sysinit/udev
 ln -sfv /etc/init.d/udev-trigger /etc/runlevels/sysinit/udev-trigger
 
 ln -sfv /etc/init.d/net.lo /etc/runlevels/boot/net.lo
-ln -sfv /etc/init.d/opentmpfiles-setup /etc/runlevels/boot/opentmpfiles-setup
 
 ln -sfv /etc/init.d/sshd /etc/runlevels/default/sshd
 ln -sfv /etc/init.d/acpid /etc/runlevels/default/acpid
 ln -sfv /etc/init.d/dhcpd /etc/runlevels/default/dhcpd
-ln -sfv /etc/init.d/cronie /etc/runlevels/default/cronie
-ln -sfv /etc/init.d/syslog-ng /etc/runlevels/default/syslog-ng
 
 cd ${CLFSSOURCES} 
 checkBuiltPackage
