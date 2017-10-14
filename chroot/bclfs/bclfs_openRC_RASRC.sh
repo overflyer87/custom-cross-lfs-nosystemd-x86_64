@@ -84,8 +84,8 @@ patch -Np1 -i ${CLFSSOURCES}/openrc-quiet.patch
 sudo install -dm644 /etc/logrotate.d
 
 #explicitely declare CC=gcc -m64 in the following two files
-nano mk/lib.mk
-nano mk/cc.mk
+sed -i 's/${CC}/gcc -m64/' mk/lib.mk
+sed -i 's/${CC}/gcc -m64/' mk/cc.mk
 
 export BRANDING='CLFS-SVN-x86_64-multilib' 
 export SYSCONFDIR=/etc 
