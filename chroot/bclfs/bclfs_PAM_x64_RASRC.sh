@@ -409,19 +409,31 @@ groupadd storage
 groupadd power
 useradd -g users -G wheel,storage,power -m -s /bin/bash $YOURUSERNAME
 passwd $YOURUSERNAME
+
+#User should uncomment first line containing wheel now
 visudo
+
+#Get PKG_CONFIG_PATH to be loaded up automagically for both users
+#Easier for later building of packages
+cat >> /home/$YOURUSERNAME/.bashrc << "EOF"
+export PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
+export PKG_CONFIG_PATH32=/usr/lib/pkgconfig
+EOF
+
+cat >> /root/.bashrc << "EOF"
+export PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
+export PKG_CONFIG_PATH32=/usr/lib/pkgconfig
+EOF
 
 echo " "
 echo "You may reboot now and try your new VERY OWN LINUX now ;)"
 echo " "
 
+#Clean up :)
 rm -rf /tools
 rm -rf /cross-tools
 
-sed -i 's/oom_adj/oom_score_adj/' /etc/rc.d/init.d/sshd
-
-#Blacklist Modules that are not compatible
-#With the proprietary NVIDIA driver
+#Blacklist video modules that are not compatible with the proprietary NVIDIA driver
 sudo mkdir -v /etc/modprobe.d
 
 sudo bash -c 'cat > /etc/modprobe.d/blacklist-nouveau.conf << "EOF"
