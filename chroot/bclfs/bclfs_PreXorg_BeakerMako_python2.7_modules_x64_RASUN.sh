@@ -15,7 +15,7 @@ done
 echo " "
 }
 
-sudo chown -Rv overflyer /sources
+sudo chown -Rv overflyer ${CLFSSOURCES}
 
 #Building the final CLFS System
 CLFS=/
