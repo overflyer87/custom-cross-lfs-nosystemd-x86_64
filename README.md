@@ -17,7 +17,7 @@ SysVinit as a standalone init system is just too old and the bootup scripts were
 
 I will ONLY make this bootable for **UEFI** systems.
 
-I do not provide a script for the boot method. I will only offer chroot. If you want to compile this on a source taht is different from your target go to [CLFS](trac.clfs.org) and checkout the chapter about the boot method and maybe write a script yourself.
+I do not provide a script for the boot method. I will only offer chroot. If you want to compile this on a source taht is different from your target go to [CLFS](http://trac.clfs.org) and checkout the chapter about the boot method and maybe write a script yourself.
 
 I will ONLY provide a script for one bootloader - **goofiboot**. (gummiboot -> systemd-boot -> goofiboot)
 Goofiboot however is deprecated, maybe I will switch to grub when it stops working or I will find a way to use systemd-boot as standalone.
