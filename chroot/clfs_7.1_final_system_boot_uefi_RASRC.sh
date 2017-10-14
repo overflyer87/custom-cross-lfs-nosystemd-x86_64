@@ -433,29 +433,6 @@ mount -o remount,rw ${CLFS}/sys/firmware/efi/efivars/
 goofiboot --path=/boot/efi install 
 mount -o remount,ro ${CLFS}/sys/firmware/efi/efivars/
 
-fs_uuid=$(blkid -o value -s PARTUUID /dev/sda4)
-
-cat > /boot/efi/loader/entries/clfs-uefi.conf << "EOF"
-title   Cross Linux from Scratch (4.13.5)
-linux   /vmlinuz-clfs-4.13.5
-initrd  /intel-ucode.img
-EOF
-
-cat > /boot/efi/loader/loader.conf << "EOF"
-default clfs-uefi
-timeout 5
-EOF
-
-cd /boot/efi/loader/entries/
-echo options root=PARTUUID=`echo $fs_uuid` rw >> clfs-uefi.conf
-
-cd ${CLFSSOURCES} 
-checkBuiltPackage
-rm -rf goofiboot
-
-cp -v ${CLFSSOURCES}/intel-ucode.img /boot/efi/
-echo " " 
-
 efibootmgr
 
 echo " "
