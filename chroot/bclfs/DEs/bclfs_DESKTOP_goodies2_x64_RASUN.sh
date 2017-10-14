@@ -192,7 +192,7 @@ sort_buffer_size = 512K
 net_buffer_length = 16K
 myisam_sort_buffer_size = 8M
 
-# Don't listen on a TCP/IP port at all.
+# Dont listen on a TCP/IP port at all.
 skip-networking
 
 # required unique id between 1 and 2^32 - 1
