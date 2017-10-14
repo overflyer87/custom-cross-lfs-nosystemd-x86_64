@@ -1,6 +1,6 @@
 # my-clfs-svn-nosystemd-x86_64
 
-## This customized version of CLFS SVN multilib x86_64 is libre and gratis for anyone to have, use, download, adjust, modify, distribute and redistribute!
+## This customized version of CLFS SVN multilib x86_64 is gratis for anyone to have, use, download, adjust, modify, distribute and redistribute!
 
 ### General Announcement
 I did **not** use the adjective **free** since I do not midn if linux systems use any proprietary binary blobs. IMHO Especially for high-performance GPUs and some firmware that is inevidable.
