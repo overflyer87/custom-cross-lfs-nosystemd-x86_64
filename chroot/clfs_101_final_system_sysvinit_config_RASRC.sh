@@ -119,6 +119,17 @@ nameserver 192.168.0.1
 # End /etc/resolv.conf
 EOF
 
+echo "overflyer-main" >> /etc/hotname
+
+cat > /etc/shells << "EOF"
+# Begin /etc/shells
+
+/bin/sh
+/bin/bash
+
+# End /etc/shells
+EOF
+
 #dhcpcd
 mkdir dhcpcd && tar xf dhcpcd-*.tar.* -C dhcpcd --strip-components 1
 cd dhcpcd
@@ -136,7 +147,6 @@ make && make install
 cd ${CLFSSOURCES}
 #checkBuiltPackage
 rm -rf dhcpcd
-
 
 cd ${CLFSSOURCES}/bootscripts
 make install-service-dhcpcd
@@ -588,10 +598,7 @@ KEYMAP="de-latin1"
 KEYMAP_CORRECTIONS="euro2"
 FONT="lat0-16 -m 8859-15"
 LEGACY_CHARSET=
-
 EOF
-
-
 
 echo " "
 echo "Bootloader is installed, debugging sysmbols are stripped"
