@@ -36,6 +36,20 @@ export PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 
 cd ${CLFSSOURCES} 
 
+#syslog-ng
+wget https://github.com/balabit/syslog-ng/archive/syslog-ng-3.12.1.tar.gz -O \
+  syslog-ng-3.12.1.tar.gz
+
+mkdir syslog-ng && tar xf syslog-ng*.tar.* -C syslog-ng --strip-components 1
+cd syslog-ng
+
+
+
+
+cd ${CLFSSOURCES}
+checkBuiltPackage
+rm -rs syslog-ng
+
 #Sysvinit
 mkdir sysvinit && tar xf sysvinit*.tar.* -C sysvinit --strip-components 1
 cd sysvinit
