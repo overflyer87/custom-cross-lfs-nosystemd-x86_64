@@ -71,6 +71,10 @@ My Corsair Wireless Coid however works because the sound card is inside the stan
 
 * Want to make a live ISO image from an install. Have to figure out and how to generalize configuration then. I want that LiveISO to boot up and then open a terminal and greet the user with a ready to go folder with install scipts and packages.
 
+* I think package dependencies for DEs get so complicated and everybody wants to have other goodies to fine-tune his system that I will probably move every package to a single script.
+
+* Already did a test and rewrote script 0a in C. Since I am more comfortable with C than bash, C would provide me with so much flexibility when installing packages. Maybe I will rewrite everything in C one day and think about a really nice granularized structure to make package building as efficient and flexible as possible and at the same time saving a lot of code.
+
 #### Abbreviations at the end of file names have the following meaning:
 
 RAHU - Run as (regular) user of your host distro
