@@ -43,7 +43,7 @@ RACU - Run as the CLFS-user (the special, under-priviledged user on your host di
 
 #### Major pain points 
 
-*If you can solve any of the following problems, please let me know on reddit /u/overflyer87 or YouTube @PrenguinsLoveTech!
+*If you can solve any of the following problems, please let me know on reddit __/u/overflyer87__ or __YouTube @PenguinsLoveTech__!*
 
 * The multilib """capability""" of Python is just utterly ridiculous. 3.6 works a little better than 2.7. They both sometimes work and sometimes don't. The very common dependy of linux packages nowadays is sad. I never noticed that until I did this project. Please keep coding in C, C++, C#, Rust, or Java, developers. The abstraction layers caused by script and web languages have nothing to do in an operating system  </rant> :-D
 
