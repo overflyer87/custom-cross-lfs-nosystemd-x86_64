@@ -196,3 +196,21 @@ ln -sfv /etc/init.d/dhcpd /etc/runlevels/default/dhcpd
 cd ${CLFSSOURCES} 
 checkBuiltPackage
 rm -rf openrc
+
+#netifrc
+wget https://github.com/gentoo/netifrc/archive/0.5.1.tar.gz -O \
+  netifrc-0.5.1.tar.gz
+  
+mkdir netifrc && tar xf netifrc-*.tar.* -C netifrc --strip-components 1
+cd netifrc
+
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} \
+  CC="gcc ${BUILD64}" USE_ARCH=64 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} \
+  CC="gcc ${BUILD64}" USE_ARCH=64 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64 install
+
+ln -s /etc/init.d/net.{lo,eth0}
+  
+cd ${CLFSSOURCES} 
+checkBuiltPackage
+rm -rf netifrc
