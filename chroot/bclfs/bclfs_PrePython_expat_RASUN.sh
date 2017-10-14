@@ -40,8 +40,6 @@ export ACLOCAL="aclocal -I $XORG_PREFIX/share/aclocal"
 
 cd ${CLFSSOURCES}
 
-sudo -c bash 'chmod -Rv overflyer ${CLFSSOURCES}'
-
 #Expat (Needed by Python) 64-bit
 wget https://downloads.sourceforge.net/project/expat/expat/2.2.4/expat-2.2.4.tar.bz2 -O \
   expat-2.2.4.tar.bz2
