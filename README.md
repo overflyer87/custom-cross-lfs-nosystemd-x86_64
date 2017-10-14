@@ -24,10 +24,10 @@ I do not provide a script for the boot method. I will only offer chroot. If you 
 I will ONLY provide a script for one bootloader - **goofiboot**. (gummiboot -> systemd-boot -> goofiboot)
 Goofiboot however is deprecated, maybe I will switch to grub when it stops working or I will find a way to use systemd-boot as standalone.
 
-This "distro" will start with kernel 4.12.10. It runs perfectly with 4.13.5. 4.14-rc4 did not work. System booted...PC turned off Ó_ó
+This "distro" will start with kernel 4.12.10. It runs perfectly with 4.13.5. 4.14-rc4 did not work. System booted...PC turned off Ó_ó. To make this even a thing the kernel configs i provide here are maxed out. They will probably run on any PC! If you want a more minimalistic kernel suited to your system change the clfs_12 script(s) and use make menuconfig.
 
-I will try to use openrc-elogind and NOT consolekit. Elogind however is suddenly failing on me although it worled before
-I will ONLY provide scripts for **XCFCE** and **MATE** as Desktop environments.
+I will try to use openrc-elogind and NOT consolekit. Elogind however is suddenly failing on me although it worked before
+I will ONLY provide scripts for **XCFCE** and **MATE** as Desktop environments (DEs).
 I will ONLY provide Xorg drivers for **Intel/NVIDIA** Systems.
 I will deactivate nouveau and nouveaufb (framebuffer) by default and provide an NVIDIA install script.
 
