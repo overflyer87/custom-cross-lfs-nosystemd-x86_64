@@ -52,8 +52,14 @@ If I ever find out how, I will ditch Xorg and will switch to Wayland. Since I ha
 #### Medium pain points
 
 * Alsa behaves way better with openRC. Even pulseaudio starts. However I still have no sound. I had to copy asound.state from my host distro. Don't know why that does not get created for me when building alsa. Did not change anything. Still get these messages also pulseaudio and openrc-alsasound run: 
-ALSA lib control.c:1373:(snd_ctl_open_noupdate) Invalid CTL hw:2 (also hw:0 and hw:1)
+
+ALSA lib control.c:1373:(snd_ctl_open_noupdate) 
+Invalid CTL hw:2 (also hw:0 and hw:1)
 aplay: device_list:279: control open (2): No such file or directory
+
+UPDATE 2017-10-14: Issue is fixed by providing asound-state-dir parameter to alsautil. Sound is working! :))))
+BLUETOOTH sound where you need an regular extra third party receiver wll not work.
+My Corsair Wireless Coid however works because the sound card is inside the standalone USB dongle that connects directly with the headset.
 
 * Display managers like lightdm or lxdm failed miserably with sysvinit. Let's checkout how this goes with openrc.
 
