@@ -32,7 +32,7 @@ This might change if I will ever build a AMD Ryzen+Vega RIG __*__**_**__*__
 
 If I ever find out how, I will ditch Xorg and will switch to Wayland. Since I have no experience whatsoever with Wayland that might take some time. Also XFCE and MATE need to support it first.
 
-### Pain points
+### Current issues
 
 #### Major pain points 
 
