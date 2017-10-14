@@ -40,7 +40,13 @@ export ACLOCAL="aclocal -I $XORG_PREFIX/share/aclocal"
 
 cd ${CLFSSOURCES}
 
-sudo -c bash 'chmod -Rv overflyer /sources'
+sudo bash -c 'chmod -Rv overflyer ${CLFSSOURCES}'
+
+echo " "
+echo "You need to install expat first. Abort otherwise"
+echo " "
+
+checkBuiltPackage
 
 #Python 3 64-bit
 wget https://www.python.org/ftp/python/3.6.3/Python-3.6.3.tar.xz -O \
