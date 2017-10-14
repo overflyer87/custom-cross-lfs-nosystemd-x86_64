@@ -301,10 +301,12 @@ ln -sfv /etc/init.d/kmod-static-nodes /etc/runlevels/sysinit/kmod-static-nodes
 ln -sfv /etc/init.d/udev /etc/runlevels/sysinit/udev
 ln -sfv /etc/init.d/udev-trigger /etc/runlevels/sysinit/udev-trigger
 
-ln -sfv /etc/init.d/net.lo /etc/runlevels/boot/net.lo
+ln -sfv /etc/init.d/termencoding /etc/runlevels/boot/termnencoding
+ln -sfv /etc/init.d/sysctl /etc/runlevels/boot/sysctl
 
 ln -sfv /etc/init.d/sshd /etc/runlevels/default/sshd
 ln -sfv /etc/init.d/dhcpd /etc/runlevels/default/dhcpd
+ln -sfv /etc/init.d/haveged /etc/runlevels/default/haveged
 
 #todo: get rsyslog-openrc init script
 
