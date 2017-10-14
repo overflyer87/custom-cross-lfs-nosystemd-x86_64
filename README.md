@@ -31,7 +31,7 @@ If I ever find out how, I will ditch Xorg and will switch to Wayland. Since I ha
 
 *If you can solve any of the following problems, please let me know on reddit __/u/overflyer87__ or __YouTube @PenguinsLoveTech__!*
 
-* The multilib """capability""" of Python is just utterly ridiculous. 3.6 works a little better than 2.7. They both sometimes work and sometimes don't. The very common dependcy of linux packages from Python nowadays is sad. I never noticed that until I did this project. Please keep coding in C, C++, C#, Rust, or Java, developers. The abstraction layers caused by script and web languages have nothing to do in an operating system  </rant> :-D
+* The multilib """capability""" of Python is just utterly ridiculous. 3.6 works a little better than 2.7. They both sometimes work and sometimes don't. The very common dependcy of linux packages from Python nowadays is sad. I never noticed that until I did this project. Please keep coding in C, C++, C#, Rust, or Java, developers. The abstraction layers caused by script and web languages should not serve as a way to provide very core functionalities in an operating system  </rant>. High level user applications or browers of course, but bluetooth and Xorg...Come on! :-D
 
 * So since even patches that I tracked down with a lot of effort wont make Python work well in /usr/lib64 (standard is /usr/lib), I am thinking to restructure the toolchain and tell GCC and Binutils that my 32-bit folders will be named lib32 and my 64-bit folders lib. lib can then be symlinked to lib64 named folders.
 
