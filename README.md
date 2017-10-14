@@ -25,20 +25,6 @@ This might change if I will ever build a AMD Ryzen+Vega RIG __*__**_**__*__
 
 If I ever find out how, I will ditch Xorg and will switch to Wayland. Since I have no experience whatsoever with Wayland that might take some time. Also XFCE and MATE need to support it first.
 
-### Abbreviations at the end of file names have the following meaning:
-
-RAHU - Run as (regular) user of your host distro
-
-RAHR - Run as root user of your host distro
-
-RASUN - Run as (regular) user of your final CLFS system NATIVELY (booted or via ssh)
-
-RASRC - Run as root user of your final system in CHROOT
-
-RASRN - Run as root user of your final system NATIVELY (booted or via ssh)
-
-RACU - Run as the CLFS-user (the special, under-priviledged user on your host distro to build the temporary system)
-
 ### Pain points
 
 #### Major pain points 
@@ -66,3 +52,17 @@ aplay: device_list:279: control open (2): No such file or directory
 * Since toolchain update libpam, libreadline and libhistory (supposedly the 32-bit versions from /usr/lib) throw ldconfig errors "Connot find mmap ....". need to fix that.
 
 * Want to make a live ISO image from an install. Have to figure out and how to generalize configuration then. I want that LiveISO to boot up and then open a terminal and greet the user with a ready to go folder with install scipts and packages.
+
+#### Abbreviations at the end of file names have the following meaning:
+
+RAHU - Run as (regular) user of your host distro
+
+RAHR - Run as root user of your host distro
+
+RASUN - Run as (regular) user of your final CLFS system NATIVELY (booted or via ssh)
+
+RASRC - Run as root user of your final system in CHROOT
+
+RASRN - Run as root user of your final system NATIVELY (booted or via ssh)
+
+RACU - Run as the CLFS-user (the special, under-priviledged user on your host distro to build the temporary system)
