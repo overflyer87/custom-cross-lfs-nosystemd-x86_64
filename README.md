@@ -58,7 +58,7 @@ aplay: device_list:279: control open (2): No such file or directory
 
 #### Minor pain points
 
-* Since openrc I know get a boring prompt after boot up saying localhost login: I have to figure out How to get a correct prompt again like I had with sysvinit. BUT HEY...openRC fixed my keyboard layout issues.
+* Since openRC I now get a boring minimalistic prompt after boot up saying *localhost login:* I have to figure out how to get a correct prompt again like I had with sysvinit. BUT HEY...openRC fixed my keyboard layout issues.
 
 * Since toolchain update libpam, libreadline and libhistory (supposedly the 32-bit versions from /usr/lib) throw ldconfig errors "Connot find mmap ....". need to fix that.
 
