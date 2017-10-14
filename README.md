@@ -52,7 +52,7 @@ aplay: device_list:279: control open (2): No such file or directory
 
 * Display managers like lightdm or lxdm failed miserably with sysvinit. Let's checkout how this goes with openrc.
 
-#### Minor paint points
+#### Minor pain points
 
 * Since openrc I know get a boring prompt after boot up saying localhost login: I have to figure out How to get a correct prompt again like I had with sysvinit. BUT HEY...openRC fixed my keyboard layout issues.
 
