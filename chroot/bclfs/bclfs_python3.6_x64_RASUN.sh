@@ -40,8 +40,6 @@ export ACLOCAL="aclocal -I $XORG_PREFIX/share/aclocal"
 
 cd ${CLFSSOURCES}
 
-sudo bash -c 'chmod -Rv overflyer ${CLFSSOURCES}'
-
 echo " "
 echo "You need to install expat first. Abort otherwise"
 echo " "
