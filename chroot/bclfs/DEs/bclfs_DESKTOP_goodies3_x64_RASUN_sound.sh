@@ -111,7 +111,7 @@ cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 sudo rm -rf alsa-lib
 
-#alsa-utils
+#alsa-plugins
 wget ftp://ftp.alsa-project.org/pub/plugins/alsa-plugins-1.1.4.tar.bz2 -O \
   alsa-plugins-1.1.4.tar.bz2
 
@@ -140,7 +140,10 @@ PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
    --disable-alsaconf \
    --disable-bat   \
    --with-curses=ncursesw \
-   --with-systemdsystemunitdir=no
+   --with-systemdsystemunitdir=no \
+   --disable-xmlto --disable-rst2man \
+   --with-asound-state-dir=/var/lib64/alsa \
+   --with-udev-rules-dir=/etc/udev/rules.d
    
 #Remove all signs of Manpage install in Makefile* and alsactl/Makefile*
 
@@ -197,7 +200,6 @@ cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 sudo rm -rf alsa-tools
 
-
 #alsa-firmware
 wget ftp://ftp.alsa-project.org/pub/firmware/alsa-firmware-1.0.29.tar.bz2 -O \
   alsa-firmware-1.0.29.tar.bz2
@@ -216,26 +218,25 @@ checkBuiltPackage
 sudo rm -rf alsa-firmware
 
 #alsa-oss
-wget ftp://ftp.alsa-project.org/pub/oss-lib/alsa-oss-1.0.28.tar.bz2 -O \
-  alsa-oss-1.0.28.tar.bz2
-  
-mkdir alsa-oss && tar xf alsa-oss-*.tar.* -C alsa-oss --strip-components 1
-cd alsa-oss
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
-   --libdir=/usr/lib64 --disable-static
-
-PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
-sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
-
-cd ${CLFSSOURCES}/xc/mate
-checkBuiltPackage
-sudo rm -rf alsa-oss
-
+#wget ftp://ftp.alsa-project.org/pub/oss-lib/alsa-oss-1.0.28.tar.bz2 -O \
+#  alsa-oss-1.0.28.tar.bz2
+#  
+#mkdir alsa-oss && tar xf alsa-oss-*.tar.* -C alsa-oss --strip-components 1
+#cd alsa-oss
+#
+#PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+#   --libdir=/usr/lib64 --disable-static
+#
+#PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make PREFIX=/usr LIBDIR=/usr/lib64
+#sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
+#
+#cd ${CLFSSOURCES}/xc/mate
+#checkBuiltPackage
+#sudo rm -rf alsa-oss
 
 #PulseAudio
-wget http://freedesktop.org/software/pulseaudio/releases/pulseaudio-10.0.tar.xz -O \
-    pulseaudio-10.0.tar.xz    
+wget https://www.freedesktop.org/software/pulseaudio/releases/pulseaudio-11.1.tar.xz -O \
+    pulseaudio-11.1.tar.xz    
 
 mkdir pulseaudio && tar xf pulseaudio-*.tar.* -C pulseaudio --strip-components 1
 cd pulseaudio
@@ -264,6 +265,32 @@ sudo install -dm755 /etc/pulse
 sudo cp -v src/default.pa /etc/pulse
 sudo sed -i '/load-module module-console-kit/s/^/#/' /etc/pulse/default.pa
 
+sudo rc-service alsasound zap
+sudo rc-service alsasound start
+sudo rc-service alsasound restart
+pulseaudio --start
+
 cd ${CLFSSOURCES}/xc/mate
 checkBuiltPackage
 sudo rm -rf pulseaudio
+
+#Pavucontrol
+git clone https://github.com/pulseaudio/pavucontrol
+cd pavucontrol 
+
+intltool-prepare 
+
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" sh bootstrap.sh --prefix=/usr \
+  --libdir=/usr/lib64
+  
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" ./configure --prefix=/usr \
+  --libdir=/usr/lib64 --disable-lynx
+  
+PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make LIBDIR=/usr/lib64 PREFIX=/usr
+sudo make PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" LIBDIR=/usr/lib64 PREFIX=/usr install
+
+cd ${CLFSSOURCES}/xc/mate
+checkBuiltPackage
+sudo rm -rf pavucontrol
+
+
