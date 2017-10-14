@@ -1,22 +1,16 @@
 #!/bin/bash
 
-CLFS=/mnt/clfs
-CLFSHOME=${CLFS}/home
-CLFSSOURCES=${CLFS}/sources
-CLFSTOOLS=${CLFS}/tools
-CLFSCROSSTOOLS=${CLFS}/cross-tools
-CLFSFILESYSTEM=ext4
-CLFSROOTDEV=/dev/sda4
-CLFSHOMEDEV=/dev/sda5
+#Use this after your system stands and boots and tools and cross-tools are gone
+#Use this to root into CLFS from another linux system
 
+CLFS=/mnt/clfs
 export CLFS=/mnt/clfs
-export CLFSHOME=/mnt/clfs/home
-export FILESYSTEM=ext4
-export CLFSROOTDEV=/dev/sda4
-export CLFSHOMEDEV=/dev/sda5
-export CLFSSOURCES=/mnt/clfs/sources
-export CLFSTOOLS=/mnt/clfs/tools
-export CLFSCROSSTOOLS=/mnt/clfs/cross-tools
+
+echo "Mount all your CLFS partitions first"
+echo "root to /mnt/clfs"
+echo "Press Ctrl+C if you did not."
+
+read
 
 sudo mkdir -pv ${CLFS}/{dev,proc,run,sys}
 
