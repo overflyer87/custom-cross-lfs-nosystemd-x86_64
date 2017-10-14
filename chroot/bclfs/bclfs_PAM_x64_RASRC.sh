@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#This script gets called after the kernel is build and is the last obligatory script!
+
 function checkBuiltPackage() {
 echo " "
 echo "Make sure you are able to continue... [Y/N]"
