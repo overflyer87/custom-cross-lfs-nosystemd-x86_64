@@ -2,9 +2,12 @@
 
 ###### Beards of Gentoo user's suddenly seem so short ;-D
 
-### *This customized version of CLFS SVN multilib x86_64 is gratis for anyone to have, use, download, adjust, modify, distribute and redistribute! However if you write scripts for more packages you have to provide the code back to this repo or whereever this project will be located. This is probably conform to GPLv2 but right now I am to lazy to copy and paste it. See this linux system grow would be nice and to see it get more and more packages and in the end there can be one installer where a user choses from. With dependency and collision check of course. I dont want to create a new major branch of Linux! We have enough distros. However having a from source compiled linux that is highly customizable to your needs and also beelding edge and ALSO NOT GENTOO is a great vision. :-P How would Lunduke say... "That would be totally rat..."*
+### *This customized version of CLFS SVN multilib x86_64 is gratis for anyone to have, use, download, adjust, modify, distribute and redistribute! However if you write scripts for more packages you have to provide the code back to this repo or wherever this project will be located. This is probably conform to GPLv2 but right now I am to lazy to copy and paste it.*
 
 ### General Announcement
+
+*See this linux system grow would be nice and to see it get more and more packages and in the end there can be one installer where a user choses from. With dependency and collision check of course. I dont want to create a new major branch of Linux! We have enough distros. However having a from source compiled linux that is highly customizable to your needs and also beelding edge and ALSO NOT GENTOO is a great vision. :-P How would Lunduke say... "That would be totally rat..."*
+
 I did **not** use the adjective **free** since I do not mind linux systems using proprietary binary blobs. IMHO especially for high-performance GPUs and some firmware that is inevidable.
 
 I for my part will make this "distro" only a customized version for very modern systems. That is just because I can put just so many hours into this. And you dont wanna know how many hours since end of July 2017 went into this ;-).
