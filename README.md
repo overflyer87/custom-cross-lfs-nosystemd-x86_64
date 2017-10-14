@@ -2,7 +2,7 @@
 
 ###### Beards of Gentoo user's suddenly seem so short ;-D
 
-### *This customized version of CLFS SVN multilib x86_64 is gratis for anyone to have, use, download, adjust, modify, distribute and redistribute! However if you write scripts for more packages you have to provide the code back to this repo or wherever this project will be located. This is probably conform to GPLv2 but right now I am to lazy to copy and paste it. Thanks a lot to the CLFS, LFS, and BLFS guys to lay the groundwork for us tinkerers to do this in the first place! I would have never known how to build a cross-compile toolchain myself!*
+#### *This customized version of CLFS SVN multilib x86_64 is gratis for anyone to have, use, download, adjust, modify, distribute and redistribute! However if you write scripts for more packages you have to provide the code back to this repo or wherever this project will be located. This is probably conform to GPLv2 but right now I am to lazy to copy and paste it. Thanks a lot to the CLFS, LFS, and BLFS guys to lay the groundwork for us tinkerers to do this in the first place! I would have never known how to build a cross-compile toolchain myself!*
 
 ### General Announcement
 
