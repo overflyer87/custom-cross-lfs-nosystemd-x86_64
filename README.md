@@ -45,10 +45,18 @@ RACU - Run as the CLFS-user (the special, under-priviledged user on your host di
 
 * If I fix Python I would solve many problems, such as Bluettoth functionality and finally the capability to compile a decent version of MozJS. Until now only 17 is possible. 38 would be nice. 52 would be awesome.
 
+### Medium pain points
+
 * Alsa behaves way better with openRC. Even pulseaudio starts. However I still have no sound. I had to copy asound.state from my host distro. Don't know why that does not get created for me when building alsa. Did not change anything. Still get these messages also pulseaudio and openrc-alsasound run: 
 ALSA lib control.c:1373:(snd_ctl_open_noupdate) Invalid CTL hw:2 (also hw:0 and hw:1)
 aplay: device_list:279: control open (2): No such file or directory
 
 * Display managers like lightdm or lxdm failed miserably with sysvinit. Let's checkout how this goes with openrc.
 
+### Minor paint points
+
 * Since openrc I know get a boring prompt after boot up saying localhost login: I have to figure out How to get a correct prompt again like I had with sysvinit. BUT HEY...openRC fixed my keyboard layout issues.
+
+* Since toolchain update libpam, libreadline and libhistory (supposedly the 32-bit versions from /usr/lib) throw ldconfig errors "Connot find mmap ....". need to fix that.
+
+* Want to make a live ISO image from an install. Have to figure out and how to generalize configuration then. I want that LiveISO to boot up and then open a terminal and greet the user with a ready to go folder with install scipts and packages.
