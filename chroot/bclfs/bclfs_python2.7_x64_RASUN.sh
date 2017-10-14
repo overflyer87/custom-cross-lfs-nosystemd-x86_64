@@ -38,6 +38,10 @@ export ACLOCAL="aclocal -I $XORG_PREFIX/share/aclocal"
 
 cd ${CLFSSOURCES}
 
+echo " "
+echo "You need to install expat first. Abort otherwise!"
+echo " "
+
 #Python2.7.6 64-bit
 wget https://www.python.org/ftp/python/2.7.14/Python-2.7.14.tar.xz -O \
   Python-2.7.14.tar.xz
