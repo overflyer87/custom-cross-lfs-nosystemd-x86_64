@@ -17,13 +17,7 @@ echo " "
 
 #Building the final CLFS System
 CLFS=/
-CLFSHOME=/home
 CLFSSOURCES=/sources
-CLFSTOOLS=/tools
-CLFSCROSSTOOLS=/cross-tools
-CLFSFILESYSTEM=ext4
-CLFSROOTDEV=/dev/sda4
-CLFSHOMEDEV=/dev/sda5
 MAKEFLAGS="-j$(nproc)"
 BUILD32="-m32"
 BUILD64="-m64"
@@ -32,14 +26,7 @@ PKG_CONFIG_PATH=/usr/lib64/pkgconfig
 PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 
 export CLFS=/
-export CLFSUSER=clfs
-export CLFSHOME=/home
 export CLFSSOURCES=/sources
-export CLFSTOOLS=/tools
-export CLFSCROSSTOOLS=/cross-tools
-export CLFSFILESYSTEM=ext4
-export CLFSROOTDEV=/dev/sda4
-export CLFSHOMEDEV=/dev/sda5
 export MAKEFLAGS="-j$(nproc)"
 export BUILD32="-m32"
 export BUILD64="-m64"
@@ -48,6 +35,7 @@ export PKG_CONFIG_PATH=/usr/lib64/pkgconfig
 export PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 
 cd ${CLFSSOURCES}
+mkdir -pv ${CLFSSOURCES}
 cd ${CLFSSOURCES}/xc/mate
 
 #We will only do 64-bit builds in this script
@@ -64,21 +52,25 @@ export USE_ARCH=64
 export CXX="g++ ${BUILD64}" 
 export CC="gcc ${BUILD64}"
 
-#JAVA 8
+#Get a binary from openJDK
 wget http://anduin.linuxfromscratch.org/BLFS/OpenJDK/OpenJDK-1.8.0.141/OpenJDK-1.8.0.141-x86_64-bin.tar.xz -O \
 	OpenJDK-1.8.0.141-x86_64-bin.tar.xz
 
-wget http://hg.openjdk.java.net/jdk8u/jdk8u/archive/jdk8u141-b15.tar.bz2 -O \
-	jdk8u141-b15.tar.bz2
+wget http://anduin.linuxfromscratch.org/BLFS/OpenJDK/OpenJDK-1.8.0.141/OpenJDK-1.8.0.141-x86_64-bin.tar.xz -O \
+	OpenJDK-1.8.0.141-x86_64-bin.tar.xz
 
 mkdir OpenJDK && tar xf OpenJDK-*.tar.* -C OpenJDK --strip-components 1
 cd OpenJDK
 
-sudo install -vdm755 /opt/OpenJDK-1.8.0.121-bin 
-sudo mv -v * /opt/OpenJDK-1.8.0.121-bin         
-sudo chown -R root:root /opt/OpenJDK-1.8.0.121-bin
+sudo install -vdm755 /opt/OpenJDK-1.8.0.141-bin &&
+sudo mv -v * /opt/OpenJDK-1.8.0.141-bin/        &&
+sudo chown -R root:root /opt/OpenJDK-1.8.0.141-bin
 
-sudo ln -sfn OpenJDK-1.8.0.121-bin /opt/jdk
+sudo ln -sfnv OpenJDK-1.8.0.141-bin /opt/jdk
+
+#JAVA 8
+wget http://hg.openjdk.java.net/jdk8u/jdk8u/archive/jdk8u141-b15.tar.bz2 -O \
+	jdk8u141-b15.tar.bz2
 
 checkBuiltPackage
 
