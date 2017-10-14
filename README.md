@@ -1,6 +1,6 @@
-# Whole system customized version of CLFS multilib with openRC (x86_64)
+## Whole system customized version of CLFS multilib with openRC (x86_64)
 
-## This customized version of CLFS SVN multilib x86_64 is gratis for anyone to have, use, download, adjust, modify, distribute and redistribute!
+### __This customized version of CLFS SVN multilib x86_64 is gratis for anyone to have, use, download, adjust, modify, distribute and redistribute!__
 
 ### General Announcement
 I did **not** use the adjective **free** since I do not mind linux systems using proprietary binary blobs. IMHO Especially for high-performance GPUs and some firmware that is inevidable.
