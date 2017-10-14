@@ -36,11 +36,15 @@ export PKG_CONFIG_PATH=/usr/lib64/pkgconfig
 export PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 export ACLOCAL="aclocal -I $XORG_PREFIX/share/aclocal"
 
+sudo bash -c 'chmod -Rv overflyer ${CLFSSOURCES}'
+
 cd ${CLFSSOURCES}
 
 echo " "
 echo "You need to install expat first. Abort otherwise!"
 echo " "
+
+checkBuiltPackage
 
 #Python2.7.6 64-bit
 wget https://www.python.org/ftp/python/2.7.14/Python-2.7.14.tar.xz -O \
