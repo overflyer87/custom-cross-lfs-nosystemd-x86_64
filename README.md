@@ -24,7 +24,8 @@ I do not provide a script for the boot method. I will only offer chroot. If you 
 I will ONLY provide a script for one bootloader - **goofiboot**. (gummiboot -> systemd-boot -> goofiboot)
 Goofiboot however is deprecated, maybe I will switch to grub when it stops working or I will find a way to use systemd-boot as standalone.
 
-This "distro" will start with kernel 4.12.10.
+This "distro" will start with kernel 4.12.10. It runs perfectly with 4.13.5. 4.14-rc4 did not work. System booted...PC turned off Ó_ó
+
 I will try to use openrc-elogind and NOT consolekit. Elogind however is suddenly failing on me although it worled before
 I will ONLY provide scripts for **XCFCE** and **MATE** as Desktop environments.
 I will ONLY provide Xorg drivers for **Intel/NVIDIA** Systems.
