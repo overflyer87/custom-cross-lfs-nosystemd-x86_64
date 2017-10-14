@@ -8,7 +8,7 @@
 
 *See this linux system grow would be nice and to see it get more and more packages and in the end there can be one installer where a user choses from. With dependency and collision check of course. I dont want to create a new major branch of Linux! We have enough distros. However having a from source compiled linux that is highly customizable to your needs and also bleeding edge and ALSO NOT GENTOO is a great vision. :-P How would Lunduke say... "That would be totally rat..." At the moment this is a classical GNU/Linux, but if you want to make this a Musl+Busybox+Linux System that runs on your toaster so be it..*
 
-This system boots and can even run a Desktop. But it still has MAJOR ISSUES. Consider this a freaking pre-alpha v0.0.0.1!
+This system boots and can even runs a Desktop. But it still has MAJOR ISSUES. Consider this a freaking pre-alpha v0.0.0.1!
 
 I did **not** use the adjective **free** since I do not mind linux systems using proprietary binary blobs. IMHO especially for high-performance GPUs and some firmware that is inevidable.
 
@@ -26,7 +26,7 @@ Goofiboot however is deprecated, maybe I will switch to grub when it stops worki
 
 I will ONLY support BASH.
 
-This "distro" will start with kernel 4.12.10. It runs perfectly with 4.13.5. 4.14-rc4 did not work. System booted...PC turned off Ó_ó. To make this even a thing the kernel configs i provide here are maxed out. They will probably run on any PC! If you want a more minimalistic kernel suited to your system change the clfs_12 script(s) and use make menuconfig.
+This "distro" will start with kernel 4.12.10. It runs perfectly with 4.13.5. 4.14-rc4 did not work. System booted...PC turned off Ó_ó. To make this even a thing the kernel configs i provide here are maxed out. They will probably run on any PC! If you want a more minimalistic kernel suited to your system change the clfs_12 script(s) and use make menuconfig or even make localmodconfig.
 
 I will try to use openrc-elogind and NOT consolekit. Elogind however is suddenly failing on me although it worked before
 I will ONLY provide scripts for **XCFCE** and **MATE** as Desktop environments (DEs).
