@@ -15,7 +15,8 @@ This "distro" will start with kernel 4.12.10.
 I will try to use openrc-elogind and NOT consolekit. Elogind however is suddenly failing on me although it worled before
 I will ONLY provide scripts for **XCFCE** and **MATE** as Desktop environments.
 I will ONLY provide Xorg drivers for **Intel/NVIDIA** Systems.
-I will deactivate nouveau and nouveau fb (framebuffer) by default and provide an NVIDIA install script
+I will deactivate nouveau and nouveaufb (framebuffer) by default and provide an NVIDIA install script.
+
 This might change if I will ever build a AMD Ryzen+Vega RIG __*__**_**__*__
 
 **I do not provide all Xorg drivers by default!!!**
