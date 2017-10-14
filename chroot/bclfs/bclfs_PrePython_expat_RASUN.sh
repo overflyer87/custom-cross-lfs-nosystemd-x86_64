@@ -19,13 +19,7 @@ sudo chown -Rv overflyer /sources
 
 #Building the final CLFS System
 CLFS=/
-CLFSHOME=/home
 CLFSSOURCES=/sources
-CLFSTOOLS=/tools
-CLFSCROSSTOOLS=/cross-tools
-CLFSFILESYSTEM=ext4
-CLFSROOTDEV=/dev/sda4
-CLFSHOMEDEV=/dev/sda5
 MAKEFLAGS="-j$(nproc)"
 BUILD32="-m32"
 BUILD64="-m64"
@@ -35,14 +29,7 @@ PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 ACLOCAL="aclocal -I $XORG_PREFIX/share/aclocal"
 
 export CLFS=/
-export CLFSUSER=clfs
-export CLFSHOME=/home
 export CLFSSOURCES=/sources
-export CLFSTOOLS=/tools
-export CLFSCROSSTOOLS=/cross-tools
-export CLFSFILESYSTEM=ext4
-export CLFSROOTDEV=/dev/sda4
-export CLFSHOMEDEV=/dev/sda5
 export MAKEFLAGS="-j$(nproc)"
 export BUILD32="-m32"
 export BUILD64="-m64"
