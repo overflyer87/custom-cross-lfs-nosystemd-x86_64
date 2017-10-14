@@ -15,10 +15,12 @@ done
 echo " "
 }
 
+sudo chown -Rv overflyer ${CLFSSOURCES}
+
 function buildSingleXLib64() {
  ./configure $XORG_CONFIG64
-  make
-  sudo make install
+  make PREFIX=/usr LIBDIR=/usr/lib64
+  sudo make PREFIX=/usr LIBDIR=/usr/lib64 install
 }
 
 export -f buildSingleXLib64
