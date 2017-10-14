@@ -1,6 +1,6 @@
 ## Whole-system customized version of CLFS multilib with openRC (x86_64)
 
-###### Gentoo's people's beards suddenly seen so short ;-D
+###### Gentoo's people's beards suddenly seem so short ;-D
 
 ### *This customized version of CLFS SVN multilib x86_64 is gratis for anyone to have, use, download, adjust, modify, distribute and redistribute!*
 
