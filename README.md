@@ -35,7 +35,7 @@ This might change if I will ever build a AMD Ryzen+Vega RIG __*__**_**__*__
 
 **I do not provide all Xorg drivers by default!!!**
 
-If I ever find out how, I will ditch Xorg and will switch to Wayland. Since I have no experience whatsoever with Wayland that might take some time. Also XFCE and MATE need to support it first.
+If I ever find out how, I will ditch Xorg and will switch to Wayland. Since I have no experience whatsoever with Wayland that might take some time. Also XFCE and MATE need to support it first. *At the moment I strongly suggest you use XFCE* since those scripts are muich more up-to-date and were successful in recent testing.
 
 ### Current issues
 
