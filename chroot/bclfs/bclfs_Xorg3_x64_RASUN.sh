@@ -46,6 +46,8 @@ export PKG_CONFIG_PATH=/usr/lib64/pkgconfig
 export PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 export ACLOCAL="aclocal -I $XORG_PREFIX/share/aclocal"
 
+mkdir -pv ${CLFSSOURCES}/xc
+
 cd ${CLFSSOURCES}
 cd ${CLFSSOURCES/xc}
 
