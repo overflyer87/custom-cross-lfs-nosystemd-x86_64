@@ -881,7 +881,7 @@ make PREFIX=/usr LIBDIR=/usr/lib64 install
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
-rm -rf rm -rf intltool
+rm -rf intltool
 
 #Readline 32-bit
 mkdir readline && tar xf readline-*.tar.* -C readline --strip-components 1
