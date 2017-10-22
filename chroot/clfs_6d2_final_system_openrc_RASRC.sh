@@ -799,6 +799,8 @@ echo " "
 echo " "
 checkBuiltPackage
 
+cd ${CLFS}
+
 sh bclfs/bclfs_openRC_RASRC.sh
 
 
