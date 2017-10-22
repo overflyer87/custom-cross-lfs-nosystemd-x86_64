@@ -139,15 +139,6 @@ cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf rsyslog
 
-
-
-PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" make 
-sudo bash -c 'PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} CC="gcc ${BUILD64}" make'
-
-cd ${CLFSSOURCES}
-checkBuiltPackage
-rm -rs syslog-ng
-
 #Sysvinit
 mkdir sysvinit && tar xf sysvinit*.tar.* -C sysvinit --strip-components 1
 cd sysvinit
@@ -158,7 +149,7 @@ sed -i -e 's/\ sulogin[^ ]*//' -e 's/pidof\.8//' -e '/ln .*pidof/d' \
 make -C src clobber
 make -C src CC="gcc ${BUILD64}"
 
-sudo make -C src install
+make -C src install
 
 cd ${CLFSSOURCES} 
 checkBuiltPackage
@@ -178,7 +169,7 @@ cd ${CLFSSOURCES}/openrc-sysvinit
 
 make -C src CC="gcc ${BUILD64}" init
 
-sudo install -m 755 ${CLFSSOURCES}/openrc-sysvinit/src/init /usr/bin/init-openrc
+install -m 755 ${CLFSSOURCES}/openrc-sysvinit/src/init /usr/bin/init-openrc
 
 cd ${CLFSSOURCES} 
 checkBuiltPackage
@@ -193,7 +184,7 @@ sed -i 's:0444:0644:' mk/sys.mk
 
 patch -Np1 -i ${CLFSSOURCES}/openrc-quiet.patch
 
-sudo install -dm644 /etc/logrotate.d
+install -dm644 /etc/logrotate.d
 
 #explicitely declare CC=gcc -m64 in the following two files
 sed -i 's/${CC}/gcc -m64/' mk/lib.mk
@@ -234,11 +225,11 @@ MKPAM=pam \
 MKTERMCAP=ncurses \
 MKNET=no \
 MKSYSVINIT=yes \
-CC="gcc ${BUILD64}" sudo make install
+CC="gcc ${BUILD64}" make install
 
-sudo install -m644 support/sysvinit/inittab /etc/inittab
+install -m644 support/sysvinit/inittab /etc/inittab
 
-sudo bash -c 'cat > /etc/logrotate.d/openrc << "EOF"
+cat > /etc/logrotate.d/openrc << "EOF"
 /var/log/rc.log {
   compress
   rotate 4
@@ -246,9 +237,9 @@ sudo bash -c 'cat > /etc/logrotate.d/openrc << "EOF"
   missingok 
   notifempty 
 }
-EOF'
+EOF
 
-sudo mv -v /usr/lib/pkgconfig/openrc.pc /usr/lib64/pkgconfig/
+mv -v /usr/lib/pkgconfig/openrc.pc /usr/lib64/pkgconfig/
 
 sed -e 's/#unicode="NO"/unicode="YES"/' \
      -e 's/#rc_logger="NO"/rc_logger="YES"/' \
@@ -259,30 +250,30 @@ sed -e 's|#baud=""|baud="38400"|' \
         -e 's|#agetty_options=""|agetty_options=""|' \
         -i /etc/conf.d/agetty
 
-sudo bash -c 'for num in 1 2 3 4 5 6;do
+for num in 1 2 3 4 5 6;do
         cp -v /etc/conf.d/agetty /etc/conf.d/agetty.tty$num
         ln -sfv /etc/init.d/agetty /etc/init.d/agetty.tty$num
         ln -sfv /etc/init.d/agetty.tty$num /etc/runlevels/default/agetty.tty$num
-done'
+done
 
-sudo groupadd uucp
-sudo usermod -a -G uucp root
+groupadd uucp
+usermod -a -G uucp root
 
-sudo ldconfig
+ldconfig
 
-sudo install -m755 -d /usr/share/licenses/openrc
-sudo install -m644 LICENSE AUTHORS /usr/share/licenses/openrc/
-sudo cp -rv /libexec/rc /usr/lib64/
-sudo mv /usr/lib64/rc /usr/lib64/openrc
-sudo rm -rf /libexec/rc
+install -m755 -d /usr/share/licenses/openrc
+install -m644 LICENSE AUTHORS /usr/share/licenses/openrc/
+cp -rv /libexec/rc /usr/lib64/
+mv /usr/lib64/rc /usr/lib64/openrc
+rm -rf /libexec/rc
 
 mkdir cclfs-openrc-services && tar xf cclfs-openrc-services.tar.* -C cclfs-openrc-services --strip-components 1
 cd cclfs-openrc-services
 
-sudo cp -v --no-clobber * /etc/init.d/
+cp -v --no-clobber * /etc/init.d/
 cd ..
 
-sudo chmod 777 /etc/init.d/*
+chmod 777 /etc/init.d/*
 
 #Let see if at the next test installation the following sed commands will still be neccessary
 
