@@ -141,7 +141,7 @@ cp sources/* ${CLFSSOURCES}
 #Download kernel and toolchain
 wget http://ftp.gnu.org/gnu/binutils/binutils-2.29.1.tar.bz2 -P ${CLFSSOURCES}
 wget ftp://gcc.gnu.org/pub/gcc/releases/gcc-7.2.0/gcc-7.2.0.tar.xz -P ${CLFSSOURCES}
-wget https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.13.5.tar.xz -P ${CLFSSOURCES}
+wget https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.13.9.tar.xz -P ${CLFSSOURCES}
 wget https://ftp.gnu.org/gnu/glibc/glibc-2.26.tar.xz -P ${CLFSSOURCES}
 
 echo " "
@@ -171,6 +171,7 @@ echo " "
 cp -v clfs_1_*.sh clfs_2_*.sh clfs_3_*.sh /home/${CLFSUSER}
 cp -v clfs_*.sh ${CLFS}
 cp -rv bclfs ${CLFS}
+cp -rv meta ${CLFS}
 
 chown -Rv ${CLFSUSER}:${CLFSUSER} /home/${CLFSUSER}
 
