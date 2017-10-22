@@ -46,6 +46,7 @@ echo "In the end it will finally CREATE A USER FOR YOU and open up /etc/sudoers 
 echo " "
 echo " "
 echo "Please CHOOSE YOUR USERNAME"
+echo " "
 
 read myusername
 YOURUSERNAME=$myusername
@@ -123,8 +124,8 @@ chmod -v 4755 /sbin/unix_chkpwd
 
 for file in pam pam_misc pamc
 do
-  mv -v /usr/lib/lib${file}.so.* /lib 
-  ln -sfv ../../lib/$(readlink /usr/lib/lib${file}.so) /usr/lib/lib${file}.so
+  mv -v /usr/lib64/lib${file}.so.* /lib 
+  ln -sfv ../../lib64/$(readlink /usr/lib64/lib${file}.so) /usr/lib64/lib${file}.so
 done
 
 install -vdm755 /etc/pam.d 
@@ -376,7 +377,7 @@ CC="gcc ${BUILD64}" ./configure --prefix=/usr \
     --with-all-insults \
     --with-env-editor  \
     --enable-shell-sets-home \
-    --docdir=/usr/share/doc/sudo-1.8.20p2 \
+    --docdir=/usr/share/doc/sudo-1.8.21p2 \
     --with-passprompt="[sudo] password for %p: "
 
 make PREFIX=/usr LIBDIR=/usr/lib64
