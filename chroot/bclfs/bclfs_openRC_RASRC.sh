@@ -36,24 +36,8 @@ export PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 
 cd ${CLFSSOURCES} 
 
-#syslog-ng
-#wget https://github.com/balabit/syslog-ng/archive/syslog-ng-3.12.1.tar.gz -O \
-#  syslog-ng-3.12.1.tar.gz
-#
-#mkdir syslog-ng && tar xf syslog-ng*.tar.* -C syslog-ng --strip-components 1
-#cd syslog-ng
-#PKG_CONFIG_PATH=/usr/lib64/pkgconfig/ CC="gcc -m64" ./configure --prefix=/usr --libdir=/usr/lib64 \
-#  --with-systemdsystemunitdir=no --disable-systemd --disable-python \
-#  --enable-dynamic-linking --enable-extra-warnings --disable-env-wrapper  \
-#  --disable-java --disable-gprof --enable-native --disable-librabbitmq \
-#  --disable-jsonc --disable-docbook-docs --disable-valgrind --disable-riemann \
-#  --disable-geoip --disable-geoip2 --disable-http --disable-java-modules \
-#  --disable-redis --disable-amqp --disable-mongodb --disable-ssl \
-#  --disable-tcp-wrapper --disable-spoof-source --enable-shared --enable-legacy-mongodb-options=no \
-#  --with-mongoc=no --disable-stomp --enable-json=no --with-jsonc=no --with-pidfile-dir=/run \
-#  --libexecdir=/usr/lib64 --sysconfdir=/etc/syslog-ng --sbindir=/usr/bin \
-#  --localstatedir=/var/lib64/syslog-ng  --datadir=/usr/share
-# Gave up! would not install to /usr/lib64 no matter what. Another reason to reconfigure the standard CLFS instructions for the toolchain
+sh ../bclfs/bclfs_PAM_x64_RASRC.sh
+
 #Rsyslog
 mkdir rsyslog && tar xf rsyslog-*.tar.* -C rsyslog --strip-components 1
 cd rsyslog
