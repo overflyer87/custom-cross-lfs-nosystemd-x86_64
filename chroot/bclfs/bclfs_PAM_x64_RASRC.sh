@@ -439,10 +439,6 @@ echo " "
 echo "You may reboot now and try your new VERY OWN LINUX now ;)"
 echo " "
 
-#Clean up :)
-rm -rf /tools
-rm -rf /cross-tools
-
 #Blacklist video modules that are not compatible with the proprietary NVIDIA driver
 sudo mkdir -v /etc/modprobe.d
 
