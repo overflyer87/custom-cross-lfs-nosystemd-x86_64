@@ -61,7 +61,7 @@ cd cracklib
 sed -i '/skipping/d' util/packer.c
 
 CC="gcc ${BUILD64}" USE_ARCH=64 ./configure --prefix=/usr \
-  --libdir=/usr/lib64 --disable-static --with-default-dict=/lib/cracklib/pw_dict 
+  --libdir=/usr/lib64 --disable-static --with-default-dict=/lib64/cracklib/pw_dict 
   
 sed -i 's@prefix}/lib@&64@g' dicts/Makefile doc/Makefile lib/Makefile \
      m4/Makefile Makefile python/Makefile util/Makefile 
@@ -98,8 +98,9 @@ CC="gcc ${BUILD64}" ./configure --sbindir=/lib64/security \
             --sysconfdir=/etc                \
             --libdir=/usr/lib64              \
             --disable-regenerate-docu        \
-            --enable-shared                  \
-            --enable-read-both-confs         \
+            #Saw these diabled in BLFS now
+            #--enable-shared                  \
+            #--enable-read-both-confs         \
             --enable-securedir=/lib64/security \
             --docdir=/usr/share/doc/Linux-PAM-1.3.0
 
@@ -124,7 +125,7 @@ chmod -v 4755 /sbin/unix_chkpwd
 
 for file in pam pam_misc pamc
 do
-  mv -v /usr/lib64/lib${file}.so.* /lib 
+  mv -v /usr/lib64/lib${file}.so.* /lib64 
   ln -sfv ../../lib64/$(readlink /usr/lib64/lib${file}.so) /usr/lib64/lib${file}.so
 done
 
@@ -160,7 +161,7 @@ cat > /etc/pam.d/system-password << "EOF"
 password  required    pam_cracklib.so   type=Linux retry=3 difok=5 \
                                         difignore=23 minlen=9 dcredit=1 \
                                         ucredit=1 lcredit=1 ocredit=1 \
-                                        dictpath=/lib/cracklib/pw_dict
+                                        dictpath=/lib64/cracklib/pw_dict
 # use sha512 hash for encryption, use shadow, and use the
 # authentication token (chosen password) set by pam_cracklib
 # above (or any previous modules)
@@ -188,7 +189,7 @@ cd ${CLFSSOURCES}
 checkBuiltPackage
 rm -rf linuxpam
 
-sed -i 's@DICTPATH.*@DICTPATH\t/lib/cracklib/pw_dict@' etc/login.defs
+sed -i 's@DICTPATH.*@DICTPATH\t/lib64/cracklib/pw_dict@' etc/login.defs
 
 #Shadow
 mkdir shadow && tar xf shadow-*.tar.* -C shadow --strip-components 1
@@ -215,8 +216,8 @@ CC="gcc ${BUILD64}" ./configure --sysconfdir=/etc \
     --without-audit \
     --without-selinux
 
-make PREFIX=/usr LIBDIR=/usr/lib64
-make PREFIX=/usr LIBDIR=/usr/lib64 install
+make 
+make install
 
 sed -i /etc/login.defs \
     -e 's@#\(ENCRYPT_METHOD \).*@\1SHA512@' \
@@ -372,17 +373,17 @@ CC="gcc ${BUILD64}" ./configure --prefix=/usr \
     --libdir=/usr/lib64 \
     --libexecdir=/usr/lib64 \
     --with-secure-path  \
-    --enable-noargs-shell \
-    --with-ignore-dot \
+    #--enable-noargs-shell \
+    #--with-ignore-dot \
     --with-all-insults \
     --with-env-editor  \
-    --enable-shell-sets-home \
+    #--enable-shell-sets-home \
     --docdir=/usr/share/doc/sudo-1.8.21p2 \
     --with-passprompt="[sudo] password for %p: "
 
 make PREFIX=/usr LIBDIR=/usr/lib64
-env LC_ALL=C make check 2>&1 | tee ../make-check.log
-grep failed ../make-check.log
+#env LC_ALL=C make check 2>&1 | tee ../make-check.log
+#grep failed ../make-check.log
 checkBuiltPackage
 make PREFIX=/usr LIBDIR=/usr/lib64 install
 
@@ -405,6 +406,7 @@ session   include     system-session
 
 # End /etc/pam.d/sudo
 EOF
+
 chmod 644 /etc/pam.d/sudo
 
 cd ${CLFSSOURCES} 
