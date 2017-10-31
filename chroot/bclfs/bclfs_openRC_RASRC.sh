@@ -290,9 +290,6 @@ checkBuiltPackage
 rm -rf openrc
 
 #netifrc
-wget https://github.com/gentoo/netifrc/archive/0.5.1.tar.gz -O \
-  netifrc-0.5.1.tar.gz
-  
 mkdir netifrc && tar xf netifrc-*.tar.* -C netifrc --strip-components 1
 cd netifrc
 
