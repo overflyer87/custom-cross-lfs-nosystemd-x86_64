@@ -469,6 +469,8 @@ dircolors -p > /etc/dircolors
 #on Bash shell scripts
 #http://www.caliban.org/bash/index.shtml
 
+mkdir /etc/sysconfig
+
 cat > /etc/sysconfig/console << "EOF"
 # Begin /etc/sysconfig/console
 
