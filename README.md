@@ -59,9 +59,9 @@ If I ever find out how, I will ditch Xorg and will switch to Wayland (Also at th
 Invalid CTL hw:2 (also hw:0 and hw:1)
 aplay: device_list:279: control open (2): No such file or directory~~
 
-UPDATE 2017-10-14: Issue is fixed by providing asound-state-dir parameter to alsautil. Sound is working! :))))
+*UPDATE 2017-10-14: Issue is fixed by providing asound-state-dir parameter to alsautil. Sound is working! :))))
 BLUETOOTH sound where you need an regular extra third party receiver wll not work.
-My Corsair Wireless Coid however works because the sound card is inside the standalone USB dongle that connects directly with the headset.
+My Corsair Wireless Coid however works because the sound card is inside the standalone USB dongle that connects directly with the headset.*
 
 * Display managers like lightdm or lxdm failed miserably with sysvinit. Let's checkout how this goes with openrc.
 
@@ -71,7 +71,9 @@ My Corsair Wireless Coid however works because the sound card is inside the stan
 
 * Since openRC I now get a boring minimalistic prompt after boot up saying *localhost login:* I have to figure out how to get a correct prompt again like I had with sysvinit. BUT HEY...openRC fixed my keyboard layout issues.
 
-* Since toolchain update libpam, libreadline and libhistory (supposedly the 32-bit versions from /usr/lib) throw ldconfig errors "Connot find mmap ....". need to fix that.
+* ~~Since toolchain update libpam, libreadline and libhistory (supposedly the 32-bit versions from /usr/lib) throw ldconfig errors "Connot find mmap ....". need to fix that.~~
+
+*UPDATE 2017-10-31 I somehow fixed this. I think I just made a stupid error in the package I am installing before readline where I did not cd back into ${CLFSSOURCES} before extracting readonline. Why that also fixed the linking with libpam, I have no freakin idea. Sometimes I just take it...*
 
 * Want to make a live ISO image from an install. Have to figure out and how to generalize configuration then. I want that LiveISO to boot up and then open a terminal and greet the user with a ready to go folder with install scipts and packages.
 
