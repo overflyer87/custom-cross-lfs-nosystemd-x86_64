@@ -251,8 +251,8 @@ cp -rv /libexec/rc /usr/lib64/
 mv /usr/lib64/rc /usr/lib64/openrc
 rm -rf /libexec/rc
 
-mkdir cclfs-openrc-services && tar xf cclfs-openrc-services.tar.* -C cclfs-openrc-services --strip-components 1
-cd cclfs-openrc-services
+mkdir cclfs-openrc-scripts && tar xf cclfs-openrc-scripts.tar.* -C cclfs-openrc-scripts --strip-components 1
+cd cclfs-openrc-scripts
 
 cp -v --no-clobber * /etc/init.d/
 cd ..
