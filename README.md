@@ -65,7 +65,7 @@ My Corsair Wireless Coid however works because the sound card is inside the stan
 
 * Display managers like lightdm or lxdm failed miserably with sysvinit. Let's checkout how this goes with openrc.
 
-* docbook-xsl and docbook-xml never get installed right. I have to cheat and copy files over from my hostdistro (/etc/xml). And even them I turn it off when building a package whenever I can because with it the package 90% of the time won't build.
+* docbook-xsl and docbook-xml never get installed right. I have to cheat and copy files over from my hostdistro (/etc/xml). And even then I turn it off when building a package whenever I can because with it the package 90% of the time won't build.
 
 #### Minor pain points
 
