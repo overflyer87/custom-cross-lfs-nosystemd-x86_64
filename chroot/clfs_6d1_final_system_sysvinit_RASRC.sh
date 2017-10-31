@@ -269,13 +269,10 @@ checkBuiltPackage
 rm -rf libffi
 
 #Python 3 64-bit
-wget https://www.python.org/ftp/python/3.6.3/Python-3.6.3.tar.xz -O \
-  Python-3.6.3.tar.xz
-
 #wget http://pkgs.fedoraproject.org/rpms/python3/raw/master/f/00102-lib64.patch -O \
 #python360-multilib2.patch
   
-#wget https://docs.python.org/3.6/archives/python-3.6.0-docs-html.tar.bz2 -O \
+#wget https://docs.python.org/3.6/archives/python-3.6.3-docs-html.tar.bz2 -O \
 # python-360-docs.tar.bz2
   
 mkdir Python-3 && tar xf Python-3.6*.tar.xz -C Python-3 --strip-components 1
