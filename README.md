@@ -19,17 +19,17 @@ SysVinit as a standalone init system is just too old and the bootup scripts were
 
 I will ONLY make this bootable for **UEFI** systems.
 
-I do not provide a script for the boot method. I will only offer chroot. If you want to compile this on a source taht is different from your target go to [the CLFS' project side](http://trac.clfs.org) and checkout the chapter about the boot method and maybe write a script yourself.
+I do not provide a script for the boot method. I will only offer chroot. If you want to compile this on a source that is different from your target go to [the CLFS' project side](http://trac.clfs.org) and checkout the chapter about the boot method and maybe write a script yourself.
 
-I will ONLY provide a script for one bootloader - **goofiboot**. (gummiboot -> systemd-boot -> goofiboot)
-Goofiboot however is deprecated, maybe I will switch to grub when it stops working or I will find a way to use systemd-boot as standalone.
+I will ONLY provide a script for one bootloader - **goofiboot**. (History: gummiboot -> systemd-boot -> goofiboot)
+Goofiboot however is deprecated, maybe I will switch to grub when it stops working or I will find a way to use systemd-boot as a standalone solution.
 
-I will ONLY support BASH.
+I will ONLY support the BASH.
 
-This "distro" will start with kernel 4.12.10. It runs perfectly with 4.13.5. 4.14-rc4 did not work. System booted...PC turned off Ó_ó. To make this even a thing the kernel configs i provide here are maxed out. They will probably run on any PC! If you want a more minimalistic kernel suited to your system change the clfs_12 script(s) and use make menuconfig or even make localmodconfig.
+This "distro" will start with kernel 4.12.10. It runs perfectly with 4.13.5 right now (2017-10-31). 4.14-rc4 did not work. System booted...PC immediately turned off Ó_ó. To make this even a thing the kernel configs i provide here are maxed out. They will probably run on any PC! If you want a more minimalistic kernel suited to your system change the clfs_12 script(s) and use make menuconfig or even make localmodconfig.
 
-I will try to use openrc-elogind and NOT consolekit. Elogind however is suddenly failing on me although it worked before
-I will ONLY provide scripts for **XCFCE** and **MATE** as Desktop environments (DEs).
+I will try to use openrc-elogind and NOT consolekit. Elogind however is suddenly failing on me although it worked before.
+I will ONLY provide scripts for **XFCE** and **MATE** as Desktop environments (DEs).
 I will ONLY provide Xorg drivers for **Intel/NVIDIA** Systems.
 I will deactivate nouveau and nouveaufb (framebuffer) by default and provide an NVIDIA install script.
 
@@ -37,7 +37,7 @@ This might change if I will ever build a AMD Ryzen+Vega RIG __*__**_**__*__
 
 **I do not provide all Xorg drivers by default!!!**
 
-If I ever find out how, I will ditch Xorg and will switch to Wayland. Since I have no experience whatsoever with Wayland that might take some time. Just read on /r/linux that there is no chance of getting GL acceleration with NVIDIA proprietary driver and Wayland. Nouveau would be better. But nouveau is out of the question for gamers due to low performance. It would be still interesting to provide it for simple desktop users and developers. Also XFCE and MATE need to support it first. **At the moment I strongly suggest you use XFCE** since those scripts are muich more up-to-date and were successful in recent testing.
+If I ever find out how, I will ditch Xorg and will switch to Wayland (Also at the moment that seems to be way more realistic on AMD-GPU based systems). Since I have no experience whatsoever with Wayland that might take some time. I just read on /r/linux that there is no chance of getting GL acceleration with NVIDIA proprietary driver and Wayland. Nouveau would be better. But nouveau is out of the question for gamers due to low performance. It would be still interesting to provide it for simple desktop users and developers. Also XFCE and MATE need to support it first. **At the moment I strongly suggest you use XFCE** since those scripts are much more up-to-date and were successful in recent testing.
 
 ### Current issues
 
