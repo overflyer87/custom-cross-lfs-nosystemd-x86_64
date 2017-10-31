@@ -34,6 +34,8 @@ export CLFS_TARGET32="i686-pc-linux-gnu"
 export PKG_CONFIG_PATH32=/usr/lib/pkgconfig
 export PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 
+cd ${CLFSSOURCES}
+
 #Tar
 mkdir tar && tar xf tar-*.tar.* -C tar --strip-components 1
 cd tar
