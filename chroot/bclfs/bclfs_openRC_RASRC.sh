@@ -262,7 +262,7 @@ chmod 777 /etc/init.d/*
 #Let see if at the next test installation the following sed commands will still be neccessary
 
 sed -i 's/\/usr\/bin\//\/sbin\//' /etc/init.d/*
-sed -i 's/\/usr\/bin\//\/sbin\//' /usr/lib64/openrc
+sed -i 's/\/usr\/bin\//\/sbin\//' /usr/lib64/openrc/sh*
 sed -i 's/\/usr\/bin\//\/sbin\//' /etc/inittab
 sed -i 's/\/usr\/lib\//\/usr\/lib64\//' /etc/init.d/*
 sed -i 's/\/usr\/lib6464\//\/usr\/lib64\//' /etc/init.d/*
