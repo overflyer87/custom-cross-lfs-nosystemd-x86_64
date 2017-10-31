@@ -1,6 +1,22 @@
 #!/bin/bash
 
 #Building the final CLFS System
+
+function checkBuiltPackage () {
+echo " "
+echo "Did everything build fine?: [Y/N]"
+while read -n1 -r -p "[Y/N]   " && [[ $REPLY != q ]]; do
+  case $REPLY in
+    Y) break 1;;
+    N) echo "$EXIT"
+       echo "Fix it!"
+       exit 1;;
+    *) echo " Try again. Type y or n";;
+  esac
+done
+echo " "
+}
+
 CLFS=/
 CLFSSOURCES=/sources
 MAKEFLAGS="-j$(nproc)"
