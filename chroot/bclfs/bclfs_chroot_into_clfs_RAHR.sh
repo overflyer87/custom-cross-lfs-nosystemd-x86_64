@@ -6,9 +6,14 @@
 CLFS=/mnt/clfs
 export CLFS=/mnt/clfs
 
+echo " "
+echo " "
 echo "Mount all your CLFS partitions first"
 echo "root to /mnt/clfs"
 echo "Press Ctrl+C if you did not."
+echo "Press ENTER if you did"
+echo " "
+echo " "
 
 read
 
