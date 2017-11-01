@@ -34,7 +34,6 @@ export CLFS_TARGET32="i686-pc-linux-gnu"
 export PKG_CONFIG_PATH32=/usr/lib/pkgconfig
 export PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 
-
 #Chapter 10.61 
 #Continuing after new Bash login
 
@@ -675,7 +674,7 @@ cd patch
 
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
 USE_ARCH=64 CC="gcc ${BUILD64}" ./configure \
-    --prefix=/usr
+    --prefix=/usr --libdir=/usr/lib64
 
 make
 make check
@@ -712,9 +711,10 @@ cd libestr
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
     CC="gcc ${BUILD32}" \
     USE_ARCH=32 \
-    ./configure --prefix=/usr && 
+    ./configure --prefix=/usr --libdir=/usr/lib
 
-make && make install
+make 
+make install
 
 cd ${CLFSSOURCES} 
 checkBuiltPackage
@@ -728,9 +728,10 @@ CC="gcc ${BUILD64}" \
     PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
     USE_ARCH=64 \
     ./configure --prefix=/usr \
-    --libdir=/usr/lib64 && 
+    --libdir=/usr/lib64 
 
-make && make install
+make 
+make install
 
 cd ${CLFSSOURCES} 
 checkBuiltPackage
@@ -743,9 +744,10 @@ cd libee
 PKG_CONFIG_PATH="${PKG_CONFIG_PATH32}" \
     CC="gcc ${BUILD32}" \
     USE_ARCH=32 \
-    ./configure --prefix=/usr && 
+    ./configure --prefix=/usr --libdir=/usr/lib
 
-make -j1 && make -j1 install
+make -j1
+make -j1 install
 
 cd ${CLFSSOURCES} 
 checkBuiltPackage
@@ -759,59 +761,11 @@ CC="gcc ${BUILD64}" \
     PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
     USE_ARCH=64 \
     ./configure --prefix=/usr \
-    --libdir=/usr/lib64 && 
+    --libdir=/usr/lib64 
 
-make -j1 && make -j1 install
+make -j1
+make -j1 install
 
 cd ${CLFSSOURCES} 
 checkBuiltPackage
 rm -rf libee
-
-
-
-
-
-
-
-
-
-
-
-
-echo " "
-echo " "
-
-checkBuiltPackage
-
-echo " "
-echo " "
-
-echo "INSTALLING openRC... Calling script..."
-echo " "
-echo " "
-########################################
-#                                      #
-#    CALLING OPENRC INSTALL SCRIPT     #
-#                                      #
-########################################
-
-echo " "
-echo " "
-checkBuiltPackage
-
-cd ${CLFS}
-
-sh bclfs/bclfs_openRC_RASRC.sh
-
-
-
-
-
-
-
-
-
-
-
-
-
