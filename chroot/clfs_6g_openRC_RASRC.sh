@@ -36,8 +36,6 @@ export PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 
 cd ${CLFSSOURCES} 
 
-sh ../bclfs/bclfs_PAM_x64_RASRC.sh
-
 #Rsyslog
 mkdir rsyslog && tar xf rsyslog-*.tar.* -C rsyslog --strip-components 1
 cd rsyslog
