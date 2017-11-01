@@ -247,9 +247,9 @@ ldconfig
 
 install -m755 -d /usr/share/licenses/openrc
 install -m644 LICENSE AUTHORS /usr/share/licenses/openrc/
-cp -rv /libexec/rc /usr/lib64/
-mv /usr/lib64/rc /usr/lib64/openrc
-rm -rf /libexec/rc
+#cp -rv /libexec/rc /usr/lib64/
+#mv /usr/lib64/rc /usr/lib64/openrc
+#rm -rf /libexec/rc
 
 mkdir cclfs-openrc-scripts && tar xf ${CLFSSOURCES}/cclfs-openrc-scripts.tar.* -C cclfs-openrc-scripts --strip-components 1
 cd cclfs-openrc-scripts
@@ -261,13 +261,13 @@ chmod 777 /etc/init.d/*
 
 #Let see if at the next test installation the following sed commands will still be neccessary
 
-sed -i 's/\/usr\/bin\//\/sbin\//' /etc/init.d/*
-sed -i 's/\/usr\/bin\//\/sbin\//' /usr/lib64/openrc/sh*
-sed -i 's/\/usr\/bin\//\/sbin\//' /etc/inittab
+sed -i 's/\/usr\/bin\//\/usr\/sbin\//' /etc/init.d/*
+sed -i 's/\/usr\/bin\//\/usr\/sbin\//' /usr/lib64/openrc/sh/*
+sed -i 's/\/usr\/bin\//\/usr\/sbin\//' /etc/inittab
 sed -i 's/\/usr\/lib\//\/usr\/lib64\//' /etc/init.d/*
 sed -i 's/\/usr\/lib6464\//\/usr\/lib64\//' /etc/init.d/*
-sed -i 's/\/usr\/lib\//\/usr\/lib64\//' /usr/lib64/rc/sh/*
-sed -i 's/\/usr\/lib6464\//\/usr\/lib64\//' /usr/lib64/rc/sh/*
+#sed -i 's/\/usr\/lib\//\/usr\/lib64\//' /usr/lib64/rc/sh/*
+#sed -i 's/\/usr\/lib6464\//\/usr\/lib64\//' /usr/lib64/rc/sh/*
 
 ln -sfv /usr/lib64/openrc/sh/functions.sh /etc/init.d/functions.sh
 
@@ -276,7 +276,7 @@ ln -sfv /etc/init.d/kmod-static-nodes /etc/runlevels/sysinit/kmod-static-nodes
 ln -sfv /etc/init.d/udev /etc/runlevels/sysinit/udev
 ln -sfv /etc/init.d/udev-trigger /etc/runlevels/sysinit/udev-trigger
 
-ln -sfv /etc/init.d/termencoding /etc/runlevels/boot/termnencoding
+ln -sfv /etc/init.d/termencoding /etc/runlevels/boot/termencoding
 ln -sfv /etc/init.d/sysctl /etc/runlevels/boot/sysctl
 
 ln -sfv /etc/init.d/sshd /etc/runlevels/default/sshd
