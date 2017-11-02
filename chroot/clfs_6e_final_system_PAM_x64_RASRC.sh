@@ -435,10 +435,6 @@ export PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 export PKG_CONFIG_PATH32=/usr/lib/pkgconfig
 EOF
 
-echo " "
-echo "You may reboot now and try your new VERY OWN LINUX now ;)"
-echo " "
-
 #Blacklist video modules that are not compatible with the proprietary NVIDIA driver
 sudo mkdir -v /etc/modprobe.d
 
