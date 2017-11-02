@@ -1004,8 +1004,7 @@ echo "using our new native bash shell!"
 echo "If you noticed errors, cancel and recompile"
 echo " "
 
-echo "Next run #6d1 for sysvinit init system (not recommended)"
-echo "Next run #6d2 for openrc as init system (STRONGLY RECOMMENDED)"
+echo "Next run script #6d"
 
 cd ${CLFSSOURCES}
 
