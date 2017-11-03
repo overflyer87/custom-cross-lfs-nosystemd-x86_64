@@ -26,7 +26,7 @@ Goofiboot however is deprecated, maybe I will switch to grub when it stops worki
 
 I will ONLY support the BASH.
 
-This "distro" will start with kernel 4.12.10. It runs perfectly with 4.13.5 right now (2017-10-31). 4.14-rc4 did not work. System booted...PC immediately turned off Ó_ó. To make this even a thing the kernel configs i provide here are maxed out. They will probably run on any PC! If you want a more minimalistic kernel suited to your system change the clfs_12 script(s) and use make menuconfig or even make localmodconfig.
+It runs perfectly with 4.13.10 right now (2017-11-03). To make this even a thing the kernel configs i provide here are maxed out. They will probably run on any PC! If you want a more minimalistic kernel suited to your system change the clfs_12 script(s) and use make menuconfig or even make localmodconfig.
 
 I will try to use openrc-elogind and NOT consolekit. Elogind however is suddenly failing on me although it worked before.
 I will ONLY provide scripts for **XFCE** and **MATE** as Desktop environments (DEs).
