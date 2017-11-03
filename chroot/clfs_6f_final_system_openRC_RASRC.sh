@@ -281,11 +281,18 @@ rm -rf netifrc
 echo " "
 echo "Fixing some stuff with openrc paths"
 
-sed -i 's/\/usr\/bin\//\/usr\/sbin\//' /etc/init.d/*
-sed -i 's/\/usr\/bin\//\/usr\/sbin\//' /usr/lib64/openrc/sh/*
+sed -i 's/\/usr\/bin\/openrc-run/\/usr\/sbin\/openrc-run/' /etc/init.d/*
+sed -i 's/\/usr\/bin\/openrc-run/\/usr\/sbin\/openrc' /usr/lib64/openrc/sh/*
 sed -i 's/\/usr\/bin\//\/usr\/sbin\//' /etc/inittab
+sed -i 's/\/usr\/sbin\/agetty/\/sbin\/agetty/' /etc/inittab
+sed -i 's/\/usr\/sbin\/agetty/\/sbin\/halt/' /etc/inittab
+sed -i 's/\/usr\/sbin\/agetty/\/sbin\/shutdown/' /etc/inittab
+sed -i 's/\/usr\/sbin\/agetty/\/sbin\/reboot/' /etc/inittab
+sed -i 's/\/usr\/sbin\/agetty/\/sbin\/sulogin/' /etc/inittab
 sed -i 's/\/usr\/lib\//\/usr\/lib64\//' /etc/init.d/*
 sed -i 's/\/usr\/lib6464\//\/usr\/lib64\//' /etc/init.d/*
+sed -i 's/\/usr\/lib\//\/usr\/lib64\//' /usr/lib64/openrc/sh/*
+sed -i 's/\/usr\/lib6464\//\/usr\/lib64\//' /usr/lib64/openrc/sh/*
 
 ln -sfv /usr/lib64/openrc/sh/functions.sh /etc/init.d/functions.sh
 
