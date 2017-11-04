@@ -282,7 +282,7 @@ echo " "
 echo "Fixing some stuff with openrc paths"
 
 sed -i 's/\/usr\/bin\/openrc-run/\/usr\/sbin\/openrc-run/' /etc/init.d/*
-sed -i 's/\/usr\/bin\/openrc-run/\/usr\/sbin\/openrc' /usr/lib64/openrc/sh/*
+sed -i 's/\/usr\/bin\/openrc-run/\/usr\/sbin\/openrc/' /usr/lib64/openrc/sh/*
 sed -i 's/\/usr\/bin\//\/usr\/sbin\//' /etc/inittab
 sed -i 's/\/usr\/sbin\/agetty/\/sbin\/agetty/' /etc/inittab
 sed -i 's/\/usr\/sbin\/agetty/\/sbin\/halt/' /etc/inittab
