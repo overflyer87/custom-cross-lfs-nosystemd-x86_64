@@ -357,7 +357,7 @@ cd meson
 
 CXX="g++ ${BUILD64}" USE_ARCH=64 CC="gcc ${BUILD64}" PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" \
 python3 setup.py build
-python3 setup.py install --verbose --prefix=/usr/lib64 --install-lib=/usr/lib64/python3.6/site-packages --optimize=1
+python3 setup.py install --verbose --prefix=/usr --install-lib=/usr/lib64/python3.6/site-packages --optimize=1
 
 
 cd ${CLFSSOURCES}
