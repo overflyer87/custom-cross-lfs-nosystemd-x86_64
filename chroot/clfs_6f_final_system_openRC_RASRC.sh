@@ -268,11 +268,43 @@ mkdir netifrc && tar xf netifrc-*.tar.* -C netifrc --strip-components 1
 cd netifrc
 
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} \
-  CC="gcc ${BUILD64}" USE_ARCH=64 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64
+CC="gcc ${BUILD64}" \
+USE_ARCH=64 \
+CXX="g++ ${BUILD64}" \
+SYSCONFDIR=/etc \
+PREFIX=/usr \
+SBINDIR=/usr/bin \
+LIBEXECDIR=/usr/lib64/netifrc \
+MKSELINUX=no \
+MKPAM=pam \
+MKTERMCAP=ncurses \
+MKNET=no \
+MKSYSVINIT=yes \
+PREFIX=/usr \  
+LIBDIR=/usr/lib64 \
+make
+
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH64} \
-  CC="gcc ${BUILD64}" USE_ARCH=64 CXX="g++ ${BUILD64}" make PREFIX=/usr LIBDIR=/usr/lib64 install
+CC="gcc ${BUILD64}" \
+USE_ARCH=64 \
+CXX="g++ ${BUILD64}" \
+SYSCONFDIR=/etc \
+PREFIX=/usr \
+SBINDIR=/usr/bin \
+LIBEXECDIR=/usr/lib64/netifrc \
+MKSELINUX=no \
+MKPAM=pam \
+MKTERMCAP=ncurses \
+MKNET=no \
+MKSYSVINIT=yes \
+PREFIX=/usr \  
+LIBDIR=/usr/lib64 \
+make install
 
 ln -sfv /etc/init.d/net.{lo,eth0}
+
+cp -rv /usr/libexec/netifrc /usr/lib64/
+rm -rf /usr/libexec/netifrc
   
 cd ${CLFSSOURCES} 
 checkBuiltPackage
@@ -293,6 +325,8 @@ sed -i 's/\/usr\/lib\//\/usr\/lib64\//' /etc/init.d/*
 sed -i 's/\/usr\/lib6464\//\/usr\/lib64\//' /etc/init.d/*
 sed -i 's/\/usr\/lib\//\/usr\/lib64\//' /usr/lib64/openrc/sh/*
 sed -i 's/\/usr\/lib6464\//\/usr\/lib64\//' /usr/lib64/openrc/sh/*
+sed -i 's/\/usr\/bin\/sshd/\/usr\/sbin\/sshd/' /etc/init.d/sshd
+sed -i 's/\/usr\/bin\/udev/\/sbin\/udev/' /etc/init.d/udev*
 
 ln -sfv /usr/lib64/openrc/sh/functions.sh /etc/init.d/functions.sh
 
