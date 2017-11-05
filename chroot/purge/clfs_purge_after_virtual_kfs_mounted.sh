@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 #Purge CLFS if you already used clfs_4 script to chroot into temp system
