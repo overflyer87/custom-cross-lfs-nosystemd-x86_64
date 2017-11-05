@@ -21,4 +21,3 @@ sudo unlink /cross-tools
 sudo unlink /tools
 sudo rm -rf ${CLFS}/*
 sudo umount -f ${CLFS}
-
