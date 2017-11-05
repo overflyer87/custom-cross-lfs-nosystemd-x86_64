@@ -327,6 +327,7 @@ sed -i 's/\/usr\/lib\//\/usr\/lib64\//' /usr/lib64/openrc/sh/*
 sed -i 's/\/usr\/lib6464\//\/usr\/lib64\//' /usr/lib64/openrc/sh/*
 sed -i 's/\/usr\/bin\/sshd/\/usr\/sbin\/sshd/' /etc/init.d/sshd
 sed -i 's/\/usr\/bin\/udev/\/sbin\/udev/' /etc/init.d/udev*
+sed -i 's/\/usr\/bin\/dhcpcd/\/sbin\/dhcpcd/' /etc/init.d/dhcpcd
 
 ln -sfv /usr/lib64/openrc/sh/functions.sh /etc/init.d/functions.sh
 
