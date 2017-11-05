@@ -70,7 +70,7 @@ cd pyMarkupSafe
 CXX="g++ ${BUILD64}" USE_ARCH=64 CC="gcc ${BUILD64}" PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" 
 
 python3.6 setup.py build
-sudo python3.6 setup.py install --verbose --prefix=/usr/lib64 --install-lib=/usr/lib64/python3.6/site-packages --optimize=1
+sudo python3.6 setup.py install --verbose --prefix=/usr --install-lib=/usr/lib64/python3.6/site-packages --optimize=1
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
@@ -86,7 +86,7 @@ cd pymako
 
 CXX="g++ ${BUILD64}" USE_ARCH=64 CC="gcc ${BUILD64}" PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" 
 python3.6 setup.py build
-sudo python3.6 setup.py install --verbose --prefix=/usr/lib64 --install-lib=/usr/lib64/python3.6/site-packages --optimize=1
+sudo python3.6 setup.py install --verbose --prefix=/usr --install-lib=/usr/lib64/python3.6/site-packages --optimize=1
 
 cd ${CLFSSOURCES}
 checkBuiltPackage
