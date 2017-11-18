@@ -42,7 +42,7 @@ rm -rf /boot/efi/vmlinuz-4.14.*
 rm -rf /lib/firmware
 
 make mrproper
-cp ${CLFSSOURCES}/kernel413.conf ${CLFSSOURCES}/linux/.config
+cp ${CLFSSOURCES}/kernel414.conf ${CLFSSOURCES}/linux/.config
 
 CC="gcc ${BUILD64}" USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make
 CC="gcc ${BUILD64}" USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make modules_install
