@@ -32,7 +32,7 @@ export PKG_CONFIG_PATH64=/usr/lib64/pkgconfig
 cd ${CLFSSOURCES}
 
 #LINUX KERNEL
-mkdir linux && tar xf linux-*.tar.* -C linux --strip-components 1
+mkdir linux && tar xf linux-4.13*.tar.* -C linux --strip-components 1
 cd linux
 
 rm -rf /lib/modules/4.13.*
