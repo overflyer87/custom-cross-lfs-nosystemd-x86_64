@@ -55,9 +55,10 @@ CC="gcc ${BUILD64}" USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make modu
 cd ${CLFSSOURCES}
 
 git clone https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git
-CC="gcc ${BUILD64}" USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make FIRMWAREDIR=/lib/firmware
+cd linux-firmware
+CC="gcc ${BUILD64}" USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make FIRMWAREDIR=/lib/firmware install
 
-cd linux
+cd cd ${CLFSSOURCES}/linux
 
 cp -v arch/x86_64/boot/bzImage /boot/efi/vmlinuz-4.14.0
 cp -v System.map /boot/efi/System.map-4.14.0
