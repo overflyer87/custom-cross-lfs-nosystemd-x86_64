@@ -26,7 +26,7 @@ Goofiboot however is deprecated, maybe I will switch to grub when it stops worki
 
 I will ONLY support the BASH.
 
-It runs with 4.14.0 right now (2017-11-19). To make this even a thing the kernel configs i provide here are maxed out. They will probably run on any PC! If you want a more minimalistic kernel suited to your system change the clfs_12 script(s) and use make menuconfig or even make localmodconfig.
+It runs with 4.14.0 right now (2017-11-19). To make this even a thing the kernel configs I provide here are maxed out. They will probably run on any PC or in any VM! If you want a more minimalistic kernel suited to your system change the clfs_12 script(s) and use make menuconfig or even make localmodconfig.
 
 I will try to use openrc-elogind and NOT consolekit. Elogind however is suddenly failing on me although it worked before.
 I will ONLY provide scripts for **XFCE** and **MATE** as Desktop environments (DEs).
