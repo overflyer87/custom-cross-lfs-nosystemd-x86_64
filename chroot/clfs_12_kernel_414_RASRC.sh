@@ -52,16 +52,17 @@ CC="gcc ${BUILD64}" USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make modu
 #https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git
 #CC="gcc ${BUILD64}" USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make firmware_install
 
-cd /lib 
-git clone https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git
-mv -v linux-firmware firmware
-
 cd ${CLFSSOURCES}
+
+git clone https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git
+CC="gcc ${BUILD64}" USE_ARCH=64 PKG_CONFIG_PATH="${PKG_CONFIG_PATH64}" make FIRMWAREDIR=/lib/firmware
+
 cd linux
 
 cp -v arch/x86_64/boot/bzImage /boot/efi/vmlinuz-4.14.0
 cp -v System.map /boot/efi/System.map-4.14.0
 cp -v .config /boot/efi/config-4.14.0
+
 cd ${CLFSSOURCES}
 
 #Copy source folder to /lib/modules
