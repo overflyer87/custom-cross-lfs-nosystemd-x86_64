@@ -96,6 +96,7 @@ echo " "
 
 read kernelmajorver
 
+DOT='.'
 
 echo " "
 echo "Now chose your kernel's major version: "
@@ -103,7 +104,7 @@ echo " "
 
 read kernelminorver
 
-KERNELVER = $klernelmajorver.$kernelminorver
+KERNELVER = $klernelmajorver$DOT$kernelminorver
 
 echo " "
 echo $KERNELVER
