@@ -84,6 +84,32 @@ printf "\033c"
 echo "You chose to format $clfshomedev and $clfsrootdev with $clfsfilesystem. That's it for now."
 echo " "
 
+echo " "
+echo "What kernel do you want to install. This distro supports linux kernel 4.14 and onwards."
+echo "If you choose 4.14 for example firstr type in 4 and then 14."
+echo "Do not chose patch version numbers like 4.14.1. The script will automatically download the most recent version of 4.14!"
+echo " "
+
+echo " "
+echo "Now chose your kernel's major version: "
+echo " "
+
+read kernelmajorver
+
+
+echo " "
+echo "Now chose your kernel's major version: "
+echo " "
+
+read kernelminorver
+
+KERNELVER = $klernelmajorver.$kernelminorver
+
+echo " "
+echo $KERNELVER
+echo "You chose kernel version $KERNELVER. The installer will download that kernel in just a sec :)!"
+echo " "
+
 CLFS=/mnt/clfs
 CLFSUSER=clfs
 CLFSHOME=${CLFS}/home
@@ -141,7 +167,7 @@ cp sources/* ${CLFSSOURCES}
 #Download kernel and toolchain
 wget http://ftp.gnu.org/gnu/binutils/binutils-2.29.1.tar.bz2 -P ${CLFSSOURCES}
 wget ftp://gcc.gnu.org/pub/gcc/releases/gcc-7.2.0/gcc-7.2.0.tar.xz -P ${CLFSSOURCES}
-wget https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.13.11.tar.xz -P ${CLFSSOURCES}
+wget https://cdn.kernel.org/pub/linux/kernel/v$kernelmajorver.x/linux-$KERNELVER.tar.xz -P ${CLFSSOURCES}
 wget https://ftp.gnu.org/gnu/glibc/glibc-2.26.tar.xz -P ${CLFSSOURCES}
 
 echo " "
