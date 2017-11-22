@@ -104,7 +104,7 @@ echo " "
 
 read kernelminorver
 
-KERNELVER = $klernelmajorver$DOT$kernelminorver
+KERNELVER = $kernelmajorver$DOT$kernelminorver
 
 echo " "
 echo $KERNELVER
